@@ -76,7 +76,7 @@ plot(iris)
 Windows環境の方は**`Rtools`**というツール群をインストールしておきます。これはパッケージがzip形式で提供されていない場合にインストール時に必要となるツールです
 
 ### **Rtoolsのインストール**
-[Rtoolsのインストール方法](../../program/env_install_tls.html)を参考にインストールを行ってください。Windows環境以外の方はインストールの必要はありません。
+[Rtoolsのインストール方法](../../program/env_install_tls.html)を参考にインストールを行ってください。必ずデフォルトのインストールパスにインストールしてください。Windows環境以外の方はインストールの必要はありません。
 
 ### **Rtoolsの動作確認**
 動作確認方法は特にありません。インストーラでエラーが出ていないことは確認しておいて下さい。
@@ -166,7 +166,7 @@ RStudioを起動してください。Windows環境でCPU性能があまり高く
 ## パッケージのインストール
 [パッケージのインストール方法](../../program/env_install_pkg.html#rstudioからインストールする方法)にしたがって以下の追加パッケージのインストールを行います。
 
-* **`knitr`**, **`rmarkdown`**, **`tidyverse`**
+* **`knitr`**, **`rmarkdown`**, **`tidyverse`**, **`packrat`**
 
 ### **パッケージの更新**
 パッケージのインストールが完了したらパッケージの更新を行います。RStudioのパッケージ・ペインで［Update］ボタンをクリックして更新パッケージの有無を確認してください。
@@ -181,11 +181,25 @@ RStudioを起動してください。Windows環境でCPU性能があまり高く
 1. それでも動かない場合は**R/RStudioのインストール先を変更**（Program Filesフォルダ以外の任意のフォルダへ）してみます
     * `C:\usr\bin\R`、`C:\R` など
 
+## Gitのインストール
 
 ## プロジェクトの作成と動作確認
 ### プロジェクトの作成
-1. ［File］-［New Project...］から「test」という名前の空プロジェクトを作ります
-    * プロジェクトは日本語や空白の入っていないパスにしてください
+<!-- 1. ［File］-［New Project...］から「test」という名前の空プロジェクトを作ります -->
+<!--     * プロジェクトは日本語や空白の入っていないパスにしてください -->
+### プロジェクトの作成（インポート）
+1. ［File］-［New Project...］-［Version Control］-［Git］を選択します
+1. 以下のURLを［Repository URL］に入力します
+    * https://github.com/k-metrics/2018.git
+1. ［Project directory name］は"Packrat"と変更してください
+1. ［Create project as subdirectory of］は任意ですが、日本語や空白が含まれないパスにしてください
+1. 上記の入力が完了したら［Create Project］ボタンをクリックしてください
+    * GitHubのリポジトリがクローニングされてRStudioでプロジェクトが開かれます
+    * YAMLに関するエラーが出ますが無視してください
+    * "No Source tarball at packrat available localy"と表示され必要なパッケージが見当たらない場合はインストールされますのでしばらくお待ちください
+    * "Installing R package forim source requires install of additional build tools."と出ますがRtoolsがデフォルトパスにインストール済の場合は［No］ボタンをクリックしてください
+
+1. プロジェクトをクローズし、再度、プロジェクト（"Packrat"）を開きます
 
 ## 動作確認
 ### Rmdファイルのコンパイル
