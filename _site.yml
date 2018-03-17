@@ -1,0 +1,45 @@
+name: 2018年度データ分析勉強会
+output_dir: '.'
+output:
+  html_document:
+    code_folding: none
+    df_print: paged
+    highlight: textmate
+    md_extensions: -ascii_identifiers
+    theme: cerulean
+    toc: yes
+    toc_float:
+      collapsed: yes
+      smooth_scroll: no
+    lib_dir: site_libs
+    self_contained: no
+navbar:
+  title: Agenda
+  type: default
+  left:
+  right:
+    - icon: fa-github
+      menu:
+        - text: "Cabinet"
+          href: https://k-metrics.github.io/cabinet/index.html
+        - text: "---------------"
+        - text: "Import"
+          href: ../cabinet/import/index.html
+        - text: "Tidy/Transform"
+          href: ../cabinet/tidy/index.html
+        - text: "Model/Infer"
+          href: ../cabinet/model/index.html
+        - text: "Visualize"
+          href: ../cabinet/visualize/index.html
+        - text: "Communicate/Automate"
+          href: ../cabinet/communicate/index.html
+        - text: "Program"
+          href: ../cabinet/program/index.html
+        - text: "---------------"
+        - text: "GitHub Repository"
+          icon: fa-github
+          href: https://github.com/k-metrics/c2018
+        - text: "---------------"
+        - text: "データ分析勉強会"
+          icon: fa-google
+          href: https://sites.google.com/site/kantometrics/home

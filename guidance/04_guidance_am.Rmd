@@ -1,0 +1,45 @@
+---
+title: "第４回データ分析勉強会"
+author: "【午前の部】再現性のあるレポーティング [鈴木さんぽう, CC BY-NC-SA 4.0]"
+date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
+output:
+  ioslides_presentation:
+    df_print: paged
+    logo: ./fig/ggplot2.png
+    smaller: false
+    widescreen: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+
+require(tidyverse)
+```
+
+
+## 本日の内容
+1. **再現性のあるレポーティング（午前）**
+    * R Markdown概説
+    * レポーティング課題設定
+1. 再現性のあるレポーティング（午後）
+    * レポート作成
+    * 発表
+
+# 再現性のあるレポーティング
+
+## R Markdown概説
+* [R Markdown Basics](https://k-metrics.github.io/cabinet/communicate/rmd_basics.html)
+    * YAML
+    * Code Chunk
+    * Markdown
+
+# レポーティング課題設定
+* チームごとにレポーティング課題を設定します
+* 課題をR Markdownを使ってレポート化します
+    * データを変えてレポーティングできるとベスト
+    * 
+
+
+---
+
+CC BY-NC-SA 4.0, Sampo Suzuki
