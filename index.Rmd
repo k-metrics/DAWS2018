@@ -7,15 +7,11 @@ output:
     css: style.css
 ---
 
-<!-- Shared Links -->
-```{r index, child="./links.Rmd", include=FALSE}
-```
-
 [2018年度勉強会  <i class="fa fa-external-link"></i>](https://sites.google.com/site/kantometrics/2018){target="_blank" title="ソフトウェア品質技術者のためのデータ分析勉強会"}のカリキュラム
 
 回            | 開催日    | 内容（予定）               | 備考
 :------------:|:---------:|:---------------------------|:-----------
-[第1回](#S01) | 2018/5/12 | 分析環境の構築と動作確認   | R/RStudio
+[第1回](#S01) | 2018/5/12 | 分析環境の構築と動作確認   | R/RStudio, Git, packrat
 [第2回](#S02) | 2018/6/15 | データハンドリング入門     | tidyverse
 [第3回](#S03) | 2018/7/14 | 効率的で綺麗な可視化       | ggplot2
 [第4回](#S04) | 2018/9/15 | 再現性のあるレポーティング | R Markdown
@@ -32,6 +28,8 @@ output:
 　  
 
 ## 第1回 分析環境の構築と動作確認 {#S01}
+勉強会初（勉強会としては本邦初？）の試みとしてGitHubリポジトリと**`packrat`**パッケージを用いた統一環境の作成を試します。途中、上手く行かない可能性もありますが、ご了承ください。  
+　  
 
 ### 午前の部
 * [前座 <i class="fa fa-external-link-square"></i>](./guidance/00_guidance_why_R.html){target="_blank" title="ioslide"}
@@ -40,13 +38,13 @@ output:
 　  
 
 * [ガイダンス <i class="fa fa-external-link-square"></i>](./guidance/01_guidance_am.html){target="_blank" title="ioslide"}
-* [分析環境の構築と動作確認 <i class="fa fa-external-link-square"></i>](../program/env_index.html){target="_blank" title="GitHub Pages"}
+* [分析環境の構築と動作確認 <i class="fa fa-external-link-square"></i>](../cabinet/program/env_index.html){target="_blank" title="GitHub Pages"}
     * [R/RStudio入門 <i class="fa fa-external-link"></i>](https://kazutan.github.io/JSSP2018_spring/intro_rstudio.html){target="_blank" title="【参考資料】日本社会心理学会 第5回春の方法論セミナー資料"}
 
 　  
 
 ### 午後の部
-* [分析環境の構築と動作確認 <i class="fa fa-external-link-square"></i>](../program/env_index.html){target="_blank" title="GitHub Pages"}〔つづき〕
+* [分析環境の構築と動作確認 <i class="fa fa-external-link-square"></i>](../cabinet/program/env_index.html){target="_blank" title="GitHub Pages"}〔つづき〕
     * [R/RStudio入門 <i class="fa fa-external-link"></i>](https://kazutan.github.io/JSSP2018_spring/intro_rstudio.html){target="_blank" title="【参考資料】日本社会心理学会 第5回春の方法論セミナー資料"}
 
 　  
@@ -76,10 +74,6 @@ output:
 * [演習用テンプレート <i class="fa fa-external-link-square"></i>](./guidance/template.html){target="_blank" title="HTML Format"}
 * [演習用テンプレート（右クリックでダウンロード）](./guidance/template.Rmd)
 
-<!-- * [tidyverse](https://www.tidyverse.org/) -->
-<!-- * [dplyr part of tidyverse](http://dplyr.tidyverse.org/index.html) -->
-<!-- * [dplyrのすゝめ](../program/basics_dplyr.html) -->
-
 　  
 
 ## 第3回 効率的で綺麗な可視化 {#S03}
@@ -105,6 +99,8 @@ output:
 
 ---
 
-<!-- Footer -->
-```{r child="./footer.Rmd"}
-```
+![Sampo Suzuki][CCI]
+[CC BY-NC-SA 4.0 <i class="fa fa-external-link"></i>][CC], Sampo Suzuki [`r format(Sys.time(), format = '%F %H:%M(%Z)')`]
+
+[CC]: http://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja {target="_blank" title="CC BY-NC-SA 4.0"}
+[CCI]: https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png {target="_blank" title="CC BY-NC-SA 4.0 icon"}

@@ -18,12 +18,11 @@ require(tidyverse)
 
 ## 本日の内容
 1. **分析環境の構築と確認（午前）**
-    * R/Rtools/R Commanderのインストールと動作確認
-    * RStudioのインストールと動作確認
-1. **RStudioを使ってみる（午前）**
-    * オプション設定
-    * パッケージのインストールと更新
-    * プロジェクトの作成と動作確認
+    * Rのインストールと動作確認
+    * Rtools（Windows環境のみ）とGitのインストール
+    * RStudioのインストールと動作確認、オプション設定
+    * packratパッケージのインストール
+    * プロジェクトのインポートと動作確認
 1. R Markdownで作る自己紹介（午後）
     * 自己紹介資料の作成
     * 作成した資料を用いた自己紹介
@@ -43,11 +42,23 @@ OSによりインストール方法などが異なりますので、環境構築
 * いないと思いますが...
 
 
+## 必要なもの
+* PC（無線LAN接続が可能なWindows, macOS, Ubuntu）
+* R本体（3.4.4 or later）
+* RStudio Desktop（1.1.423 or later）
+* Rtools43（Windows Only）
+* Git（利用OSに合わせて、Gitクライアントではありません）
+* `packart`パッケージ
+
+　  
+今回、勉強会初（本邦初？）の試みとしてGitHubリポジトリと`packrat`パッケージを用いた統一環境の作成を試します。途中、上手く行かない可能性もありますが、ご了承ください。
+
+
 ## Rのインストールと動作確認
 環境を統一するためにRは本日時点での最新バージョン（R 3.x.x）を使います。追加パッケージも最新バージョンを使います。  
 
 ### **Rのインストール**
-[Rのインストール方法](../../program/env_install.html)を参考にインストールを行ってください。macOSの方はサポーターの方からレクチャしてもらってください。  
+[Rのインストール方法](../cabinet/program/env_install.html)を参考にインストールを行ってください。macOSの方はサポーターの方からレクチャしてもらってください。  
 
 ### **Rの動作確認**
 インストールが終わったらRのコンソールから以下を実行しグラフが表示されることを確認します。
@@ -76,37 +87,21 @@ plot(iris)
 Windows環境の方は**`Rtools`**というツール群をインストールしておきます。これはパッケージがzip形式で提供されていない場合にインストール時に必要となるツールです
 
 ### **Rtoolsのインストール**
-[Rtoolsのインストール方法](../../program/env_install_tls.html)を参考にインストールを行ってください。必ずデフォルトのインストールパスにインストールしてください。Windows環境以外の方はインストールの必要はありません。
+[Rtoolsのインストール方法](../cabinet/program/env_install_tls.html)を参考にインストールを行ってください。必ず**デフォルトのインストールパス**にインストールしてください。Windows環境以外の方はインストールの必要はありません。
 
 ### **Rtoolsの動作確認**
 動作確認方法は特にありません。インストーラでエラーが出ていないことは確認しておいて下さい。
 
 
-## R Commanderのインストールと動作確認
-### **R Commanderのインストール**
-[R Commanderのインストール方法](../../program/env_install_rcmdr.html)を参考にインストールを行ってください。
+## Gitのインストール
+今回はGitHubのリポジトリを利用しますのでGitが必要です（Gitクライアントではありません。また、GitHubアカウントも不要です）。  
+Windowsの場合は[Git for Windows](https://gitforwindows.org/)をダウンロードしてインストールしてください。他のOSは公式リポジトリからインストールしてください。
 
-### **R Commanderの動作確認**
-[R Commanderのインストール方法](../../program/env_install_rcmdr.html)にある動作確認を行ってください。
+### **Gitのインストール**
+[自分用 Git For Windowsのインストール手順](https://qiita.com/toshi-click/items/dcf3dd48fdc74c91b409)を参考にインストールを行ってください。今回はGitHubからリポジトリをクローンするためだけに使いますので基本的にはデフォルト設定で構いません。
 
-
-<!-- ## 動作確認結果 -->
-<!-- ```{r, echo=FALSE} -->
-<!-- car::scatterplotMatrix(~Petal.Length+Petal.Width+Sepal.Length+Sepal.Width, -->
-<!--                        reg.line=FALSE, smooth=FALSE, spread=FALSE, span=0.5, -->
-<!--                        ellipse=FALSE, levels=c(.5, .9), id.n=0, -->
-<!--                        diagonal = 'density', data=iris) -->
-<!-- ``` -->
-
-
-## リカバリタイム
-うまく動作しない場合は動作環境などを確認しますのでサポートメンバー各位ご協力をお願いします。  
-
-1. 何が動作しないのかを**説明して**ください
-    * コンソールにメッセージが出ている場合はそれを教えてください
-1. **管理者権限**で起動してみてください
-1. それでも動かない場合は**Rのインストール先を変更**（Program Filesフォルダ以外の任意のフォルダへ）してみます
-    * `C:\usr\bin\R`、`C:\R` など
+### **Gitの設定**
+[Git for Windows インストール&設定](https://qiita.com/shinsumicco/items/a1c799640131ae33c792)を参考にユーザー名とメールアドレス設定ぐらいは行っておいてください。
 
 
 # 休憩（５分）
@@ -128,48 +123,23 @@ Rをデフォルトのインストール先から変更した方はRStudioのイ
 インストーラを起動したら手順にしたがってインストールしてください。動作確認などはこの後で行います。
 
 
-## リカバリタイム
-うまく動作しない場合は動作環境などを確認しますのでサポートメンバー各位ご協力をお願いします。  
-
-1. 何が動作しないのかを**説明して**ください
-    * コンソールにメッセージが出ている場合はそれを教えてください
-1. **管理者権限**で起動してみてください
-1. それでも動かない場合は**Rのインストール先を変更**（Program Filesフォルダ以外の任意のフォルダへ）してみます
-    * `C:\usr\bin\R`、`C:\R` など
-
-
-# 休憩（５分）
-
-
-# RStudioを使ってみる
 ## RStuioの起動
-RStudioを起動してください。Windows環境でCPU性能があまり高くない場合（第三世代 Core i3とか）は起動や動作が緩慢ですので、しばらく待ってみてください。それでも起動しない場合は、一度、強制終了さてて、再度起動してみてください。
+インストールが完了したらRStudioを起動してください。Windows環境でCPU性能があまり高くない場合（第三世代 Core i3とか）は起動や動作が緩慢ですので、しばらく待ってみてください。それでも起動しない場合は、一度、強制終了さてて、再度起動してみてください。
 
 ### **RStudioの概要説明**
-[RStudioの使い方](../../program/basics_rstudio.html)を参照しながら聞いてください。
+[RStudioの使い方](../cabinet/program/basics_rstudio.html)を参照しながら聞いてください。
 
 ### **オプション設定**
-[RStudioの使い方](../../program/basics_rstudio.html)にしたがってオプション設定をします。オプション設定は推奨ですので必ずしもこの通りにする必要はありません。お好みで設定してください。
-
-<!-- 設定         | 設定場所                                     | 設定値 -->
-<!-- -------------|----------------------------------------------|---------------- -->
-<!-- 作業フォルダ | [Tools]-[Global Options...]-[General]        | 任意のフォルダ^1^ -->
-<!-- タブ         | [Tools]-[Global Options...]-[Code]-[Editing] | Tab with 2 -->
-<!-- エンコード   | [Tools]-[Global Options...]-[Code]-[Saving]  | UTF-8 -->
-<!-- CRAN mirror  | [Tools]-[Global Options...]-[Packages]       | Global(CDN) -->
-<!-- preview in   | [Tools]-[Global Options...]-[R Markdown]     | Viewer Pane -->
-<!-- show output  | [Tools]-[Global Options...]-[R Markdown]     | inline -->
-<!-- 　   -->
-<!-- ^1^ 日本語や空白が入ってないこと（特にWindows） -->
+[RStudioの使い方](../cabinet/program/basics_rstudio.html)にしたがってオプション設定をします。オプション設定は推奨ですので必ずしもこの通りにする必要はありません。お好みで設定してください。
 
 
 ## パッケージのインストール
-[パッケージのインストール方法](../../program/env_install_pkg.html#rstudioからインストールする方法)にしたがって以下の追加パッケージのインストールを行います。
+[パッケージのインストール方法](../cabinet/program/env_install_pkg.html#rstudioからインストールする方法)にしたがって以下の追加パッケージのインストールを行います。
 
-* **`knitr`**, **`rmarkdown`**, **`tidyverse`**, **`packrat`**
+* **`packrat`**
 
-### **パッケージの更新**
-パッケージのインストールが完了したらパッケージの更新を行います。RStudioのパッケージ・ペインで［Update］ボタンをクリックして更新パッケージの有無を確認してください。
+　  
+上記以外のパッケージはこの時点でインストールする必要はありません。
 
 
 ## リカバリタイム
@@ -181,39 +151,45 @@ RStudioを起動してください。Windows環境でCPU性能があまり高く
 1. それでも動かない場合は**R/RStudioのインストール先を変更**（Program Filesフォルダ以外の任意のフォルダへ）してみます
     * `C:\usr\bin\R`、`C:\R` など
 
-## Gitのインストール
 
 ## プロジェクトの作成と動作確認
-### プロジェクトの作成
-<!-- 1. ［File］-［New Project...］から「test」という名前の空プロジェクトを作ります -->
-<!--     * プロジェクトは日本語や空白の入っていないパスにしてください -->
+今回は前出の通りGitHubの公開リポジトリと**`packrat`**パッケージを利用して統一環境の準備を自動的に行うことを試みます。環境によっては上手く動かない可能性もありますが、ご了承ください。
+
 ### プロジェクトの作成（インポート）
 1. ［File］-［New Project...］-［Version Control］-［Git］を選択します
 1. 以下のURLを［Repository URL］に入力します
     * https://github.com/k-metrics/2018.git
-1. ［Project directory name］は"Packrat"と変更してください
-1. ［Create project as subdirectory of］は任意ですが、日本語や空白が含まれないパスにしてください
-1. 上記の入力が完了したら［Create Project］ボタンをクリックしてください
-    * GitHubのリポジトリがクローニングされてRStudioでプロジェクトが開かれます
-    * YAMLに関するエラーが出ますが無視してください
-    * "No Source tarball at packrat available localy"と表示され必要なパッケージが見当たらない場合はインストールされますのでしばらくお待ちください
-    * "Installing R package forim source requires install of additional build tools."と出ますがRtoolsがデフォルトパスにインストール済の場合は［No］ボタンをクリックしてください
+1. ［Project directory name］は"変更しないでください
+1. ［Create project as subdirectory of］は任意の場所で構いませんが、日本語や空白が含まれないパスにしてください
 
-1. プロジェクトをクローズし、再度、プロジェクト（"Packrat"）を開きます
+---
+
+* 前述の入力が完了したら［Create Project］ボタンをクリックしてください
+    * GitHubのリポジトリがクローニングされます
+    * クローニング完了後自動的にプロジェクトが開かれます
+    * コンソールに色々とエラーが出ますが気にしないでください
+    * 必要なパッケージのダウンロードとインストールが自動的に始まります
+    * かなり時間がかかります（気になるならシステムモニタを開いてください）
+    * "Packrat mode on. Using library in directory:"と表示されれば完了です
+        * 動作が重い場合は完了後もバックグラウンで色々やってるかも
+
+
+## リカバリタイム
+* "Installing R package forim source requires install of additional build tools."と表示された
+    * 一度、RStudioを終了させてRtoolsをデフォルトパスで再インストールします
+    * プロジェクトフォルダを削除し再度プロジェクトをインポートします
+* パッケージが不足している
+    * **`packrat::restore()`**を実行してみてください
+
 
 ## 動作確認
 ### Rmdファイルのコンパイル
-プロジェクトが作成作成されたらR Markdownファイルをコンパイル（レンダリング）してみます。
+プロジェクトがインポートされたらR Markdownファイルをコンパイル（レンダリング）してみます。
 
-1. ［File］-［New File］-［R Markdown...］メニューを選択する
-1. ダイアログで［Document］-［HTML］を選択する（Tilteと名前はそのままでもOK）
-1. ［OK］ボタンをクリックする
-<!-- 1. ファイルペインの［More］-［Show Folder in New Window］でプロジェクトフォルダを開く -->
-<!-- 1. テンプレートのRmdファイルをプロジェクトフォルダにコピーする -->
-<!-- 1. RStudioでコピーしたRmdファイルを開く -->
-1. ［knitr］ボタンをクリックするとファイル保存ダイアログが開く
-1. 「test」という名前で保存する（拡張子は指定しなくてもOK）
-1. レンダリングが開始され［Viewer］ペインにレンダリング結果が表示される
+1. ［Files］ペインで"template"フォルダを開きます
+1. "Self-introduction.Rmd"をクリックして開きます
+1. エディタにある［knitr］ボタンをクリックします
+1. レンダリングが実行され別ウィンドウ（ペイン）に結果が表示されます
 
 ---
 

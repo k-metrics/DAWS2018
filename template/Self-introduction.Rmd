@@ -6,7 +6,6 @@ date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
 output:
   ioslides_presentation:
     df_print: paged
-    # logo: ./fig/rmarkdown.png
     smaller: false
     widescreen: true
 ---
