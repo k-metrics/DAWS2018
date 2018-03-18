@@ -52,7 +52,7 @@ anscombe %>%
 ## オープン・クローズチャートを描く
 Redmineのチケットデータからチケットのオープン・クローズチャートを描いてみましょう。  
 
-1. "Defect"（バグ）チケット1,000チケットが[対象データ](./redmine_data_utf8.csv)です
+1. "Defect"（バグ）チケット1,000チケットが[対象データ](../data/redmine_data_utf8.csv)です
 1. 日付の実態は日時（開始・終了日時）なので日に変換する必要があります
 1. 対象データ期間を調べ日付範囲のデータフレームを作成します
 1. 日付範囲を用いてチケット数の集計を行います
@@ -68,10 +68,10 @@ Redmineのチケットデータからチケットのオープン・クローズ�
 #   dplyr::arrange(`作成日`) %>% 
 #   dplyr::filter(`トラッカー` == "Defect") %>% 
 #   dplyr::top_n(1000) %>% 
-#   readr::write_csv("./redmine_data_utf8.csv")
+#   readr::write_csv("./data/redmine_data_utf8.csv")
 
 # バグチケットの日付の範囲を取得する
-tickets_date <- "./redmine_data_utf8.csv" %>% 
+tickets_date <- "../data/redmine_data_utf8.csv" %>% 
   readr::read_csv() %>% 
   dplyr::select(ID = '#', Tracker = 'トラッカー', Status = 'ステータス',
                 OpenDateTime = '作成日', CloseDateTime = '終了日') %>% 
@@ -86,7 +86,7 @@ df_date <- seq(from = tickets_date$min, to = tickets_date$max, by = 1) %>%
   dplyr::rename(Date = value)
 
 # チケットオープンの日毎に集計し累計値を算出する
-df_open <- "./redmine_data_utf8.csv" %>% 
+df_open <- "../data/redmine_data_utf8.csv" %>% 
   readr::read_csv() %>% 
   dplyr::select(ID = '#', Tracker = 'トラッカー', Status = 'ステータス',
                 OpenDateTime = '作成日', CloseDateTime = '終了日') %>% 
@@ -99,7 +99,7 @@ df_open <- "./redmine_data_utf8.csv" %>%
   dplyr::rename(open_n = n, open_cum = cum)
 
 # チケットクローズの日毎に集計し累計値を算出する
-df_close <- "./redmine_data_utf8.csv" %>% 
+df_close <- "../data/redmine_data_utf8.csv" %>% 
   readr::read_csv() %>% 
   dplyr::select(ID = '#', Tracker = 'トラッカー', Status = 'ステータス',
                 OpenDateTime = '作成日', CloseDateTime = '終了日') %>% 

@@ -28,7 +28,7 @@ require(tidyverse)
 # 再現性のあるレポーティング
 
 ## R Markdown概説
-* [R Markdown Basics](https://k-metrics.github.io/cabinet/communicate/rmd_basics.html)
+* [R Markdown Basics](../cabinet/communicate/rmd_basics.html)
     * YAML
     * Code Chunk
     * Markdown

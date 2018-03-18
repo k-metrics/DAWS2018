@@ -18,8 +18,6 @@ require(tidyverse)
 
 ## 本日の内容
 1. 分析環境の構築と確認（必要に応じて）
-    * R/Rtools/R Commanderのインストールと動作確認
-    * RStudioのインストールと動作確認
 1. データハンドリング入門（午前・午後）
     * 整然データ（tidy data）とは？
     * tidyverseを使ってみる
@@ -36,7 +34,7 @@ require(tidyverse)
 * 分析手順はテンプレートに記載してあります
     * **欠損値があるレコード（プロジェクト）は外して**ください
 * 分からない点は周りのメンバーと協力してチャレンジしてみてください
-    * データの読み込みは[こちら](../../import/index.html)にヒントがあります
+    * データの読み込みは[こちら](../cabinet/import/index.html)にヒントがあります
     * [データファイル(CP932)](./data.csv), [データファイル(UTF8)](./data_utf8.csv)はこちら
 
 ## ヒント
@@ -60,11 +58,9 @@ require(tidyverse)
 
 # データの読み込み
 # x <- "./data.csv" %>%
-x <- "https://k-metrics.github.io/cabinet/misc/2018/data.csv" %>%
-  read.csv() %>%
-# x <- "./data_utf8.csv" %>%
-# x <- "https://k-metrics.github.io/cabinet/misc/2018/data_utf8.csv" %>%
-#   read.csv(encoding = "UTF-8") %>%
+  # read.csv() %>%
+x <- "../data/data_utf8.csv" %>%
+  read.csv(encoding = "UTF-8") %>%
   dplyr::rename(pj = 'プロジェクト名', prod = '生産性', rate = '工数予実割合') %>% 
   tidyr::drop_na()
 

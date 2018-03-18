@@ -48,7 +48,7 @@ require(tidyverse)
         * QQプロットは**`qqplotr`**, 格子配置は**`ggExtra`**, etc
 
 ## ggplot2を使ってみる
-* [ggplot2のすゝめ](../../program/basics_ggplot2.html)
+* [ggplot2のすゝめ](../cabinet/program/basics_ggplot2.html)
 
 ---
 

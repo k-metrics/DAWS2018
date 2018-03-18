@@ -18,8 +18,6 @@ require(tidyverse)
 
 ## 本日の内容
 1. 分析環境の構築と確認（必要に応じて）
-    * R/Rtools/R Commanderのインストールと動作確認
-    * RStudioのインストールと動作確認
 1. **データハンドリング入門（午前・午後）**
     * 整然データ（tidy data）とは？
     * tidyverseとは？
@@ -28,7 +26,7 @@ require(tidyverse)
 
 ## 分析環境の構築と確認
 * [概要説明資料](./01_guidance_am.html)
-* [構築手順](../../program/env_index.html)
+* [構築手順](../cabinet/program/env_index.html)
 
 
 # データハンドリング入門
@@ -57,7 +55,7 @@ tidyverse::tidyverse_packages()
 ```
 
 ## tidyverseとは？（その２）
-* [dplyrのすゝめ](../../program/basics_dplyr.html)
+* [dplyrのすゝめ](../cabinet/program/basics_dplyr.html)
 
 * 更に知りたい人のために
     * [tidyverse](https://www.tidyverse.org/)
