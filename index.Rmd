@@ -28,7 +28,10 @@ output:
 　  
 
 ## 第1回 分析環境の構築と動作確認 {#S01}
-勉強会初（勉強会としては本邦初？）の試みとしてGitHubリポジトリと**`packrat`**パッケージを用いた統一環境の作成を試します。途中、上手く行かない可能性もありますが、ご了承ください。  
+勉強会初（この手の勉強会としては本邦初？）の試みとしてGitHubリポジトリと**`packrat`**パッケージを用いた統一環境の作成を試します。なにぶん初めての試みなので上手く行かない可能性もありますが、ご了承ください。
+
+* packrat : A Dependency Management System for Projects and their R Package Dependencies
+
 　  
 
 ### 午前の部

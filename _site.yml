@@ -14,7 +14,7 @@ output:
     lib_dir: site_libs
     self_contained: no
 navbar:
-  title: Agenda
+  title: データ分析勉強会
   type: default
   left:
   right:
@@ -38,7 +38,7 @@ navbar:
         - text: "---------------"
         - text: "GitHub Repository"
           icon: fa-github
-          href: https://github.com/k-metrics/c2018
+          href: https://github.com/k-metrics/2018
         - text: "---------------"
         - text: "データ分析勉強会"
           icon: fa-google
