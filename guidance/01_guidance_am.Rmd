@@ -178,8 +178,8 @@ Rをデフォルトのインストール先から変更した方はRStudioのイ
 * "Installing R package forim source requires install of additional build tools."と表示された
     * 一度、RStudioを終了させてRtoolsをデフォルトパスで再インストールします
     * プロジェクトフォルダを削除し再度プロジェクトをインポートします
-* パッケージが不足している、インストールが途中で止まるなど
-    * **`packrat::restore()`**を実行してみてください
+* パッケージが不足している
+    * **`packrat::init()`**を実行してみてください
 
 
 ## 動作確認
