@@ -158,7 +158,7 @@ Rをデフォルトのインストール先から変更した方はRStudioのイ
 ### プロジェクトの作成（インポート）
 1. ［File］-［New Project...］-［Version Control］-［Git］を選択します
 1. 以下のURLを［Repository URL］に入力します
-    * https://github.com/k-metrics/2018.git
+    * https://github.com/k-metrics/2018dasg.git
 1. ［Project directory name］は"変更しないでください
 1. ［Create project as subdirectory of］は任意の場所で構いませんが、日本語や空白が含まれないパスにしてください
 
@@ -169,27 +169,34 @@ Rをデフォルトのインストール先から変更した方はRStudioのイ
     * クローニング完了後自動的にプロジェクトが開かれます
     * コンソールに色々とエラーが出ますが気にしないでください
     * 必要なパッケージのダウンロードとインストールが自動的に始まります
-    * かなり時間がかかります（気になるならシステムモニタを開いてください）
+    * 環境にもよりますが15分前後の時間がかかります
+        * 気になるならシステムモニタを開いてください
     * "Packrat mode on. Using library in directory:"と表示されれば完了です
         * 完了後もバックグラウンで色々やってるのでしばらく放置します
+        * 途中でエラーが出て再開させた場合はメッセージは表示されません
+    * 念のためにRStudioを再起動させておきましょう
 
 
 ## リカバリタイム
-* "Installing R package forim source requires install of additional build tools."と表示された
-    * 一度、RStudioを終了させてRtoolsをデフォルトパスで再インストールします
-    * プロジェクトフォルダを削除し再度プロジェクトをインポートします
-* パッケージが不足している
-    * **`packrat::init()`**を実行してみてください
+* "Installing R package form source requires install of additional build tools."と表示された
+    1. ［No］をクリックしRStudioを終了させます
+    1. Rtoolsを一旦削除しデフォルトパスで再インストールします
+    1. プロジェクトフォルダを削除します
+    1. RStudioを起動させ再度プロジェクトをインポートします
+* 何かのエラーで止まったっぽい
+    1. コンソールから**`packrat::restore()`**を実行してみてください
+* 終わったみたいだけどパッケージが不足しているっぽい
+    1. コンソールから**`packrat::restore()`**を実行してみてください
 
 
 ## 動作確認
-### Rmdファイルのコンパイル
-プロジェクトがインポートされたらR Markdownファイルをコンパイル（レンダリング）してみます。
+プロジェクトがインポートされたらR Markdownファイルをコンパイル（レンダリング）してパッケージに不足がないかを確認します。
 
 1. ［Files］ペインで"template"フォルダを開きます
 1. "Self-introduction.Rmd"をクリックして開きます
 1. エディタにある［knitr］ボタンをクリックします
 1. レンダリングが実行され別ウィンドウ（ペイン）に結果が表示されます
+    * レンダリングが失敗した場合は**`packrat:restore()`**を実行します
 
 ---
 
