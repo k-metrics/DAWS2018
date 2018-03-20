@@ -57,7 +57,7 @@ tidyverse::tidyverse_packages()
 ```
 
 ## tidyverseとは？（その２）
-* [dplyrのすゝめ](../cabinet/program/basics_dplyr.html)
+* [dplyrのすゝめ](../../cabinet/program/basics_dplyr.html)
 
 * 更に知りたい人のために
     * [tidyverse](https://www.tidyverse.org/)
