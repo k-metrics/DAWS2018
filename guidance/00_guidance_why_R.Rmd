@@ -31,21 +31,24 @@ require(tidyverse)
 
 ---
 
-![](./fig/TIOBE_index_201802.png)
+![Feb 2018 TIOBE Index](./fig/TIOBE_index_201802.png)
 
 ---
 
-![](./fig/TIOBE_index_R_201802.png)
+![Feb 2018 TIOBE Index](./fig/TIOBE_index_R_201802.png)
 
 ---
 
-![](./fig/IEEE_Spectrum_Ranking_2017.png)
+![2017 IEEE Spectrum Ranking](./fig/IEEE_Spectrum_Ranking_2017.png)
 
 ---
 
-![](./fig/IEEE_Trending_Ranking_2017.png)
+![2017 IEEE Trending Ranking](./fig/IEEE_Trending_Ranking_2017.png)
 
 ---
 
-![](./fig/IEEE_Open_Source_Hubs_Ranking_2017.png)
+![2017 IEEE Open Ranking](./fig/IEEE_Open_Source_Hubs_Ranking_2017.png)
 
+---
+
+![RedMonk Language Ranking](./fig/redmonklang.png)
