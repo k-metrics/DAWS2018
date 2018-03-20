@@ -52,3 +52,6 @@ require(tidyverse)
 ---
 
 ![RedMonk Language Ranking](./fig/redmonklang.png)
+
+---
+CC BY-NC-SA 4.0, Sampo Suzuki
