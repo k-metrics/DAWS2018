@@ -6,7 +6,7 @@ output:
   ioslides_presentation:
     css: style.css
     df_print: paged
-    logo: fig/rmarkdown.png
+    logo: fig/hex-rmarkdown.png
     smaller: false
     widescreen: true
 ---

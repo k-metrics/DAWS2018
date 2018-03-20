@@ -6,7 +6,7 @@ output:
   ioslides_presentation:
     css: style.css
     df_print: paged
-    logo: fig/packrat.png
+    logo: fig/hex-packrat.png
     smaller: false
     widescreen: true
 ---
