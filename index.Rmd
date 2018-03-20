@@ -19,7 +19,7 @@ output:
 
 　  
 
-## カリキュラム前半で想定している対象者
+## 前半戦で想定している対象者
 * ソフトウェアメトリクスなどの統計分析に興味がある方
 * R Commanderは使ったことあるけどR/RStudioにハードルを感じている方
 * R/RStudioやR Markdownを使ってみたいけど躊躇している方
@@ -95,7 +95,9 @@ output:
 　  
 
 ## 第4回 再現性のあるレポーティング {#S04}
-* ガイダンス（準備中）
+
+### 午前の部/午後の部
+*  [ガイダンス <i class="fa fa-external-link-square"></i>](./guidance/04_guidance_am.html){target="_blank" title="ioslide"}
     * [解析方法とレポート作成方法の再現可能性 <i class="fa fa-external-link"></i>](https://www.slideshare.net/kohske/rrstudior-markdown){target="_blank" title="RとRStudioとR Markdownを通して"}
 
 　  
