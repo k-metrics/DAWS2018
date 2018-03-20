@@ -6,7 +6,7 @@ output:
   ioslides_presentation:
     css: style.css
     df_print: paged
-    logo: fig/ggplot2.png
+    logo: fig/rmarkdown.png
     smaller: false
     widescreen: true
 ---
