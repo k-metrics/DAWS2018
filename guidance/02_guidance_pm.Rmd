@@ -4,6 +4,7 @@ author: "【午後の部】データハンドリング入門 [鈴木さんぽう
 date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
 output:
   ioslides_presentation:
+    css: style.css
     df_print: paged
     smaller: false
     widescreen: true
@@ -27,7 +28,7 @@ require(tidyverse)
 # データハンドリング入門
 
 ## 演習１
-### **メトリクス統計分析入門 演習1.4**
+### メトリクス統計分析入門 演習1.4
 生産性に加えて、工数予実割合も加味してプロジェクトの評価をしようと考えています。以下の条件、方法に従い、各プロジェクトをA～Eの5段階で評価してください。
 
 * データ分布の確認は省略してください（外れ値の判定も不要です）
@@ -35,7 +36,7 @@ require(tidyverse)
     * **欠損値があるレコード（プロジェクト）は外して**ください
 * 分からない点は周りのメンバーと協力してチャレンジしてみてください
     * データの読み込みは[こちら](../cabinet/import/index.html)にヒントがあります
-    * [データファイル(CP932)](./data.csv), [データファイル(UTF8)](./data_utf8.csv)はこちら
+    * [データファイル(CP932)](../data/data.csv), [データファイル(UTF8)](../data/data_utf8.csv)はこちら
 
 ## ヒント
 やりたいこと       | 利用する関数例              | 備考
@@ -57,10 +58,10 @@ NAを取り除きたい   | **`tidyr::drop_na()`**      |
 require(tidyverse)
 
 # データの読み込み
-# x <- "./data.csv" %>%
-  # read.csv() %>%
-x <- "../data/data_utf8.csv" %>%
-  read.csv(encoding = "UTF-8") %>%
+x <- "../data/data.csv" %>%
+  read.csv() %>%
+# x <- "../data/data_utf8.csv" %>%
+#   read.csv(encoding = "UTF-8") %>%
   dplyr::rename(pj = 'プロジェクト名', prod = '生産性', rate = '工数予実割合') %>% 
   tidyr::drop_na()
 
@@ -88,14 +89,14 @@ x %>%
 ```
 
 
-# 演習２（演習１の終わった方）
+# 演習２
 
 ## アンスコムのデータ例
 ```{r}
 anscombe
 ```
 
-## 以下のようなTidy Data形式に変更してください
+## 整然データに変更してください
 ```{r, echo=FALSE}
 anscombe %>%
   tibble::rownames_to_column("id") %>%
@@ -114,6 +115,6 @@ anscombe %>%
 ユニーク番号を付与する | **`tibble::rownames_to_cloumn()`** | 
 列を選択する           | **`dplyr::select()`**              |
 
----
 
+## License
 CC BY-NC-SA 4.0, Sampo Suzuki

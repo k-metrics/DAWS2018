@@ -4,6 +4,7 @@ author: "【午前の部】再現性のあるレポーティング [鈴木さん
 date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
 output:
   ioslides_presentation:
+    css: style.css
     df_print: paged
     logo: fig/ggplot2.png
     smaller: false
@@ -41,7 +42,7 @@ require(tidyverse)
     * テーマやデータに対して特に制限は設けません（公序良俗は考えて）
     * フォーマットはHTMLであればドキュメント形式プレゼン形式を問いません
 
-### **テーマ例**
+### テーマ例
 * 書籍とかには掲載されていない分布表を作ってみる（自由度の高いt分布表）
 * デート本、ＳＭ本、統計学基礎の例題や問題を解いてみる
 * Redmineチケットや政府統計を可視化したり仮説検定したりしてみる
@@ -94,6 +95,7 @@ C      |    |
 D      |    | 
 E      |    | 
 
----
+
+## License
 
 CC BY-NC-SA 4.0, Sampo Suzuki
