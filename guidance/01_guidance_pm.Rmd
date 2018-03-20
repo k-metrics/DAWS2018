@@ -4,6 +4,7 @@ author: "【午後の部】R Markdownで作る自己紹介 [鈴木さんぽう, 
 date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
 output:
   ioslides_presentation:
+    css: style.css
     df_print: paged
     smaller: false
     widescreen: true
@@ -39,7 +40,7 @@ require(tidyverse)
     * 好きなもの嫌いなもの（趣味・興味・嗜好・特技）
     * こんな夢があります
     * こんなことに感動した・これは紹介しておきたい等々
-* テンプレートが**`knit`**出来ることを確認します
+* テンプレートが**knit**出来ることを確認します
 
 ## 自己紹介の作成
 * 一人５分程度の自己紹介ができるような資料を作成してください
@@ -51,6 +52,6 @@ require(tidyverse)
 ## 自己紹介タイム
 * 一人５分程度でお願いします
 
----
 
+## License
 CC BY-NC-SA 4.0, Sampo Suzuki
