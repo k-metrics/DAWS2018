@@ -6,6 +6,7 @@ output:
   ioslides_presentation:
     css: style.css
     df_print: paged
+    logo: fig/tidyverse.png
     smaller: false
     widescreen: true
 ---
