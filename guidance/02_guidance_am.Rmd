@@ -28,7 +28,7 @@ require(tidyverse)
 
 ## 分析環境の構築と確認
 * [概要説明資料](./01_guidance_am.html)
-* [構築手順](../cabinet/program/env_index.html)
+* [構築手順](https://k-metrics.github.io/cabinet/program/env_index.html)
 
 
 # データハンドリング入門
@@ -57,7 +57,7 @@ tidyverse::tidyverse_packages()
 ```
 
 ## tidyverseとは？（その２）
-* [dplyrのすゝめ](../../cabinet/program/basics_dplyr.html)
+* [dplyrのすゝめ](https://k-metrics.github.io/cabinet/program/basics_dplyr.html)
 
 * 更に知りたい人のために
     * [tidyverse](https://www.tidyverse.org/)
