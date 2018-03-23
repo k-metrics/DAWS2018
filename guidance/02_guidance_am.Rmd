@@ -19,8 +19,8 @@ require(tidyverse)
 
 
 ## 本日の内容
-1. 分析環境の構築と確認（必要に応じて）
-1. **データハンドリング入門（午前または午後）**
+1. **分析環境の構築と確認（必要に応じて）**
+1. データハンドリング入門（午前または午後）
     * 整然データ（tidy data）とは？
     * tidyverseとは？
 1. データハンドリング入門（午後）
@@ -29,6 +29,15 @@ require(tidyverse)
 ## 分析環境の構築と確認
 * [概要説明資料](./01_guidance_am.html)
 * [構築手順](https://k-metrics.github.io/cabinet/program/env_index.html)
+
+
+## 本日の内容
+1. 分析環境の構築と確認（必要に応じて）
+1. **データハンドリング入門（午前または午後）**
+    * 整然データ（tidy data）とは？
+    * tidyverseとは？
+1. データハンドリング入門（午後）
+    * 演習
 
 
 # データハンドリング入門
@@ -58,6 +67,9 @@ tidyverse::tidyverse_packages()
 
 ## tidyverseとは？（その２）
 * [dplyrのすゝめ](https://k-metrics.github.io/cabinet/program/basics_dplyr.html)
+    * [dplyr](https://heavywatal.github.io/rstats/dplyr.html)
+    * [tidyr](https://heavywatal.github.io/rstats/tidyr.html)
+    * [readr](https://heavywatal.github.io/rstats/readr.html)
 
 * 更に知りたい人のために
     * [tidyverse](https://www.tidyverse.org/)
