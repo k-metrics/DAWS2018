@@ -45,15 +45,17 @@ OSによりインストール方法などが異なりますので、環境構築
 
 
 ## 必要なもの
-* PC（無線LAN接続が可能なWindows, macOS, Ubuntu）
-* R本体（3.4.4 or later）
-* RStudio Desktop（1.1.423 or later）
-* Rtools34（Windows Only）
-* Git（利用OSに合わせて、Gitクライアントではありません）
-* packartパッケージ
+
+Software | Windows         | macOS | Ubuntu | memo
+---------|-----------------|-------|--------|-----
+R本体    | Yes             | Yes   | Yes    | 3.4.4 or later
+RStudio  | Yes             | Yes   | Yes    | Desktop 1.1.423 or later
+Rtools34 | Yes             | **No** | **No** | Windows Only
+Git      | Yes, Gir for Windows | Yes   | Yes    | Gitクライアントではありません
+packart  | Yes             | Yes   | Yes    | CRAN
 
 　  
-今回、勉強会初（この手の勉強会としては本邦初？）の試みとして**GitHubリポジトリ**と**packrat**パッケージ**を用いた統一環境の作成を行います。ご利用の環境によっては、上手く環境作成ができない可能性もありますが、ご了承ください。
+今回、勉強会初（この手の勉強会としては本邦初？）の試みとして**GitHubリポジトリ**と**packrat**パッケージを用いた統一環境の作成を行います。ご利用の環境によっては、上手く環境作成ができない可能性もありますが、ご了承ください。
 
 
 ## Rのインストールと動作確認
