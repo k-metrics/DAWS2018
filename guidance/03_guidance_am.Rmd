@@ -51,7 +51,7 @@ require(tidyverse)
 
 
 ## ggplot2を使ってみる
-* [ggplot2のすゝめ](../cabinet/program/basics_ggplot2.html)
+* [ggplot2のすゝめ](https://k-metrics.github.io/cabinet/program/basics_ggplot2.html)
 
 
 ## License
