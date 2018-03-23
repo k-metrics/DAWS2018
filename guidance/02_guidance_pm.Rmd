@@ -97,7 +97,10 @@ x %>%
 anscombe
 ```
 
-## 整然データに変更してください
+
+## 整然データに変換する
+先程の**`anscombe`**データセットを以下のような整然データに変換しなさい。  
+　  
 ```{r, echo=FALSE}
 anscombe %>%
   tibble::rownames_to_column("id") %>%
@@ -107,6 +110,7 @@ anscombe %>%
   dplyr::select(-id)
 ```
 
+
 ## ヒント
 やりたいこと           | 利用する関数例                     | 備考
 -----------------------|------------------------------------|---
@@ -115,6 +119,23 @@ anscombe %>%
 列名を分割する         | **`tidyr::separete()`**            |
 ユニーク番号を付与する | **`tibble::rownames_to_cloumn()`** | 
 列を選択する           | **`dplyr::select()`**              |
+
+
+# 演習３
+
+## 列を分割する
+**`ggplot2::mpg`**データセットの**`trans`**から**`()`**で囲まれている部分を抜き出して**`trans_type`**と**`gear`**に分割しなさい。  
+　  
+```{r, echo=FALSE}
+ggplot2::mpg %>% head(3)
+```
+
+　  
+```{r, warning=FALSE, echo=FALSE}
+ggplot2::mpg %>% 
+  tidyr::separate(trans, into = c("trans_type", "gear"), sep = "[:punct:]") %>% 
+  head(3)
+```
 
 
 ## License
