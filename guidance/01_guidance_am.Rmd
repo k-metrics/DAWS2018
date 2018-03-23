@@ -60,7 +60,7 @@ OSによりインストール方法などが異なりますので、環境構築
 環境を統一するためにRは本日時点での最新バージョン（R 3.x.x）を使います。追加パッケージも最新バージョンを使います。  
 
 ### Rのインストール
-[Rのインストール方法](../cabinet/program/env_install.html)を参考にインストールを行ってください。macOSの方はサポーターの方からレクチャしてもらってください。  
+[Rのインストール方法](https://k-metrics.github.io/cabinet/program/env_install.html)を参考にインストールを行ってください。macOSの方はサポーターの方からレクチャしてもらってください。  
 
 ### Rの動作確認
 インストールが終わったらRのコンソールから以下を実行しグラフが表示されることを確認します。
@@ -89,7 +89,7 @@ plot(iris)
 Windows環境の方は**Rtools**というツール群をインストールしておきます。これはパッケージがzip形式で提供されていない場合に必要となるツール（コンパイラなど）です。
 
 ### Rtoolsのインストール
-[Rtoolsのインストール方法](../cabinet/program/env_install_tls.html)を参考にインストールを行ってください。必ず**デフォルトのインストールパス**にインストールしてください。Windows環境以外の方はインストールの必要はありません。
+[Rtoolsのインストール方法](https://k-metrics.github.io/cabinet/program/env_install_tls.html)を参考にインストールを行ってください。必ず**デフォルトのインストールパス**にインストールしてください。Windows環境以外の方はインストールの必要はありません。
 
 ### Rtoolsの動作確認
 動作確認方法は特にありません。インストーラでエラーが出ていないことは確認しておいて下さい。
@@ -129,14 +129,14 @@ Rをデフォルトのインストール先から変更した方はRStudioのイ
 インストールが完了したらRStudioを起動してください。Windows環境でCPU性能があまり高くない場合（第三世代 Core i3とか）は起動や動作が緩慢ですので、しばらく待ってみてください。それでも起動しない場合は、一度、強制終了さてて、再度起動してみてください。
 
 ### RStudioの概要説明
-[RStudioの使い方](../cabinet/program/basics_rstudio.html)を参照しながら聞いてください。
+[RStudioの使い方](https://k-metrics.github.io/cabinet/program/basics_rstudio.html)を参照しながら聞いてください。
 
 ### オプション設定
-[RStudioの使い方](../cabinet/program/basics_rstudio.html)にしたがってオプション設定をします。オプション設定は推奨ですので必ずしもこの通りにする必要はありません。お好みで設定してください。
+[RStudioの使い方](https://k-metrics.github.io/cabinet/program/basics_rstudio.html)にしたがってオプション設定をします。オプション設定は推奨ですので必ずしもこの通りにする必要はありません。お好みで設定してください。
 
 
 ## パッケージのインストール
-[パッケージのインストール方法](../cabinet/program/env_install_pkg.html#rstudioからインストールする方法)にしたがって以下の追加パッケージのインストールを行います。
+[パッケージのインストール方法](https://k-metrics.github.io/cabinet/program/env_install_pkg.html#rstudioからインストールする方法)にしたがって以下の追加パッケージのインストールを行います。
 
 * **packrat**
 
