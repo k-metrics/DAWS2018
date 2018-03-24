@@ -53,5 +53,8 @@ require(tidyverse)
 
 ![RedMonk Language Ranking](./fig/redmonklang.png)
 
----
-CC BY-NC-SA 4.0, Sampo Suzuki
+## 今年度のテーマと目標
+　　**テーマ**：実践データ分析　～実務での利用を目指して～  
+　　**目　標**：分析に関わる基本的なスキルを伸ばす・習得する
+
+![rstudio/RStartHere, GitHub](./fig/dswf.png)
