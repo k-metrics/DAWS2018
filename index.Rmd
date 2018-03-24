@@ -30,7 +30,7 @@ output:
 ## 第1回 分析環境の構築と動作確認 {#S01}
 勉強会初（この手の勉強会としては本邦初？）の試みとしてGitHubリポジトリと**`packrat`**パッケージを用いた統一環境の作成を試します。なにぶん初めての試みなので上手く行かない可能性もありますが、ご了承ください。
 
-* packrat : A Dependency Management System for Projects and their R Package Dependencies
+* [packrat <i class="fa fa-external-link"></i>](https://rstudio.github.io/packrat/){target="_blank" title="Packrat, RStudio"} : A Dependency Management System for Projects and their R Package Dependencies
 
 　  
 
@@ -59,6 +59,11 @@ output:
 　  
 
 ## 第2回 データハンドリング入門 {#S02}
+データハンドリングを行う上で基本的な考え方である整然データとその扱い方を**`tidyverse`**パッケージを利用して学んでいきます。
+
+* [tidyverse <i class="fa fa-external-link"></i>](https://www.tidyverse.org/){target="_blank" title="tidyverse, RStudio"} : Easily Install and Load the 'Tidyverse'
+
+　  
 
 ### 午前の部
 * [ガイダンス <i class="fa fa-external-link-square"></i>](./guidance/02_guidance_am.html){target="_blank" title="ioslide"}
@@ -80,6 +85,11 @@ output:
 　  
 
 ## 第3回 効率的で綺麗な可視化 {#S03}
+データハンドリングを用いて整然データにしたデータを**`ggplot2`**パッケージを利用して可視化する方法を学びます。
+
+* [ggplot2 <i class="fa fa-external-link"></i>](http://ggplot2.tidyverse.org/){target="_blank" title="ggplot2, RStudio"} : Create Elegant Data Visualisations Using the Grammar of Graphics
+
+　  
 
 ### 午前の部
 * [ガイダンス <i class="fa fa-external-link-square"></i>](./guidance/03_guidance_am.html){target="_blank" title="ioslide"}
@@ -95,6 +105,11 @@ output:
 　  
 
 ## 第4回 再現性のあるレポーティング {#S04}
+第3回までの総括として**`rmarkdown`**パッケージを用いた報告書作成を学びます。
+
+* [rmarkdown <i class="fa fa-external-link"></i>](https://rmarkdown.rstudio.com/){target="_blank" title="rmarkdown, RStudio"} : Dynamic Documents for R
+
+　  
 
 ### 午前の部/午後の部
 *  [ガイダンス <i class="fa fa-external-link-square"></i>](./guidance/04_guidance_am.html){target="_blank" title="ioslide"}
