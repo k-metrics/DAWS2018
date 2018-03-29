@@ -113,6 +113,7 @@ output:
 
 ### 午前の部/午後の部
 *  [ガイダンス <i class="fa fa-external-link-square"></i>](./guidance/04_guidance_am.html){target="_blank" title="ioslide"}
+    * [Hello R Markdown :) , Uryu Shinya<i class="fa fa-file-pdf-o"></i> <i class="fa fa-external-link"></i>](./guidance/slides.pdf){target="_blank" title="https://github.com/uribo/hello_rmarkdown"}
     * [解析方法とレポート作成方法の再現可能性 <i class="fa fa-external-link"></i>](https://www.slideshare.net/kohske/rrstudior-markdown){target="_blank" title="RとRStudioとR Markdownを通して"}
 
 　  
