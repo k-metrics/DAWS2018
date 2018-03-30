@@ -54,7 +54,7 @@ output:
 
 * [ガイダンス <i class="fa fa-external-link-square"></i>](./guidance/01_guidance_pm.html){target="_blank" title="ioslide"}
 * [自己紹介テンプレート <i class="fa fa-external-link-square"></i>](./template/Self-introduction.html){target="_blank" title="ioslide"}
-* [自己紹介テンプレート（右クリックでダウンロード）](./template/Self-introduction.Rmd)
+* [自己紹介テンプレート <i class="fa fa-file-code-o"></i>  （右クリックでダウンロード）](./template/Self-introduction.Rmd)
 
 　  
 
@@ -80,7 +80,7 @@ output:
 　  
 
 * [演習用テンプレート <i class="fa fa-external-link-square"></i>](./template/template.html){target="_blank" title="HTML Format"}
-* [演習用テンプレート（右クリックでダウンロード）](./template/template.Rmd)
+* [演習用テンプレート <i class="fa fa-file-code-o"></i> （右クリックでダウンロード）](./template/template.Rmd)
 
 　  
 
