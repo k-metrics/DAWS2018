@@ -113,7 +113,7 @@
       <h1 data-config-title><!-- populated from slide_config.json --></h1>
       <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
       <p data-config-presenter><!-- populated from slide_config.json --></p>
-            <p style="margin-top: 6px; margin-left: -2px;">2018年03月24日</p>
+            <p style="margin-top: 6px; margin-left: -2px;">2018年03月31日</p>
           </hgroup>
   </slide>
 
@@ -207,6 +207,45 @@
 [16] &quot;readr&quot;       &quot;readxl\n(&gt;=&quot; &quot;reprex&quot;      &quot;rlang&quot;       &quot;rstudioapi&quot; 
 [21] &quot;rvest&quot;       &quot;stringr&quot;     &quot;tibble&quot;      &quot;tidyr&quot;       &quot;xml2&quot;       
 [26] &quot;tidyverse&quot;  </pre>
+
+</article></slide><slide class=""><hgroup><h2>パイプ演算子（<code>%&gt;%</code>）</h2></hgroup><article >
+
+<p>パイプ演算子は<strong>左辺を右辺（の関数の第一引数）へ渡す</strong>演算子です。</p>
+
+<pre class = 'prettyprint lang-r'>summary(iris)</pre>
+
+<p>は</p>
+
+<pre class = 'prettyprint lang-r'>iris %&gt;% summary()</pre>
+
+<p>と書くことができ、数珠つなぎにして複数の計算を分かりやすく記述できるようになります。</p>
+
+<pre class = 'prettyprint lang-r'>iris %&gt;% 
+  dplyr::filter(Species != &quot;setosa&quot;) %&gt;% 
+  dplyr::group_by(Species) %&gt;% 
+  dplyr::summarise_if(is.numeric, funs(mean), na.rm = TRUE)</pre>
+
+</article></slide><slide class=""><hgroup><h2>パイプ演算子（<code>%&gt;%</code>）</h2></hgroup><article  id="-1">
+
+<p>先ほどの例をパイプ演算子を使わないで記述すると以下のようになります。</p>
+
+<pre class = 'prettyprint lang-r'>  dplyr::summarise_if(
+    dplyr::group_by(
+      dplyr::filter(iris, Species != &quot;setosa&quot;), Species
+    ), is.numeric, funs(mean), na.rm = TRUE
+  )</pre>
+
+<p>または以下のようになります。</p>
+
+<pre class = 'prettyprint lang-r'>tmp1 &lt;- dplyr::filter(iris, Species != &quot;setosa&quot;)
+tmp2 &lt;- dplyr::group_by(tmp1, Species)
+dplyr::summarise_if(tmp2, is.numeric, funs(mean), na.rm = TRUE)</pre>
+
+<p>このようにパイプ演算子を使うことで分かりやすいコードが記述できるようになります。</p>
+
+</article></slide><slide class=""><hgroup><h2>dplyr</h2></hgroup><article  id="dplyr">
+
+</article></slide><slide class=""><hgroup><h2>tidyr</h2></hgroup><article  id="tidyr">
 
 </article></slide><slide class=""><hgroup><h2>tidyverseとは？（その２）</h2></hgroup><article  id="tidyverse">
 

@@ -65,6 +65,46 @@ require(tidyverse)
 tidyverse::tidyverse_packages()
 ```
 
+## パイプ演算子（`%>%`）
+パイプ演算子は**左辺を右辺（の関数の第一引数）へ渡す**演算子です。
+```{r, eval=FALSE}
+summary(iris)
+```
+は
+```{r, eval=FALSE}
+iris %>% summary()
+```
+と書くことができ、数珠つなぎにして複数の計算を分かりやすく記述できるようになります。
+```{r, eval=FALSE}
+iris %>% 
+  dplyr::filter(Species != "setosa") %>% 
+  dplyr::group_by(Species) %>% 
+  dplyr::summarise_if(is.numeric, funs(mean), na.rm = TRUE)
+```
+
+## パイプ演算子（`%>%`）
+先ほどの例をパイプ演算子を使わないで記述すると以下のようになります。
+```{r, eval=FALSE}
+  dplyr::summarise_if(
+    dplyr::group_by(
+      dplyr::filter(iris, Species != "setosa"), Species
+    ), is.numeric, funs(mean), na.rm = TRUE
+  )
+```
+または以下のようになります。
+```{r, eval=FALSE}
+tmp1 <- dplyr::filter(iris, Species != "setosa")
+tmp2 <- dplyr::group_by(tmp1, Species)
+dplyr::summarise_if(tmp2, is.numeric, funs(mean), na.rm = TRUE)
+```
+このようにパイプ演算子を使うことで分かりやすいコードが記述できるようになります。
+
+
+## dplyr
+
+## tidyr
+
+
 ## tidyverseとは？（その２）
 * [dplyrのすゝめ](https://k-metrics.github.io/cabinet/program/basics_dplyr.html)
     * [dplyr](https://heavywatal.github.io/rstats/dplyr.html)
