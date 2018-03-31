@@ -40,13 +40,13 @@ require(tidyverse)
 
 ## ggplot2とは？
 * ggplot2, part of the tidyverse (package)
-    * 文字通り統一された文法で様々なグラフを描ける
-    * といっても現時点ではパイプ（ %>% ）は使えない
+    * 文字通り統一された文法で様々なグラフを描けるパッケージです
+    * といっても現時点ではパイプ演算子（`%>%`）は使えません
 
 * Create Elegant Data Visualisations Using the Grammar of Graphics
     * GIS（地理情報システム）などと同じレイヤー構造
-    * **ggplot2::aes()**の考え方を覚えるのがポイント
-    * 標準で出来ないないことは関連パッケージで補える
+    * **ggplot2::aes**の考え方を覚えるのがひとつのポイント
+    * 標準で出来ないないことは関連パッケージで補えます
         * QQプロットは**qqplotr**, 格子配置は**ggExtra**, etc
 
 
