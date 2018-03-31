@@ -23,6 +23,9 @@ require(tidyverse)
 1. データハンドリング入門（午前または午後）
     * 整然データ（tidy data）とは？
     * tidyverseとは？
+    * パイプ演算子（` %>% `）
+    * dplyr, tidyr, tibble
+    * データハンドリング
 1. データハンドリング入門（午後）
     * 演習
 
@@ -36,15 +39,20 @@ require(tidyverse)
 1. **データハンドリング入門（午前または午後）**
     * 整然データ（tidy data）とは？
     * tidyverseとは？
+    * パイプ演算子（` %>% `）
+    * dplyr, tidyr, tibble
+    * データハンドリング
 1. データハンドリング入門（午後）
     * 演習
 
 
 # データハンドリング入門
 
+
 ## 整然データとは？
 * **整然データ**（tidy data）とはデータハンドリングを習得する上で**知っておくべき概念**
     * 一言で表すと「（Coddの）第三正規形」
+        * 厳密には違いますが...
     * [整然データとは何か (Colorless Green Ideas)](http://id.fnshr.info/2017/01/09/tidy-data-intro/)
     * [整然データってなに？ (Speaker Deck)](https://speakerdeck.com/fnshr/zheng-ran-detatutenani)
     * 整然データが理解できればデータハンドリングは理解できたようなもの
@@ -55,15 +63,17 @@ require(tidyverse)
     * ただし、人間が見ると分かりにくい面もある
     * 人間が分かりやすい（記録しやすい）雑然データへの変換は簡単
 
+
 ## tidyverseとは？
 * The tidyverse is an opinionated collection of R packages designed for data science.
-    * ggplot2, dplyr, tidyr, readr等から構成されるパッケージ群を取りまとめているパッケージ
+    * ggplot2, dplyr, tidyr,tibbleなどのパッケージ群を取りまとめているパッケージ
     * tidyなアーキテクチャに基づいたパッケージ群
-        * パイプによる処理が可能
+        * パイプ演算子による処理を前提とした引数設計
     
 ```{r, comment=""}
 tidyverse::tidyverse_packages()
 ```
+
 
 ## パイプ演算子（`%>%`）
 パイプ演算子は**左辺を右辺（の関数の第一引数）へ渡す**演算子です。
@@ -81,6 +91,7 @@ iris %>%
   dplyr::group_by(Species) %>% 
   dplyr::summarise_if(is.numeric, funs(mean), na.rm = TRUE)
 ```
+
 
 ## パイプ演算子（`%>%`）
 先ほどの例をパイプ演算子を使わないで記述すると以下のようになります。
@@ -101,11 +112,43 @@ dplyr::summarise_if(tmp2, is.numeric, funs(mean), na.rm = TRUE)
 
 
 ## dplyr
+`dplyr`パッケージは整然データを効率的に扱う関数がまとめられた追加パッケージで以下のような関数が用意されています。
+
+* 抽出・選択 : `sample_n`, `sample_frac`, `select`, `filter`, `distinct`
+* 要約・集計 : `summarise`, `summarize`, `summarise_if`, `count`, `group_by`
+* 追加・結合 : `mutate`, `mutate_if`, `left_join`, `full_join`, `bind_rows`
+
+```{r}
+iris %>% dplyr::sample_n(3)
+```
+
 
 ## tidyr
+`tidyr`パッケージはデータ構造を操作するための関数がまとめられた追加パッケージで以下のような関数が用意されています。
+
+* 変形 : `gather`, `spread`
+* 分離 : `separate`
+
+```{r}
+iris %>% 
+  tidyr::gather(key, value, -Species) %>% 
+  head(3)
+```
 
 
-## tidyverseとは？（その２）
+## tibble
+`tibble`パッケージはデータフレームをより使いやすくするための関数がまとめられた追加パッケージです。
+
+* 便利 : `rowid_to_column`, `rownames_to_column`, `column_to_rownames`
+
+```{r}
+iris %>% 
+  tibble::rowid_to_column("id") %>% 
+  head(3)
+```
+
+
+## データハンドリング
 * [dplyrのすゝめ](https://k-metrics.github.io/cabinet/program/basics_dplyr.html)
     * [dplyr](https://heavywatal.github.io/rstats/dplyr.html)
     * [tidyr](https://heavywatal.github.io/rstats/tidyr.html)
