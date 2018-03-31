@@ -52,7 +52,6 @@ require(tidyverse)
 ## 整然データとは？
 * **整然データ**（tidy data）とはデータハンドリングを習得する上で**知っておくべき概念**
     * 一言で表すと「（Coddの）第三正規形」
-        * 厳密には違いますが...
     * [整然データとは何か (Colorless Green Ideas)](http://id.fnshr.info/2017/01/09/tidy-data-intro/)
     * [整然データってなに？ (Speaker Deck)](https://speakerdeck.com/fnshr/zheng-ran-detatutenani)
     * 整然データが理解できればデータハンドリングは理解できたようなもの
@@ -80,11 +79,11 @@ tidyverse::tidyverse_packages()
 ```{r, eval=FALSE}
 summary(iris)
 ```
-は
+はパイプ演算子を用いると
 ```{r, eval=FALSE}
 iris %>% summary()
 ```
-と書くことができ、数珠つなぎにして複数の計算を分かりやすく記述できるようになります。
+と書くことができます。数珠つなぎにして複数の計算を分かりやすく記述できます。
 ```{r, eval=FALSE}
 iris %>% 
   dplyr::filter(Species != "setosa") %>% 
@@ -102,13 +101,13 @@ iris %>%
     ), is.numeric, funs(mean), na.rm = TRUE
   )
 ```
-または以下のようになります。
+中間変数を用いると以下のようになります。
 ```{r, eval=FALSE}
 tmp1 <- dplyr::filter(iris, Species != "setosa")
 tmp2 <- dplyr::group_by(tmp1, Species)
 dplyr::summarise_if(tmp2, is.numeric, funs(mean), na.rm = TRUE)
 ```
-このようにパイプ演算子を使うことで分かりやすいコードが記述できるようになります。
+この例からわかるようにパイプ演算子を用いることで分かりやすく修正しやすいコードが記述できることがわかると思います。
 
 
 ## dplyr
