@@ -50,8 +50,8 @@ Software | Windows         | macOS | Ubuntu | Memo
 ---------|-----------------|-------|--------|-----
 R本体    | Yes             | Yes   | Yes    | 3.4.4 or later
 RStudio  | Yes             | Yes   | Yes    | Desktop 1.1.423 or later
-Rtools34 | Yes             | **No** | **No** | Windows Only
-Git      | Yes, Gir for Windows | Yes   | Yes    | Gitクライアントではありません
+Rtools34 | Yes, [R3.3.x and later <i class="fa fa-external-link"></i>](http://cran.us.r-project.org/bin/windows/Rtools/){target="_blank" title="Building R for Windows"}             | **No** | **No** | Windows Only
+Git      | Yes, [Git for Windows <i class="fa fa-external-link"></i>](https://gitforwindows.org/){target="_blank" title=""} | Yes   | Yes    | Gitクライアントではありません
 packart  | Yes             | Yes   | Yes    | CRAN
 
 　  
@@ -59,7 +59,7 @@ packart  | Yes             | Yes   | Yes    | CRAN
 
 
 ## Rのインストールと動作確認
-環境を統一するためにRは本日時点での最新バージョン（R 3.x.x）を使います。追加パッケージも最新バージョンを使います。  
+環境を統一するためにRのバージョンは統一したいと考えています（R 3.4.4 or R.3.5.x）。追加パッケージは`packrat`を用いることでバージョンを統一します。  
 
 ### Rのインストール
 [Rのインストール方法](https://k-metrics.github.io/cabinet/program/env_install.html)を参考にインストールを行ってください。macOSの方はサポーターの方からレクチャしてもらってください。  
@@ -114,7 +114,7 @@ Windowsの場合は[Git for Windows](https://gitforwindows.org/)をダウンロ�
 # RStudioのインストールと動作確認
 
 ## 利用するバージョン
-環境を統一するためにRStudioは本日時点での最新バージョン（v1.1.xxx）を使います。
+環境を統一するためにRStudioのバージョンは統一（v1.1.423 or later）したいと思います。
 
 ### インストール先の確認
 Rをデフォルトのインストール先から変更した方はRStudioのインストール先も変更しておいた方が無難です。なお、インストールには管理者権限が必要です。
