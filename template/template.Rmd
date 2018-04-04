@@ -9,7 +9,7 @@ output:
     highlight: default
     md_extensions: -ascii_identifiers
     number_sections: no
-    theme: flatly
+    theme: united
     toc: yes
     toc_depth: 3
     toc_float:
