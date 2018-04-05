@@ -77,7 +77,7 @@ rm(defect, patch)
 file_path %>%                       # ファイル
   readr::read_csv(locale = locale(encoding = "CP932")) %>% 
                                     # CP932(S-JIS)ととして読み込む場合
-  DT::datatable()                   # 読み込み結果を表示
+  print()                   # 読み込み結果を表示
 ```
 
 この様にパイプ演算子は中間変数を作成することなく処理の手順を記述できます。コードの可読性が上がるというメリットもあります。パイプ演算子を使わない以下の場合と比較して見て下さい。
@@ -85,13 +85,13 @@ file_path %>%                       # ファイル
 #### 中間変数を用いた記述
 ```{r, eval=FALSE}
 bugs <- readr::read_csv(file_path, locale = locale(encoding = "CP932"))
-DT::datatable(bugs)
+print(bugs)
 ```
 
 #### 関数をネストする記述
 ```{r, eval=FALSE}
 # 関数をネストする場合
-DT::datatable(
+print(
   readr::read_csv(file_path, locale = locale(encoding = "CP932"))
 )
 ```
@@ -131,7 +131,7 @@ locale = locale(encoding = "CP932")     # シフトJISコードの場合
 ### ファイルの読み込み
 ファイル名は既に変数`file_path`に格納してあるものとし、前述の`readr::read_csv関数を用いて読み込みます。
 ```{r import, exercise=TRUE, exercise.setup="common", message=FALSE}
-bugs <- file_path %>% 
+bugs <- file_path
   
 ```
 
@@ -170,8 +170,7 @@ select(data_frame, col_name, ...)
 ### Select
 では、実際に`id`、`tracker`、`status`、`open`の四項目（変数、列）を抽出（選択）して見ましょう。
 ```{r select, exercise=TRUE, exercise.setup="common", message=FALSE}
-bugs %>% 
-  
+
 ```
 
 ```{r select-hint}
@@ -198,7 +197,7 @@ rename(data_frame, new_name = old_name, ...)
 では、実際に各項目名（変数名、列名）を変更してみましょう。
 ```{r rename, exercise=TRUE, exercise.setup="common", message=FALSE}
 bugs %>% 
-  dplyr::select(id, tracker, status, open) %>% 
+  dplyr::select(id, tracker, status, open)
 
 ```
 
@@ -226,7 +225,7 @@ as_date(vec_data, ...)
 bugs %>% 
   dplyr::select(id, tracker, status, open) %>% 
   dplyr::rename(ID = id, Tracker = tracker, Status = status,
-                DateTime = open) %>% 
+                DateTime = open)
 
 ```
 
@@ -252,7 +251,7 @@ bugs %>%
   dplyr::select(id, tracker, status, open) %>% 
   dplyr::rename(ID = id, Tracker = tracker, Status = status,
                 DateTime = open) %>% 
-  dplyr::mutate(Date = lubridate::as_date(DateTime)) %>% 
+  dplyr::mutate(Date = lubridate::as_date(DateTime))
 
 ```
 
@@ -270,9 +269,9 @@ bugs %>%
 ```{r status, exercise=TRUE, exercise.setup="common", exercise.lines=7}
 bugs %>% 
   dplyr::select(id, tracker, status, open) %>% 
-  dplyr::rename(ID = id, Tracker = tracer, Status = status,
+  dplyr::rename(ID = id, Tracker = tracker, Status = status,
                 DateTime = open) %>% 
-  dplyr::mutate(Date = lubridate::as_date(DateTime)) %>% 
+  dplyr::mutate(Date = lubridate::as_date(DateTime))
 ```
 
 ```{r status-hint}
@@ -292,7 +291,7 @@ bugs %>%
   dplyr::select(id, tracker, status, open) %>% 
   dplyr::rename(ID = id, Tracker = tracker, Status = status,
                 DateTime = open) %>% 
-  dplyr::mutate(Date = lubridate::as_date(DateTime)) %>% 
+  dplyr::mutate(Date = lubridate::as_date(DateTime))
 
 ```
 
@@ -321,7 +320,7 @@ bugs %>%
   dplyr::select(id, tracker, status, open) %>% 
   dplyr::rename(ID = id, Tracker = tracker, Status = status,
                 DateTime = open) %>% 
-  dplyr::mutate(Date = lubridate::as_date(DateTime)) %>% 
+  dplyr::mutate(Date = lubridate::as_date(DateTime))
 
 ```
 
@@ -358,7 +357,7 @@ bugs %>%
                 DateTime = open) %>% 
   dplyr::mutate(Date = lubridate::as_date(DateTime)) %>% 
   dplyr::group_by(Date, Status) %>% 
-  dplyr::tally() %>% 
+  dplyr::tally()
   
 ```
 
@@ -388,7 +387,7 @@ bugs %>%
                 DateTime = open) %>% 
   dplyr::mutate(Date = lubridate::as_date(DateTime)) %>% 
   dplyr::group_by(Date) %>% 
-  dplyr::tally() %>% 
+  dplyr::tally()
 ```
 
 ```{r cusum-hint}
@@ -418,7 +417,7 @@ bugs %>%
   dplyr::group_by(Date, Status) %>% 
   dplyr::tally() %>% 
   tidyr::spread(key = Status, value = n) %>% 
-  dplyr::ungroup() %>%
+  dplyr::ungroup()
   
 ```
 
@@ -474,7 +473,7 @@ bugs %>%
   tidyr::spread(key = Status, value = n) %>% 
   dplyr::ungroup() %>%
   dplyr::mutate_if(is.numeric, funs(replace(., is.na(.), 0))) %>% 
-  dplyr::mutate_if(is.numeric, cumsum) %>%
+  dplyr::mutate_if(is.numeric, cumsum)
   
 ```
 
