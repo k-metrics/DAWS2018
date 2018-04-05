@@ -13,8 +13,10 @@ knitr::opts_chunk$set(echo = TRUE)
 　  
 
 ## Session Information
-```{r}
-sessionInfo()
+```{r, echo=FALSE}
+# sessionInfo()
+devtools::session_info()$platform
+devtools::session_info()$packages
 ```
 
 ---
