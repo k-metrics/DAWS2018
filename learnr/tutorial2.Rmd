@@ -710,9 +710,9 @@ curve(expr, from = NULL, to = NULL, n = 101, add = FALSE,
       log = NULL, xlim = NULL, ...)
 ```
 
-平均値50、標準偏差10の正規分布の確率密度分布を描いてみましょう。描く範囲は任意としますが、なるべく分布の形が分かるような範囲として下さい。
+平均値50、標準偏差10の正規分布の確率密度分布を描いてみましょう。描く範囲は任意としますが、なるべく分布の形が分かるような範囲として下さい。コメントを外して適切な引数を指定して実行してください。
 ```{r dnorm, exercise=TRUE, exercise.lines=3}
-curve(, from = , to = ) 
+# curve(, from = , to = ) 
 ```
 
 ```{r dnorm-hint}
