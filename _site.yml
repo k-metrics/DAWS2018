@@ -17,6 +17,8 @@ navbar:
   title: データ分析勉強会
   type: default
   left:
+    - text: "about"
+      href: ./about.html
   right:
     - icon: fa-github
       menu:
