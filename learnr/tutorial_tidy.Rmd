@@ -23,11 +23,7 @@ tidyverse::tidyverse_conflicts()
 
 <!-- ネットワーク上のファイルを参照するので要インターネット接続 -->
 ```{r common, include=FALSE}
-# file_path <- "https://k-metrics.github.io/cabinet/program/data/issues.csv"
-# file_path <- "https://k-metrics.github.io/2018dasg/learnr/issues.csv"
-# bugs <- readr::read_csv(file_path, locale = readr::locale(encoding = "UTF8"), progress = FALSE)
-
-file_path <- "C:\\Users\\suzuki\\Documents\\R\\2018dasg\\learnr/issues.csv"
+file_path <- "https://k-metrics.github.io/2018dasg/learnr/issues.csv"
 bugs <- readr::read_csv(file_path, locale = readr::locale(encoding = "UTF8"), progress = FALSE)
 ```
 
