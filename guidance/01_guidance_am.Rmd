@@ -141,6 +141,7 @@ Rをデフォルトのインストール先から変更した方はRStudioのイ
 [パッケージのインストール方法](https://k-metrics.github.io/cabinet/program/env_install_pkg.html#rstudioからインストールする方法)にしたがって以下の追加パッケージのインストールを行います。
 
 * **packrat**
+* **devtools**
 
 　  
 **上記以外**のパッケージはこの時点で**インストールする必要はありません**。
