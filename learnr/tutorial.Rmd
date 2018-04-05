@@ -30,13 +30,13 @@ tidyverse::tidyverse_conflicts()
 ```
 
 ## Introduction
-本ファイルは[データ分析勉強会][0]で使用した『RStudioのすゝめ』の講義資料を再整理し`learnr`パッケージを用いて編集しなおした初学者向けのチュートリアルです。実際にRのコードを入力して実行することが可能ですが`shiny`サーバが必要となりますので[RStudio][RS]にて実行してください。
+本ファイルは[データ分析勉強会 <i class="fa fa-external-link"></i>][0]で使用した『RStudioのすゝめ』の講義資料を再整理し`learnr`パッケージを用いて編集しなおした初学者向けのチュートリアルです。実際にRのコードを入力して実行することが可能ですが`shiny`サーバが必要となりますので[RStudio <i class="fa fa-external-link"></i>][RS]にて実行してください。
 
 ### 実行方法
-本ファイルを[RStudio][RS]で開くと上段に**[Run Document]**というボタンが表示されますので、これをクリックしてください。コンパイル後にローカルホスト(127.0.0.1)上に`shiny`サーバが起動し**[Viewer]**ウィンドウに実行可能なファイルが表示されます。ファイルが表示されたら**[Code]**と左上に書いてある欄に実行コードを記述し右側の**[Run Code]**ボタンを押せば記述されている（記述した)
+本ファイルを[RStudio <i class="fa fa-external-link"></i>][RS]で開くと上段に**[Run Document]**というボタンが表示されますので、これをクリックしてください。コンパイル後にローカルホスト(127.0.0.1)上に`shiny`サーバが起動し**[Viewer]**ウィンドウに実行可能なファイルが表示されます。ファイルが表示されたら**[Code]**と左上に書いてある欄に実行コードを記述し右側の**[Run Code]**ボタンを押せば記述されている（記述した)
 コードが実行されます。当然、間違っている場合はエラーがでます。コードを追加・記入したい場合は最終行の行末にカーソルを持っていき改行することで追加ができます。 学習結果は記録されますがリセットしたい場合はTOCの一番下にある**[Start Over]** をクリックしてください。  
 
-なお、`learnr`パッケージの多国語対応が不十分なためメニューを英語表記にしていますが各Chapterは以下のようになっています。
+なお、`learnr`パッケージの多国語対応が不十分なためメニューを英語表記にしていますが各Chapterは以下のようになっています。また、`packrat`パッケージを利用する都合上、一部のチュートリアルコードをコメントアウトしてありますので、実行の差異はコメントアウトをハズください。
 
 Chapter    | 日本語項目名                  | Chapter    | 日本語項目名
 -----------|-------------------------------|------------|-----------------------
@@ -54,9 +54,9 @@ Chapter 10 | 強制型変換                    | Chapter 20 | データの読�
 それではインタラクティブな学習を始めてみましょう。
 
 ### Rの基本
-Rの基本は他の言語と同じですがR特有の部分もあります。「Rの一番良いところは統計学者が作っているところだ。 Rの一番悪いところは統計学者が作っているところだ。[出典](https://www.slideshare.net/shuyo/r-4022379)」と言われることがありますが、それは統計処理に特化しているからに他なりません。統計処理に必要なデータ構造の変換や特定の分析に対する数々のパッケージが用意され、さらにコマンド一つでグラフが描ける高度なグラフィクス、更には分析結果をレポーティングするための仕組みも用意されています。このような点が他の言語と大きく異る点だと思います。  
+Rの基本は他の言語と同じですがR特有の部分もあります。「Rの一番良いところは統計学者が作っているところだ。 Rの一番悪いところは統計学者が作っているところだ。[出典 <i class="fa fa-external-link"></i>](https://www.slideshare.net/shuyo/r-4022379){target="_blank" title="普通のプログラミング言語R(仮)"}」と言われることがありますが、それは統計処理に特化しているからに他なりません。統計処理に必要なデータ構造の変換や特定の分析に対する数々のパッケージが用意され、さらにコマンド一つでグラフが描ける高度なグラフィクス、更には分析結果をレポーティングするための仕組みも用意されています。このような点が他の言語と大きく異る点だと思います。  
 
-Rを学ぶ際には統計知識は最低限必要ですが基本的なプログラミングのマスターにはどちらかというと統計の知識よりはRが得意とするベクトル処理を理解するのが一番のポイントだと思います。R単体ではエディタが貧弱ですが[RStudio][RS]という統合開発環境(IDE)を用いればコーディング自体をサポートしてくれますし、より便利に使うための様々なパッケージが用意されていますので、怖がる必要はありません。怖がらずにRの世界に触れて見ましょう。  
+Rを学ぶ際には統計知識は最低限必要ですが基本的なプログラミングのマスターにはどちらかというと統計の知識よりはRが得意とするベクトル処理を理解するのが一番のポイントだと思います。R単体ではエディタが貧弱ですが[RStudio <i class="fa fa-external-link"></i>][RS]という統合開発環境(IDE)を用いればコーディング自体をサポートしてくれますし、より便利に使うための様々なパッケージが用意されていますので、怖がる必要はありません。怖がらずにRの世界に触れて見ましょう。  
 
 ## Chapter 1
 <!-- - Arithmetic operations -->
@@ -350,7 +350,7 @@ typeof(c(1L, 2, 3 + 4i, NULL, "5"))
 typeof(c(1L, 2, 3 + 4i, NULL, NaN, NA, Inf))
 ```
 　  
-なぜ、このような事になるかはこちらの[参考資料](http://blog.hoxo-m.com/2017/04/24/hoxom01_vector_type_coerce/)にてご確認ください。
+なぜ、このような事になるかはこちらの[参考資料 <i class="fa fa-external-link"></i>](http://blog.hoxo-m.com/2017/04/24/hoxom01_vector_type_coerce/){target="_blank" title="Rの強制型変換とNAの取り扱い"}にてご確認ください。
 
 ## Chapter 11
 <!-- - Variable operation -->
@@ -627,7 +627,7 @@ ifelse(is.na(c(TRUE, FALSE, NA, TRUE)), "Yes", "No")
 ## Chapter 19
 <!-- - Loop -->
 ### 繰り返し
-繰り返しは文字通り処理を任意の回数繰り返す場合に用いるもので予約語になっています。繰り返し文の処理は時間がかかるためRにおいては好ましくなく繰り返しは使わずベクトル演算で処理すべきと言われていますが、R-3.4.0からJTIコンパイラと呼ばれる繰り返し処理の高速化がデフォルトで有効化されており今後は処理記述の流れが変わる可能性があります。処理の高速化についてはこちらの[参考資料](http://masato-613.hatenablog.com/entry/2017/04/25/064632)で確認してください。なお、繰り返し処理で注意すべき点は繰り返し文中では**明示的に出力を指定**しないと計算結果等が出力されない点です。  
+繰り返しは文字通り処理を任意の回数繰り返す場合に用いるもので予約語になっています。繰り返し文の処理は時間がかかるためRにおいては好ましくなく繰り返しは使わずベクトル演算で処理すべきと言われていますが、R-3.4.0からJTIコンパイラと呼ばれる繰り返し処理の高速化がデフォルトで有効化されており今後は処理記述の流れが変わる可能性があります。処理の高速化についてはこちらの[参考資料 <i class="fa fa-external-link"></i>](http://masato-613.hatenablog.com/entry/2017/04/25/064632){target="_blank"}で確認してください。なお、繰り返し処理で注意すべき点は繰り返し文中では**明示的に出力を指定**しないと計算結果等が出力されない点です。  
 
 Rの繰り返しには以下の3つがあります。
 
@@ -677,29 +677,29 @@ util::read.delmi | util::write.delmi | TAB区切りファイルに特化して�
 ## Appendix
 更に詳しくRを学ぶには以下の図書やコミュニティを活用してください。
 
-統計の基礎とRで処理方法を学びたい場合は[改定版 統計学基礎][B1]や[Rで楽しむ統計][B2]。
-Rの基礎から学びたい場合は[みんなのR][B3]や[パーフェクトR][B4]。  
+統計の基礎とRで処理方法を学びたい場合は[改定版 統計学基礎 <i class="fa fa-external-link"></i>][B1]や[Rで楽しむ統計 <i class="fa fa-external-link"></i>][B2]。
+Rの基礎から学びたい場合は[みんなのR <i class="fa fa-external-link"></i>][B3]や[パーフェクトR <i class="fa fa-external-link"></i>][B4]。  
 
-ネットコミュニティで質問したい場合は、日本のR界の著名人が集まっている[R-wakalang][C1]や
-[Rjp Wiki][C2]で、検索にはRに特化した検索エンジンである[seek R][C3]がすゝめです。
+ネットコミュニティで質問したい場合は、日本のR界の著名人が集まっている[R-wakalang <i class="fa fa-external-link"></i>][C1]や
+[Rjp Wiki <i class="fa fa-external-link"></i>][C2]で、検索にはRに特化した検索エンジンである[seek R <i class="fa fa-external-link"></i>][C3]がすゝめです。
 
 ---
 
 ![Sampo Suzuki][CCI]
-[CC BY-NC-SA 4.0][CC], Sampo Suzuki [`r format(Sys.time(), format = '%F %H:%M(%Z)')`]
+[CC BY-NC-SA 4.0 <i class="fa fa-external-link"></i>][CC], Sampo Suzuki [`r format(Sys.time(), format = '%F %H:%M(%Z)')`]
 
-[0]: https://sites.google.com/site/kantometrics/ "データ分析勉強会"
-[CC]: http://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja "CC BY-NC-SA 4.0"
-[CCI]: https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png "CC BY-NC-SA 4.0 icon"
-[RS]: https://www.rstudio.com/ "RStudio"
+[0]: https://sites.google.com/site/kantometrics/ {target="_blank" title="データ分析勉強会"}
+[CC]: http://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja {target="_blank" title="CC BY-NC-SA 4.0"}
+[CCI]: https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png {target="_blank" title="CC BY-NC-SA 4.0 icon"}
+[RS]: https://www.rstudio.com/ {target="_blank" title="RStudio"}
 
 <!-- Books -->
-[B1]: http://www.tokyo-tosho.co.jp/books/978-4-489-02227-2/ "統計学基礎"
-[B2]: http://www.kyoritsu-pub.co.jp/bookdetail/9784320112414 "Rで楽しむ統計"
-[B3]: https://book.mynavi.jp/ec/products/detail/id=39763 "みんなのR"
-[B4]: http://gihyo.jp/book/2017/978-4-7741-8812-6 "パーフェクトR"
+[B1]: http://www.tokyo-tosho.co.jp/books/978-4-489-02227-2/ {target="_blank" title="統計学基礎"}
+[B2]: http://www.kyoritsu-pub.co.jp/bookdetail/9784320112414 {target="_blank" title="Rで楽しむ統計"}
+[B3]: https://book.mynavi.jp/ec/products/detail/id=39763 {target="_blank" title="みんなのR"}
+[B4]: http://gihyo.jp/book/2017/978-4-7741-8812-6 {target="_blank" title="パーフェクトR"}
 
 <!-- Net Community -->
-[C1]: http://qiita.com/uri/items/5583e91bb5301ed5a4ba "R-wakalang"
-[C2]: http://www.okadajp.org/RWiki/ "RjpWiki"
-[C3]: http://seekr.jp/ "seek R"
+[C1]: http://qiita.com/uri/items/5583e91bb5301ed5a4ba {target="_blank" title="R-wakalang"}
+[C2]: http://www.okadajp.org/RWiki/ {target="_blank" title="RjpWiki"}
+[C3]: http://seekr.jp/ {target="_blank" title="seek R"}
