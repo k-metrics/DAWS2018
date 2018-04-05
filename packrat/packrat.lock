@@ -139,13 +139,6 @@ Version: 1.1.0
 Hash: c233690edd9fa17a63f7c8d83c1ca153
 Requires: crayon
 
-Package: devtools
-Source: CRAN
-Version: 1.13.5
-Hash: 80061b2ad6853fd3665bf883123a1b1a
-Requires: digest, git2r, jsonlite, rstudioapi, whisker, withr, memoise,
-    httr
-
 Package: dichromat
 Source: CRAN
 Version: 2.0-0
@@ -180,11 +173,6 @@ Source: CRAN
 Version: 2.2.1
 Hash: 46e5cb78836848aa44655e577433f54b
 Requires: digest, gtable, lazyeval, plyr, reshape2, scales, tibble
-
-Package: git2r
-Source: CRAN
-Version: 0.21.0
-Hash: 64747922e287be74e8e8b46c107fd3ef
 
 Package: glue
 Source: CRAN
@@ -293,12 +281,6 @@ Source: CRAN
 Version: 0.8
 Hash: 045d7c594d503b41f1c28946d076c8aa
 Requires: mime
-
-Package: memoise
-Source: CRAN
-Version: 1.1.0
-Hash: 410fcd334bc626db100237cc1370f2e9
-Requires: digest
 
 Package: mime
 Source: CRAN
