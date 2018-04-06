@@ -13,8 +13,6 @@ knitr::opts_chunk$set(warning = FALSE, echo = TRUE)
 
 require(learnr)
 require(tidyverse)
-require(DT)
-require(knitr)
 tidyverse::tidyverse_conflicts()
 
 # file_path <- "/issues.csv"
