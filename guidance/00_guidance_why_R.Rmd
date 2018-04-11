@@ -1,5 +1,5 @@
 ---
-title: "なぜRなのか？"
+title: "前座：なぜRなのか？"
 author: "Six Reasons To Learn R For Business"
 date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
 output:
@@ -16,8 +16,17 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 require(tidyverse)
 ```
 
+# その前に
 
-## [Six Reasons To Learn R For Business](https://www.r-bloggers.com/six-reasons-to-learn-r-for-business/){target="_blank"}
+## 今年度のテーマと目標
+　　**テーマ**：実践データ分析　～実務での利用を目指して～  
+　　**目　標**：分析に関わる基本的なスキルを伸ばす・習得する
+
+![rstudio/RStartHere, GitHub](./fig/dswf.png)
+
+# なぜRなのか？
+
+## [Six Reasons To Learn R For Business, R Blogger](https://www.r-bloggers.com/six-reasons-to-learn-r-for-business/){target="_blank"} ~[original](http://www.business-science.io/business/2017/12/27/six-reasons-to-use-R-for-business.html){target="_blank"}~
 
 1. R Has The Best Overall Qualities
 1. R Is Data Science For Non-Computer Scientists
@@ -29,13 +38,15 @@ require(tidyverse)
     * R Markdown
 1. R Community Support
 
----
-
-![Feb 2018 TIOBE Index](./fig/TIOBE_index_201802.png)
+<!-- [original](http://www.business-science.io/business/2017/12/27/six-reasons-to-use-R-for-business.html){target="_blank"} -->
 
 ---
 
-![Feb 2018 TIOBE Index](./fig/TIOBE_index_R_201802.png)
+![Apr 2018 TIOBE Index](./fig/TIOBE_index_201804.png)
+
+---
+
+![Apr 2018 TIOBE Index](./fig/TIOBE_index_R_201804.png)
 
 ---
 
@@ -53,8 +64,15 @@ require(tidyverse)
 
 ![RedMonk Language Ranking](./fig/redmonklang.png)
 
-## 今年度のテーマと目標
-　　**テーマ**：実践データ分析　～実務での利用を目指して～  
-　　**目　標**：分析に関わる基本的なスキルを伸ばす・習得する
+## 推奨図書
+著者が学生ならこういうことを教わりたかったという視点で解説しているらしい。Rの基礎から一通り知りたい場合に向いています。第2版はモダンなデータ分析と言われる"Tidyverse"の解説が追加されているので買うなら第2版。
 
-![rstudio/RStartHere, GitHub](./fig/dswf.png)
+![](./fig/r_for_everyone.jpg)
+
+## 推奨図書
+R Markdownによる再現可能なデータ分析とレポート作成の解説に加えてRStudio自体の解説もある今までのR関連書籍とは毛色の異なる（個人的には）待望の書籍。
+
+![](./fig/wonderful_R_vol3.jpg)
+
+## License
+本資料中で引用してる画像などの著作権は各著作権者にあります。
