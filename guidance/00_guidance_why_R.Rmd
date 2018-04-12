@@ -26,7 +26,7 @@ require(tidyverse)
 
 # なぜRなのか？
 
-## [Six Reasons To Learn R For Business, R Blogger](https://www.r-bloggers.com/six-reasons-to-learn-r-for-business/){target="_blank"} ~[original](http://www.business-science.io/business/2017/12/27/six-reasons-to-use-R-for-business.html){target="_blank"}~
+## [Six Reasons To Learn R For Business, R Blogger](https://www.r-bloggers.com/six-reasons-to-learn-r-for-business/){target="_blank"}
 
 1. R Has The Best Overall Qualities
 1. R Is Data Science For Non-Computer Scientists
