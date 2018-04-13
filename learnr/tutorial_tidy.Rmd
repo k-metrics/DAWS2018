@@ -7,6 +7,16 @@ output:
 runtime: shiny_prerendered
 ---
 
+<!-- 必要なパッケージ
+本チュートリアルファイルを実行するためには以下のパッケージが必要です。必ず
+インストールされていることを確認して下さい。
+
+car, DT, formatR, knitr, learnr, rmarkdown, shiny, tidyverse
+
+詳細は以下のページで確認してください
+https://k-metrics.github.io/cabinet/program/basics_index.html
+-->
+
 ```{r setup, include=FALSE}
 # 共通chunkオプションの指定
 knitr::opts_chunk$set(warning = FALSE, echo = TRUE)
@@ -14,9 +24,6 @@ knitr::opts_chunk$set(warning = FALSE, echo = TRUE)
 require(learnr)
 require(tidyverse)
 tidyverse::tidyverse_conflicts()
-
-# file_path <- "/issues.csv"
-# bugs <- readr::read_csv(file_path, locale = readr::locale(encoding = "UTF8"), progress = FALSE)
 ```
 
 <!-- ネットワーク上のファイルを参照するので要インターネット接続 -->
