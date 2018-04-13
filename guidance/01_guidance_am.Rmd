@@ -52,7 +52,7 @@ R本体    | Yes             | Yes   | Yes    | 3.4.4 or later
 RStudio  | Yes             | Yes   | Yes    | Desktop 1.1.423 or later
 Rtools34 | Yes, [R3.3.x and later <i class="fa fa-external-link"></i>](http://cran.us.r-project.org/bin/windows/Rtools/){target="_blank" title="Building R for Windows"}             | **No** | **No** | Windows Only
 Git      | Yes, [Git for Windows <i class="fa fa-external-link"></i>](https://gitforwindows.org/){target="_blank" title=""} | Yes   | Yes    | Gitクライアントではありません
-packart  | Yes             | Yes   | Yes    | CRAN
+packart, devtools  | Yes             | Yes   | Yes    | CRAN
 
 　  
 この手の勉強会としては本邦初？の試みとして**GitHubリポジトリ**と**packrat**パッケージを用いた統一環境の作成を行います。なお、**GitHubアカウントの取得は不要**です。
@@ -88,10 +88,10 @@ plot(iris)
 
 
 ## ツールのインストール（Windows Only）
-Windows環境の方は**Rtools**というツール群をインストールしておきます。これはパッケージがzip形式で提供されていない場合に必要となるツール（コンパイラなど）です。
+Windows環境の方は**Rtools**というツール群をインストールしておきます。これはパッケージが実行形式で提供されていない場合に必要となるツール（コンパイラなど）です。
 
 ### Rtoolsのインストール
-[Rtoolsのインストール方法](https://k-metrics.github.io/cabinet/program/env_install_tls.html)を参考にインストールを行ってください。必ず**デフォルトのインストールパス**にインストールしてください。Windows環境以外の方はインストールの必要はありません。
+[Rtoolsのインストール方法](https://k-metrics.github.io/cabinet/program/env_install_tls.html)を参考にインストールを行ってください。必ず**デフォルト・オプション**でインストールしてください。Windows環境以外の方はインストールの必要はありません。
 
 ### Rtoolsの動作確認
 動作確認方法は特にありません。インストーラでエラーが出ていないことは確認しておいて下さい。
@@ -157,10 +157,10 @@ Rをデフォルトのインストール先から変更した方はRStudioのイ
     * `C:\usr\bin\R`、`C:\R` など
 
 
-## プロジェクトのクローンと動作確認
-今回は前出の通りGitHubの公開リポジトリと**packrat**パッケージを利用して統一環境の準備を自動的に行うことを試みます。環境によっては上手く動かない可能性もありますが、ご了承ください。なお、**GitHubアカウントでのログインは不要**です。
+## プロジェクトの作成と動作確認
+今回は前出の通りGitHubの公開リポジトリと**packrat**パッケージを利用した環境構築を試みます。環境によっては上手く動かない可能性もありますが、ご了承ください。なお、**GitHubアカウントでのログインは不要**です。
 
-### プロジェクトのクローン（作成）
+### プロジェクトの作成
 1. ［File］-［New Project...］-［Version Control］-［Git］を選択します
 1. 以下のURLを［Repository URL］に入力します
     * https://github.com/k-metrics/2018dasg.git
@@ -168,35 +168,34 @@ Rをデフォルトのインストール先から変更した方はRStudioのイ
 1. ［Create project as subdirectory of］は任意の場所で構いませんが**日本語や空白が含まれない**パスにしてください
 
 
-## プロジェクトのクローン（作成）つづき
+## プロジェクトの作成（つづき）
 * 前述の入力が完了したら［Create Project］ボタンをクリックしてください
     * GitHubのリポジトリがクローンされます
-    * クローニング完了後自動的にプロジェクトが開かれます
+    * クローン完了後自動的にプロジェクトが開かれます
     * コンソールに色々とエラーが出た場合でも気にしないでください
     * 必要なパッケージのダウンロードとインストールが自動的に始まります
     * 環境にもよりますが**5～15分前後の時間**がかかります
         * 気になるならシステムモニタを開いてください
     * "Packrat mode on. Using library in directory:"と表示されれば完了です
-        * 完了メッセージ後もバックグラウンで色々やってるので**しばらく放置**します（時間がかかり過ぎる場合は強制終了で再起動）
+        * 完了メッセージ後もバックグラウンドで色々やるのはWindows環境特有の現象のようなので**しばらく放置**し終わらない場合は強制終了させて再起動します
         * 途中でエラーが出て再開させた場合は完了メッセージは表示されません
-    * 念のためにRStudioを**再起動**させておきましょう
 
 
 ## リカバリタイム
-* "Installing R package forim source requires install of additional build tools."と表示された
+* "Installing R package form source requires install of additional build tools."と表示された
     1. ［No］をクリックし**RStudioを終了**させます
     1. Rtoolsを一旦削除し**デフォルトパスで再インストール**します
     1. プロジェクトフォルダを削除します
     1. RStudioを起動させ再度プロジェクトをインポートします
 * 何かのエラーで止まったっぽい
-    1. コンソールから**packrat::restore()**を実行してみてください
+    1. コンソールから**packrat::restore()**を実行してみてみます
 * 終わったみたいだけどパッケージが不足しているっぽい
-    1. コンソールから**packrat::restore()**を実行してみてください
+    1. コンソールから**packrat::restore()**を実行してみてみます
 
 
 ## 動作確認
 ### ブランチの作成
-プロジェクトがインポートされたらGitのブランチを作成します。［Git］タブの［New Branch］をクリックしてダイアログが表示されたら**リモートを「(None)」**にしブランチ名に「feature/test」を入力、［Create］ボタンをクリックします。
+プロジェクトがインポートされたらGitでブランチを作成します。［Git］タブの［New Branch］をクリックしてダイアログが表示されたら**リモートを「(None)」**にしブランチ名に「feature/test」を入力、［Create］ボタンをクリックします。
 
 ![](./fig/RStudio_git.png)
 
@@ -213,7 +212,7 @@ Rをデフォルトのインストール先から変更した方はRStudioのイ
 1. レンダリングが実行され別ウィンドウ（ペイン）に結果が表示されます
 
 　  
-以上で環境設定は終了です。`packrat`を利用するプロジェクトはプロジェクトを開いた際に`packrat`環境のチェックが自動的に走りますので開くのに時間がかかります。
+以上で環境構築は終了です。`packrat`を利用するプロジェクトはプロジェクトを開いた際に`packrat`環境のチェックが自動的に走りますので開くのに時間がかかる点に留意してください。
 
 
 ## License
