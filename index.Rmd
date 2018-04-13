@@ -67,6 +67,9 @@ output:
 
 * [自己紹介テンプレート <i class="fa fa-external-link-square"></i>](./template/Self-introduction.html){target="_blank" title="ioslide"}
 * [自己紹介テンプレート <i class="fa fa-file-code-o"></i>  （右クリックでダウンロード）](./template/Self-introduction.Rmd)
+　  
+
+* [おまけ <i class="fa fa-external-link-square"></i>](./guidance/01_guidance_appendix.html){target="_blank" title="ioslide"}
 
 　  
 

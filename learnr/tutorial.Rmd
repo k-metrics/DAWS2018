@@ -14,10 +14,8 @@ runtime: shiny_prerendered
 
 knitr, learnr, rmarkdown, shiny, tidyverse
 
-インストールされていない場合、以下のページを参考にパッケージをインストール
-してください。
-
-https://k-metrics.github.io/cabinet/program/env/install_chk.html
+詳細は以下のページで確認してください
+https://k-metrics.github.io/cabinet/program/basics_index.html
 -->
 
 ```{r setup, include=FALSE}

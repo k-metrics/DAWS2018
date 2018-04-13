@@ -1,0 +1,36 @@
+---
+title: "第１回データ分析勉強会"
+author: "【おまけの部】自習用チュートリアルの紹介 [鈴木さんぽう, CC BY-NC-SA 4.0]"
+date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
+output:
+  ioslides_presentation:
+    css: style.css
+    df_print: paged
+    logo: fig/hex-shiny.png
+    smaller: false
+    widescreen: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+
+require(tidyverse)
+```
+
+
+## おまけの部
+自習用教材を用意してあります。Edgeを除くブラウザで動作しますので試してみてください。
+
+実行手順
+
+1. RStudioで「2018dasg」プロジェクトを開きます
+1. ［File］ペインで「learnr」フォルダを開きます
+1. チュートリアルファイル「tutorial.Rmd」を開きます
+1. エディタ上部にある［Run Document］をクリックします
+1. ［Viewer］ペイン（内蔵ブラウザ）でチュートリアルが実行さます
+    * ［Viewer］ペインが使いにくい場合は［Show in new window］をクリックすれば外部ブラウザで実行できます
+1. 停止する場合は［R Markdown］ペインにある［Stop］ボタンをクリックします
+
+
+## License
+CC BY-NC-SA 4.0, Sampo Suzuki
