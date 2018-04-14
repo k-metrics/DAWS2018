@@ -65,7 +65,7 @@ output:
 * [ガイダンス <i class="fa fa-external-link-square"></i>](./guidance/01_guidance_pm.html){target="_blank" title="ioslide"}
 　  
 
-* [自己紹介テンプレート <i class="fa fa-external-link-square"></i>](./template/Self-introduction.html){target="_blank" title="ioslide"}
+<!-- * [自己紹介テンプレート <i class="fa fa-external-link-square"></i>](./template/Self-introduction.html){target="_blank" title="ioslide"} -->
 * [自己紹介テンプレート <i class="fa fa-file-code-o"></i>  （右クリックでダウンロード）](./template/Self-introduction.Rmd)
 　  
 
@@ -94,7 +94,7 @@ output:
 * [ガイダンス <i class="fa fa-external-link-square"></i>](./guidance/02_guidance_pm.html){target="_blank" title="ioslide"}
 　  
 
-* [演習用テンプレート <i class="fa fa-external-link-square"></i>](./template/template_tidyverse.html){target="_blank" title="HTML Format"}
+<!-- * [演習用テンプレート <i class="fa fa-external-link-square"></i>](./template/template_tidyverse.html){target="_blank" title="HTML Format"} -->
 * [演習用テンプレート <i class="fa fa-file-code-o"></i> （右クリックでダウンロード）](./template/template_tidyverse.Rmd)
 
 　  
@@ -118,7 +118,7 @@ output:
 * [ガイダンス <i class="fa fa-external-link-square"></i>](./guidance/03_guidance_pm.html){target="_blank" title="ioslide"}
 　  
 
-* [演習用テンプレート <i class="fa fa-external-link-square"></i>](./template/template_ggplot.html){target="_blank" title="HTML Format"}
+<!-- * [演習用テンプレート <i class="fa fa-external-link-square"></i>](./template/template_ggplot.html){target="_blank" title="HTML Format"} -->
 * [演習用テンプレート <i class="fa fa-file-code-o"></i> （右クリックでダウンロード）](./template/template_ggplot.Rmd)
 
 　  
@@ -136,7 +136,7 @@ output:
     * [解析方法とレポート作成方法の再現可能性 <i class="fa fa-external-link"></i>](https://www.slideshare.net/kohske/rrstudior-markdown){target="_blank" title="RとRStudioとR Markdownを通して"}  
 　  
 
-* [演習用テンプレート <i class="fa fa-external-link-square"></i>](./template/template.html){target="_blank" title="HTML Format"}
+<!-- * [演習用テンプレート <i class="fa fa-external-link-square"></i>](./template/template.html){target="_blank" title="HTML Format"} -->
 * [演習用テンプレート <i class="fa fa-file-code-o"></i> （右クリックでダウンロード）](./template/template.Rmd)
 
 　  
