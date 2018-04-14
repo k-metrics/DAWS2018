@@ -49,7 +49,7 @@ output:
 2    | [Rtoolsのインストール <i class="fa fa-external-link-square"></i>][PE2]     | Winodws環境のみ
 3    | [Gitのインストール <i class="fa fa-external-link-square"></i>][PE8]        | Git本体のみ（GUIクライアントは不要）
 4    | [RStudioのインストール <i class="fa fa-external-link-square"></i>][PE4]    | Desktop版
-5    | [パッケージのインストール <i class="fa fa-external-link-square"></i>][PE5] | `packrat`ならびに`devtools`
+5    | [パッケージのインストール <i class="fa fa-external-link-square"></i>][PE5] | **`packrat`**ならびに**`devtools`**
 
 
 * [R/RStudio入門 <i class="fa fa-external-link"></i>](https://kazutan.github.io/JSSP2018_spring/intro_rstudio.html){target="_blank" title="【参考資料】日本社会心理学会 第5回春の方法論セミナー資料"}
