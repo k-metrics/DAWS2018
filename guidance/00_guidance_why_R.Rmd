@@ -87,5 +87,10 @@ Gitは分散型VCS(Version Control System)。GitHubはクラウドサービス�
 
 ![](./fig/git_github_rstudio.png)
 
+## [FYI] Packrat
+`packrat`はRのパッケージ構成を管理するためのパッケージ。
+
+![](./fig/packrat.png)
+
 ## License
 本資料中で引用してる画像などの著作権は各著作権者にあります。
