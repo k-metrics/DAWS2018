@@ -113,7 +113,7 @@
       <h1 data-config-title><!-- populated from slide_config.json --></h1>
       <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
       <p data-config-presenter><!-- populated from slide_config.json --></p>
-            <p style="margin-top: 6px; margin-left: -2px;">2018年04月14日</p>
+            <p style="margin-top: 6px; margin-left: -2px;">2018年04月17日</p>
           </hgroup>
   </slide>
 
@@ -173,28 +173,28 @@
 </tr>
 <tr class="odd">
 <td align="left">R本体</td>
-<td align="left">Yes</td>
-<td align="left">Yes</td>
-<td align="left">Yes</td>
-<td align="left">3.4.4 or later</td>
+<td align="left">Yes, <a href='https://cran.ism.ac.jp/banner.shtml' title=''>download</a></td>
+<td align="left">Yes, <a href='https://cran.ism.ac.jp/banner.shtml' title=''>download</a></td>
+<td align="left">Yes, <a href='https://cran.ism.ac.jp/banner.shtml' title=''>download</a></td>
+<td align="left">3.4.4</td>
 </tr>
 <tr class="even">
 <td align="left">RStudio</td>
-<td align="left">Yes</td>
-<td align="left">Yes</td>
-<td align="left">Yes</td>
-<td align="left">Desktop 1.1.423 or later</td>
+<td align="left">Yes, <a href='https://www.rstudio.com/products/rstudio/download/#download' title=''>download</a></td>
+<td align="left">Yes, <a href='https://www.rstudio.com/products/rstudio/download/#download' title=''>download</a></td>
+<td align="left">Yes, <a href='https://www.rstudio.com/products/rstudio/download/#download' title=''>download</a></td>
+<td align="left">Desktop 1.1.442 or later</td>
 </tr>
 <tr class="odd">
 <td align="left">Rtools34</td>
-<td align="left">Yes, <a href='http://cran.us.r-project.org/bin/windows/Rtools/' title=''>R3.3.x and later <i class="fa fa-external-link"></i></a></td>
+<td align="left">Yes, <a href='http://cran.us.r-project.org/bin/windows/Rtools/' title=''>download</a></td>
 <td align="left"><strong>No</strong></td>
 <td align="left"><strong>No</strong></td>
 <td align="left">Windows Only</td>
 </tr>
 <tr class="even">
 <td align="left">Git</td>
-<td align="left">Yes, <a href='https://gitforwindows.org/' title=''>Git for Windows <i class="fa fa-external-link"></i></a></td>
+<td align="left">Yes, <a href='https://gitforwindows.org/' title=''>download</a></td>
 <td align="left">Yes</td>
 <td align="left">Yes</td>
 <td align="left">Gitクライアントではありません</td>
@@ -208,7 +208,7 @@
 </tr>
 </table>
 
-<p>　<br/>この手の勉強会としては本邦初？の試みとして<strong>GitHubリポジトリ</strong>と<strong>packrat</strong>パッケージを用いた統一環境の作成を行います。なお、<strong>GitHubアカウントの取得は不要</strong>です。</p>
+<p>　<br/>この手の勉強会としては本邦初？の試みとして<strong>GitHubリポジトリ</strong>と<strong>packrat</strong>パッケージを用いた環境の統一を行います。なお、<strong>GitHubアカウントの取得は不要</strong>です。</p>
 
 </article></slide><slide class=""><hgroup><h2>Rのインストールと動作確認</h2></hgroup><article  id="r">
 
@@ -278,7 +278,7 @@
 
 </article></slide><slide class=""><hgroup><h2>利用するバージョン</h2></hgroup><article >
 
-<p>環境を統一するためにRStudioのバージョンは統一（v1.1.423 or later）したいと思います。</p>
+<p>環境を統一するためにRStudioのバージョンは統一（v1.1.442 or later）したいと思います。</p>
 
 <h3>インストール先の確認</h3>
 
@@ -363,11 +363,11 @@
 <li>必要なパッケージのダウンロードとインストールが始まります
 
 <ul>
-<li>環境にもよりますが<strong>15〜30分前後の時間</strong>がかかります
+<li>環境にもよりますが<strong>15〜30分前後の時間（目安）</strong>がかかります
 
 <ul>
-<li>気になるならシステムモニタを開いておいてください</li>
-<li>特にコンパイルが必要な場合には時間がかかります</li>
+<li>フリーズしたように見える場合がありますが、大抵、動いてます</li>
+<li>気になる場合はシステムモニタを開いておいてください</li>
 </ul></li>
 <li>&quot;Packrat mode on. Using library in directory:&quot;と表示されれば完了です
 
@@ -378,7 +378,36 @@
 </ul></li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>リカバリタイム</h2></hgroup><article  id="-2">
+</article></slide><slide class=""><hgroup><h2>リカバリタイム（その１）</h2></hgroup><article >
+
+<ul>
+<li>&quot;Packrat is not installed in the local library &#8211; attempting to bootstrap an installation&#8230;&quot;と表示された
+
+<ul>
+<li>気にしなくて大丈夫です、おそらく、その後に以下のメッセージが表示されているかと
+
+<ul>
+<li>&quot;Using user-library packrat (0.4.9.1) to bootstrap this project&quot;</li>
+</ul></li>
+</ul></li>
+<li>なんか止まってる（フリーズしてる）ように見えるけど
+
+<ul>
+<li>動いていますのでシステムモニタ（リソースモニタ）で確認を</li>
+</ul></li>
+<li>完了メッセージが表示されてもCPUにずっと負荷があるけど
+
+<ul>
+<li>Windows環境特有の現象のようなのでRStudioを強制終了させてください</li>
+</ul></li>
+<li>何かのエラーが出たけど動き続けてる
+
+<ul>
+<li>完了メッセージが出てから<strong>packrat::restore()</strong>を実行してください</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>リカバリタイム（その２）</h2></hgroup><article  id="-1">
 
 <ul>
 <li>&quot;Installing R package form source requires install of additional build tools.&quot;と表示された
@@ -395,6 +424,21 @@
 <li>コンソールから<strong>packrat::restore()</strong>を実行します（止まった場合）</li>
 <li>RStudioを再起動しコンソールから<strong>packrat::status()</strong>を実行します（不足の確認、強制終了の場合）</li>
 </ol></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>リカバリタイム（その３）</h2></hgroup><article  id="-2">
+
+<ul>
+<li><code>packrat::restore()</code>を実行したけどプロンプトが帰ってこない
+
+<ul>
+<li>コンソールの右上に赤いアイコンが出ている場合は動作中です</li>
+</ul></li>
+<li><code>packrat::status()</code>を実行したけどプロンプトが帰ってこない
+
+<ul>
+<li>コンソールの右上に赤いアイコンが出ている場合は動作中です</li>
+</ul></li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>動作確認</h2></hgroup><article >

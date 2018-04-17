@@ -48,14 +48,14 @@ OSによりインストール方法などが異なりますので、環境構築
 
 Software | Windows         | macOS | Ubuntu | Memo
 ---------|-----------------|-------|--------|-----
-R本体    | Yes             | Yes   | Yes    | 3.4.4 or later
-RStudio  | Yes             | Yes   | Yes    | Desktop 1.1.423 or later
-Rtools34 | Yes, [R3.3.x and later <i class="fa fa-external-link"></i>](http://cran.us.r-project.org/bin/windows/Rtools/){target="_blank" title="Building R for Windows"}             | **No** | **No** | Windows Only
-Git      | Yes, [Git for Windows <i class="fa fa-external-link"></i>](https://gitforwindows.org/){target="_blank" title=""} | Yes   | Yes    | Gitクライアントではありません
+R本体    | Yes, [download](https://cran.ism.ac.jp/banner.shtml)             | Yes, [download](https://cran.ism.ac.jp/banner.shtml)   | Yes, [download](https://cran.ism.ac.jp/banner.shtml)    | 3.4.4
+RStudio  | Yes, [download](https://www.rstudio.com/products/rstudio/download/#download)             | Yes, [download](https://www.rstudio.com/products/rstudio/download/#download)   | Yes, [download](https://www.rstudio.com/products/rstudio/download/#download)    | Desktop 1.1.442 or later
+Rtools34 | Yes, [download](http://cran.us.r-project.org/bin/windows/Rtools/)             | **No** | **No** | Windows Only
+Git      | Yes, [download](https://gitforwindows.org/) | Yes   | Yes    | Gitクライアントではありません
 packart, devtools  | Yes             | Yes   | Yes    | CRAN
 
 　  
-この手の勉強会としては本邦初？の試みとして**GitHubリポジトリ**と**packrat**パッケージを用いた統一環境の作成を行います。なお、**GitHubアカウントの取得は不要**です。
+この手の勉強会としては本邦初？の試みとして**GitHubリポジトリ**と**packrat**パッケージを用いた環境の統一を行います。なお、**GitHubアカウントの取得は不要**です。
 
 
 ## Rのインストールと動作確認
@@ -114,7 +114,7 @@ Windowsの場合は[Git for Windows](https://gitforwindows.org/)をダウンロ�
 # RStudioのインストールと動作確認
 
 ## 利用するバージョン
-環境を統一するためにRStudioのバージョンは統一（v1.1.423 or later）したいと思います。
+環境を統一するためにRStudioのバージョンは統一（v1.1.442 or later）したいと思います。
 
 ### インストール先の確認
 Rをデフォルトのインストール先から変更した方はRStudioのインストール先も変更しておいた方が無難です。なお、インストールには管理者権限が必要です。
@@ -173,15 +173,25 @@ Rをデフォルトのインストール先から変更した方はRStudioのイ
 * クローンが終わると自動的にプロジェクトが開かれます
 * コンソールに色々とエラーが出ても気にしないでください
 * 必要なパッケージのダウンロードとインストールが始まります
-    * 環境にもよりますが**15〜30分前後の時間**がかかります
-        * 気になるならシステムモニタを開いておいてください
-        * 特にコンパイルが必要な場合には時間がかかります
+    * 環境にもよりますが**15〜30分前後の時間（目安）**がかかります
+        * フリーズしたように見える場合がありますが、大抵、動いてます
+        * 気になる場合はシステムモニタを開いておいてください
     * "Packrat mode on. Using library in directory:"と表示されれば完了です
         * Windows環境では完了メッセージが出た後もバックグラウンドでRのセッションが動き続けることがあります。しばらく放置しても終わらない場合は強制終了させ再起動してください
         * 途中でエラーが出て再開させた場合は完了メッセージは表示されません
 
+## リカバリタイム（その１）
+* "Packrat is not installed in the local library -- attempting to bootstrap an installation..."と表示された
+    * 気にしなくて大丈夫です、おそらく、その後に以下のメッセージが表示されているかと
+        * "Using user-library packrat (0.4.9.1) to bootstrap this project"
+* なんか止まってる（フリーズしてる）ように見えるけど
+    * 動いていますのでシステムモニタ（リソースモニタ）で確認を
+* 完了メッセージが表示されてもCPUにずっと負荷があるけど
+    * Windows環境特有の現象のようなのでRStudioを強制終了させてください
+* 何かのエラーが出たけど動き続けてる
+    * 完了メッセージが出てから**packrat::restore()**を実行してください
 
-## リカバリタイム
+## リカバリタイム（その２）
 * "Installing R package form source requires install of additional build tools."と表示された
     1. ［No］をクリックし**RStudioを終了**させます
     1. Rtoolsを一旦削除し**デフォルトパスで再インストール**します
@@ -191,6 +201,11 @@ Rをデフォルトのインストール先から変更した方はRStudioのイ
     1. コンソールから**packrat::restore()**を実行します（止まった場合）
     1. RStudioを再起動しコンソールから**packrat::status()**を実行します（不足の確認、強制終了の場合）
 
+## リカバリタイム（その３）
+* `packrat::restore()`を実行したけどプロンプトが帰ってこない
+    * コンソールの右上に赤いアイコンが出ている場合は動作中です
+* `packrat::status()`を実行したけどプロンプトが帰ってこない
+    * コンソールの右上に赤いアイコンが出ている場合は動作中です
 
 ## 動作確認
 ### ブランチの作成
