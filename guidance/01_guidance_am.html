@@ -381,6 +381,35 @@
 </article></slide><slide class=""><hgroup><h2>リカバリタイム</h2></hgroup><article  id="-2">
 
 <ul>
+<li>&quot;Packrat is not installed in the local library &#8211; attempting to bootstrap an installation&#8230;&quot;と表示された
+
+<ul>
+<li>気にしなくて大丈夫です、おそらく、その後に以下のメッセージが表示されているかと
+
+<ul>
+<li>&quot;Using user-library packrat (0.4.9.1) to bootstrap this project&quot;</li>
+</ul></li>
+</ul></li>
+<li>なんか止まってる（フリーズしてる）ように見えるけど
+
+<ul>
+<li>動いてますのでシステムモニタ（リソースモニタ）で確認してみて</li>
+</ul></li>
+<li>完了メッセージが表示されてもCPUにずっと負荷があるけど
+
+<ul>
+<li>Windows環境特有の現象のようなのでRStudioを強制終了させてください</li>
+</ul></li>
+<li>何かのエラーが出たけど動き続けてる
+
+<ul>
+<li>完了メッセージが出てから<strong>packrat::restore()</strong>を実行してください</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>リカバリタイム</h2></hgroup><article  id="-3">
+
+<ul>
 <li>&quot;Installing R package form source requires install of additional build tools.&quot;と表示された
 
 <ol>
@@ -395,6 +424,21 @@
 <li>コンソールから<strong>packrat::restore()</strong>を実行します（止まった場合）</li>
 <li>RStudioを再起動しコンソールから<strong>packrat::status()</strong>を実行します（不足の確認、強制終了の場合）</li>
 </ol></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>リカバリタイム</h2></hgroup><article  id="-4">
+
+<ul>
+<li><code>packrat::restore()</code>を実行したけどプロンプトが表示されない
+
+<ul>
+<li>コンソールの右上に赤いアイコンが出ている場合は動作中です</li>
+</ul></li>
+<li><code>packrat::status()</code>を実行したけどプロンプトが表示されない
+
+<ul>
+<li>コンソールの右上に赤いアイコンが出ている場合は動作中です</li>
+</ul></li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>動作確認</h2></hgroup><article >

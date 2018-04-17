@@ -180,6 +180,16 @@ Rをデフォルトのインストール先から変更した方はRStudioのイ
         * Windows環境では完了メッセージが出た後もバックグラウンドでRのセッションが動き続けることがあります。しばらく放置しても終わらない場合は強制終了させ再起動してください
         * 途中でエラーが出て再開させた場合は完了メッセージは表示されません
 
+## リカバリタイム
+* "Packrat is not installed in the local library -- attempting to bootstrap an installation..."と表示された
+    * 気にしなくて大丈夫です、おそらく、その後に以下のメッセージが表示されているかと
+        * "Using user-library packrat (0.4.9.1) to bootstrap this project"
+* なんか止まってる（フリーズしてる）ように見えるけど
+    * 動いてますのでシステムモニタ（リソースモニタ）で確認してみて
+* 完了メッセージが表示されてもCPUにずっと負荷があるけど
+    * Windows環境特有の現象のようなのでRStudioを強制終了させてください
+* 何かのエラーが出たけど動き続けてる
+    * 完了メッセージが出てから**packrat::restore()**を実行してください
 
 ## リカバリタイム
 * "Installing R package form source requires install of additional build tools."と表示された
@@ -191,6 +201,11 @@ Rをデフォルトのインストール先から変更した方はRStudioのイ
     1. コンソールから**packrat::restore()**を実行します（止まった場合）
     1. RStudioを再起動しコンソールから**packrat::status()**を実行します（不足の確認、強制終了の場合）
 
+## リカバリタイム
+* `packrat::restore()`を実行したけどプロンプトが表示されない
+    * コンソールの右上に赤いアイコンが出ている場合は動作中です
+* `packrat::status()`を実行したけどプロンプトが表示されない
+    * コンソールの右上に赤いアイコンが出ている場合は動作中です
 
 ## 動作確認
 ### ブランチの作成
