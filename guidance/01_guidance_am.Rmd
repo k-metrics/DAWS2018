@@ -48,14 +48,14 @@ OSによりインストール方法などが異なりますので、環境構築
 
 Software | Windows         | macOS | Ubuntu | Memo
 ---------|-----------------|-------|--------|-----
-R本体    | Yes, [download](https://cran.ism.ac.jp/banner.shtml)             | Yes, [download](https://cran.ism.ac.jp/banner.shtml)   | Yes, [download](https://cran.ism.ac.jp/banner.shtml)    | 3.4.4
+R **3.4.4**    | Yes, [download](https://cran.ism.ac.jp/banner.shtml)             | Yes, [download](https://cran.ism.ac.jp/banner.shtml)   | Yes, [download](https://cran.ism.ac.jp/banner.shtml)    | [Previous Release, Windows](https://cran.ism.ac.jp/bin/windows/base/old/)
 RStudio  | Yes, [download](https://www.rstudio.com/products/rstudio/download/#download)             | Yes, [download](https://www.rstudio.com/products/rstudio/download/#download)   | Yes, [download](https://www.rstudio.com/products/rstudio/download/#download)    | Desktop 1.1.442 or later
-Rtools34 | Yes, [download](http://cran.us.r-project.org/bin/windows/Rtools/)             | **No** | **No** | Windows Only
+Rtools**34** | Yes, [download](http://cran.us.r-project.org/bin/windows/Rtools/)             | **No** | **No** | Windows Only
 Git      | Yes, [download](https://gitforwindows.org/) | Yes   | Yes    | Gitクライアントではありません
 packart, devtools  | Yes             | Yes   | Yes    | CRAN
 
 　  
-この手の勉強会としては本邦初？の試みとして**GitHubリポジトリ**と**packrat**パッケージを用いた環境の統一を行います。なお、**GitHubアカウントの取得は不要**です。
+**GitHubリポジトリ**と**packrat**パッケージを用いた環境の作成（パッケージの統一）を行います。なお、**GitHubアカウントの取得は不要**です。
 
 
 ## Rのインストールと動作確認
@@ -185,7 +185,7 @@ Rをデフォルトのインストール先から変更した方はRStudioのイ
     * 気にしなくて大丈夫です、おそらく、その後に以下のメッセージが表示されているかと
         * "Using user-library packrat (0.4.9.1) to bootstrap this project"
 * なんか止まってる（フリーズしてる）ように見えるけど
-    * 動いていますのでシステムモニタ（リソースモニタ）で確認を
+    * たぶんビルド中なんでリソースモニタで確認してください
 * 完了メッセージが表示されてもCPUにずっと負荷があるけど
     * Windows環境特有の現象のようなのでRStudioを強制終了させてください
 * 何かのエラーが出たけど動き続けてる
@@ -195,21 +195,24 @@ Rをデフォルトのインストール先から変更した方はRStudioのイ
 * "Installing R package form source requires install of additional build tools."と表示された
     1. ［No］をクリックし**RStudioを終了**させます
     1. Rtoolsを一旦削除し**デフォルトパスで再インストール**します
-    1. プロジェクトフォルダを削除します
+        * **Rtools34**をデフォルトインストール（ただしパスを追加する）
+    1. **プロジェクトフォルダを削除**します
     1. RStudioを起動させ再度プロジェクトを作成します
 * 何かのエラーで止まった、パッケージが不足しているかも、強制終了させた
     1. コンソールから**packrat::restore()**を実行します（止まった場合）
     1. RStudioを再起動しコンソールから**packrat::status()**を実行します（不足の確認、強制終了の場合）
 
 ## リカバリタイム（その３）
-* `packrat::restore()`を実行したけどプロンプトが帰ってこない
+* packrat::restore()を実行したけどプロンプトが帰ってこない
     * コンソールの右上に赤いアイコンが出ている場合は動作中です
-* `packrat::status()`を実行したけどプロンプトが帰ってこない
+* packrat::status()を実行したけどプロンプトが帰ってこない
     * コンソールの右上に赤いアイコンが出ている場合は動作中です
+* Packageペインにパッケージが二重に表示されている
+    * 動作に支障ないので**気にしない**でください
 
 ## 動作確認
 ### ブランチの作成
-プロジェクトが作成できたら作業用のブランチを作成します。［Git］タブの［New Branch］をクリックしてダイアログが表示されたら**リモートを「(None)」**にしブランチ名に「feature/test」を入力し［Create］ボタンをクリックします。
+プロジェクトが作成できたら作業用のブランチを作成します。［Git］タブの右側にある［New Branch］（環境によってはアイコンのみ）ボタンをクリックしてダイアログが表示されたら**リモートを「(None)」**にしブランチ名に「feature/test」を入力し［Create］ボタンをクリックします。
 
 ![](./fig/RStudio_git.png)
 
@@ -219,7 +222,7 @@ Rをデフォルトのインストール先から変更した方はRStudioのイ
 
 ## 動作確認（つづき）
 ### Rmdファイルのレンダリング
-ブランチが作成されたらR Markdownファイルをレンダリングします。
+作成したブランチに切り替わっていることを確認したらR Markdownファイルをレンダリングします。
 
 1. ［Files］ペインで"template"フォルダを開きます
 1. "Self-introduction.Rmd"をクリックして開きます
