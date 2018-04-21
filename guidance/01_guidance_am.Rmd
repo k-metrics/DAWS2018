@@ -57,9 +57,19 @@ packart, devtools  | Yes             | Yes   | Yes    | CRAN
 　  
 **GitHubリポジトリ**と**packrat**パッケージを用いた環境の作成（パッケージの統一）を行います。なお、**GitHubアカウントの取得は不要**です。
 
+## Rtoolsについて
+RtoolsはWindows環境でソースからパッケージをビルドするために必要なツール群がまとめられています。最新版のRtools35を利用するには組み合わせに注意が必要です。
+
+Rtools | R | RStudio
+-------|---|--------
+Rtools35 | 3.3.x or later | **1.1.447** or later
+Rtools34 | 3.3.x or later | 1.0.x or later
+
+　  
+Linux環境やmacOS環境ではOS側に標準でツール群が備わっていますのでRtoolsは不要です。
 
 ## Rのインストールと動作確認
-環境を統一するためにRのバージョンは統一したいと考えています（R 3.4.4 or R.3.5.x）。追加パッケージは`packrat`を用いることでバージョンを統一します。  
+環境を統一するためにRのバージョンは統一したいと考えています（R 3.4.4）。追加パッケージは`packrat`を用いることでバージョンを統一します。  
 
 ### Rのインストール
 [Rのインストール方法](https://k-metrics.github.io/cabinet/program/env_install.html)を参考にインストールを行ってください。macOSの方はサポーターの方からレクチャしてもらってください。  
@@ -91,7 +101,7 @@ plot(iris)
 Windows環境の方は**Rtools**というツール群をインストールしておきます。これはパッケージが実行形式で提供されていない場合に必要となるツール（コンパイラなど）です。
 
 ### Rtoolsのインストール
-[Rtoolsのインストール方法](https://k-metrics.github.io/cabinet/program/env_install_tls.html)を参考にインストールを行ってください。必ず**デフォルト・オプション**でインストールしてください。Windows環境以外の方はインストールの必要はありません。
+[Rtoolsのインストール方法](https://k-metrics.github.io/cabinet/program/env_install_tls.html)を参考にRtools**34**のインストールを行ってください。必ず**デフォルト・オプション**でインストールしてください。Windows環境以外の方はインストールの必要はありません。
 
 ### Rtoolsの動作確認
 動作確認方法は特にありません。インストーラでエラーが出ていないことは確認しておいて下さい。
@@ -182,27 +192,31 @@ Rをデフォルトのインストール先から変更した方はRStudioのイ
 
 ## リカバリタイム（その１）
 * "Packrat is not installed in the local library -- attempting to bootstrap an installation..."と表示された
-    * 気にしなくて大丈夫です、おそらく、その後に以下のメッセージが表示されているかと
+    * 気にしなくて大丈夫です、その後に以下のメッセージが表示されているかと
         * "Using user-library packrat (0.4.9.1) to bootstrap this project"
 * なんか止まってる（フリーズしてる）ように見えるけど
     * たぶんビルド中なんでリソースモニタで確認してください
+* "The following packages are referenced in your code, but are not present
+in your library nor in packrat:"と表示された
+    * MASSなどのシステムライブラリが表示された場合は問題ありません
+    * RStudioを**再起動**させ**packrat::restore()**を実行させてください
+
+## リカバリタイム（その２）
 * 完了メッセージが表示されてもCPUにずっと負荷があるけど
     * Windows環境特有の現象のようなのでRStudioを強制終了させてください
 * 何かのエラーが出たけど動き続けてる
     * 完了メッセージが出てから**packrat::restore()**を実行してください
-
-## リカバリタイム（その２）
 * "Installing R package form source requires install of additional build tools."と表示された
     1. ［No］をクリックし**RStudioを終了**させます
     1. Rtoolsを一旦削除し**デフォルトパスで再インストール**します
         * **Rtools34**をデフォルトインストール（ただしパスを追加する）
     1. **プロジェクトフォルダを削除**します
     1. RStudioを起動させ再度プロジェクトを作成します
+
+## リカバリタイム（その３）
 * 何かのエラーで止まった、パッケージが不足しているかも、強制終了させた
     1. コンソールから**packrat::restore()**を実行します（止まった場合）
     1. RStudioを再起動しコンソールから**packrat::status()**を実行します（不足の確認、強制終了の場合）
-
-## リカバリタイム（その３）
 * packrat::restore()を実行したけどプロンプトが帰ってこない
     * コンソールの右上に赤いアイコンが出ている場合は動作中です
 * packrat::status()を実行したけどプロンプトが帰ってこない
