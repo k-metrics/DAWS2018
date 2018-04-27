@@ -31,7 +31,7 @@ require(tidyverse)
 　　テーマ：実践データ分析　～実務での利用を目指して～  
 　　目　標：分析に関わる基本的なスキルを伸ばす・習得する
 
-![Data Science Workflow, CC BY 4.0 RStudio, Inc.](./fig/dswf.png)
+![Fig. [Data Science Workflow, CC BY 4.0 RStudio, Inc.](https://github.com/rstudio/RStartHere)](./fig/dswf.png)
 
 # なぜRを使うのか？
 
@@ -51,27 +51,31 @@ require(tidyverse)
 
 ---
 
-![Apr 2018 TIOBE Index](./fig/TIOBE_index_201804.png)
+![Fig. [Apr 2018 TIOBE Index](https://www.tiobe.com/tiobe-index/)](./fig/TIOBE_index_201804.png)
 
 ---
 
-![Apr 2018 TIOBE Index](./fig/TIOBE_index_R_201804.png)
+![Fig. [Apr 2018 TIOBE Index, R](https://www.tiobe.com/tiobe-index/r/)](./fig/TIOBE_index_R_201804.png)
 
 ---
 
-![2017 IEEE Spectrum Ranking](./fig/IEEE_Spectrum_Ranking_2017.png)
+![Fig. [2017 IEEE Spectrum Ranking](https://spectrum.ieee.org/static/interactive-the-top-programming-languages-2017)](./fig/IEEE_Spectrum_Ranking_2017.png)
 
 ---
 
-![2017 IEEE Trending Ranking](./fig/IEEE_Trending_Ranking_2017.png)
+![Fig. [2017 IEEE Trending Ranking](https://spectrum.ieee.org/static/interactive-the-top-programming-languages-2017)](./fig/IEEE_Trending_Ranking_2017.png)
 
 ---
 
-![2017 IEEE Open Ranking](./fig/IEEE_Open_Source_Hubs_Ranking_2017.png)
+![Fig. [2017 IEEE Open Ranking](https://spectrum.ieee.org/static/interactive-the-top-programming-languages-2017)](./fig/IEEE_Open_Source_Hubs_Ranking_2017.png)
 
 ---
 
-![RedMonk Language Ranking](./fig/redmonklang.png)
+![Fig. [RedMonk Language Rankings Over Time](https://redmonk.com/fryan/2018/03/15/redmonk-language-rankings-over-time/)](./fig/redmonklang.png)
+
+---
+
+![Fig. [RedMonk Language Rankings](https://redmonk.com/sogrady/2018/03/07/language-rankings-1-18/)](./fig/redmonklangrankings.png)
 
 
 ## 推奨図書：『みんなのR 第2版』
