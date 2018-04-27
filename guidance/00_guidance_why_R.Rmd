@@ -17,8 +17,8 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 require(tidyverse)
 ```
 
-## 勉強会について
-2011年度に主催である小池氏が発足させたR勉強会を母体とするソフトウェアメトリクス分析に興味・関心がある有志による**勉強会**です。詳細は[こちら](https://sites.google.com/site/kantometrics/home)。
+## 本勉強会について
+2011年度に小池氏が発足させたR勉強会を母体とするソフトウェアメトリクス分析に興味・関心がある**有志による**勉強会です。詳細は[こちら](https://sites.google.com/site/kantometrics/home)。
 
 　     | メンバーなど                   | 備考
 -------|--------------------------------|------------------------
@@ -31,7 +31,7 @@ require(tidyverse)
 　　テーマ：実践データ分析　～実務での利用を目指して～  
 　　目　標：分析に関わる基本的なスキルを伸ばす・習得する
 
-![rstudio/RStartHere, GitHub](./fig/dswf.png)
+![Data Science Workflow, CC BY 4.0 RStudio, Inc.](./fig/dswf.png)
 
 # なぜRを使うのか？
 
@@ -74,28 +74,33 @@ require(tidyverse)
 ![RedMonk Language Ranking](./fig/redmonklang.png)
 
 
-## 推奨図書
-著者が学生ならこういうことを教わりたかったという視点で解説しているので基礎から一通り学ぶ場合に向いています。モダンなデータ分析と言われる"Tidyverse"の解説が追加された**第2版を買うべき**。
+## 推奨図書：『みんなのR 第2版』
+著者（統計学の教授）が学生ならこういうことを教わりたかったという視点で解説していて基礎から一通り学ぶ場合に向いています。トレンドの"Tidyverse"の解説が追加された**第2版**がおすゝめ。第1版欲しいなら半額で譲ります！
 
 ![](./fig/r_for_everyone.jpg)
 
 
-## 推奨図書
-R Markdownによる再現可能なデータ分析とレポート作成の解説に加えてRStudio自体の解説もある今までのR関連書籍とは毛色の異なる（個人的には）**待望の書**。
+## 推奨図書：『再現可能性のすゝめ』
+R Markdownによる再現可能なデータ分析とレポート作成の解説に加えRStudio自体の解説もあり、今までのR関連書籍とは毛色が異なる**待望の書**。
 
 ![](./fig/wonderful_R_vol3.jpg)
 
 
-## [FYI] GitとGitHub
+## GitとGitHub
 Gitは分散型VCS(Version Control System)。GitHubはクラウドサービス。
 
 ![](./fig/git_github_rstudio.png)
 
 
-## [FYI] Packrat
-`packrat`はRのパッケージ構成を管理するためのパッケージ。
+## R Package "Packrat"
+`packrat`はRのパッケージ管理を行うためのパッケージ。
 
 ![](./fig/packrat.png)
 
 ## License
-本資料中で引用してる画像などの著作権は原著作権者にあります。
+
+CC BY-NC-SA 4.0, Sampo Suzuki  
+
+* 本資料中で引用してる画像などの著作権は原著作権者にあります。
+
+# Enjoy!
