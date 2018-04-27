@@ -49,7 +49,7 @@ OSによりインストール方法などが異なりますので、環境構築
 Software | Windows         | macOS | Ubuntu | Memo
 ---------|-----------------|-------|--------|-----
 R **3.4.4**    | Yes, [download](https://cran.ism.ac.jp/banner.shtml)             | Yes, [download](https://cran.ism.ac.jp/banner.shtml)   | Yes, [download](https://cran.ism.ac.jp/banner.shtml)    | [Previous Release, Windows](https://cran.ism.ac.jp/bin/windows/base/old/)
-RStudio  | Yes, [download](https://www.rstudio.com/products/rstudio/download/#download)             | Yes, [download](https://www.rstudio.com/products/rstudio/download/#download)   | Yes, [download](https://www.rstudio.com/products/rstudio/download/#download)    | Desktop 1.1.442 or later
+RStudio  | Yes, [download](https://www.rstudio.com/products/rstudio/download/#download)             | Yes, [download](https://www.rstudio.com/products/rstudio/download/#download)   | Yes, [download](https://www.rstudio.com/products/rstudio/download/#download)    | Desktop **1.1.447** or later
 Rtools**34** | Yes, [download](http://cran.us.r-project.org/bin/windows/Rtools/)             | **No** | **No** | Windows Only
 Git      | Yes, [download](https://gitforwindows.org/) | Yes   | Yes    | Gitクライアントではありません
 packart, devtools  | Yes             | Yes   | Yes    | CRAN
@@ -203,7 +203,7 @@ in your library nor in packrat:"と表示された
 
 ## リカバリタイム（その２）
 * 完了メッセージが表示されてもCPUにずっと負荷があるけど
-    * Windows環境特有の現象のようなのでRStudioを強制終了させてください
+    * Windows環境特有の現象のようなのでRのセッションをリスタートさせてください（念の為にRStudioも）
 * 何かのエラーが出たけど動き続けてる
     * 完了メッセージが出てから**packrat::restore()**を実行してください
 * "Installing R package form source requires install of additional build tools."と表示された
