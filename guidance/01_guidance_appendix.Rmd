@@ -19,9 +19,7 @@ require(tidyverse)
 
 
 ## おまけの部
-自習用教材を用意してあります。Edgeを除くブラウザで動作しますので試してみてください。
-
-実行手順
+自習用教材を用意してあります。Edgeを除くブラウザで動作しますので試してみてください（**R 3.5では動作しません**）。
 
 1. RStudioで「2018dasg」プロジェクトを開きます
 1. ［File］ペインで「learnr」フォルダを開きます
@@ -32,5 +30,15 @@ require(tidyverse)
 1. 停止する場合は［R Markdown］ペインにある［Stop］ボタンをクリックします
 
 
-## License
+## License and Session Info
 CC BY-NC-SA 4.0, Sampo Suzuki
+
+```{r}
+devtools::session_info()$platform
+```
+
+## Packages
+```{r}
+devtools::session_info()$package
+```
+
