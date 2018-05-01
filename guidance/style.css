@@ -26,3 +26,7 @@ strong {
   background: linear-gradient(transparent 70%, #66FFCC 60%);
 }
 */
+
+.caption {
+  font-size: 75%;
+}
