@@ -33,7 +33,18 @@ require(tidyverse)
 
 ![Fig. [Data Science Workflow, CC BY 4.0 RStudio, Inc.](https://github.com/rstudio/RStartHere)](./fig/dswf.png)
 
-# なぜRを使うのか？
+## データ分析とは
+何らかの目的を持って表現された文字や符号、数値などを収集し、分類、整理、成型、取捨選択したうえで解釈して、価値のある意味を見出すことといえるでしょう。（中略）そのために以下の3つを理解しておく必要があります。  
+
+1) 分析しようとする問題そのものについての理解
+1) 分析手法についての理解
+1) 分析結果に対する判断力
+
+<p align=right>出典：[データ分析とは <i class="fa fa-external-link"></i>](https://www.albert2005.co.jp/knowledge/statistics_analysis/statistics_basics/data_analysis){target="_blank" title="データ分析基礎知識"}</p>  
+
+データ分析を行うためは分析ツールが必要不可欠で、その使い方を知っているのと知らないのでは分析効率や再現性確保に圧倒的な差が生じます。特にソフトウェアメトリクス分析のようなアドホック分析ではその差が顕著に出ると思います。
+
+# なぜRをなのか？（すゝめる理由）
 
 ## [Six Reasons To Learn R For Business, R Blogger](https://www.r-bloggers.com/six-reasons-to-learn-r-for-business/){target="_blank"}
 
