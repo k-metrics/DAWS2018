@@ -40,14 +40,14 @@ OSによりインストール方法などが異なりますので、環境構築
 ### macOS
 * おそらく1チームで足りるかと人数が多ければ2チームで
 
-### linux(Ubuntu)
+### Ubuntu(linux)
 * いないと思いますが...
 
 
 ## 必要なもの
 
-Software | Windows         | macOS | Ubuntu | Memo
----------|-----------------|-------|--------|-----
+Software | Windows | OS X 10.11 and higher | Ubuntu | Memo
+---------|---------|---------|---------|---------
 R **3.4.4**    | Yes, [download](https://cran.ism.ac.jp/bin/windows/base/old/)             | Yes, [download](https://cloud.r-project.org/bin/macosx/R-3.4.4.pkg)   | Yes   | [Current Version](https://cloud.r-project.org/index.html)
 RStudio  | Yes, [download](https://www.rstudio.com/products/rstudio/download/#download)             | Yes, [download](https://www.rstudio.com/products/rstudio/download/#download)   | Yes, [download](https://www.rstudio.com/products/rstudio/download/#download)    | Desktop **1.1.447** or later
 Rtools**34** | Yes, [download](http://cran.us.r-project.org/bin/windows/Rtools/)             | **No** | **No** | Windows Only
