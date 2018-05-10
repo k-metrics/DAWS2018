@@ -75,11 +75,11 @@ require(tidyverse)
 
 ---
 
-![Fig. [Apr 2018 TIOBE Index](https://www.tiobe.com/tiobe-index/)](./fig/TIOBE_index_201804.png)
+![Fig. [May 2018 TIOBE Index](https://www.tiobe.com/tiobe-index/)](./fig/TIOBE_index_201804.png)
 
 ---
 
-![Fig. [Apr 2018 TIOBE Index, R](https://www.tiobe.com/tiobe-index/r/)](./fig/TIOBE_index_R_201804.png)
+![Fig. [May 2018 TIOBE Index, R](https://www.tiobe.com/tiobe-index/r/)](./fig/TIOBE_index_R_201804.png)
 
 ---
 
@@ -114,7 +114,7 @@ R Markdownによる再現可能なデータ分析とレポート作成の解説�
 ![](./fig/wonderful_R_vol3.jpg)
 
 
-## 推薦図書：『前処理大全』
+## 推奨図書：『前処理大全』
 データ分析の8割、9割はデータを整えるための前処理に費やされると言われており、この前処理を効率的にこなすことで本来実施したい分析に時間を割くことができるようになります。**マエショリスト必読**の書。
 
 ![](./fig/law_of_awesome_data_scientist.jpg)
