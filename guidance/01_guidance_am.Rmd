@@ -94,15 +94,17 @@ Windows環境の方は**Rtools**というツール群をインストールして
 ### Rtoolsの動作確認
 動作確認方法は特にありません。インストーラでエラーが出ていないことは確認しておいて下さい。
 
-
 ## Gitのインストール
 今回はGitHubのリポジトリを利用しますので**Gitが必要**です（Gitクライアントではありません。また、GitHubアカウントも不要です）。  
-Windowsの場合は[Git for Windows](https://gitforwindows.org/)をダウンロードしてインストールしてください。他のOSは公式リポジトリからインストールしてください。
 
-### Gitのインストール
+### Gitのインストール(Windows)
+Windowsの場合は[Git for Windows](https://gitforwindows.org/)をダウンロードしてください。
 [自分用 Git For Windowsのインストール手順](https://qiita.com/toshi-click/items/dcf3dd48fdc74c91b409)を参考にインストールを行ってください。今回はGitHubからリポジトリをクローンするためだけに使いますので基本的にはデフォルト設定で構いません。
 
-### Gitの設定
+### Gitのインストール(Mac)
+とりあえず、`git --version`と打ってみる。入ってなかったら、コマンドライン・デベロッパ・ツールをインストールするか聞かれるので、「インストール」をクリック。
+
+## Gitの設定
 [Git for Windows インストール&設定](https://qiita.com/shinsumicco/items/a1c799640131ae33c792)を参考にユーザー名とメールアドレス設定ぐらいは行っておいてください。
 
 
