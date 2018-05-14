@@ -1,0 +1,28 @@
+---
+title: "About this category"
+author-meta: "k-metrics"
+pagetitle: "データ分析勉強会 - 2018年度"
+output:
+  html_document:
+    css: style.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+　  
+
+## Session Information
+```{r, echo=FALSE}
+# sessionInfo()
+devtools::session_info()$platform
+devtools::session_info()$packages
+```
+
+---
+
+![Sampo Suzuki][CCI]
+[CC BY-NC-SA 4.0 <i class="fa fa-external-link"></i>][CC], Sampo Suzuki [`r format(Sys.time(), format = '%F %H:%M(%Z)')`]
+
+[CC]: http://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja {target="_blank" title="CC BY-NC-SA 4.0"}
+[CCI]: https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png {target="_blank" title="CC BY-NC-SA 4.0 icon"}

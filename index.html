@@ -280,7 +280,9 @@ div.tocify {
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        
+        <li>
+  <a href="./about.html">about</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
@@ -364,7 +366,7 @@ div.tocify {
 </tr>
 <tr class="even">
 <td align="center"><a href="#S02">第2回</a></td>
-<td align="center">2018/6/15</td>
+<td align="center">2018/6/16</td>
 <td align="left">データハンドリング入門</td>
 <td align="left">tidyverse</td>
 </tr>
@@ -403,7 +405,7 @@ div.tocify {
 <h2>第1回 分析環境の構築と動作確認</h2>
 <p>勉強会初（この手の勉強会としては本邦初？）の試みとしてGitHubリポジトリと<strong><code>packrat</code></strong>パッケージを用いた統一環境の作成を試します。なにぶん初めての試みなので上手く行かない可能性もありますが、ご了承ください。</p>
 <ul>
-<li>packrat : A Dependency Management System for Projects and their R Package Dependencies</li>
+<li><a href="https://rstudio.github.io/packrat/" target="_blank" title="Packrat, RStudio">packrat <i class="fa fa-external-link"></i></a> : A Dependency Management System for Projects and their R Package Dependencies</li>
 </ul>
 <p>　</p>
 <div id="午前の部" class="section level3">
@@ -416,43 +418,89 @@ div.tocify {
 </ul>
 <p>　</p>
 <ul>
-<li><a href="./guidance/01_guidance_am.html" target="_blank" title="ioslide">ガイダンス <i class="fa fa-external-link-square"></i></a></li>
-<li><a href="../cabinet/program/env_index.html" target="_blank" title="GitHub Pages">分析環境の構築と動作確認 <i class="fa fa-external-link-square"></i></a>
+<li><a href="./guidance/01_guidance_am.html" target="_blank" title="ioslide">ガイダンス <i class="fa fa-external-link-square"></i></a>
+<ul>
+<li>ガイダンス資料だけでは手順が分からない場合は以下を参照してください。</li>
+</ul></li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th>手順</th>
+<th>実施内容</th>
+<th>備考</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td><a href="https://k-metrics.github.io/cabinet/program/env_install.html" target="_blank" title="Install R">Rのインストール <i class="fa fa-external-link-square"></i></a></td>
+<td>R本体のインストール</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td><a href="https://k-metrics.github.io/cabinet/program/env_install_tls.html" target="_blank" title="Install Rtools">Rtoolsのインストール <i class="fa fa-external-link-square"></i></a></td>
+<td>Winodws環境のみ</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td><a href="https://k-metrics.github.io/cabinet/program/env_install_git.html" target="_blank" title="Install Git">Gitのインストール <i class="fa fa-external-link-square"></i></a></td>
+<td>Git本体のみ（GUIクライアントは不要）</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td><a href="https://k-metrics.github.io/cabinet/program/env_install_dtp.html" target="_blank" title="Install RStudio">RStudioのインストール <i class="fa fa-external-link-square"></i></a></td>
+<td>Desktop版</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td><a href="https://k-metrics.github.io/cabinet/program/env_install_pkg.html" target="_blank" title="Install Packages">パッケージのインストール <i class="fa fa-external-link-square"></i></a></td>
+<td><strong><code>packrat</code></strong>ならびに<strong><code>devtools</code></strong></td>
+</tr>
+</tbody>
+</table>
 <ul>
 <li><a href="https://kazutan.github.io/JSSP2018_spring/intro_rstudio.html" target="_blank" title="【参考資料】日本社会心理学会 第5回春の方法論セミナー資料">R/RStudio入門 <i class="fa fa-external-link"></i></a></li>
-</ul></li>
 </ul>
 <p>　</p>
 </div>
 <div id="午後の部" class="section level3">
 <h3>午後の部</h3>
 <ul>
-<li><a href="../cabinet/program/env_index.html" target="_blank" title="GitHub Pages">分析環境の構築と動作確認 <i class="fa fa-external-link-square"></i></a>〔つづき〕
+<li><a href="https://k-metrics.github.io/cabinet/program/env_index.html" target="_blank" title="GitHub Pages">分析環境の構築と動作確認 <i class="fa fa-external-link-square"></i></a>〔つづき〕
 <ul>
 <li><a href="https://kazutan.github.io/JSSP2018_spring/intro_rstudio.html" target="_blank" title="【参考資料】日本社会心理学会 第5回春の方法論セミナー資料">R/RStudio入門 <i class="fa fa-external-link"></i></a></li>
 </ul></li>
 </ul>
 <p>　</p>
 <ul>
-<li><a href="./guidance/01_guidance_pm.html" target="_blank" title="ioslide">ガイダンス <i class="fa fa-external-link-square"></i></a></li>
-<li><a href="./template/Self-introduction.html" target="_blank" title="ioslide">自己紹介テンプレート <i class="fa fa-external-link-square"></i></a></li>
-<li><a href="./template/Self-introduction.Rmd">自己紹介テンプレート（右クリックでダウンロード）</a></li>
+<li><a href="./guidance/01_guidance_pm.html" target="_blank" title="ioslide">ガイダンス <i class="fa fa-external-link-square"></i></a> 　</li>
+</ul>
+<!-- * [自己紹介テンプレート <i class="fa fa-external-link-square"></i>](./template/Self-introduction.html){target="_blank" title="ioslide"} -->
+<ul>
+<li><p><a href="./template/Self-introduction.Rmd">自己紹介テンプレート <i class="fa fa-file-code-o"></i> （右クリックでダウンロード）</a> 　</p></li>
+<li><p><a href="./guidance/01_guidance_appendix.html" target="_blank" title="ioslide">おまけ <i class="fa fa-external-link-square"></i></a></p></li>
 </ul>
 <p>　</p>
 </div>
 </div>
 <div id="S02" class="section level2">
 <h2>第2回 データハンドリング入門</h2>
+<p>データハンドリングを行う上で基本的な考え方である整然データとその扱い方を<strong><code>tidyverse</code></strong>パッケージを利用して学んでいきます。</p>
+<ul>
+<li><a href="https://www.tidyverse.org/" target="_blank" title="tidyverse, RStudio">tidyverse <i class="fa fa-external-link"></i></a> : Easily Install and Load the ‘Tidyverse’</li>
+</ul>
+<p>　</p>
 <div id="午前の部-1" class="section level3">
 <h3>午前の部</h3>
 <ul>
 <li><a href="./guidance/02_guidance_am.html" target="_blank" title="ioslide">ガイダンス <i class="fa fa-external-link-square"></i></a>
 <ul>
-<li><a href="../cabinet/program/env_index.html" target="_blank" title="GitHub Pages">分析環境の構築と動作確認 <i class="fa fa-external-link-square"></i></a>〔仮〕
+<li><a href="https://k-metrics.github.io/cabinet/program/env_index.html" target="_blank" title="GitHub Pages">分析環境の構築と動作確認 <i class="fa fa-external-link-square"></i></a>〔仮〕
 <ul>
 <li><a href="https://kazutan.github.io/JSSP2018_spring/intro_rstudio.html" target="_blank" title="【参考資料】日本社会心理学会 第5回春の方法論セミナー資料">R/RStudio入門 <i class="fa fa-external-link"></i></a></li>
 </ul></li>
-<li><a href="../cabinet/program/basics_dplyr.html" target="_blank" title="GitHub Pages">dplyrのすゝめ <i class="fa fa-external-link-square"></i></a>
+<li><a href="https://k-metrics.github.io/cabinet/program/basics_dplyr.html" target="_blank" title="GitHub Pages">dplyrのすゝめ <i class="fa fa-external-link-square"></i></a>
 <ul>
 <li><a href="https://kazutan.github.io/JSSP2018_spring/data_handling.html" target="_blank" title="【参考資料】日本社会心理学会 第5回春の方法論セミナー資料">データ操作 <i class="fa fa-external-link"></i></a></li>
 <li><a href="https://heavywatal.github.io/slides/esj65/" target="_blank" title="【参考資料】生態学会大会2018 [W12] データ解析で出会う統計的問題">それも R にやらせよう 整然データの下ごしらえ <i class="fa fa-external-link"></i></a></li>
@@ -464,21 +512,28 @@ div.tocify {
 <div id="午後の部-1" class="section level3">
 <h3>午後の部</h3>
 <ul>
-<li><p><a href="./guidance/02_guidance_pm.html" target="_blank" title="ioslide">ガイダンス <i class="fa fa-external-link-square"></i></a> 　</p></li>
-<li><a href="./template/template.html" target="_blank" title="HTML Format">演習用テンプレート <i class="fa fa-external-link-square"></i></a></li>
-<li><p><a href="./template/template.Rmd">演習用テンプレート（右クリックでダウンロード）</a></p></li>
+<li><a href="./guidance/02_guidance_pm.html" target="_blank" title="ioslide">ガイダンス <i class="fa fa-external-link-square"></i></a> 　</li>
+</ul>
+<!-- * [演習用テンプレート <i class="fa fa-external-link-square"></i>](./template/template_tidyverse.html){target="_blank" title="HTML Format"} -->
+<ul>
+<li><a href="./template/template_tidyverse.Rmd">演習用テンプレート <i class="fa fa-file-code-o"></i> （右クリックでダウンロード）</a></li>
 </ul>
 <p>　</p>
 </div>
 </div>
 <div id="S03" class="section level2">
 <h2>第3回 効率的で綺麗な可視化</h2>
+<p>データハンドリングを用いて整然データにしたデータを<strong><code>ggplot2</code></strong>パッケージを利用して可視化する方法を学びます。</p>
+<ul>
+<li><a href="http://ggplot2.tidyverse.org/" target="_blank" title="ggplot2, RStudio">ggplot2 <i class="fa fa-external-link"></i></a> : Create Elegant Data Visualisations Using the Grammar of Graphics</li>
+</ul>
+<p>　</p>
 <div id="午前の部-2" class="section level3">
 <h3>午前の部</h3>
 <ul>
 <li><a href="./guidance/03_guidance_am.html" target="_blank" title="ioslide">ガイダンス <i class="fa fa-external-link-square"></i></a>
 <ul>
-<li><a href="../cabinet/program/basics_ggplot2.html" target="_blank" title="GitHub Pages">ggplot2のすゝめ <i class="fa fa-external-link-square"></i></a>
+<li><a href="https://k-metrics.github.io/cabinet/program/basics_ggplot2.html" target="_blank" title="GitHub Pages">ggplot2のすゝめ <i class="fa fa-external-link-square"></i></a>
 <ul>
 <li><a href="https://kazutan.github.io/JSSP2018_spring/visualization.html" target="_blank" title="【参考資料】日本社会心理学会 第5回春の方法論セミナー資料">データの可視化 <i class="fa fa-external-link"></i></a></li>
 <li><a href="https://www.dropbox.com/s/ea9vnt5u7g31eht/esj65_ggplot2.pdf?dl=0" target="_blank" title="【参考資料】生態学会大会2018 [W12] データ解析で出会う統計的問題">ggplot2を使ってみる <i class="fa fa-external-link"></i></a></li>
@@ -490,24 +545,39 @@ div.tocify {
 <div id="午後の部-2" class="section level3">
 <h3>午後の部</h3>
 <ul>
-<li><a href="./guidance/03_guidance_pm.html" target="_blank" title="ioslide">ガイダンス <i class="fa fa-external-link-square"></i></a></li>
+<li><a href="./guidance/03_guidance_pm.html" target="_blank" title="ioslide">ガイダンス <i class="fa fa-external-link-square"></i></a> 　</li>
+</ul>
+<!-- * [演習用テンプレート <i class="fa fa-external-link-square"></i>](./template/template_ggplot.html){target="_blank" title="HTML Format"} -->
+<ul>
+<li><a href="./template/template_ggplot.Rmd">演習用テンプレート <i class="fa fa-file-code-o"></i> （右クリックでダウンロード）</a></li>
 </ul>
 <p>　</p>
 </div>
 </div>
 <div id="S04" class="section level2">
 <h2>第4回 再現性のあるレポーティング</h2>
+<p>第3回までの総括として<strong><code>rmarkdown</code></strong>パッケージを用いた報告書作成を学びます。</p>
+<ul>
+<li><a href="https://rmarkdown.rstudio.com/" target="_blank" title="rmarkdown, RStudio">rmarkdown <i class="fa fa-external-link"></i></a> : Dynamic Documents for R</li>
+</ul>
+<p>　</p>
 <div id="午前の部午後の部" class="section level3">
 <h3>午前の部/午後の部</h3>
 <ul>
 <li><a href="./guidance/04_guidance_am.html" target="_blank" title="ioslide">ガイダンス <i class="fa fa-external-link-square"></i></a>
 <ul>
-<li><a href="https://www.slideshare.net/kohske/rrstudior-markdown" target="_blank" title="RとRStudioとR Markdownを通して">解析方法とレポート作成方法の再現可能性 <i class="fa fa-external-link"></i></a></li>
+<li><a href="./guidance/slides.pdf" target="_blank" title="https://github.com/uribo/hello_rmarkdown">Hello R Markdown :) , Uryu Shinya <i class="fa fa-file-pdf-o"></i> <i class="fa fa-external-link"></i></a></li>
+<li><a href="https://www.slideshare.net/kohske/rrstudior-markdown" target="_blank" title="RとRStudioとR Markdownを通して">解析方法とレポート作成方法の再現可能性 <i class="fa fa-external-link"></i></a><br />
+　</li>
 </ul></li>
+</ul>
+<!-- * [演習用テンプレート <i class="fa fa-external-link-square"></i>](./template/template.html){target="_blank" title="HTML Format"} -->
+<ul>
+<li><a href="./template/template.Rmd">演習用テンプレート <i class="fa fa-file-code-o"></i> （右クリックでダウンロード）</a></li>
 </ul>
 <p>　</p>
 <hr />
-<p><img src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" alt="Sampo Suzuki" target="_blank" title="CC BY-NC-SA 4.0 icon" /> <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" target="_blank" title="CC BY-NC-SA 4.0">CC BY-NC-SA 4.0 <i class="fa fa-external-link"></i></a>, Sampo Suzuki [2018-03-20 11:19(JST)]</p>
+<p><img src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" alt="Sampo Suzuki" target="_blank" title="CC BY-NC-SA 4.0 icon" /> <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" target="_blank" title="CC BY-NC-SA 4.0">CC BY-NC-SA 4.0 <i class="fa fa-external-link"></i></a>, Sampo Suzuki [2018-04-14 21:56(JST)]</p>
 </div>
 </div>
 

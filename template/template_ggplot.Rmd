@@ -1,0 +1,50 @@
+---
+title: "Untitled"
+author: "Your Name"
+date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
+output:
+  html_document:
+    code_folding: show
+    df_print: "paged"
+    highlight: default
+    md_extensions: -ascii_identifiers
+    number_sections: no
+    theme: lumen
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: yes
+      smooth_scroll: no
+  ioslides_presentation:
+    df_print: paged
+    smaller: false
+    widescreen: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+
+require(tidyverse)
+```
+
+
+# 演習１
+`anscombe`データセットをグラフ化しなさい。  
+
+```{r}
+anscombe
+```
+
+# 演習２
+Redmineのチケットデータを用いてオープン・クローズチャートを描きなさい。  
+
+```{r}
+"../data/redmine_data_utf8.csv" %>% 
+  readr::read_csv(locale=locale(encoding="UTF-8"))
+```
+
+
+
+---
+
+your signiture and licence

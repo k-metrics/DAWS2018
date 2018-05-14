@@ -113,7 +113,7 @@
       <h1 data-config-title><!-- populated from slide_config.json --></h1>
       <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
       <p data-config-presenter><!-- populated from slide_config.json --></p>
-            <p style="margin-top: 6px; margin-left: -2px;">2018年03月20日</p>
+            <p style="margin-top: 6px; margin-left: -2px;">2018年04月14日</p>
           </hgroup>
   </slide>
 
@@ -176,17 +176,20 @@
 <p>Redmineのチケットデータからチケットのオープン・クローズチャートを描いてみましょう。</p>
 
 <ol>
-<li>&quot;Defect&quot;（バグ）チケット1,000チケットが<a href='../data/redmine_data_utf8.csv' title=''>対象データ</a>です</li>
+<li>&quot;Defect&quot;（バグ）チケット1,000チケットが<a href='https://k-metrics.github.io/2018dasg/data/redmine_data_utf8.csv' title=''>対象データ</a>です
+
+<ul>
+<li>（ローカル）リポジトリにファイルがあります</li>
+</ul></li>
 <li>日付の実態は日時（開始・終了日時）なので日に変換する必要があります</li>
 <li>対象データ期間を調べ日付範囲のデータフレームを作成します</li>
 <li>日付範囲を用いてチケット数の集計を行います
 
 <ul>
-<li>チケットオープン（開始日）、チケットクローズ（終了日）</li>
+<li>チケットオープン（＝開始日）、チケットクローズ（＝終了日）</li>
 <li>集計の<strong>NAデータは0(zero)に変換</strong>することをお忘れなく</li>
 </ul></li>
-<li>集計データから累計を計算します</li>
-<li>累計を折れ線グラフとして色分け表示します</li>
+<li>集計データから累計を計算して折れ線グラフとして色分け表示します</li>
 </ol>
 
 </article></slide><slide class=""><hgroup><h2>描画例</h2></hgroup><article >

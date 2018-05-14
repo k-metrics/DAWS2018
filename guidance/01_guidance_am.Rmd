@@ -23,11 +23,11 @@ require(tidyverse)
     * Rのインストールと動作確認
     * Rtools（Windows環境のみ）とGitのインストール
     * RStudioのインストールと動作確認、オプション設定
-    * packratパッケージのインストール
-    * プロジェクトのインポートと動作確認
+    * パッケージのインストール
+    * プロジェクトの作成と動作確認
 1. R Markdownで作る自己紹介（午後）
-    * 自己紹介資料の作成
-    * 作成した資料を用いた自己紹介
+    * 自己紹介の作成
+    * 自己紹介
 
 
 # 分析環境の構築と確認
@@ -40,27 +40,39 @@ OSによりインストール方法などが異なりますので、環境構築
 ### macOS
 * おそらく1チームで足りるかと人数が多ければ2チームで
 
-### linux(Ubuntu)
+### Ubuntu(linux)
 * いないと思いますが...
 
 
 ## 必要なもの
-* PC（無線LAN接続が可能なWindows, macOS, Ubuntu）
-* R本体（3.4.4 or later）
-* RStudio Desktop（1.1.423 or later）
-* Rtools34（Windows Only）
-* Git（利用OSに合わせて、Gitクライアントではありません）
-* packartパッケージ
+
+Software | Windows | OS X 10.11 and higher | Ubuntu | Memo
+---------|---------|---------|---------|---------
+R **3.4.4**    | Yes, [download](https://cran.ism.ac.jp/bin/windows/base/old/)             | Yes, [download](https://cloud.r-project.org/bin/macosx/R-3.4.4.pkg)   | Yes   | [Current Version](https://cloud.r-project.org/index.html)
+RStudio  | Yes, [download](https://www.rstudio.com/products/rstudio/download/#download)             | Yes, [download](https://www.rstudio.com/products/rstudio/download/#download)   | Yes, [download](https://www.rstudio.com/products/rstudio/download/#download)    | Desktop **1.1.447** or later
+Rtools**34** | Yes, [download](http://cran.us.r-project.org/bin/windows/Rtools/)             | **No** | **No** | Windows Only
+Git      | Yes, [download](https://gitforwindows.org/) | Yes   | Yes    | Gitクライアントではありません
+packart, devtools  | Yes             | Yes   | Yes    | CRAN
 
 　  
-今回、勉強会初（この手の勉強会としては本邦初？）の試みとして**GitHubリポジトリ**と**packrat**パッケージ**を用いた統一環境の作成を行います。ご利用の環境によっては、上手く環境作成ができない可能性もありますが、ご了承ください。
+**GitHubアカウントの取得は不要**です。また、**OSのアカウントは日本語（全角文字）を含まない**ことが必須条件です（特にWindows）。
 
+## Rtoolsについて
+RtoolsはWindows環境でソースからパッケージをビルドするために必要なツール群がまとめられています。最新版のRtools35を利用するには組み合わせに注意が必要です。
+
+Rtools | R | RStudio
+-------|---|--------
+Rtools35 | 3.3.x or later | **1.1.447** or later
+Rtools34 | 3.3.x or later | 1.0.x or later
+
+　  
+Linux環境やmacOS環境ではOS側に標準でツール群が備わっていますのでRtoolsは不要です。
 
 ## Rのインストールと動作確認
-環境を統一するためにRは本日時点での最新バージョン（R 3.x.x）を使います。追加パッケージも最新バージョンを使います。  
+環境を統一するためにRのバージョンは統一したいと考えています（R 3.4.4）。追加パッケージは`packrat`を用いることでバージョンを統一します。  
 
 ### Rのインストール
-[Rのインストール方法](../cabinet/program/env_install.html)を参考にインストールを行ってください。macOSの方はサポーターの方からレクチャしてもらってください。  
+[Rのインストール方法](https://k-metrics.github.io/cabinet/program/env_install.html)を参考にインストールを行ってください。macOSの方はサポーターの方からレクチャしてもらってください。  
 
 ### Rの動作確認
 インストールが終わったらRのコンソールから以下を実行しグラフが表示されることを確認します。
@@ -86,10 +98,10 @@ plot(iris)
 
 
 ## ツールのインストール（Windows Only）
-Windows環境の方は**Rtools**というツール群をインストールしておきます。これはパッケージがzip形式で提供されていない場合に必要となるツール（コンパイラなど）です。
+Windows環境の方は**Rtools**というツール群をインストールしておきます。これはパッケージが実行形式で提供されていない場合に必要となるツール（コンパイラなど）です。
 
 ### Rtoolsのインストール
-[Rtoolsのインストール方法](../cabinet/program/env_install_tls.html)を参考にインストールを行ってください。必ず**デフォルトのインストールパス**にインストールしてください。Windows環境以外の方はインストールの必要はありません。
+[Rtoolsのインストール方法](https://k-metrics.github.io/cabinet/program/env_install_tls.html)を参考にRtools**34**のインストールを行ってください。必ず**デフォルト・オプション**でインストールしてください。Windows環境以外の方はインストールの必要はありません。
 
 ### Rtoolsの動作確認
 動作確認方法は特にありません。インストーラでエラーが出ていないことは確認しておいて下さい。
@@ -114,7 +126,7 @@ Windowsの場合は[Git for Windows](https://gitforwindows.org/)をダウンロ�
 # RStudioのインストールと動作確認
 
 ## 利用するバージョン
-環境を統一するためにRStudioは本日時点での最新バージョン（v1.1.xxx）を使います。
+環境を統一するためにRStudioのバージョンは統一（v1.1.442 or later）したいと思います。
 
 ### インストール先の確認
 Rをデフォルトのインストール先から変更した方はRStudioのインストール先も変更しておいた方が無難です。なお、インストールには管理者権限が必要です。
@@ -131,16 +143,17 @@ Rをデフォルトのインストール先から変更した方はRStudioのイ
 インストールが完了したらRStudioを起動してください。Windows環境でCPU性能があまり高くない場合（第三世代 Core i3とか）は起動や動作が緩慢ですので、しばらく待ってみてください。それでも起動しない場合は、一度、強制終了さてて、再度起動してみてください。
 
 ### RStudioの概要説明
-[RStudioの使い方](../cabinet/program/basics_rstudio.html)を参照しながら聞いてください。
+[RStudioの使い方](https://k-metrics.github.io/cabinet/program/basics_rstudio.html)を参照しながら聞いてください。
 
 ### オプション設定
-[RStudioの使い方](../cabinet/program/basics_rstudio.html)にしたがってオプション設定をします。オプション設定は推奨ですので必ずしもこの通りにする必要はありません。お好みで設定してください。
+[RStudioの使い方](https://k-metrics.github.io/cabinet/program/basics_rstudio.html)にしたがってオプション設定をします。オプション設定は推奨ですので必ずしもこの通りにする必要はありません。お好みで設定してください。
 
 
 ## パッケージのインストール
-[パッケージのインストール方法](../cabinet/program/env_install_pkg.html#rstudioからインストールする方法)にしたがって以下の追加パッケージのインストールを行います。
+[パッケージのインストール方法](https://k-metrics.github.io/cabinet/program/env_install_pkg.html#rstudioからインストールする方法)にしたがって以下の追加パッケージのインストールを行います。
 
 * **packrat**
+* **devtools**
 
 　  
 **上記以外**のパッケージはこの時点で**インストールする必要はありません**。
@@ -157,52 +170,93 @@ Rをデフォルトのインストール先から変更した方はRStudioのイ
 
 
 ## プロジェクトの作成と動作確認
-今回は前出の通りGitHubの公開リポジトリと**packrat**パッケージを利用して統一環境の準備を自動的に行うことを試みます。環境によっては上手く動かない可能性もありますが、ご了承ください。
+今回は前出の通りGitHubの公開リポジトリと**packrat**パッケージを利用した環境構築を試みます。環境によっては上手く動かない可能性もありますが、ご了承ください。なお、**GitHubアカウントでのログインは不要**です。
 
-### プロジェクトの作成（インポート）
 1. ［File］-［New Project...］-［Version Control］-［Git］を選択します
 1. 以下のURLを［Repository URL］に入力します
     * https://github.com/k-metrics/2018dasg.git
 1. ［Project directory name］は**変更しない**でください
 1. ［Create project as subdirectory of］は任意の場所で構いませんが**日本語や空白が含まれない**パスにしてください
+1. 入力が完了したら［Create Project］ボタンをクリックしてください
 
 
-## プロジェクトの作成（インポート）つづき
-* 前述の入力が完了したら［Create Project］ボタンをクリックしてください
-    * GitHubのリポジトリがクローニングされます
-    * クローニング完了後自動的にプロジェクトが開かれます
-    * コンソールに色々とエラーが出た場合でも気にしないでください
-    * 必要なパッケージのダウンロードとインストールが自動的に始まります
-    * 環境にもよりますが**15分前後の時間**がかかります
-        * 気になるならシステムモニタを開いてください
+## プロジェクトの作成（つづき）
+* はじめにGitHubのリポジトリがクローン（コピー）されます
+* クローンが終わると自動的にプロジェクトが開かれます
+* コンソールに色々とエラーが出ても気にしないでください
+* 必要なパッケージのダウンロードとインストールが始まります
+    * 環境にもよりますが**15〜30分前後の時間（目安）**がかかります
+        * フリーズしたように見える場合がありますが、大抵、動いてます
+        * 気になる場合はシステムモニタを開いておいてください
     * "Packrat mode on. Using library in directory:"と表示されれば完了です
-        * 完了メッセージ後もバックグラウンで色々やってるので**しばらく放置**します
+        * Windows環境では完了メッセージが出た後もバックグラウンドでRのセッションが動き続けることがあります。しばらく放置しても終わらない場合は強制終了させ再起動してください
         * 途中でエラーが出て再開させた場合は完了メッセージは表示されません
-    * 念のためにRStudioを**再起動**させておきましょう
 
+## リカバリタイム（その１）
+* "Packrat is not installed in the local library -- attempting to bootstrap an installation..."と表示された
+    * 気にしなくて大丈夫です、その後に以下のメッセージが表示されているかと
+        * "Using user-library packrat (0.4.9.1) to bootstrap this project"
+* なんか止まってる（フリーズしてる）ように見えるけど
+    * たぶんビルド中なんでリソースモニタで確認してください
+* "The following packages are referenced in your code, but are not present
+in your library nor in packrat:"と表示された
+    * MASSなどのシステムライブラリが表示された場合は問題ありません
+    * RStudioを**再起動**させ**packrat::restore()**を実行させてください
 
-## リカバリタイム
-* "Installing R package forim source requires install of additional build tools."と表示された
+## リカバリタイム（その２）
+* 完了メッセージが表示されてもCPUにずっと負荷があるけど
+    * Windows環境特有の現象のようなのでRのセッションをリスタートさせてください（念の為にRStudioも）
+* 何かのエラーが出たけど動き続けてる
+    * 完了メッセージが出てから**packrat::restore()**を実行してください
+* "Installing R package form source requires install of additional build tools."と表示された
     1. ［No］をクリックし**RStudioを終了**させます
     1. Rtoolsを一旦削除し**デフォルトパスで再インストール**します
-    1. プロジェクトフォルダを削除します
-    1. RStudioを起動させ再度プロジェクトをインポートします
-* 何かのエラーで止まったっぽい
-    1. コンソールから**packrat::restore()**を実行してみてください
-* 終わったみたいだけどパッケージが不足しているっぽい
-    1. コンソールから**packrat::restore()**を実行してみてください
+        * **Rtools34**をデフォルトインストール（ただしパスを追加する）
+    1. **プロジェクトフォルダを削除**します
+    1. RStudioを起動させ再度プロジェクトを作成します
 
+## リカバリタイム（その３）
+* 何かのエラーで止まった、パッケージが不足しているかも、強制終了させた
+    1. コンソールから**packrat::restore()**を実行します（止まった場合）
+    1. RStudioを再起動しコンソールから**packrat::status()**を実行します（不足の確認、強制終了の場合）
+* packrat::restore()を実行したけどプロンプトが帰ってこない
+    * コンソールの右上に赤いアイコンが出ている場合は動作中です
+* packrat::status()を実行したけどプロンプトが帰ってこない
+    * コンソールの右上に赤いアイコンが出ている場合は動作中です
+* Packageペインにパッケージが二重に表示されている
+    * 動作に支障ないので**気にしない**でください
 
 ## 動作確認
-### Rmdファイルのコンパイル
-プロジェクトがインポートされたらR Markdownファイルをコンパイル（レンダリング）してみます。
+### ブランチの作成
+プロジェクトが作成できたら作業用のブランチを作成します。［Git］タブの右側にある［New Branch］（環境によってはアイコンのみ）ボタンをクリックしてダイアログが表示されたら**リモートを「(None)」**にしブランチ名に「feature/test」を入力し［Create］ボタンをクリックします。
+
+![](./fig/RStudio_git.png)
+
+　  
+メッセージが表示されて右上の「master」が「feature/test」に変わっていることを確認してください。
+
+
+## 動作確認（つづき）
+### Rmdファイルのレンダリング
+作成したブランチに切り替わっていることを確認したらR Markdownファイルをレンダリングします。
 
 1. ［Files］ペインで"template"フォルダを開きます
 1. "Self-introduction.Rmd"をクリックして開きます
 1. エディタにある［knitr］ボタンをクリックします
 1. レンダリングが実行され別ウィンドウ（ペイン）に結果が表示されます
 
+　  
+以上で環境構築は終了です。`packrat`を利用するプロジェクトはプロジェクトを開いた際に`packrat`環境のチェックが自動的に走りますので開くのに時間がかかる点に留意してください。
 
-## License
 
+## License and Session Info
 CC BY-NC-SA 4.0, Sampo Suzuki
+
+```{r}
+devtools::session_info()$platform
+```
+
+## Packages
+```{r}
+devtools::session_info()$package
+```
