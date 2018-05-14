@@ -102,7 +102,7 @@ Windowsの場合は[Git for Windows](https://gitforwindows.org/)をダウンロ�
 [自分用 Git For Windowsのインストール手順](https://qiita.com/toshi-click/items/dcf3dd48fdc74c91b409)を参考にインストールを行ってください。今回はGitHubからリポジトリをクローンするためだけに使いますので基本的にはデフォルト設定で構いません。
 
 ### Gitのインストール(Mac)
-とりあえず、`git --version`と打ってみる。入ってなかったら、コマンドライン・デベロッパ・ツールをインストールするか聞かれるので、「インストール」をクリック。
+ターミナルで`git --version`を実行してみてください。Gitがインストールされていない場合は、コマンドライン・デベロッパ・ツールをインストールするか確認されますので「インストール」をクリックしてGitをインストールしてください。
 
 ## Gitの設定
 [Git for Windows インストール&設定](https://qiita.com/shinsumicco/items/a1c799640131ae33c792)を参考にユーザー名とメールアドレス設定ぐらいは行っておいてください。
