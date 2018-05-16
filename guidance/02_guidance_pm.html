@@ -25,7 +25,7 @@
         usePrettify: true,
         enableSlideAreas: true,
         enableTouch: true,
-                        favIcon: 'fig/hex-tidyverse.png',
+                        favIcon: 'fig\hex-tidyverse.png',
               },
 
       // Author information
@@ -87,7 +87,7 @@
       position: absolute;
       bottom: 20px;
       left: 60px;
-      background: url(fig/hex-tidyverse.png) no-repeat 0 50%;
+      background: url(fig\hex-tidyverse.png) no-repeat 0 50%;
       -webkit-background-size: 30px 30px;
       -moz-background-size: 30px 30px;
       -o-background-size: 30px 30px;
@@ -98,7 +98,7 @@
     }
   </style>
 
-  <link href="data:text/css;charset=utf-8,%0Ah1%20%7B%0Aborder%2Dbottom%3A%20solid%202%2E5px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%20solid%202%2E0px%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%20solid%201%2E5px%3B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%20solid%201%2E0px%3B%20%7D%0A%0Astrong%20%7B%0Abackground%3A%20linear%2Dgradient%28transparent%2070%25%2C%20%23a7d6ff%2060%25%29%0A%7D%0A" rel="stylesheet" type="text/css" />
+  <link href="data:text/css;charset=utf-8,%0Ah1%20%7B%0Aborder%2Dbottom%3A%20solid%202%2E5px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%20solid%202%2E0px%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%20solid%201%2E5px%3B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%20solid%201%2E0px%3B%20%7D%0A%0Astrong%20%7B%0Abackground%3A%20linear%2Dgradient%28transparent%2070%25%2C%20%23a7d6ff%2060%25%29%0A%7D%0A%0A%2Ecaption%20%7B%0Afont%2Dsize%3A%2075%25%3B%0A%7D" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -113,34 +113,215 @@
       <h1 data-config-title><!-- populated from slide_config.json --></h1>
       <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
       <p data-config-presenter><!-- populated from slide_config.json --></p>
-            <p style="margin-top: 6px; margin-left: -2px;">2018年04月14日</p>
+            <p style="margin-top: 6px; margin-left: -2px;">2018年05月16日</p>
           </hgroup>
   </slide>
 
 <slide class=""><hgroup><h2>本日の内容</h2></hgroup><article >
 
 <ol>
-<li>分析環境の構築と確認（必要に応じて）</li>
-<li>データハンドリング入門（午前・午後）
-
-<ul>
-<li>整然データ（tidy data）とは？</li>
-<li>tidyverseを使ってみる</li>
-</ul></li>
+<li>リカバリータイム（午前）</li>
+<li>自己紹介（1分/人）</li>
 <li><strong>データハンドリング入門（午後）</strong>
 
 <ul>
-<li>演習</li>
+<li>整然データ（tidy data）とは？</li>
+<li>tidyverseとは？</li>
+<li>パイプ演算子（<code>%&gt;%</code>）</li>
+<li>dplyr, tidyr, tibble</li>
+<li>データハンドリング</li>
 </ul></li>
+<li>演習1～3</li>
 </ol>
 
 </article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>データハンドリング入門</h2></hgroup><article >
 
-</article></slide><slide class=""><hgroup><h2>演習１</h2></hgroup><article >
+</article></slide><slide class=""><hgroup><h2>整然データとは？</h2></hgroup><article >
 
-<h3>メトリクス統計分析入門 演習1.4</h3>
+<ul>
+<li><strong>整然データ</strong>（tidy data）とはデータハンドリングを習得する上で<strong>知っておくべき概念</strong>
 
-<p>生産性に加えて、工数予実割合も加味してプロジェクトの評価をしようと考えています。以下の条件、方法に従い、各プロジェクトをA～Eの5段階で評価してください。</p>
+<ul>
+<li>一言で表すと「（Coddの）第三正規形」</li>
+<li><a href='http://id.fnshr.info/2017/01/09/tidy-data-intro/' title=''>整然データとは何か (Colorless Green Ideas)</a></li>
+<li><a href='https://speakerdeck.com/fnshr/zheng-ran-detatutenani' title=''>整然データってなに？ (Speaker Deck)</a></li>
+<li>整然データが理解できればデータハンドリングは理解できたようなもの</li>
+</ul></li>
+</ul>
+
+<p>　</p>
+
+<ul>
+<li>Rで最も使うデータ・フレーム型は整然データにしておくべき
+
+<ul>
+<li>ただし、人間が見ると分かりにくい面もある</li>
+<li>人間が分かりやすい（記録しやすい）雑然データへの変換は簡単</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>tidyverseとは？</h2></hgroup><article  id="tidyverse">
+
+<ul>
+<li>The tidyverse is an opinionated collection of R packages designed for data science.
+
+<ul>
+<li>ggplot2, dplyr, tidyr,tibbleなどのパッケージ群を取りまとめているパッケージ</li>
+<li>tidyなアーキテクチャに基づいたパッケージ群
+
+<ul>
+<li>パイプ演算子による処理を前提とした引数設計</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>tidyverse::tidyverse_packages()</pre>
+
+<pre > [1] &quot;broom&quot;       &quot;cli&quot;         &quot;crayon&quot;      &quot;dplyr&quot;       &quot;dbplyr&quot;     
+ [6] &quot;forcats&quot;     &quot;ggplot2&quot;     &quot;haven&quot;       &quot;hms&quot;         &quot;httr&quot;       
+[11] &quot;jsonlite&quot;    &quot;lubridate&quot;   &quot;magrittr&quot;    &quot;modelr&quot;      &quot;purrr&quot;      
+[16] &quot;readr&quot;       &quot;readxl\n(&gt;=&quot; &quot;reprex&quot;      &quot;rlang&quot;       &quot;rstudioapi&quot; 
+[21] &quot;rvest&quot;       &quot;stringr&quot;     &quot;tibble&quot;      &quot;tidyr&quot;       &quot;xml2&quot;       
+[26] &quot;tidyverse&quot;  </pre>
+
+</article></slide><slide class=""><hgroup><h2>パイプ演算子（<code>%&gt;%</code>）</h2></hgroup><article >
+
+<p>パイプ演算子は<code>magrittr</code>パッケージで定義されている<strong>左辺を右辺（の関数の第一引数）へ渡す</strong>演算子です（<code>pipeR</code>パッケージのパイプ演算子とは別です）。</p>
+
+<pre class = 'prettyprint lang-r'>summary(iris)</pre>
+
+<p>はパイプ演算子を用いると</p>
+
+<pre class = 'prettyprint lang-r'>iris %&gt;% summary()</pre>
+
+<p>と書くことができます。数珠つなぎにして複数の計算を分かりやすく記述できます。</p>
+
+<pre class = 'prettyprint lang-r'>iris %&gt;% 
+  dplyr::filter(Species != &quot;setosa&quot;) %&gt;% 
+  dplyr::group_by(Species) %&gt;% 
+  dplyr::summarise_if(is.numeric, funs(mean), na.rm = TRUE)</pre>
+
+</article></slide><slide class=""><hgroup><h2>パイプ演算子（<code>%&gt;%</code>）</h2></hgroup><article  id="-1">
+
+<p>先ほどの例をパイプ演算子を使わないで記述すると以下のようになります。</p>
+
+<pre class = 'prettyprint lang-r'>  dplyr::summarise_if(
+    dplyr::group_by(
+      dplyr::filter(iris, Species != &quot;setosa&quot;), Species
+    ), is.numeric, funs(mean), na.rm = TRUE
+  )</pre>
+
+<p>中間変数を用いると以下のようになります。</p>
+
+<pre class = 'prettyprint lang-r'>tmp1 &lt;- dplyr::filter(iris, Species != &quot;setosa&quot;)
+tmp2 &lt;- dplyr::group_by(tmp1, Species)
+dplyr::summarise_if(tmp2, is.numeric, funs(mean), na.rm = TRUE)</pre>
+
+<p>この例からわかるようにパイプ演算子を用いることで分かりやすく修正しやすいコードが記述できることがわかると思います。</p>
+
+</article></slide><slide class=""><hgroup><h2>dplyr</h2></hgroup><article  id="dplyr">
+
+<p><code>dplyr</code>パッケージは整然データを効率的に扱う関数がまとめられた追加パッケージで以下のような関数が用意されています。</p>
+
+<ul>
+<li>抽出・選択 : <code>sample_n</code>, <code>sample_frac</code>, <code>select</code>, <code>filter</code>, <code>distinct</code></li>
+<li>要約・集計 : <code>summarise</code>, <code>summarize</code>, <code>summarise_if</code>, <code>count</code>, <code>group_by</code></li>
+<li>追加・結合 : <code>mutate</code>, <code>mutate_if</code>, <code>left_join</code>, <code>full_join</code>, <code>bind_rows</code></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>iris %&gt;% dplyr::sample_n(3)</pre>
+
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Sepal.Length"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Sepal.Width"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Petal.Length"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Petal.Width"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Species"],"name":[5],"type":["fctr"],"align":["left"]}],"data":[{"1":"5.0","2":"3.6","3":"1.4","4":"0.2","5":"setosa","_rn_":"5"},{"1":"5.4","2":"3.4","3":"1.5","4":"0.4","5":"setosa","_rn_":"32"},{"1":"7.0","2":"3.2","3":"4.7","4":"1.4","5":"versicolor","_rn_":"51"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script></div>
+
+</article></slide><slide class=""><hgroup><h2>tidyr</h2></hgroup><article  id="tidyr">
+
+<p><code>tidyr</code>パッケージはデータ構造を操作するための関数がまとめられた追加パッケージで以下のような関数が用意されています。</p>
+
+<ul>
+<li>変形 : <code>gather</code>, <code>spread</code></li>
+<li>分離 : <code>separate</code></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>iris %&gt;% 
+  tidyr::gather(key, value, -Species) %&gt;% 
+  head(3)</pre>
+
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Species"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["key"],"name":[2],"type":["chr"],"align":["left"]},{"label":["value"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"setosa","2":"Sepal.Length","3":"5.1","_rn_":"1"},{"1":"setosa","2":"Sepal.Length","3":"4.9","_rn_":"2"},{"1":"setosa","2":"Sepal.Length","3":"4.7","_rn_":"3"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script></div>
+
+</article></slide><slide class=""><hgroup><h2>tibble</h2></hgroup><article  id="tibble">
+
+<p><code>tibble</code>パッケージはデータフレームをより使いやすくするための関数がまとめられた追加パッケージです。</p>
+
+<ul>
+<li>便利 : <code>rowid_to_column</code>, <code>rownames_to_column</code>, <code>column_to_rownames</code></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>iris %&gt;% 
+  tibble::rowid_to_column(&quot;id&quot;) %&gt;% 
+  head(3)</pre>
+
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["id"],"name":[1],"type":["int"],"align":["right"]},{"label":["Sepal.Length"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Sepal.Width"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Petal.Length"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Petal.Width"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Species"],"name":[6],"type":["fctr"],"align":["left"]}],"data":[{"1":"1","2":"5.1","3":"3.5","4":"1.4","5":"0.2","6":"setosa","_rn_":"1"},{"1":"2","2":"4.9","3":"3.0","4":"1.4","5":"0.2","6":"setosa","_rn_":"2"},{"1":"3","2":"4.7","3":"3.2","4":"1.3","5":"0.2","6":"setosa","_rn_":"3"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script></div>
+
+</article></slide><slide class=""><hgroup><h2>データハンドリング</h2></hgroup><article >
+
+<ul>
+<li><a href='https://k-metrics.github.io/cabinet/program/basics_dplyr.html' title=''>dplyrのすゝめ</a>
+
+<ul>
+<li><a href='https://heavywatal.github.io/rstats/dplyr.html' title=''>dplyr</a></li>
+<li><a href='https://heavywatal.github.io/rstats/tidyr.html' title=''>tidyr</a></li>
+<li><a href='https://heavywatal.github.io/rstats/readr.html' title=''>readr</a></li>
+</ul></li>
+<li>更に知りたい人のために
+
+<ul>
+<li><a href='https://www.tidyverse.org/' title=''>tidyverse</a></li>
+<li><a href='http://dplyr.tidyverse.org/index.html' title=''>dplyr, part of tidyverse</a></li>
+<li><a href='http://notchained.hatenablog.com/entry/tidyverse' title=''>俺たちのtidyverseはこれからだ！</a></li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>本日の内容</h2></hgroup><article  id="-1">
+
+<ol>
+<li>リカバリータイム（午前）</li>
+<li>自己紹介（1分/人）</li>
+<li>データハンドリング入門（午後）</li>
+<li><strong>演習1～3</strong>
+
+<ul>
+<li>『ソフトウェアメトリクス統計分析入門』から
+
+<ul>
+<li>中間変数を作成せずに計算する方法の基本的な形です</li>
+</ul></li>
+<li>anscombe（アンスコム）のデータ例
+
+<ul>
+<li>第3回の<code>ggplot2</code>で使えるような形式への変換です</li>
+</ul></li>
+<li>列の分割
+
+<ul>
+<li>このような処理もよくあるパターンです</li>
+</ul></li>
+</ul></li>
+</ol>
+
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>演習１</h2></hgroup><article >
+
+</article></slide><slide class=""><hgroup><h2>メトリクス統計分析入門 演習1.4</h2></hgroup><article  id="-1.4">
+
+<p>生産性に加えて、工数予実割合も加味してプロジェクトの評価をしようと考えています。以下の条件、方法に従い、各プロジェクトをA～Eの5段階で評価してください。（詳細はテンプレート参照方）</p>
 
 <ul>
 <li>データ分布の確認は省略してください（外れ値の判定も不要です）</li>
