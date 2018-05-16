@@ -19,18 +19,145 @@ require(tidyverse)
 
 
 ## 本日の内容
-1. 分析環境の構築と確認（必要に応じて）
-1. データハンドリング入門（午前・午後）
-    * 整然データ（tidy data）とは？
-    * tidyverseを使ってみる
+1. リカバリータイム（午前）
+1. 自己紹介（1分/人）
 1. **データハンドリング入門（午後）**
-    * 演習
+    * 整然データ（tidy data）とは？
+    * tidyverseとは？
+    * パイプ演算子（` %>% `）
+    * dplyr, tidyr, tibble
+    * データハンドリング
+1. 演習1～3
+
 
 # データハンドリング入門
 
-## 演習１
-### メトリクス統計分析入門 演習1.4
-生産性に加えて、工数予実割合も加味してプロジェクトの評価をしようと考えています。以下の条件、方法に従い、各プロジェクトをA～Eの5段階で評価してください。
+## 整然データとは？
+* **整然データ**（tidy data）とはデータハンドリングを習得する上で**知っておくべき概念**
+    * 一言で表すと「（Coddの）第三正規形」
+    * [整然データとは何か (Colorless Green Ideas)](http://id.fnshr.info/2017/01/09/tidy-data-intro/)
+    * [整然データってなに？ (Speaker Deck)](https://speakerdeck.com/fnshr/zheng-ran-detatutenani)
+    * 整然データが理解できればデータハンドリングは理解できたようなもの
+
+　  
+
+* Rで最も使うデータ・フレーム型は整然データにしておくべき
+    * ただし、人間が見ると分かりにくい面もある
+    * 人間が分かりやすい（記録しやすい）雑然データへの変換は簡単
+
+
+## tidyverseとは？
+* The tidyverse is an opinionated collection of R packages designed for data science.
+    * ggplot2, dplyr, tidyr,tibbleなどのパッケージ群を取りまとめているパッケージ
+    * tidyなアーキテクチャに基づいたパッケージ群
+        * パイプ演算子による処理を前提とした引数設計
+    
+```{r, comment=""}
+tidyverse::tidyverse_packages()
+```
+
+
+## パイプ演算子（`%>%`）
+パイプ演算子は`magrittr`パッケージで定義されている**左辺を右辺（の関数の第一引数）へ渡す**演算子です（`pipeR`パッケージのパイプ演算子とは別です）。
+```{r, eval=FALSE}
+summary(iris)
+```
+はパイプ演算子を用いると
+```{r, eval=FALSE}
+iris %>% summary()
+```
+と書くことができます。数珠つなぎにして複数の計算を分かりやすく記述できます。
+```{r, eval=FALSE}
+iris %>% 
+  dplyr::filter(Species != "setosa") %>% 
+  dplyr::group_by(Species) %>% 
+  dplyr::summarise_if(is.numeric, funs(mean), na.rm = TRUE)
+```
+
+
+## パイプ演算子（`%>%`）
+先ほどの例をパイプ演算子を使わないで記述すると以下のようになります。
+```{r, eval=FALSE}
+  dplyr::summarise_if(
+    dplyr::group_by(
+      dplyr::filter(iris, Species != "setosa"), Species
+    ), is.numeric, funs(mean), na.rm = TRUE
+  )
+```
+中間変数を用いると以下のようになります。
+```{r, eval=FALSE}
+tmp1 <- dplyr::filter(iris, Species != "setosa")
+tmp2 <- dplyr::group_by(tmp1, Species)
+dplyr::summarise_if(tmp2, is.numeric, funs(mean), na.rm = TRUE)
+```
+この例からわかるようにパイプ演算子を用いることで分かりやすく修正しやすいコードが記述できることがわかると思います。
+
+
+## dplyr
+`dplyr`パッケージは整然データを効率的に扱う関数がまとめられた追加パッケージで以下のような関数が用意されています。
+
+* 抽出・選択 : `sample_n`, `sample_frac`, `select`, `filter`, `distinct`
+* 要約・集計 : `summarise`, `summarize`, `summarise_if`, `count`, `group_by`
+* 追加・結合 : `mutate`, `mutate_if`, `left_join`, `full_join`, `bind_rows`
+
+```{r}
+iris %>% dplyr::sample_n(3)
+```
+
+
+## tidyr
+`tidyr`パッケージはデータ構造を操作するための関数がまとめられた追加パッケージで以下のような関数が用意されています。
+
+* 変形 : `gather`, `spread`
+* 分離 : `separate`
+
+```{r}
+iris %>% 
+  tidyr::gather(key, value, -Species) %>% 
+  head(3)
+```
+
+
+## tibble
+`tibble`パッケージはデータフレームをより使いやすくするための関数がまとめられた追加パッケージです。
+
+* 便利 : `rowid_to_column`, `rownames_to_column`, `column_to_rownames`
+
+```{r}
+iris %>% 
+  tibble::rowid_to_column("id") %>% 
+  head(3)
+```
+
+
+## データハンドリング
+* [dplyrのすゝめ](https://k-metrics.github.io/cabinet/program/basics_dplyr.html)
+    * [dplyr](https://heavywatal.github.io/rstats/dplyr.html)
+    * [tidyr](https://heavywatal.github.io/rstats/tidyr.html)
+    * [readr](https://heavywatal.github.io/rstats/readr.html)
+
+* 更に知りたい人のために
+    * [tidyverse](https://www.tidyverse.org/)
+    * [dplyr, part of tidyverse](http://dplyr.tidyverse.org/index.html)
+    * [俺たちのtidyverseはこれからだ！](http://notchained.hatenablog.com/entry/tidyverse)
+
+
+## 本日の内容
+1. リカバリータイム（午前）
+1. 自己紹介（1分/人）
+1. データハンドリング入門（午後）
+1. **演習1～3**
+    * 『ソフトウェアメトリクス統計分析入門』から
+        * 中間変数を作成せずに計算する方法の基本的な形です
+    * anscombe（アンスコム）のデータ例
+        * 第3回の`ggplot2`で使えるような形式への変換です
+    * 列の分割
+        * このような処理もよくあるパターンです
+
+# 演習１
+
+## メトリクス統計分析入門 演習1.4
+生産性に加えて、工数予実割合も加味してプロジェクトの評価をしようと考えています。以下の条件、方法に従い、各プロジェクトをA～Eの5段階で評価してください。（詳細はテンプレート参照方）
 
 * データ分布の確認は省略してください（外れ値の判定も不要です）
 * 分析手順はテンプレートに記載してあります
@@ -59,10 +186,10 @@ NAを取り除きたい   | **`tidyr::drop_na()`**      |
 require(tidyverse)
 
 # データの読み込み
-# x <- "../data/data.csv" %>%
-#   read.csv() %>%
-x <- "../data/data_utf8.csv" %>%
-  read.csv(encoding = "UTF-8") %>%
+x <- "../data/data.csv" %>%
+  read.csv() %>%
+# x <- "../data/data_utf8.csv" %>%
+  # read.csv(encoding = "UTF-8") %>%
   dplyr::rename(pj = 'プロジェクト名', prod = '生産性', rate = '工数予実割合') %>% 
   tidyr::drop_na()
 
