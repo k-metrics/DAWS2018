@@ -32,15 +32,18 @@ require(tidyverse)
 
 # データハンドリング入門
 
-## メモを取るにもR markdown/RStudio
-* メモを取りながら聞きたい、試しながら聞きたい場合はR Markdownファイルが便利です
-    * ［File］-［New File］-［R Markdown...］-［Document］-［HTML］で新規作成
-* キーボードショートカット
+## メモを取るにもR Markdown
+* メモを取りながら聞きたい、試しながら聞きたい場合はR Notebookが便利です
+    * ［File］-［New File］-［**R Notebook**］で新規作成
+    * R Notebookでコードを実行しながらメモを取ってみましょう
+    * **これも再現可能性**（まとめ資料としてサイトに上げてもOK）
+* キーボードショートカット（RStudioエディタ）
     * コードチャンクの挿入：［Ctrl］+［Alt］+［I］（アイ）
     * パイプ演算子の挿入：［Ctrl］+［Shift］+［M］
     * 代入演算子の挿入：［Alt］+［-］（マイナス）
     * 選択行のコードを実行する：［Ctrl］+［Enter］
     * コードを補完する：［Tab］
+    * 選択行のコメントアウト：［Ctrl］+［Shift］+［C］
     * 選択している関数のヘルプ：［F1］
 
     
