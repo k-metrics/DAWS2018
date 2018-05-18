@@ -201,10 +201,10 @@ NAを取り除きたい   | **`tidyr::drop_na()`**      |
 require(tidyverse)
 
 # データの読み込み
-x <- "../data/data.csv" %>%
-  read.csv() %>%
-# x <- "../data/data_utf8.csv" %>%
-  # read.csv(encoding = "UTF-8") %>%
+# x <- "../data/data.csv" %>%
+#   read.csv() %>%
+x <- "../data/data_utf8.csv" %>%
+  read.csv(encoding = "UTF-8") %>%
   dplyr::rename(pj = 'プロジェクト名', prod = '生産性', rate = '工数予実割合') %>% 
   tidyr::drop_na()
 
