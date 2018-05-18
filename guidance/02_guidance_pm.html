@@ -136,15 +136,17 @@
 
 </article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>データハンドリング入門</h2></hgroup><article >
 
-</article></slide><slide class=""><hgroup><h2>メモを取るにもR markdown/RStudio</h2></hgroup><article  id="r-markdownrstudio">
+</article></slide><slide class=""><hgroup><h2>メモを取るにもR Markdown</h2></hgroup><article  id="r-markdown">
 
 <ul>
-<li>メモを取りながら聞きたい、試しながら聞きたい場合はR Markdownファイルが便利です
+<li>メモを取りながら聞きたい、試しながら聞きたい場合はR Notebookが便利です
 
 <ul>
-<li>［File］-［New File］-［R Markdown&#8230;］-［Document］-［HTML］で新規作成</li>
+<li>［File］-［New File］-［<strong>R Notebook</strong>］で新規作成</li>
+<li>R Notebookでコードを実行しながらメモを取ってみましょう</li>
+<li><strong>これも再現可能性</strong>（まとめ資料としてサイトに上げてもOK）</li>
 </ul></li>
-<li>キーボードショートカット
+<li>キーボードショートカット（RStudioエディタ）
 
 <ul>
 <li>コードチャンクの挿入：［Ctrl］+［Alt］+［I］（アイ）</li>
@@ -152,6 +154,7 @@
 <li>代入演算子の挿入：［Alt］+［-］（マイナス）</li>
 <li>選択行のコードを実行する：［Ctrl］+［Enter］</li>
 <li>コードを補完する：［Tab］</li>
+<li>選択行のコメントアウト：［Ctrl］+［Shift］+［C］</li>
 <li>選択している関数のヘルプ：［F1］</li>
 </ul></li>
 </ul>
@@ -253,7 +256,7 @@ dplyr::summarise_if(tmp2, is.numeric, funs(mean), na.rm = TRUE)</pre>
 
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Sepal.Length"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Sepal.Width"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Petal.Length"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Petal.Width"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Species"],"name":[5],"type":["fctr"],"align":["left"]}],"data":[{"1":"7.2","2":"3.0","3":"5.8","4":"1.6","5":"virginica","_rn_":"130"},{"1":"5.0","2":"3.5","3":"1.6","4":"0.6","5":"setosa","_rn_":"44"},{"1":"7.2","2":"3.2","3":"6.0","4":"1.8","5":"virginica","_rn_":"126"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Sepal.Length"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Sepal.Width"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Petal.Length"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Petal.Width"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Species"],"name":[5],"type":["fctr"],"align":["left"]}],"data":[{"1":"6.9","2":"3.1","3":"4.9","4":"1.5","5":"versicolor","_rn_":"53"},{"1":"5.5","2":"4.2","3":"1.4","4":"0.2","5":"setosa","_rn_":"34"},{"1":"4.8","2":"3.0","3":"1.4","4":"0.1","5":"setosa","_rn_":"13"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script></div>
 
 </article></slide><slide class=""><hgroup><h2>tidyr</h2></hgroup><article  id="tidyr">
