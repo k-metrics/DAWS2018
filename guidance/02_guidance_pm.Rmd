@@ -36,7 +36,7 @@ require(tidyverse)
 * メモを取りながら聞きたい、試しながら聞きたい場合はR Markdownファイルが便利です
     * ［File］-［New File］-［R Markdown...］-［Document］-［HTML］で新規作成
 * キーボードショートカット
-    * コードチャンクの挿入：［Ctrl］+［Shift］+［I］（アイ）
+    * コードチャンクの挿入：［Ctrl］+［Alt］+［I］（アイ）
     * パイプ演算子の挿入：［Ctrl］+［Shift］+［M］
     * 代入演算子の挿入：［Alt］+［-］（マイナス）
     * 選択行のコードを実行する：［Ctrl］+［Enter］
