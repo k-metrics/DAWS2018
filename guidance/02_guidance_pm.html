@@ -170,14 +170,14 @@
 <li><a href='https://speakerdeck.com/fnshr/zheng-ran-detatutenani' title=''>整然データってなに？ (Speaker Deck)</a></li>
 <li>整然データが理解できればデータハンドリングは理解できたようなもの</li>
 </ul></li>
-</ul>
-
-<p>　</p>
-
-<ul>
 <li>Rで最も使うデータ・フレーム型は整然データにしておくべき
 
 <ul>
+<li>データ・フレーム型とは同数のベクトル型データをまとめたもの
+
+<ul>
+<li>個々のベクトル型データの型が異なっていても構わない</li>
+</ul></li>
 <li>ただし、人間が見ると分かりにくい面もある</li>
 <li>人間が分かりやすい（記録しやすい）雑然データへの変換は簡単</li>
 </ul></li>
@@ -189,7 +189,7 @@
 <li>The tidyverse is an opinionated collection of R packages designed for data science.
 
 <ul>
-<li>ggplot2, dplyr, tidyr,tibbleなどのパッケージ群を取りまとめているパッケージ</li>
+<li>ggplot2, dplyr, tidyrなどのパッケージ群を取りまとめているパッケージ</li>
 <li>tidyなアーキテクチャに基づいたパッケージ群
 
 <ul>
@@ -256,7 +256,7 @@ dplyr::summarise_if(tmp2, is.numeric, funs(mean), na.rm = TRUE)</pre>
 
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Sepal.Length"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Sepal.Width"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Petal.Length"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Petal.Width"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Species"],"name":[5],"type":["fctr"],"align":["left"]}],"data":[{"1":"6.9","2":"3.1","3":"4.9","4":"1.5","5":"versicolor","_rn_":"53"},{"1":"5.5","2":"4.2","3":"1.4","4":"0.2","5":"setosa","_rn_":"34"},{"1":"4.8","2":"3.0","3":"1.4","4":"0.1","5":"setosa","_rn_":"13"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Sepal.Length"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Sepal.Width"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Petal.Length"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Petal.Width"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Species"],"name":[5],"type":["fctr"],"align":["left"]}],"data":[{"1":"5.0","2":"3.0","3":"1.6","4":"0.2","5":"setosa","_rn_":"26"},{"1":"5.1","2":"3.8","3":"1.6","4":"0.2","5":"setosa","_rn_":"47"},{"1":"6.4","2":"3.2","3":"4.5","4":"1.5","5":"versicolor","_rn_":"52"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script></div>
 
 </article></slide><slide class=""><hgroup><h2>tidyr</h2></hgroup><article  id="tidyr">

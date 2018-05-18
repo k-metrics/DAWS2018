@@ -54,16 +54,16 @@ require(tidyverse)
     * [整然データってなに？ (Speaker Deck)](https://speakerdeck.com/fnshr/zheng-ran-detatutenani)
     * 整然データが理解できればデータハンドリングは理解できたようなもの
 
-　  
-
 * Rで最も使うデータ・フレーム型は整然データにしておくべき
+    * データ・フレーム型とは同数のベクトル型データをまとめたもの
+        * 個々のベクトル型データの型が異なっていても構わない
     * ただし、人間が見ると分かりにくい面もある
     * 人間が分かりやすい（記録しやすい）雑然データへの変換は簡単
 
 
 ## tidyverseとは？
 * The tidyverse is an opinionated collection of R packages designed for data science.
-    * ggplot2, dplyr, tidyr,tibbleなどのパッケージ群を取りまとめているパッケージ
+    * ggplot2, dplyr, tidyrなどのパッケージ群を取りまとめているパッケージ
     * tidyなアーキテクチャに基づいたパッケージ群
         * パイプ演算子による処理を前提とした引数設計
     
