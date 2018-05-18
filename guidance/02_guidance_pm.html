@@ -113,7 +113,7 @@
       <h1 data-config-title><!-- populated from slide_config.json --></h1>
       <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
       <p data-config-presenter><!-- populated from slide_config.json --></p>
-            <p style="margin-top: 6px; margin-left: -2px;">2018年05月16日</p>
+            <p style="margin-top: 6px; margin-left: -2px;">2018年05月18日</p>
           </hgroup>
   </slide>
 
@@ -121,7 +121,7 @@
 
 <ol>
 <li>リカバリータイム（午前）</li>
-<li>自己紹介（1分/人）</li>
+<li>自己紹介（午前）</li>
 <li><strong>データハンドリング入門（午後）</strong>
 
 <ul>
@@ -135,6 +135,26 @@
 </ol>
 
 </article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>データハンドリング入門</h2></hgroup><article >
+
+</article></slide><slide class=""><hgroup><h2>メモを取るにもR markdown/RStudio</h2></hgroup><article  id="r-markdownrstudio">
+
+<ul>
+<li>メモを取りながら聞きたい、試しながら聞きたい場合はR Markdownファイルが便利です
+
+<ul>
+<li>［File］-［New File］-［R Markdown&#8230;］-［Document］-［HTML］で新規作成</li>
+</ul></li>
+<li>キーボードショートカット
+
+<ul>
+<li>コードチャンクの挿入：［Ctrl］+［Shift］+［I］（アイ）</li>
+<li>パイプ演算子の挿入：［Ctrl］+［Shift］+［M］</li>
+<li>代入演算子の挿入：［Alt］+［-］（マイナス）</li>
+<li>選択行のコードを実行する：［Ctrl］+［Enter］</li>
+<li>コードを補完する：［Tab］</li>
+<li>選択している関数のヘルプ：［F1］</li>
+</ul></li>
+</ul>
 
 </article></slide><slide class=""><hgroup><h2>整然データとは？</h2></hgroup><article >
 
@@ -201,7 +221,7 @@
   dplyr::group_by(Species) %&gt;% 
   dplyr::summarise_if(is.numeric, funs(mean), na.rm = TRUE)</pre>
 
-</article></slide><slide class=""><hgroup><h2>パイプ演算子（<code>%&gt;%</code>）</h2></hgroup><article  id="-1">
+</article></slide><slide class=""><hgroup><h2>パイプ演算子（<code>%&gt;%</code>）を使わないと</h2></hgroup><article >
 
 <p>先ほどの例をパイプ演算子を使わないで記述すると以下のようになります。</p>
 
@@ -233,7 +253,7 @@ dplyr::summarise_if(tmp2, is.numeric, funs(mean), na.rm = TRUE)</pre>
 
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Sepal.Length"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Sepal.Width"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Petal.Length"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Petal.Width"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Species"],"name":[5],"type":["fctr"],"align":["left"]}],"data":[{"1":"5.0","2":"3.6","3":"1.4","4":"0.2","5":"setosa","_rn_":"5"},{"1":"5.4","2":"3.4","3":"1.5","4":"0.4","5":"setosa","_rn_":"32"},{"1":"7.0","2":"3.2","3":"4.7","4":"1.4","5":"versicolor","_rn_":"51"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Sepal.Length"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Sepal.Width"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Petal.Length"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Petal.Width"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Species"],"name":[5],"type":["fctr"],"align":["left"]}],"data":[{"1":"5.0","2":"3.4","3":"1.5","4":"0.2","5":"setosa","_rn_":"8"},{"1":"6.6","2":"3.0","3":"4.4","4":"1.4","5":"versicolor","_rn_":"76"},{"1":"6.0","2":"2.9","3":"4.5","4":"1.5","5":"versicolor","_rn_":"79"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script></div>
 
 </article></slide><slide class=""><hgroup><h2>tidyr</h2></hgroup><article  id="tidyr">
@@ -294,7 +314,7 @@ dplyr::summarise_if(tmp2, is.numeric, funs(mean), na.rm = TRUE)</pre>
 
 <ol>
 <li>リカバリータイム（午前）</li>
-<li>自己紹介（1分/人）</li>
+<li>自己紹介（午前）</li>
 <li>データハンドリング入門（午後）</li>
 <li><strong>演習1～3</strong>
 
