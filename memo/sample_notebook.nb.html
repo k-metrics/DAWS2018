@@ -186,7 +186,7 @@ $(document).ready(function () {
 <p>When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the <em>Preview</em> button or press <em>Ctrl+Shift+K</em> to preview the HTML file).</p>
 <p>The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike <em>Knit</em>, <em>Preview</em> does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.<br />
 　</p>
-<p><code>iris</code>データセットは整然データなデータフレーム</p>
+<p><code>iris</code>データセットは整然データなデータフレーム。</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaXJpc1xuYGBgIn0= -->
@@ -202,7 +202,7 @@ $(document).ready(function () {
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>パイプ演算子を使う場合には<code>tidyverse</code>パッケージを読み込んでおく</p>
+<p>パイプ演算子を使う場合には<code>tidyverse</code>パッケージを読み込んでおく。</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5gYGAifQ== -->
@@ -221,9 +221,9 @@ $(document).ready(function () {
 <p><code>tidyverse</code>で層別の平均値を求めるには</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaXJpcyAlPiUgXG4gICMgZHBseXI6OmZpbHRlcihTcGVjaWVzICE9IFwic2V0b3NhXCIpICU+JSBcbiAgZHBseXI6Omdyb3VwX2J5KFNwZWNpZXMpICU+JSBcbiAgZHBseXI6OnN1bW1hcmlzZV9pZihpcy5udW1lcmljLCBmdW5zKG1lYW4pLCBuYS5ybSA9IFRSVUUpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaXJpcyAlPiUgXG4gICMgZHBseXI6OmZpbHRlcihTcGVjaWVzICE9IFwic2V0b3NhXCIpICU+JVxuICBkcGx5cjo6Z3JvdXBfYnkoU3BlY2llcykgJT4lIFxuICBkcGx5cjo6c3VtbWFyaXNlX2lmKGlzLm51bWVyaWMsIGZ1bnMobWVhbiksIG5hLnJtID0gVFJVRSlcbmBgYCJ9 -->
 <pre class="r"><code>iris %&gt;% 
-  # dplyr::filter(Species != &quot;setosa&quot;) %&gt;% 
+  # dplyr::filter(Species != &quot;setosa&quot;) %&gt;%
   dplyr::group_by(Species) %&gt;% 
   dplyr::summarise_if(is.numeric, funs(mean), na.rm = TRUE)</code></pre>
 <!-- rnb-source-end -->
@@ -241,8 +241,21 @@ tapply(iris$Petal.Width, iris$Species, mean, na.rm = TRUE)</code></pre>
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmVxdWlyZSh0aWR5dmVyc2UpXG5cIi4uL2RhdGEvdXNfdmVoaWNsZXMuY3N2XCIgJT4lIFxuICByZWFkcjo6cmVhZF9jc3YoKSAlPiUgXG4gIGRwbHlyOjpmaWx0ZXIoeWVhciAhPSAwKSAlPiUgXG4gIGRwbHlyOjpncm91cF9ieShtYWtlLCB5ZWFyKSAlPiUgXG4gIGRwbHlyOjpzdW1tYXJpemUoYXZlID0gcm91bmQobWVhbihjb21iMDgpLCAyKSkgJT4lIFxuICB0aWR5cjo6c3ByZWFkKGtleSA9IHllYXIsIHZhbHVlID0gYXZlKVxuYGBgIn0= -->
+<pre class="r"><code>require(tidyverse)
+&quot;../data/us_vehicles.csv&quot; %&gt;% 
+  readr::read_csv() %&gt;% 
+  dplyr::filter(year != 0) %&gt;% 
+  dplyr::group_by(make, year) %&gt;% 
+  dplyr::summarize(ave = round(mean(comb08), 2)) %&gt;% 
+  tidyr::spread(key = year, value = ave)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpUaGlzIGlzIGFuIFtSIE1hcmtkb3duXShodHRwOi8vcm1hcmtkb3duLnJzdHVkaW8uY29tKSBOb3RlYm9vay4gV2hlbiB5b3UgZXhlY3V0ZSBjb2RlIHdpdGhpbiB0aGUgbm90ZWJvb2ssIHRoZSByZXN1bHRzIGFwcGVhciBiZW5lYXRoIHRoZSBjb2RlLiANCg0KVHJ5IGV4ZWN1dGluZyB0aGlzIGNodW5rIGJ5IGNsaWNraW5nIHRoZSAqUnVuKiBidXR0b24gd2l0aGluIHRoZSBjaHVuayBvciBieSBwbGFjaW5nIHlvdXIgY3Vyc29yIGluc2lkZSBpdCBhbmQgcHJlc3NpbmcgKkN0cmwrU2hpZnQrRW50ZXIqLiANCg0KYGBge3J9DQpwbG90KGNhcnMpDQpgYGANCg0KQWRkIGEgbmV3IGNodW5rIGJ5IGNsaWNraW5nIHRoZSAqSW5zZXJ0IENodW5rKiBidXR0b24gb24gdGhlIHRvb2xiYXIgb3IgYnkgcHJlc3NpbmcgKkN0cmwrQWx0K0kqLg0KDQpXaGVuIHlvdSBzYXZlIHRoZSBub3RlYm9vaywgYW4gSFRNTCBmaWxlIGNvbnRhaW5pbmcgdGhlIGNvZGUgYW5kIG91dHB1dCB3aWxsIGJlIHNhdmVkIGFsb25nc2lkZSBpdCAoY2xpY2sgdGhlICpQcmV2aWV3KiBidXR0b24gb3IgcHJlc3MgKkN0cmwrU2hpZnQrSyogdG8gcHJldmlldyB0aGUgSFRNTCBmaWxlKS4NCg0KVGhlIHByZXZpZXcgc2hvd3MgeW91IGEgcmVuZGVyZWQgSFRNTCBjb3B5IG9mIHRoZSBjb250ZW50cyBvZiB0aGUgZWRpdG9yLiBDb25zZXF1ZW50bHksIHVubGlrZSAqS25pdCosICpQcmV2aWV3KiBkb2VzIG5vdCBydW4gYW55IFIgY29kZSBjaHVua3MuIEluc3RlYWQsIHRoZSBvdXRwdXQgb2YgdGhlIGNodW5rIHdoZW4gaXQgd2FzIGxhc3QgcnVuIGluIHRoZSBlZGl0b3IgaXMgZGlzcGxheWVkLiAgDQrjgIAgIA0KDQpgaXJpc2Djg4fjg7zjgr/jgrvjg4Pjg4jjga/mlbTnhLbjg4fjg7zjgr/jgarjg4fjg7zjgr/jg5Xjg6zjg7zjg6ANCmBgYHtyfQ0KaXJpcw0KYGBgDQoNCmBzdW1tYXJ5YOmWouaVsOOBr+ODh+ODvOOCv+OBruimgee0hOOCkuihqOekuuOBl+OBpuOBj+OCjOOCi+OAguOBn+OBoOOBl+OAgeWxpOWIpeOBr+mdnuWvvuW/nOOAgg0KYGBge3J9DQpzdW1tYXJ5KGlyaXMpDQpgYGANCg0K44OR44Kk44OX5ryU566X5a2Q44KS5L2/44GG5aC05ZCI44Gr44GvYHRpZHl2ZXJzZWDjg5Hjg4PjgrHjg7zjgrjjgpLoqq3jgb/ovrzjgpPjgafjgYrjgY8NCmBgYHtyfQ0KbGlicmFyeSh0aWR5dmVyc2UpDQpgYGANCg0K44OR44Kk44OX5ryU566X5a2Q44KS5L2/44GG44GoYHN1bW1hcnlg6Zai5pWw44Gv5Lul5LiL44Gu44KI44GG44Gr6KiY6L+w44Gn44GN44KLDQpgYGB7cn0NCmlyaXMgJT4lIHN1bW1hcnkoKQ0KYGBgDQoNCmB0aWR5dmVyc2Vg44Gn5bGk5Yil44Gu5bmz5Z2H5YCk44KS5rGC44KB44KL44Gr44GvDQpgYGB7cn0NCmlyaXMgJT4lIA0KICAjIGRwbHlyOjpmaWx0ZXIoU3BlY2llcyAhPSAic2V0b3NhIikgJT4lIA0KICBkcGx5cjo6Z3JvdXBfYnkoU3BlY2llcykgJT4lIA0KICBkcGx5cjo6c3VtbWFyaXNlX2lmKGlzLm51bWVyaWMsIGZ1bnMobWVhbiksIG5hLnJtID0gVFJVRSkNCmBgYA0KDQoNCuWQjOOBmOOBk+OBqOOCkkJhc2UgUuOBp+OChOOCi+WgtOWQiOOBq+OBr2B0YXBwbHlg6Zai5pWw44KS55So44GE44KLDQpgYGB7cn0NCnRhcHBseShpcmlzJFNlcGFsLkxlbmd0aCwgaXJpcyRTcGVjaWVzLCBtZWFuLCBuYS5ybSA9IFRSVUUpDQp0YXBwbHkoaXJpcyRTZXBhbC5XaWR0aCwgaXJpcyRTcGVjaWVzLCBtZWFuLCBuYS5ybSA9IFRSVUUpDQp0YXBwbHkoaXJpcyRQZXRhbC5MZW5ndGgsIGlyaXMkU3BlY2llcywgbWVhbiwgbmEucm0gPSBUUlVFKQ0KdGFwcGx5KGlyaXMkUGV0YWwuV2lkdGgsIGlyaXMkU3BlY2llcywgbWVhbiwgbmEucm0gPSBUUlVFKQ0KYGBgDQoNCg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKVGhpcyBpcyBhbiBbUiBNYXJrZG93bl0oaHR0cDovL3JtYXJrZG93bi5yc3R1ZGlvLmNvbSkgTm90ZWJvb2suIFdoZW4geW91IGV4ZWN1dGUgY29kZSB3aXRoaW4gdGhlIG5vdGVib29rLCB0aGUgcmVzdWx0cyBhcHBlYXIgYmVuZWF0aCB0aGUgY29kZS4gCgpUcnkgZXhlY3V0aW5nIHRoaXMgY2h1bmsgYnkgY2xpY2tpbmcgdGhlICpSdW4qIGJ1dHRvbiB3aXRoaW4gdGhlIGNodW5rIG9yIGJ5IHBsYWNpbmcgeW91ciBjdXJzb3IgaW5zaWRlIGl0IGFuZCBwcmVzc2luZyAqQ3RybCtTaGlmdCtFbnRlciouIAoKYGBge3J9CnBsb3QoY2FycykKYGBgCgpBZGQgYSBuZXcgY2h1bmsgYnkgY2xpY2tpbmcgdGhlICpJbnNlcnQgQ2h1bmsqIGJ1dHRvbiBvbiB0aGUgdG9vbGJhciBvciBieSBwcmVzc2luZyAqQ3RybCtBbHQrSSouCgpXaGVuIHlvdSBzYXZlIHRoZSBub3RlYm9vaywgYW4gSFRNTCBmaWxlIGNvbnRhaW5pbmcgdGhlIGNvZGUgYW5kIG91dHB1dCB3aWxsIGJlIHNhdmVkIGFsb25nc2lkZSBpdCAoY2xpY2sgdGhlICpQcmV2aWV3KiBidXR0b24gb3IgcHJlc3MgKkN0cmwrU2hpZnQrSyogdG8gcHJldmlldyB0aGUgSFRNTCBmaWxlKS4KClRoZSBwcmV2aWV3IHNob3dzIHlvdSBhIHJlbmRlcmVkIEhUTUwgY29weSBvZiB0aGUgY29udGVudHMgb2YgdGhlIGVkaXRvci4gQ29uc2VxdWVudGx5LCB1bmxpa2UgKktuaXQqLCAqUHJldmlldyogZG9lcyBub3QgcnVuIGFueSBSIGNvZGUgY2h1bmtzLiBJbnN0ZWFkLCB0aGUgb3V0cHV0IG9mIHRoZSBjaHVuayB3aGVuIGl0IHdhcyBsYXN0IHJ1biBpbiB0aGUgZWRpdG9yIGlzIGRpc3BsYXllZC4gIArjgIAgIAoKYGlyaXNg44OH44O844K/44K744OD44OI44Gv5pW054S244OH44O844K/44Gq44OH44O844K/44OV44Os44O844Og44CCCgpgYGB7cn0KaXJpcwpgYGAKCgpgc3VtbWFyeWDplqLmlbDjga/jg4fjg7zjgr/jga7opoHntITjgpLooajnpLrjgZfjgabjgY/jgozjgovjgILjgZ/jgaDjgZfjgIHlsaTliKXjga/pnZ7lr77lv5zjgIIKCmBgYHtyfQpzdW1tYXJ5KGlyaXMpCmBgYAoKCuODkeOCpOODl+a8lOeul+WtkOOCkuS9v+OBhuWgtOWQiOOBq+OBr2B0aWR5dmVyc2Vg44OR44OD44Kx44O844K444KS6Kqt44G/6L6844KT44Gn44GK44GP44CCCgpgYGB7cn0KbGlicmFyeSh0aWR5dmVyc2UpCmBgYAoKCuODkeOCpOODl+a8lOeul+WtkOOCkuS9v+OBhuOBqGBzdW1tYXJ5YOmWouaVsOOBr+S7peS4i+OBruOCiOOBhuOBq+iomOi/sOOBp+OBjeOCiwoKYGBge3J9CmlyaXMgJT4lIHN1bW1hcnkoKQpgYGAKCgpgdGlkeXZlcnNlYOOBp+WxpOWIpeOBruW5s+Wdh+WApOOCkuaxguOCgeOCi+OBq+OBrwoKYGBge3J9CmlyaXMgJT4lIAogICMgZHBseXI6OmZpbHRlcihTcGVjaWVzICE9ICJzZXRvc2EiKSAlPiUKICBkcGx5cjo6Z3JvdXBfYnkoU3BlY2llcykgJT4lIAogIGRwbHlyOjpzdW1tYXJpc2VfaWYoaXMubnVtZXJpYywgZnVucyhtZWFuKSwgbmEucm0gPSBUUlVFKQpgYGAKCgrlkIzjgZjjgZPjgajjgpJCYXNlIFLjgafjgoTjgovloLTlkIjjgavjga9gdGFwcGx5YOmWouaVsOOCkueUqOOBhOOCiwoKYGBge3J9CnRhcHBseShpcmlzJFNlcGFsLkxlbmd0aCwgaXJpcyRTcGVjaWVzLCBtZWFuLCBuYS5ybSA9IFRSVUUpCnRhcHBseShpcmlzJFNlcGFsLldpZHRoLCBpcmlzJFNwZWNpZXMsIG1lYW4sIG5hLnJtID0gVFJVRSkKdGFwcGx5KGlyaXMkUGV0YWwuTGVuZ3RoLCBpcmlzJFNwZWNpZXMsIG1lYW4sIG5hLnJtID0gVFJVRSkKdGFwcGx5KGlyaXMkUGV0YWwuV2lkdGgsIGlyaXMkU3BlY2llcywgbWVhbiwgbmEucm0gPSBUUlVFKQpgYGAKCgpgYGB7cn0KcmVxdWlyZSh0aWR5dmVyc2UpCiIuLi9kYXRhL3VzX3ZlaGljbGVzLmNzdiIgJT4lIAogIHJlYWRyOjpyZWFkX2NzdigpICU+JSAKICBkcGx5cjo6ZmlsdGVyKHllYXIgIT0gMCkgJT4lIAogIGRwbHlyOjpncm91cF9ieShtYWtlLCB5ZWFyKSAlPiUgCiAgZHBseXI6OnN1bW1hcml6ZShhdmUgPSByb3VuZChtZWFuKGNvbWIwOCksIDIpKSAlPiUgCiAgdGlkeXI6OnNwcmVhZChrZXkgPSB5ZWFyLCB2YWx1ZSA9IGF2ZSkKYGBgCgo=</div>
 
 
 

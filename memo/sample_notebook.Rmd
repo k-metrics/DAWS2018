@@ -18,40 +18,61 @@ When you save the notebook, an HTML file containing the code and output will be 
 The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.  
 　  
 
-`iris`データセットは整然データなデータフレーム
+`iris`データセットは整然データなデータフレーム。
+
 ```{r}
 iris
 ```
 
+
 `summary`関数はデータの要約を表示してくれる。ただし、層別は非対応。
+
 ```{r}
 summary(iris)
 ```
 
-パイプ演算子を使う場合には`tidyverse`パッケージを読み込んでおく
+
+パイプ演算子を使う場合には`tidyverse`パッケージを読み込んでおく。
+
 ```{r}
 library(tidyverse)
 ```
 
+
 パイプ演算子を使うと`summary`関数は以下のように記述できる
+
 ```{r}
 iris %>% summary()
 ```
 
+
 `tidyverse`で層別の平均値を求めるには
+
 ```{r}
 iris %>% 
-  # dplyr::filter(Species != "setosa") %>% 
+  # dplyr::filter(Species != "setosa") %>%
   dplyr::group_by(Species) %>% 
   dplyr::summarise_if(is.numeric, funs(mean), na.rm = TRUE)
 ```
 
 
 同じことをBase Rでやる場合には`tapply`関数を用いる
+
 ```{r}
 tapply(iris$Sepal.Length, iris$Species, mean, na.rm = TRUE)
 tapply(iris$Sepal.Width, iris$Species, mean, na.rm = TRUE)
 tapply(iris$Petal.Length, iris$Species, mean, na.rm = TRUE)
 tapply(iris$Petal.Width, iris$Species, mean, na.rm = TRUE)
+```
+
+
+```{r}
+require(tidyverse)
+"../data/us_vehicles.csv" %>% 
+  readr::read_csv() %>% 
+  dplyr::filter(year != 0) %>% 
+  dplyr::group_by(make, year) %>% 
+  dplyr::summarize(ave = round(mean(comb08), 2)) %>% 
+  tidyr::spread(key = year, value = ave)
 ```
 
