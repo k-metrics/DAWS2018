@@ -144,6 +144,94 @@ iris %>%
   head(3)
 ```
 
+　  
+
+# 代表的な関数
+
+## `dplyr::filter`関数
+データフレームの任意の行（レコード）を抽出する関数です。`dplyr::sample_n`関数は指定行数をランダムサンプリングする関数です
+```{r}
+iris %>% 
+  dplyr::filter(Species == "virginica" | Species == "setosa") %>% 
+  dplyr::sample_n(5)
+```
+
+
+## `dplyr::select`関数
+データフレームの任意の列（変数）を抽出する関数です。
+```{r}
+iris %>%
+  dplyr::select(dplyr::ends_with("Length"), Species) %>%
+  dplyr::sample_n(5)
+```
+
+
+## `dplyr::mutate`関数
+データフレームに列（変数）を追加する関数です。`dplyr::start_with`関数は補助関数です。`dplyr::mutate_all`、`dplyr::mutate_if`などのバリエーションがあります。
+```{r}
+iris %>% 
+  dplyr::mutate(Sepal = Sepal.Length + Sepal.Width) %>% 
+  dplyr::select(dplyr::starts_with("Sepal")) %>% 
+  dplyr::sample_n(5)
+```
+
+
+## `dplyr::summarise`関数
+データフレームの任意の列（変数）を要約します。`dplyr::group_by`関数と組み合わせると層別に処理されます。`dplyr::mutate`関数同様にバリエーションがあります。
+```{r}
+iris %>% 
+  dplyr::group_by(Species) %>% 
+  dplyr::summarise_all(funs(mean))
+```
+
+
+## `tidyr::spread`関数
+データフレームをワイド型に変換します。
+```{r}
+sleep %>% 
+  tidyr::spread(key = group, value = extra) %>% 
+  dplyr::sample_n(5)
+```
+
+
+## `tidyr::gather`関数
+データフレームをロング型に変換します。
+```{r}
+iris %>% 
+  tidyr::gather(key = part, value = value, Sepal.Length, Sepal.Width,
+                Petal.Length, Petal.Width) %>% 
+  dplyr::sample_n(5)
+```
+
+
+## `tidyr::separete`関数
+変数の値を分割します。デフォルトのセパレータは英数文字を除く記号です。
+```{r}
+iris %>% 
+  tidyr::gather(key = part, value = value, Sepal.Length, Sepal.Width,
+                Petal.Length, Petal.Width) %>% 
+  tidyr::separate(part, into = c("element", "dimension")) %>%
+  dplyr::sample_n(5)
+```
+
+
+## `tidyr::drop_na`関数
+データフレームの任意の列（またはデータフレーム全体）にあるNAレコードを削除します。`dplyr::slice`関数は任意の行を選択する関数です。
+```{r}
+airquality %>% 
+  tidyr::drop_na(Solar.R) %>% 
+  dplyr::slice(6:10)
+```
+
+
+## `tibble::rownames_to_cloumn`関数
+行名をデータフレームの変数として追加します。行名がない場合は行番号が変数になります。
+```{r}
+mtcars %>% 
+  tibble::rownames_to_column("Model") %>% 
+  dplyr::sample_n(5)
+```
+
 
 ## データハンドリング
 * [dplyrのすゝめ](https://k-metrics.github.io/cabinet/program/basics_dplyr.html)
