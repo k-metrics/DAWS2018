@@ -46,7 +46,45 @@ require(tidyverse)
     * 選択行のコメントアウト：［Ctrl］+［Shift］+［C］
     * 選択している関数のヘルプ：［F1］
 
-    
+
+# 利用するデータセット
+
+## Edgar Anderson's Iris Data (Fisher's Iris Data)
+```{r}
+iris
+```
+
+
+## Student's Sleep Data
+```{r}
+sleep
+```
+
+
+## New York Air Quality Measurements
+```{r}
+airquality
+```
+
+
+## Motor Trend Car Road Tests (70's)
+```{r}
+mtcars
+```
+
+
+## Anscombe's Quartet of ‘Identical’ Simple Linear Regressions
+```{r}
+anscombe
+```
+
+
+## Fuel economy data from 1999 and 2008 for 38 popular models of car
+```{r}
+ggplot2::mpg
+```
+
+
 ## 整然データとは？
 * **整然データ**（tidy data）とはデータハンドリングを習得する上で**知っておくべき概念**
     * 一言で表すと「（Coddの）第三正規形」
