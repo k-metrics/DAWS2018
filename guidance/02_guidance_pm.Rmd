@@ -22,15 +22,13 @@ require(tidyverse)
 1. リカバリータイム（午前）
 1. 自己紹介（午前）
 1. **データハンドリング入門（午後）**
-    * 整然データ（tidy data）とは？
     * tidyverseとは？
+    * 整然データ（tidy data）とは？
     * パイプ演算子（` %>% `）
-    * dplyr, tidyr, tibble
-    * データハンドリング
+    * dplyr, tidyr, tibble パッケージ概説
+    * 復習のためのソース
 1. 演習1～3
 
-
-# データハンドリング入門
 
 ## メモを取るにもR Markdown
 * メモを取りながら聞きたい、試しながら聞きたい場合はR Notebookが便利です
@@ -46,7 +44,47 @@ require(tidyverse)
     * 選択行のコメントアウト：［Ctrl］+［Shift］+［C］
     * 選択している関数のヘルプ：［F1］
 
+
+# 利用するデータセット
+
+## Edgar Anderson's Iris Data (Fisher's Iris Data)
+```{r}
+iris
+```
+
+
+## Student's Sleep Data
+```{r}
+sleep
+```
+
+
+## New York Air Quality Measurements
+```{r}
+airquality
+```
+
+
+## Motor Trend Car Road Tests (70's)
+```{r}
+mtcars
+```
+
+
+# データハンドリング入門
+
+
+## tidyverseとは？
+* The tidyverse is an opinionated collection of R packages designed for data science.
+    * ggplot2, dplyr, tidyrなどのパッケージ群を取りまとめているパッケージ
+    * tidyなアーキテクチャに基づいたパッケージ群
+        * パイプ演算子による処理を前提とした引数設計
     
+```{r, comment=""}
+tidyverse::tidyverse_packages()
+```
+
+
 ## 整然データとは？
 * **整然データ**（tidy data）とはデータハンドリングを習得する上で**知っておくべき概念**
     * 一言で表すと「（Coddの）第三正規形」
@@ -59,17 +97,6 @@ require(tidyverse)
         * 個々のベクトル型データの型が異なっていても構わない
     * ただし、人間が見ると分かりにくい面もある
     * 人間が分かりやすい（記録しやすい）雑然データへの変換は簡単
-
-
-## tidyverseとは？
-* The tidyverse is an opinionated collection of R packages designed for data science.
-    * ggplot2, dplyr, tidyrなどのパッケージ群を取りまとめているパッケージ
-    * tidyなアーキテクチャに基づいたパッケージ群
-        * パイプ演算子による処理を前提とした引数設計
-    
-```{r, comment=""}
-tidyverse::tidyverse_packages()
-```
 
 
 ## パイプ演算子（`%>%`）
@@ -158,7 +185,7 @@ iris %>%
 
 
 ## `dplyr::select`関数
-データフレームの任意の列（変数）を抽出する関数です。
+データフレームの任意の列（変数）を抽出する関数です。`ends_with`関数は補助関数です。
 ```{r}
 iris %>%
   dplyr::select(dplyr::ends_with("Length"), Species) %>%
@@ -177,7 +204,7 @@ iris %>%
 
 
 ## `dplyr::summarise`関数
-データフレームの任意の列（変数）を要約します。`dplyr::group_by`関数と組み合わせると層別に処理されます。`dplyr::mutate`関数同様にバリエーションがあります。
+データフレームの任意の列（変数）を要約し`dplyr::mutate`関数同様にバリエーションがあります。`dplyr::group_by`関数と組み合わせると層別に処理できます。
 ```{r}
 iris %>% 
   dplyr::group_by(Species) %>% 
@@ -233,7 +260,7 @@ mtcars %>%
 ```
 
 
-## データハンドリング
+## 復習のためのソース
 * [dplyrのすゝめ](https://k-metrics.github.io/cabinet/program/basics_dplyr.html)
     * [dplyr](https://heavywatal.github.io/rstats/dplyr.html)
     * [tidyr](https://heavywatal.github.io/rstats/tidyr.html)
@@ -281,8 +308,6 @@ NAを取り除きたい   | **`tidyr::drop_na()`**      |
 変数を要約したい   | **`dplyr::summarise_if()`** | 条件付きの変数要約
 変数を追加したい   | **`dplyr::mutate()`**       | 
 
-
-# 解答例
 
 ## 演習1.4 解答例
 ```{r echo=FALSE}
