@@ -171,7 +171,16 @@ iris %>%
   head(3)
 ```
 
-　  
+## readr
+`readr`パッケージは高速で柔軟なファイルの読み書きを行ってくれる関数がまとめられた追加パッケージです。ただし、エンコードの指定に一癖あるので注意してください。
+
+* 高速 : `read_csv`，`write_csv`
+* 便利 : `write_excel_csv`
+
+```{r, eval=FALSE}
+file %>% 
+  read_csv(locale = locale(encoding = "UTF-8"))
+```
 
 # 代表的な関数
 
@@ -260,7 +269,7 @@ mtcars %>%
 ```
 
 
-## 復習のためのソース
+## 復習のためのリソース
 * [dplyrのすゝめ](https://k-metrics.github.io/cabinet/program/basics_dplyr.html)
     * [dplyr](https://heavywatal.github.io/rstats/dplyr.html)
     * [tidyr](https://heavywatal.github.io/rstats/tidyr.html)

@@ -113,7 +113,7 @@
       <h1 data-config-title><!-- populated from slide_config.json --></h1>
       <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
       <p data-config-presenter><!-- populated from slide_config.json --></p>
-            <p style="margin-top: 6px; margin-left: -2px;">2018年05月26日</p>
+            <p style="margin-top: 6px; margin-left: -2px;">2018年05月29日</p>
           </hgroup>
   </slide>
 
@@ -294,7 +294,7 @@ dplyr::summarise_if(tmp2, is.numeric, funs(mean), na.rm = TRUE)</pre>
 
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Sepal.Length"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Sepal.Width"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Petal.Length"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Petal.Width"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Species"],"name":[5],"type":["fctr"],"align":["left"]}],"data":[{"1":"5.2","2":"4.1","3":"1.5","4":"0.1","5":"setosa","_rn_":"33"},{"1":"6.5","2":"2.8","3":"4.6","4":"1.5","5":"versicolor","_rn_":"55"},{"1":"4.7","2":"3.2","3":"1.3","4":"0.2","5":"setosa","_rn_":"3"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Sepal.Length"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Sepal.Width"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Petal.Length"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Petal.Width"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Species"],"name":[5],"type":["fctr"],"align":["left"]}],"data":[{"1":"5.7","2":"2.8","3":"4.5","4":"1.3","5":"versicolor","_rn_":"56"},{"1":"6.8","2":"2.8","3":"4.8","4":"1.4","5":"versicolor","_rn_":"77"},{"1":"7.2","2":"3.6","3":"6.1","4":"2.5","5":"virginica","_rn_":"110"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script></div>
 
 </article></slide><slide class=""><hgroup><h2>tidyr</h2></hgroup><article  id="tidyr">
@@ -332,7 +332,17 @@ dplyr::summarise_if(tmp2, is.numeric, funs(mean), na.rm = TRUE)</pre>
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["id"],"name":[1],"type":["int"],"align":["right"]},{"label":["Sepal.Length"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Sepal.Width"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Petal.Length"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Petal.Width"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Species"],"name":[6],"type":["fctr"],"align":["left"]}],"data":[{"1":"1","2":"5.1","3":"3.5","4":"1.4","5":"0.2","6":"setosa","_rn_":"1"},{"1":"2","2":"4.9","3":"3.0","4":"1.4","5":"0.2","6":"setosa","_rn_":"2"},{"1":"3","2":"4.7","3":"3.2","4":"1.3","5":"0.2","6":"setosa","_rn_":"3"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script></div>
 
-<p>　</p>
+</article></slide><slide class=""><hgroup><h2>readr</h2></hgroup><article  id="readr">
+
+<p><code>readr</code>パッケージは高速で柔軟なファイルの読み書きを行ってくれる関数がまとめられた追加パッケージです。ただし、エンコードの指定に一癖あるので注意してください。</p>
+
+<ul>
+<li>高速 : <code>read_csv</code>，<code>write_csv</code></li>
+<li>便利 : <code>write_excel_csv</code></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>file %&gt;% 
+  read_csv(locale = locale(encoding = &quot;UTF-8&quot;))</pre>
 
 </article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>代表的な関数</h2></hgroup><article >
 
@@ -346,7 +356,7 @@ dplyr::summarise_if(tmp2, is.numeric, funs(mean), na.rm = TRUE)</pre>
 
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Sepal.Length"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Sepal.Width"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Petal.Length"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Petal.Width"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Species"],"name":[5],"type":["fctr"],"align":["left"]}],"data":[{"1":"4.5","2":"2.3","3":"1.3","4":"0.3","5":"setosa","_rn_":"42"},{"1":"6.5","2":"3.0","3":"5.2","4":"2.0","5":"virginica","_rn_":"98"},{"1":"5.4","2":"3.4","3":"1.7","4":"0.2","5":"setosa","_rn_":"21"},{"1":"5.4","2":"3.9","3":"1.3","4":"0.4","5":"setosa","_rn_":"17"},{"1":"4.4","2":"3.0","3":"1.3","4":"0.2","5":"setosa","_rn_":"39"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Sepal.Length"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Sepal.Width"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Petal.Length"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Petal.Width"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Species"],"name":[5],"type":["fctr"],"align":["left"]}],"data":[{"1":"4.8","2":"3.0","3":"1.4","4":"0.1","5":"setosa","_rn_":"13"},{"1":"4.3","2":"3.0","3":"1.1","4":"0.1","5":"setosa","_rn_":"14"},{"1":"4.9","2":"2.5","3":"4.5","4":"1.7","5":"virginica","_rn_":"57"},{"1":"5.1","2":"3.3","3":"1.7","4":"0.5","5":"setosa","_rn_":"24"},{"1":"7.2","2":"3.0","3":"5.8","4":"1.6","5":"virginica","_rn_":"80"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script></div>
 
 </article></slide><slide class=""><hgroup><h2><code>dplyr::select</code>関数</h2></hgroup><article  id="dplyrselect">
@@ -359,7 +369,7 @@ dplyr::summarise_if(tmp2, is.numeric, funs(mean), na.rm = TRUE)</pre>
 
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Sepal.Length"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Petal.Length"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Species"],"name":[3],"type":["fctr"],"align":["left"]}],"data":[{"1":"5.4","2":"1.7","3":"setosa","_rn_":"21"},{"1":"6.6","2":"4.6","3":"versicolor","_rn_":"59"},{"1":"5.8","2":"1.2","3":"setosa","_rn_":"15"},{"1":"5.1","2":"1.4","3":"setosa","_rn_":"1"},{"1":"5.5","2":"4.4","3":"versicolor","_rn_":"91"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Sepal.Length"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Petal.Length"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Species"],"name":[3],"type":["fctr"],"align":["left"]}],"data":[{"1":"4.6","2":"1.4","3":"setosa","_rn_":"48"},{"1":"7.4","2":"6.1","3":"virginica","_rn_":"131"},{"1":"6.6","2":"4.6","3":"versicolor","_rn_":"59"},{"1":"5.1","2":"1.5","3":"setosa","_rn_":"20"},{"1":"7.2","2":"5.8","3":"virginica","_rn_":"130"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script></div>
 
 </article></slide><slide class=""><hgroup><h2><code>dplyr::mutate</code>関数</h2></hgroup><article  id="dplyrmutate">
@@ -373,7 +383,7 @@ dplyr::summarise_if(tmp2, is.numeric, funs(mean), na.rm = TRUE)</pre>
 
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Sepal.Length"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Sepal.Width"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Sepal"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"6.7","2":"3.3","3":"10.0","_rn_":"145"},{"1":"6.8","2":"3.2","3":"10.0","_rn_":"144"},{"1":"5.0","2":"3.6","3":"8.6","_rn_":"5"},{"1":"6.4","2":"2.7","3":"9.1","_rn_":"112"},{"1":"7.4","2":"2.8","3":"10.2","_rn_":"131"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Sepal.Length"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Sepal.Width"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Sepal"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"5.7","2":"2.6","3":"8.3","_rn_":"80"},{"1":"5.4","2":"3.0","3":"8.4","_rn_":"85"},{"1":"5.3","2":"3.7","3":"9.0","_rn_":"49"},{"1":"4.8","2":"3.0","3":"7.8","_rn_":"46"},{"1":"6.3","2":"2.5","3":"8.8","_rn_":"73"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script></div>
 
 </article></slide><slide class=""><hgroup><h2><code>dplyr::summarise</code>関数</h2></hgroup><article  id="dplyrsummarise">
@@ -399,7 +409,7 @@ dplyr::summarise_if(tmp2, is.numeric, funs(mean), na.rm = TRUE)</pre>
 
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["ID"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["1"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["2"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"5","2":"-0.1","3":"-0.1","_rn_":"5"},{"1":"3","2":"-0.2","3":"1.1","_rn_":"3"},{"1":"7","2":"3.7","3":"5.5","_rn_":"7"},{"1":"1","2":"0.7","3":"1.9","_rn_":"1"},{"1":"10","2":"2.0","3":"3.4","_rn_":"10"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["ID"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["1"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["2"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"5","2":"-0.1","3":"-0.1","_rn_":"5"},{"1":"6","2":"3.4","3":"4.4","_rn_":"6"},{"1":"9","2":"0.0","3":"4.6","_rn_":"9"},{"1":"7","2":"3.7","3":"5.5","_rn_":"7"},{"1":"10","2":"2.0","3":"3.4","_rn_":"10"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script></div>
 
 </article></slide><slide class=""><hgroup><h2><code>tidyr::gather</code>関数</h2></hgroup><article  id="tidyrgather">
@@ -413,7 +423,7 @@ dplyr::summarise_if(tmp2, is.numeric, funs(mean), na.rm = TRUE)</pre>
 
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Species"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["part"],"name":[2],"type":["chr"],"align":["left"]},{"label":["value"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"versicolor","2":"Petal.Length","3":"4.7","_rn_":"364"},{"1":"versicolor","2":"Sepal.Length","3":"5.7","_rn_":"56"},{"1":"versicolor","2":"Petal.Length","3":"4.1","_rn_":"368"},{"1":"virginica","2":"Petal.Length","3":"6.0","_rn_":"401"},{"1":"setosa","2":"Petal.Width","3":"0.3","_rn_":"491"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Species"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["part"],"name":[2],"type":["chr"],"align":["left"]},{"label":["value"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"versicolor","2":"Petal.Width","3":"1.4","_rn_":"510"},{"1":"virginica","2":"Petal.Width","3":"1.9","_rn_":"597"},{"1":"versicolor","2":"Petal.Length","3":"4.0","_rn_":"363"},{"1":"setosa","2":"Petal.Width","3":"0.1","_rn_":"464"},{"1":"setosa","2":"Sepal.Length","3":"4.5","_rn_":"42"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script></div>
 
 </article></slide><slide class=""><hgroup><h2><code>tidyr::separete</code>関数</h2></hgroup><article  id="tidyrseparete">
@@ -428,7 +438,7 @@ dplyr::summarise_if(tmp2, is.numeric, funs(mean), na.rm = TRUE)</pre>
 
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Species"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["element"],"name":[2],"type":["chr"],"align":["left"]},{"label":["dimension"],"name":[3],"type":["chr"],"align":["left"]},{"label":["value"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"virginica","2":"Sepal","3":"Width","4":"2.9","_rn_":"258"},{"1":"virginica","2":"Petal","3":"Width","4":"2.3","_rn_":"586"},{"1":"versicolor","2":"Sepal","3":"Width","4":"3.1","_rn_":"216"},{"1":"virginica","2":"Sepal","3":"Width","4":"3.0","_rn_":"263"},{"1":"versicolor","2":"Petal","3":"Length","4":"4.2","_rn_":"362"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Species"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["element"],"name":[2],"type":["chr"],"align":["left"]},{"label":["dimension"],"name":[3],"type":["chr"],"align":["left"]},{"label":["value"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"setosa","2":"Sepal","3":"Length","4":"5.1","_rn_":"1"},{"1":"setosa","2":"Petal","3":"Width","4":"0.2","_rn_":"475"},{"1":"setosa","2":"Sepal","3":"Width","4":"3.4","_rn_":"157"},{"1":"versicolor","2":"Petal","3":"Width","4":"1.5","_rn_":"505"},{"1":"virginica","2":"Sepal","3":"Length","4":"5.7","_rn_":"114"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script></div>
 
 </article></slide><slide class=""><hgroup><h2><code>tidyr::drop_na</code>関数</h2></hgroup><article  id="tidyrdrop_na">
@@ -454,10 +464,10 @@ dplyr::summarise_if(tmp2, is.numeric, funs(mean), na.rm = TRUE)</pre>
 
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Model"],"name":[1],"type":["chr"],"align":["left"]},{"label":["mpg"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["cyl"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["disp"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["hp"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["drat"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["wt"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["qsec"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["vs"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["am"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["gear"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["carb"],"name":[12],"type":["dbl"],"align":["right"]}],"data":[{"1":"Fiat X1-9","2":"27.3","3":"4","4":"79.0","5":"66","6":"4.08","7":"1.935","8":"18.90","9":"1","10":"1","11":"4","12":"1","_rn_":"26"},{"1":"Ferrari Dino","2":"19.7","3":"6","4":"145.0","5":"175","6":"3.62","7":"2.770","8":"15.50","9":"0","10":"1","11":"5","12":"6","_rn_":"30"},{"1":"Merc 230","2":"22.8","3":"4","4":"140.8","5":"95","6":"3.92","7":"3.150","8":"22.90","9":"1","10":"0","11":"4","12":"2","_rn_":"9"},{"1":"Mazda RX4 Wag","2":"21.0","3":"6","4":"160.0","5":"110","6":"3.90","7":"2.875","8":"17.02","9":"0","10":"1","11":"4","12":"4","_rn_":"2"},{"1":"Lincoln Continental","2":"10.4","3":"8","4":"460.0","5":"215","6":"3.00","7":"5.424","8":"17.82","9":"0","10":"0","11":"3","12":"4","_rn_":"16"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Model"],"name":[1],"type":["chr"],"align":["left"]},{"label":["mpg"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["cyl"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["disp"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["hp"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["drat"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["wt"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["qsec"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["vs"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["am"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["gear"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["carb"],"name":[12],"type":["dbl"],"align":["right"]}],"data":[{"1":"Mazda RX4","2":"21.0","3":"6","4":"160.0","5":"110","6":"3.90","7":"2.62","8":"16.46","9":"0","10":"1","11":"4","12":"4","_rn_":"1"},{"1":"Volvo 142E","2":"21.4","3":"4","4":"121.0","5":"109","6":"4.11","7":"2.78","8":"18.60","9":"1","10":"1","11":"4","12":"2","_rn_":"32"},{"1":"Duster 360","2":"14.3","3":"8","4":"360.0","5":"245","6":"3.21","7":"3.57","8":"15.84","9":"0","10":"0","11":"3","12":"4","_rn_":"7"},{"1":"Merc 240D","2":"24.4","3":"4","4":"146.7","5":"62","6":"3.69","7":"3.19","8":"20.00","9":"1","10":"0","11":"4","12":"2","_rn_":"8"},{"1":"Datsun 710","2":"22.8","3":"4","4":"108.0","5":"93","6":"3.85","7":"2.32","8":"18.61","9":"1","10":"1","11":"4","12":"1","_rn_":"3"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script></div>
 
-</article></slide><slide class=""><hgroup><h2>復習のためのソース</h2></hgroup><article >
+</article></slide><slide class=""><hgroup><h2>復習のためのリソース</h2></hgroup><article >
 
 <ul>
 <li><a href='https://k-metrics.github.io/cabinet/program/basics_dplyr.html' title=''>dplyrのすゝめ</a>
