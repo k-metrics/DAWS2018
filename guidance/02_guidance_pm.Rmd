@@ -311,6 +311,10 @@ mtcars %>%
     * [dplyr, part of tidyverse](http://dplyr.tidyverse.org/index.html)
     * [俺たちのtidyverseはこれからだ！](http://notchained.hatenablog.com/entry/tidyverse)
 
+* 書籍
+    * 『RユーザのためのRStudio実践入門 -tidyverseによるモダンな分析フローの世界』（6/29発売予定）
+    * 『みんなのR 第2版』（6/27発売予定 原書は発売済）
+
 
 ## 本日の内容
 1. リカバリータイム（午前）
