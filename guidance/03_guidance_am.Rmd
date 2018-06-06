@@ -27,7 +27,9 @@ require(tidyverse)
 1. 効率的で綺麗な可視化（午後）
     * 演習
 
+
 # 効率的で綺麗な可視化
+
 
 ## 【復習】整然データとは？
 * 整然データ（tidy data）とはデータハンドリングを習得する上で知っておくべき概念
@@ -73,16 +75,19 @@ ggplot2::ggplot(data = iris,
     ggplot2::geom_boxplot()
 ```
 
+
 ## ベースを決める`ggplot2::ggplot`関数
 ```{r}
 ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length))
 ```
+
 
 ## ベースに上書きしていくイメージ
 ```{r}
 ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
   ggplot2::geom_point()
 ```
+
 
 ## `ggplot2::aes`の指定位置がポイント
 ```{r}
