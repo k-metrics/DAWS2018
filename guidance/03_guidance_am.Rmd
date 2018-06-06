@@ -132,6 +132,18 @@ ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
 ```
 
 
+## 主な描画関数
+geom object  | 描画内容       | 類似object
+-------------|----------------|------------
+geom_bar     | 棒グラフ       | geom_col
+geom_boxplot | 箱ひげ図       | geom_violin
+geom_dotplot | ドットチャート |
+geom_histgram | ヒストグラム  | geom_density
+geom_line    | 折れ線グラフ   | geom_path
+geom_smooth  | 回帰線         | 
+geom_text    | テキストラベル | geom_label
+
+
 ## 復習のためのリソース
 * [ggplot2のすゝめ <i class="fa fa-external-link-square"></i>](https://k-metrics.github.io/cabinet/program/basics_ggplot2.html)
 * [ggplot2あれこれ <i class="fa fa-external-link-square"></i>](https://k-metrics.github.io/cabinet/visualize/index.html)
@@ -143,6 +155,7 @@ ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
 * [グラフ描画ggplot2の辞書的まとめ20のコード <i class="fa fa-external-link"></i>](https://mrunadon.github.io/ggplot2/)
 * [ggplot2 — きれいなグラフを簡単に合理的に  <i class="fa fa-external-link"></i>](https://heavywatal.github.io/rstats/ggplot2.html)
 * [Rのグラフィック作成パッケージ“ggplot2”について <i class="fa fa-external-link"></i>](http://id.fnshr.info/2011/10/22/ggplot2/)
+* [公式Reference（英語） <i class="fa fa-external-link"></i>](http://ggplot2.tidyverse.org/reference/index.html)
 
 
 ## License
