@@ -137,9 +137,10 @@ summary(iris)
 ```
 はパイプ演算子を用いると
 ```{r, eval=FALSE}
+require(tidyverse)    # library(tidyverse)
 iris %>% summary()
 ```
-と書くことができます。数珠つなぎにして複数の計算を分かりやすく記述できます。
+と書くことができます。処理手順が分かりやすく記述できます。
 ```{r, eval=FALSE}
 iris %>% 
   dplyr::filter(Species != "setosa") %>% 
