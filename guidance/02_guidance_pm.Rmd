@@ -39,14 +39,12 @@ require(tidyverse)
 * 便利なキーボードショートカット（RStudioエディタ）
     * **コードチャンクの挿入：［Ctrl］+［Alt］+［I］（アイ）**
     * パイプ演算子の挿入：［Ctrl］+［Shift］+［M］
-    * 代入演算子の挿入：［Alt］+［-］（マイナス）
     * **選択行のコードを実行する：［Ctrl］+［Enter］**
     * コードを補完する：［Tab］
-    * 選択行のコメントアウト：［Ctrl］+［Shift］+［C］
-    * 選択している関数のヘルプ：［F1］
 
+R Notebookを使いながら本日利用するデータを見てみましょう
 
-# 利用するデータセット
+# 本日のデータセット
 
 ## Edgar Anderson's Iris Data (Fisher's Iris Data)
 ```{r}
@@ -140,7 +138,7 @@ summary(iris)
 require(tidyverse)    # library(tidyverse)
 iris %>% summary()
 ```
-と書くことができます。処理手順が分かりやすく記述できます。
+と書くことができ、処理手順を分かりやすく記述できます。
 ```{r, eval=FALSE}
 iris %>% 
   dplyr::filter(Species != "setosa") %>% 
@@ -217,7 +215,7 @@ file %>%
 # 代表的な関数
 
 ## `dplyr::filter`関数
-データフレームの任意の行（レコード）を抽出する関数です。`dplyr::sample_n`関数は指定行数をランダムサンプリングする関数です
+データフレームの条件に合う行（レコード）を抽出する関数です。`dplyr::sample_n`関数は指定数のランダムサンプリングを行う関数です
 ```{r}
 iris %>% 
   dplyr::filter(Species == "virginica" | Species == "setosa") %>% 
@@ -226,7 +224,7 @@ iris %>%
 
 
 ## `dplyr::select`関数
-データフレームの任意の列（変数）を抽出する関数です。`ends_with`関数は補助関数です。
+データフレームの指定の列（変数）を抽出する関数です。`ends_with`関数は補助関数です。
 ```{r}
 iris %>%
   dplyr::select(dplyr::ends_with("Length"), Species) %>%
