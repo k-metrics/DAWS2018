@@ -311,10 +311,10 @@ mtcars %>%
     * [tidyverse](https://www.tidyverse.org/)
     * [dplyr, part of tidyverse](http://dplyr.tidyverse.org/index.html)
     * [俺たちのtidyverseはこれからだ！](http://notchained.hatenablog.com/entry/tidyverse)
+    * [Data Manipulation in R](https://itsalocke.com/blog/data-manipulation-in-r/?utm_content=bufferf44b9&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer)
 
 * 書籍
     * 『RユーザのためのRStudio実践入門 -tidyverseによるモダンな分析フローの世界』（6/29発売予定）
-    * 『みんなのR 第2版』（6/27発売予定 原書は発売済）
 
 
 ## 本日の内容
@@ -358,11 +358,11 @@ NAを取り除きたい   | **`tidyr::drop_na()`**      |
 ```{r echo=FALSE}
 require(tidyverse)
 
-# データの読み込み
-# x <- "../data/data.csv" %>%
-#   read.csv() %>%
-x <- "../data/data_utf8.csv" %>%
-  read.csv(encoding = "UTF-8") %>%
+# データの読み込み(for Windows)
+x <- "../data/data.csv" %>%
+  read.csv() %>%
+# x <- "../data/data_utf8.csv" %>%
+  # read.csv(encoding = "UTF-8") %>%
   dplyr::rename(pj = 'プロジェクト名', prod = '生産性', rate = '工数予実割合') %>% 
   tidyr::drop_na()
 
