@@ -37,16 +37,14 @@ require(tidyverse)
     * R Notebookでコードを実行しながらメモを取ってみましょう
     * **これも再現可能性**（まとめ資料としてサイトに上げてもOK）
 * 便利なキーボードショートカット（RStudioエディタ）
-    * コードチャンクの挿入：［Ctrl］+［Alt］+［I］（アイ）
+    * **コードチャンクの挿入：［Ctrl］+［Alt］+［I］（アイ）**
     * パイプ演算子の挿入：［Ctrl］+［Shift］+［M］
-    * 代入演算子の挿入：［Alt］+［-］（マイナス）
-    * 選択行のコードを実行する：［Ctrl］+［Enter］
+    * **選択行のコードを実行する：［Ctrl］+［Enter］**
     * コードを補完する：［Tab］
-    * 選択行のコメントアウト：［Ctrl］+［Shift］+［C］
-    * 選択している関数のヘルプ：［F1］
 
+R Notebookを使いながら本日利用するデータを見てみましょう
 
-# 利用するデータセット
+# 本日のデータセット
 
 ## Edgar Anderson's Iris Data (Fisher's Iris Data)
 ```{r}
@@ -137,9 +135,10 @@ summary(iris)
 ```
 はパイプ演算子を用いると
 ```{r, eval=FALSE}
+require(tidyverse)    # library(tidyverse)
 iris %>% summary()
 ```
-と書くことができます。数珠つなぎにして複数の計算を分かりやすく記述できます。
+と書くことができ、処理手順を分かりやすく記述できます。
 ```{r, eval=FALSE}
 iris %>% 
   dplyr::filter(Species != "setosa") %>% 
@@ -216,7 +215,7 @@ file %>%
 # 代表的な関数
 
 ## `dplyr::filter`関数
-データフレームの任意の行（レコード）を抽出する関数です。`dplyr::sample_n`関数は指定行数をランダムサンプリングする関数です
+データフレームの条件に合う行（レコード）を抽出する関数です。`dplyr::sample_n`関数は指定数のランダムサンプリングを行う関数です
 ```{r}
 iris %>% 
   dplyr::filter(Species == "virginica" | Species == "setosa") %>% 
@@ -225,7 +224,7 @@ iris %>%
 
 
 ## `dplyr::select`関数
-データフレームの任意の列（変数）を抽出する関数です。`ends_with`関数は補助関数です。
+データフレームの指定の列（変数）を抽出する関数です。`ends_with`関数は補助関数です。
 ```{r}
 iris %>%
   dplyr::select(dplyr::ends_with("Length"), Species) %>%
@@ -310,10 +309,10 @@ mtcars %>%
     * [tidyverse](https://www.tidyverse.org/)
     * [dplyr, part of tidyverse](http://dplyr.tidyverse.org/index.html)
     * [俺たちのtidyverseはこれからだ！](http://notchained.hatenablog.com/entry/tidyverse)
+    * [Data Manipulation in R](https://itsalocke.com/blog/data-manipulation-in-r/?utm_content=bufferf44b9&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer)
 
 * 書籍
     * 『RユーザのためのRStudio実践入門 -tidyverseによるモダンな分析フローの世界』（6/29発売予定）
-    * 『みんなのR 第2版』（6/27発売予定 原書は発売済）
 
 
 ## 本日の内容
@@ -357,9 +356,10 @@ NAを取り除きたい   | **`tidyr::drop_na()`**      |
 ```{r echo=FALSE}
 require(tidyverse)
 
-# データの読み込み
+# データの読み込み(for Windows)
 # x <- "../data/data.csv" %>%
 #   read.csv() %>%
+# データの読み込み(for Ubuntu)
 x <- "../data/data_utf8.csv" %>%
   read.csv(encoding = "UTF-8") %>%
   dplyr::rename(pj = 'プロジェクト名', prod = '生産性', rate = '工数予実割合') %>% 
