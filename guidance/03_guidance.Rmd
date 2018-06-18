@@ -68,7 +68,7 @@ require(tidyverse)
 定数  | 説明
 ------|-----
 NULL  | 空 ＝ 何もない（何も存在しない）。0(zero)や下記のNAとは異なります
-NA    | 欠損値（Not Available）。データの欠損（データが無いことを意味するデータです）
+NA    | 欠損値（Not Available）。データの欠損（データが無いことを）意味するデータです
 NaN   | 非数（Not a Number）。数値では表現できないもの例えばlog(-1)とか0/0が該当します
 Inf   | 0(zero)除算時等は、NaNではなくInf/-Inf（無限大）になります
 
