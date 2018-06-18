@@ -373,17 +373,23 @@ div.tocify {
 <tr class="odd">
 <td align="center"><a href="#S03">第3回</a></td>
 <td align="center">2018/7/14</td>
-<td align="left">効率的で綺麗な可視化</td>
-<td align="left">ggplot2</td>
+<td align="left">データハンドリング入門２（仮）</td>
+<td align="left">tidyverse</td>
 </tr>
 <tr class="even">
 <td align="center"><a href="#S04">第4回</a></td>
 <td align="center">2018/9/15</td>
+<td align="left">効率的で綺麗な可視化</td>
+<td align="left">ggplot2</td>
+</tr>
+<tr class="odd">
+<td align="center"><a href="#S05">第5回</a></td>
+<td align="center">2018/10/13</td>
 <td align="left">再現性のあるレポーティング</td>
 <td align="left">R Markdown</td>
 </tr>
-<tr class="odd">
-<td align="center">第5回以降</td>
+<tr class="even">
+<td align="center">第6回以降</td>
 <td align="center">　</td>
 <td align="left">内容未定</td>
 <td align="left"></td>
@@ -525,7 +531,48 @@ div.tocify {
 </div>
 </div>
 <div id="S03" class="section level2">
-<h2>第3回 効率的で綺麗な可視化</h2>
+<h2>第3回 データハンドリング入門２（仮）</h2>
+<p>実際にtidyverseを使ってデータを処理することでtidyverseへの理解を深めます。</p>
+<ul>
+<li><a href="https://www.tidyverse.org/" target="_blank" title="tidyverse, RStudio">tidyverse <i class="fa fa-external-link"></i></a> : Easily Install and Load the ‘Tidyverse’</li>
+</ul>
+<p>　</p>
+<div id="午前午後の部" class="section level3">
+<h3>午前・午後の部</h3>
+<ul>
+<li><a href="./guidance/03_guidance.html" target="_blank" title="第3回 ガイダンス">ガイダンス <i class="fa fa-external-link-square"></i></a></li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>演習のための補足説明（1時間程度）</li>
+<li>演習1～5
+<ul>
+<li>『ソフトウェアメトリクス統計分析入門』から
+<ul>
+<li>中間変数を作成せずに計算する方法の基本的な形</li>
+</ul></li>
+<li>anscombe（アンスコム）のデータ例
+<ul>
+<li><code>ggplot2</code>で使えるような形式への変換</li>
+</ul></li>
+<li>データフレームの型を変換する
+<ul>
+<li>データフレーム型の制限を知る</li>
+</ul></li>
+<li>チケット数をカウントする
+<ul>
+<li>クロス集計の基本的な形</li>
+</ul></li>
+<li>チケット数をカウントする（その２）
+<ul>
+<li>時系列での集計と<code>ggplot2</code>での描画のために</li>
+</ul></li>
+</ul></li>
+</ol>
+<p>　</p>
+</div>
+</div>
+<div id="S04" class="section level2">
+<h2>第4回 効率的で綺麗な可視化</h2>
 <p>データハンドリングを用いて整然データにしたデータを<strong><code>ggplot2</code></strong>パッケージを利用して可視化する方法を学びます。</p>
 <ul>
 <li><a href="http://ggplot2.tidyverse.org/" target="_blank" title="ggplot2, RStudio">ggplot2 <i class="fa fa-external-link"></i></a> : Create Elegant Data Visualisations Using the Grammar of Graphics</li>
@@ -534,7 +581,7 @@ div.tocify {
 <div id="午前の部-2" class="section level3">
 <h3>午前の部</h3>
 <ul>
-<li><a href="./guidance/03_guidance_am.html" target="_blank" title="ioslide">ガイダンス <i class="fa fa-external-link-square"></i></a>
+<li><a href="./guidance/04_guidance_am.html" target="_blank" title="ioslide">ガイダンス <i class="fa fa-external-link-square"></i></a>
 <ul>
 <li><a href="https://k-metrics.github.io/cabinet/program/basics_ggplot2.html" target="_blank" title="GitHub Pages">ggplot2のすゝめ <i class="fa fa-external-link-square"></i></a>
 <ul>
@@ -548,7 +595,7 @@ div.tocify {
 <div id="午後の部-2" class="section level3">
 <h3>午後の部</h3>
 <ul>
-<li><a href="./guidance/03_guidance_pm.html" target="_blank" title="ioslide">ガイダンス <i class="fa fa-external-link-square"></i></a> 　</li>
+<li><a href="./guidance/04_guidance_pm.html" target="_blank" title="ioslide">ガイダンス <i class="fa fa-external-link-square"></i></a> 　</li>
 </ul>
 <!-- * [演習用テンプレート <i class="fa fa-external-link-square"></i>](./template/template_ggplot.html){target="_blank" title="HTML Format"} -->
 <ul>
@@ -557,8 +604,8 @@ div.tocify {
 <p>　</p>
 </div>
 </div>
-<div id="S04" class="section level2">
-<h2>第4回 再現性のあるレポーティング</h2>
+<div id="S05" class="section level2">
+<h2>第5回 再現性のあるレポーティング</h2>
 <p>第3回までの総括として<strong><code>rmarkdown</code></strong>パッケージを用いた報告書作成を学びます。</p>
 <ul>
 <li><a href="https://rmarkdown.rstudio.com/" target="_blank" title="rmarkdown, RStudio">rmarkdown <i class="fa fa-external-link"></i></a> : Dynamic Documents for R</li>
@@ -567,7 +614,7 @@ div.tocify {
 <div id="午前の部午後の部" class="section level3">
 <h3>午前の部/午後の部</h3>
 <ul>
-<li><a href="./guidance/04_guidance_am.html" target="_blank" title="ioslide">ガイダンス <i class="fa fa-external-link-square"></i></a>
+<li><a href="./guidance/05_guidance_am.html" target="_blank" title="ioslide">ガイダンス <i class="fa fa-external-link-square"></i></a>
 <ul>
 <li><a href="./guidance/slides.pdf" target="_blank" title="https://github.com/uribo/hello_rmarkdown">Hello R Markdown :) , Uryu Shinya <i class="fa fa-file-pdf-o"></i> <i class="fa fa-external-link"></i></a></li>
 <li><a href="https://www.slideshare.net/kohske/rrstudior-markdown" target="_blank" title="RとRStudioとR Markdownを通して">解析方法とレポート作成方法の再現可能性 <i class="fa fa-external-link"></i></a><br />
@@ -580,7 +627,7 @@ div.tocify {
 </ul>
 <p>　</p>
 <hr />
-<p><img src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" alt="Sampo Suzuki" target="_blank" title="CC BY-NC-SA 4.0 icon" /> <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" target="_blank" title="CC BY-NC-SA 4.0">CC BY-NC-SA 4.0 <i class="fa fa-external-link"></i></a>, Sampo Suzuki [2018-05-17 17:25(JST)]</p>
+<p><img src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" alt="Sampo Suzuki" target="_blank" title="CC BY-NC-SA 4.0 icon" /> <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" target="_blank" title="CC BY-NC-SA 4.0">CC BY-NC-SA 4.0 <i class="fa fa-external-link"></i></a>, Sampo Suzuki [2018-06-18 21:40(JST)]</p>
 </div>
 </div>
 

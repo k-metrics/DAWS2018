@@ -13,9 +13,10 @@ output:
 :------------:|:---------:|:---------------------------|:-----------
 [第1回](#S01) | 2018/5/12 | 分析環境の構築と動作確認   | R/RStudio, Git, packrat
 [第2回](#S02) | 2018/6/16 | データハンドリング入門     | tidyverse
-[第3回](#S03) | 2018/7/14 | 効率的で綺麗な可視化       | ggplot2
-[第4回](#S04) | 2018/9/15 | 再現性のあるレポーティング | R Markdown
-第5回以降     |     　    | 内容未定                   | 
+[第3回](#S03) | 2018/7/14 | データハンドリング入門２（仮）   | tidyverse
+[第4回](#S04) | 2018/9/15 | 効率的で綺麗な可視化       | ggplot2
+[第5回](#S05) | 2018/10/13 | 再現性のあるレポーティング | R Markdown
+第6回以降     |     　    | 内容未定                   | 
 
 　  
 
@@ -100,7 +101,32 @@ output:
 
 　  
 
-## 第3回 効率的で綺麗な可視化 {#S03}
+## 第3回 データハンドリング入門２（仮） {#S03}
+実際にtidyverseを使ってデータを処理することでtidyverseへの理解を深めます。
+
+* [tidyverse <i class="fa fa-external-link"></i>](https://www.tidyverse.org/){target="_blank" title="tidyverse, RStudio"} : Easily Install and Load the 'Tidyverse'
+
+　  
+
+### 午前・午後の部
+* [ガイダンス <i class="fa fa-external-link-square"></i>](./guidance/03_guidance.html){target="_blank" title="第3回 ガイダンス"}
+
+1. 演習のための補足説明（1時間程度）
+1. 演習1～5
+    * 『ソフトウェアメトリクス統計分析入門』から
+        * 中間変数を作成せずに計算する方法の基本的な形
+    * anscombe（アンスコム）のデータ例
+        * `ggplot2`で使えるような形式への変換
+    * データフレームの型を変換する
+        * データフレーム型の制限を知る
+    * チケット数をカウントする
+        * クロス集計の基本的な形
+    * チケット数をカウントする（その２）
+        * 時系列での集計と`ggplot2`での描画のために
+
+　  
+
+## 第4回 効率的で綺麗な可視化 {#S04}
 データハンドリングを用いて整然データにしたデータを**`ggplot2`**パッケージを利用して可視化する方法を学びます。
 
 * [ggplot2 <i class="fa fa-external-link"></i>](http://ggplot2.tidyverse.org/){target="_blank" title="ggplot2, RStudio"} : Create Elegant Data Visualisations Using the Grammar of Graphics
@@ -108,7 +134,7 @@ output:
 　  
 
 ### 午前の部
-* [ガイダンス <i class="fa fa-external-link-square"></i>](./guidance/03_guidance_am.html){target="_blank" title="ioslide"}
+* [ガイダンス <i class="fa fa-external-link-square"></i>](./guidance/04_guidance_am.html){target="_blank" title="ioslide"}
     * [ggplot2のすゝめ <i class="fa fa-external-link-square"></i>](https://k-metrics.github.io/cabinet/program/basics_ggplot2.html){target="_blank" title="GitHub Pages"}
         * [データの可視化 <i class="fa fa-external-link"></i>](https://kazutan.github.io/JSSP2018_spring/visualization.html){target="_blank" title="【参考資料】日本社会心理学会 第5回春の方法論セミナー資料"}
         * [ggplot2を使ってみる <i class="fa fa-external-link"></i>](https://www.dropbox.com/s/ea9vnt5u7g31eht/esj65_ggplot2.pdf?dl=0){target="_blank" title="【参考資料】生態学会大会2018 [W12] データ解析で出会う統計的問題"}
@@ -116,7 +142,7 @@ output:
 　  
 
 ### 午後の部
-* [ガイダンス <i class="fa fa-external-link-square"></i>](./guidance/03_guidance_pm.html){target="_blank" title="ioslide"}
+* [ガイダンス <i class="fa fa-external-link-square"></i>](./guidance/04_guidance_pm.html){target="_blank" title="ioslide"}
 　  
 
 <!-- * [演習用テンプレート <i class="fa fa-external-link-square"></i>](./template/template_ggplot.html){target="_blank" title="HTML Format"} -->
@@ -124,7 +150,7 @@ output:
 
 　  
 
-## 第4回 再現性のあるレポーティング {#S04}
+## 第5回 再現性のあるレポーティング {#S05}
 第3回までの総括として**`rmarkdown`**パッケージを用いた報告書作成を学びます。
 
 * [rmarkdown <i class="fa fa-external-link"></i>](https://rmarkdown.rstudio.com/){target="_blank" title="rmarkdown, RStudio"} : Dynamic Documents for R
@@ -132,7 +158,7 @@ output:
 　  
 
 ### 午前の部/午後の部
-*  [ガイダンス <i class="fa fa-external-link-square"></i>](./guidance/04_guidance_am.html){target="_blank" title="ioslide"}
+*  [ガイダンス <i class="fa fa-external-link-square"></i>](./guidance/05_guidance_am.html){target="_blank" title="ioslide"}
     * [Hello R Markdown :) , Uryu Shinya <i class="fa fa-file-pdf-o"></i> <i class="fa fa-external-link"></i>](./guidance/slides.pdf){target="_blank" title="https://github.com/uribo/hello_rmarkdown"}
     * [解析方法とレポート作成方法の再現可能性 <i class="fa fa-external-link"></i>](https://www.slideshare.net/kohske/rrstudior-markdown){target="_blank" title="RとRStudioとR Markdownを通して"}  
 　  

@@ -1,0 +1,349 @@
+---
+title: "第３回データ分析勉強会"
+author: "データハンドリング入門（その２） [鈴木さんぽう, CC BY-NC-SA 4.0]"
+date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
+output:
+  ioslides_presentation:
+    css: style.css
+    df_print: paged
+    logo: fig/hex-tidyverse.png
+    smaller: false
+    widescreen: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+
+require(tidyverse)
+```
+
+
+## 本日の内容
+1. **演習のための補足説明**
+1. 演習1～5
+    * 『ソフトウェアメトリクス統計分析入門』から
+        * 中間変数を作成せずに計算する方法の基本的な形
+    * anscombe（アンスコム）のデータ例
+        * `ggplot2`で使えるような形式への変換
+    * データフレームの型を変換する
+        * データフレーム型の制限を知る
+    * チケット数をカウントする
+        * クロス集計の基本的な形
+    * チケット数をカウントする（その２）
+        * 時系列での集計と`ggplot2`での描画のために
+
+
+# 演習のための補足説明
+
+
+## 変数の型
+変数には以下の型があり型宣言は不要です（代入すれば自動的にデータに見合った型の変数が作成されます）。主に使うのはベクトル型とデータフレーム型です。  
+
+変数型           | 説明
+-----------------|-----
+ベクトル型       | **一種類のデータ型**の値を**任意の個数**扱える変数型
+マトリクス型（行列型） | ベクトル型の一形態（特殊なベクトル型とも言える）
+アレイ型（配列型）     | 同上
+データフレーム型 | **異なるデータ型で同じ長さ**のベクトル変数を複数個まとめた変数型
+リスト型         | データフレーム型より柔軟性のある変数型
+因子型           | 特殊な変数構造をもつベクトル型変数
+
+
+## データ型
+変数の値として取りうるデータの型には以下のものがあります。
+
+データ型  | クラス名  | 備考
+----------|-----------|-----
+論理型    | logical   | Boolean型（TRUE or FALSE）
+整数型    | integer   | 明示的に整数型とする場合は`nL`と`L`を添える
+実数型    | double    | 倍精度実数
+複素数型  | complex   | 
+文字型    | charactor | 
+日付型    | Date      | POSIX型もあり
+
+
+## 特殊な値
+特殊な値を扱う為の定数（予約語）が定義されています。
+
+定数  | 説明
+------|-----
+NULL  | 空 ＝ 何もない（何も存在しない）。0(zero)や下記のNAとは異なります
+NA    | 欠損値（Not Available）。データの欠損（データが無いことを）意味するデータです
+NaN   | 非数（Not a Number）。数値では表現できないもの例えばlog(-1)とか0/0が該当します
+Inf   | 0(zero)除算時等は、NaNではなくInf/-Inf（無限大）になります
+
+
+## 基本的な演算子
+変数を扱うための様々な演算子が用意されています。
+
+演算子種別     | 演算子（優先順）
+---------------|-----
+アクセス演算子 | `$`（テータフレーム型の列への）, `[]`（ベクトル型の値への）
+単項演算子     | `-`（マイナス）
+算術演算子     | `*`（乗算）, `/`（除算）, `+`（加算）, `-`（減算）
+比較演算子     | `<`, `>`, `<=`, `>=`, `==`, `!=`
+論理演算子     | `!`（否定）, `&`（論理積）, `|`（論理和）
+代入演算子     | `<-`（代入）, `%>%`（パイプ） 
+
+
+## 代入演算子（`<-`）
+代入演算子はその名の通り演算結果などを代入します。代入方向は`<-`の通り演算子の右辺を演算子の左辺に代入します。
+
+```{r}
+iris_mean <- iris %>% dplyr::group_by(Species) %>%
+  dplyr::summarise_all(dplyr::funs(mean))
+
+iris_mean
+```
+
+
+## 基本的な関数
+
+やりたいこと       | 利用する関数例              | 備考
+-------------------|-----------------------------|---
+平均値を求める     | **`mean(x)`**               | 算術平均
+標準偏差を求める   | **`sd(x)`**                 | 不偏分散ベース
+数値を丸める       | **`round(x, n)`**           | IEC 60559による
+数列を作成する     | **`seq(n:m)`**              | 
+値の範囲を知る     | **`range(x)`**              | 返り値はベクトル
+パッケージを読込む | **`library(package)`**      | 
+
+引数などが分からなくなったら`F1`キーでヘルプを呼び出すか、ヘルプ・ペインで直接検索してください。または、「R」をつけてググるか [seek R <i class="fa fa-external-link"></i>](http://seekr.jp/){target="_blank" title="seek R"}で。
+
+
+# 演習
+
+## 目次
+
+1. 演習のための補足説明
+1. **演習1～5**
+    * 『ソフトウェアメトリクス統計分析入門』から
+        * 中間変数を作成せずに計算する方法の基本的な形
+    * anscombe（アンスコム）のデータ例
+        * `ggplot2`で使えるような形式への変換
+    * データフレームの型を変換する
+        * データフレーム型の制限を知る
+    * チケット数をカウントする
+        * クロス集計の基本的な形
+    * チケット数をカウントする（その２）
+        * 時系列での集計と`ggplot2`での描画のために
+
+
+# 演習１
+
+## メトリクス統計分析入門 演習1.4
+生産性に加えて、工数予実割合も加味してプロジェクトの評価をしようと考えています。以下の条件、方法に従い、各プロジェクトをA～Eの5段階で評価してください（詳細はテンプレート参照方）。
+
+* データ分布の確認は省略してください（外れ値の判定も不要です）
+* 分析手順はテンプレートに記載してあります
+    * **欠損値があるレコード（プロジェクト）は外して**ください
+* 分からない点は周りのメンバーと協力してチャレンジしてみてください
+    * データの読み込みは[こちら](https://k-metrics.github.io/cabinet/import/index.html)にヒントがあります
+    * [データファイル(CP932)](../data/data.csv), [データファイル(UTF8)](../data/data_utf8.csv)は（ローカル）リポジトリにあります
+
+## ヒント
+やりたいこと       | 利用する関数例              | 備考
+-------------------|-----------------------------|---
+平均値を求めたい   | **`mean()`**                | 
+標準偏差を求めたい | **`sd()`**                  | 
+Zスコアを求めたい  | **`scale()`**               | 符号に注意
+ランク分けしたい   | **`cut()`**                 | 無限大は`-Inf`, `Inf`
+数値を丸めたい     | **`round()`**               |
+NAを取り除きたい   | **`tidyr::drop_na()`**      | 
+変数を要約したい   | **`dplyr::summarise_if()`** | 条件付きの変数要約
+変数を追加したい   | **`dplyr::mutate()`**       | 
+
+
+## 演習1.4 解答例
+```{r echo=FALSE}
+require(tidyverse)
+
+# データの読み込み(for Windows)
+# x <- "../data/data.csv" %>%
+#   read.csv() %>%
+# データの読み込み(for Ubuntu)
+x <- "../data/data_utf8.csv" %>%
+  read.csv(encoding = "UTF-8") %>%
+  dplyr::rename(pj = 'プロジェクト名', prod = '生産性', rate = '工数予実割合') %>% 
+  tidyr::drop_na()
+
+# 平均値と標準偏差の計算
+y <- x %>% 
+  dplyr::summarise_if(is.numeric, c("mean", "sd"), na.rm = TRUE)
+
+# 評価換算のための基礎数値
+breaks <- c(-Inf, -1.5, -0.5, 0.5, 1.5, Inf)
+levels <- c("E", "D", "C", "B", "A")            # 因子の順番に注意
+
+# Zスコアと偏差値、ランクの計算
+x %>% 
+  dplyr::mutate(prod_z = as.vector(scale(prod, y$prod_mean, y$prod_sd)),
+                rate_z = as.vector(-scale(rate, y$rate_mean, y$rate_sd)),
+                z = (prod_z + rate_z)/2,
+                ss = z*10 + 50,
+                rank = cut(z, breaks = breaks, labels = levels)) %>% 
+  dplyr::mutate(prod_z = round(prod_z, 2), rate_z = round(rate_z, 2),
+                z = round(z, 2), ss = round(ss)) %>% 
+  dplyr::rename(`プロジェクト` = pj, `生産性` = prod, `工数予実割合` = rate,
+                `生産性Z値` = prod_z, `工数予実割合Z値` = rate_z,
+                `Zスコア` = z, `偏差値` = ss, `評価` = rank) %>%
+  head(7) %>% knitr::kable()
+```
+
+
+# 演習２
+
+## 整然データに変換する
+**`anscombe`**データ例を以下のような整然データに変換してください。  
+　  
+```{r, echo=FALSE}
+anscombe %>%
+  tibble::rownames_to_column("id") %>%
+  tidyr::gather(key, value, -id) %>%
+  tidyr::separate(key, c("axis", "group"), 1) %>%
+  tidyr::spread(axis, value) %>% 
+  dplyr::select(-id)
+```
+
+
+## ヒント
+やりたいこと           | 利用する関数例                     | 備考
+-----------------------|------------------------------------|---
+列をまとめる           | **`tidyr::gather()`**              | 
+行を列にする           | **`tidyr::spread()`**              | 
+列名を分割する         | **`tidyr::separete()`**            |
+ユニーク番号を付与する | **`tibble::rownames_to_cloumn()`** | 
+列を選択する           | **`dplyr::select()`**              |
+
+
+# 演習３
+
+## データフレームを変換する
+`iris`データセットを以下のような形に変換してください。  
+　  
+```{r, echo=FALSE}
+petal <- iris %>% 
+  dplyr::select(Petal.Length, Petal.Width, Species) %>% 
+  tidyr::gather(key = Petal, value = Petal.value, -Species) %>% 
+  tibble::rowid_to_column("ID")
+
+sepal <- iris %>% 
+  dplyr::select(Sepal.Length, Sepal.Width, Species) %>% 
+  tidyr::gather(key = Sepal, value = Sepal.value, -Species) %>% 
+  tibble::rowid_to_column("ID")
+
+(petal %>% 
+  dplyr::left_join(sepal, by = c("ID", "Species")) %>% 
+  dplyr::select(-ID))
+```
+
+
+## ヒント
+やりたいこと           | 利用する関数例                     | 備考
+-----------------------|------------------------------------|---
+列を選択する           | **`dplyr::select()`**              |
+列をまとめる           | **`tidyr::gather()`**              | 
+ユニーク番号を付与する | **`tibble::rownames_to_cloumn()`** | 
+データフレームを結合する | **`dplyr::left_join()`**         | 
+
+
+# 演習４
+
+## チケット数をカウントする
+Redmineのチケットをオープンした日（作成日）とステータスでクロス集計してください。  
+　  
+```{r, echo=FALSE}
+redmine <- "../data/redmine_data_utf8.csv" %>% 
+  readr::read_csv() %>% 
+  dplyr::select(ID = '#', status = 'ステータス', open = '作成日')
+
+redmine %>% 
+  dplyr::mutate(open = lubridate::as_date(open)) %>% 
+  dplyr::group_by(open, status) %>% 
+  dplyr::summarise(n = n()) %>% 
+  tidyr::spread(key = status, value = n)
+```
+
+
+## ヒント
+やりたいこと           | 利用する関数例                     | 備考
+-----------------------|------------------------------------|---
+列を選択する           | **`dplyr::select()`**              | 
+日時を日付に変換する   | **`lubridate::as_date()`**         | 
+列をまとめる           | **`tidyr::gather()`**              | 
+行を列にする           | **`tidyr::spread()`**              | 
+行をグルーピングする   | **`dplyr::group_by`**              | 
+行の個数を数える       | **`dplyr::n`**                     | 
+
+
+# 演習５
+
+## チケット数をカウントする（その２）
+オープン・クローズチャートを作成するために2017年に起票されたRedmineのチケットを週単位でオープンチケットとクローズチケットに分けて集計してください。チケットデータは"data"フォルダ内にあります。    
+　  
+集計条件
+
+* 2017年に起票されたチケット（開始日が2017/1/1から2017/12/31）が対象
+* 集計は週次（2017年の第1週から第53週）
+* オープンチケットは開始日で、クローズチケットは終了日で週次に集計  
+* 共に累計も計算する
+* データがない週も考慮する
+
+変数名は日本語ですが英語に変更しておいた方が処理の記述が楽です。
+
+
+## 解答例
+```{r, echo=FALSE}
+redmine <- "../data/redmine_data_utf8.csv" %>% 
+  readr::read_csv() %>% 
+  dplyr::select(ID = '#', status = 'ステータス', open = '作成日',
+                close = '終了日') %>% 
+  dplyr::mutate(open = lubridate::as_date(open),
+                close = lubridate::as_date(open))
+
+
+# Open
+open <- redmine %>% 
+  dplyr::filter(open >= "2017-1-1" & open <= "2017-12-31") %>% 
+  dplyr::mutate(week = lubridate::week(open),
+                status_flag = ifelse(status == "Closed", "closed", "open")) %>% 
+  dplyr::mutate(flag = ifelse(status_flag == "open", 1, 0)) %>% 
+  dplyr::group_by(week) %>% 
+  dplyr::summarise(open = sum(flag))
+
+# Closed
+close <- redmine %>% 
+  dplyr::filter(open >= "2017-1-1" & open <= "2017-12-31") %>% 
+  dplyr::filter(close >= "2017-1-1" & close <= "2017-12-31") %>% 
+  dplyr::mutate(week = lubridate::week(close),
+                status_flag = ifelse(status == "Closed", "closed", "open")) %>% 
+  dplyr::mutate(flag = ifelse(status_flag == "closed", 1, 0)) %>% 
+  dplyr::group_by(week) %>% 
+  dplyr::summarise(close = sum(flag))
+
+# 週次の集計
+data.frame(week = seq(1:53)) %>% 
+  dplyr::left_join(open, by = "week") %>% 
+  dplyr::left_join(close, by = "week") %>% 
+  dplyr::mutate(open = ifelse(is.na(open), 0, open),
+                close = ifelse(is.na(close), 0, close)) %>% 
+  dplyr::mutate(cumopen = cumsum(open), cumclose = cumsum(close)) %>% 
+  dplyr::select('週' = week, 'オープン数' = open, 'オープン数累計' = cumopen,
+                'クローズ数' = close, 'クローズ数累計' = cumclose)
+```
+
+
+## ヒント
+やりたいこと           | 利用する関数例                     | 備考
+-----------------------|------------------------------------|---
+日時を日付に変換する   | **`lubridate::as_date()`**         | 
+日付を週に変換する     | **`lubridate::week()`**            | 
+値を判断する           | **`ifelse()`**                     | Base R
+NAかどうか判定する     | **`is.na()`**                      | Base R
+累計を計算する         | **`cumsum()`**                     | Base R
+データフレームを作成する | **`data.frame()`**               | Base R
+
+
+
+## License
+CC BY-NC-SA 4.0, Sampo Suzuki
