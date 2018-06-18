@@ -51,10 +51,24 @@ require(tidyverse)
 * 特徴
     * GIS（地理情報システム）などと同じ[**レイヤー構造**](http://id.fnshr.info/2011/10/22/ggplot2/)
     * **ggplot2::aes**の考え方を覚えるのがひとつのポイント
-    * 標準で出来ないないことは**関連パッケージで補える**柔軟性
+    * 出来ないないことは**関連パッケージで補える**柔軟性
         * QQプロットはqqplotr, 格子配置はggExtra, etc
     * 忖度してくれない（とりあえずでデータを突っ込んでも描画はしない）
         * base plotはとりあえずで突っ込んでも何か描いてくれる
+
+
+## 必要なデータ形式
+* ggplot2はデータフレーム型のデータを引数に取ります
+* X軸用データ、Y軸用データ、グループ化データの三項目が基本的なデータ項目
+
+　 | x           | y           | group, colour, fill, ... 
+:-:|:----------:|:-----------:|:------------------:
+1  | X軸用データ | Y軸用データ | グループ化データ 
+2  | X軸用データ | Y軸用データ | グループ化データ 
+3  | ...         | ...         | ... 
+
+　  
+つまり、**整然データ（iidy data）が必要**
 
 
 # ggplot2を使ってみる
@@ -87,38 +101,62 @@ ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length))
 ## ベースに上書きしていくイメージ
 ```{r}
 ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
-  ggplot2::geom_point()
+  geom_point()
 ```
 
+
+## 回帰直線を加えてみる
+```{r}
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
+  geom_point() + geom_smooth(method = "lm", se = FALSE)
+```
+
+
+## 層別で描いてみる
+```{r}
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
+  geom_point(aes(colour = Species))
+```
+
+
+## 層別に回帰直線を加えてみる
+```{r}
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
+  geom_point(aes(colour = Species)) + geom_smooth(method = "lm", se = FALSE)
+```
 
 ## `ggplot2::aes`の指定位置がポイント
 ```{r}
 ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, colour = Species)) +
-  geom_point() + 
-  geom_smooth(method = "lm")
+  geom_point() + geom_smooth(method = "lm", se = FALSE)
 ```
 
 ---
 
 ```{r}
 ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
-  geom_point(aes(colour = Species)) + 
-  geom_smooth(method = "lm")
+  geom_point(aes(colour = Species)) + geom_smooth(method = "lm", se = FALSE)
 ```
 
 ---
 
 ```{r}
 ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
-  geom_point() + 
-  geom_smooth(aes(colour = Species), method = "lm")
+  geom_point() + geom_smooth(aes(colour = Species), method = "lm", se = FALSE)
 ```
 
----
 
+## 因子毎にグラフを分ける
 ```{r}
 ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, colour = Species)) +
-  geom_point() + geom_smooth(method = "lm") + 
+  geom_point() + geom_smooth(method = "lm", se = FALSE) + facet_wrap(~ Species)
+```
+
+---
+
+```{r}
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
+  geom_point(aes(colour = Species)) + geom_smooth(method = "lm", se = FALSE) + 
   facet_wrap(~ Species)
 ```
 
@@ -126,16 +164,56 @@ ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, colour = Species)) +
 
 ```{r}
 ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
-  geom_point(aes(colour = Species)) + geom_smooth(method = "lm") +
+  geom_point() + geom_smooth(aes(colour = Species), method = "lm", se = FALSE) + 
   facet_wrap(~ Species)
 ```
 
----
-
+## ヒストグラム
 ```{r}
-ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
-  geom_point() + geom_smooth(aes(colour = Species), method = "lm") + 
-  facet_wrap(~ Species)
+ggplot(iris, aes(x = Petal.Length)) + 
+  geom_histogram()
+```
+
+## ヒストグラム
+```{r}
+ggplot(iris, aes(x = Petal.Length, fill = Species)) + 
+  geom_histogram(alpha = 0.5)
+```
+
+## ヒストグラム
+```{r}
+ggplot(iris, aes(x = Petal.Length, fill = Species)) + 
+  geom_histogram(position = "identity", alpha = 0.5)
+```
+
+
+## 密度推定を重ねあわせる
+```{r}
+ggplot(iris, aes(x = Petal.Length, fill = Species)) + 
+  geom_histogram(aes(y = ..density..), position = "identity", alpha = 0.5) +
+  geom_density(aes(colour = Species), alpha = 0.5)
+```
+
+
+
+## 階級幅の計算方法
+`ggplot2::geom_histgram`関数のデフォルト設定では**階級数が30**に固定されています。階級数（まはた階級幅）を一意に決める方法はありませんが、Rでは`pritty`関数を用いることで適切な階級幅を求めることができます。
+
+```{r, eval=FALSE}
+pritty(x, n)
+```
+
+引数 | 説明
+:---:|:-----
+x    | ヒストグラムを描くためのデータ（ベクトル型）
+n    | ヒストグラムの分割数（通常はスタージェスの公式などで求める）
+
+
+## 階級幅を指定する
+```{r}
+breaks <- pretty(iris$Petal.Length, nclass.Sturges(iris$Petal.Length))
+ggplot(iris, aes(x = Petal.Length, fill = Species)) + 
+  geom_histogram(breaks = breaks, position = "identity", alpha = 0.5)
 ```
 
 
