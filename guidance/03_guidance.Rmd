@@ -19,7 +19,7 @@ require(tidyverse)
 
 
 ## 本日の内容
-1. 演習のための補足説明
+1. **演習のための補足説明**
 1. 演習1～5
     * 『ソフトウェアメトリクス統計分析入門』から
         * 中間変数を作成せずに計算する方法の基本的な形
@@ -109,6 +109,24 @@ iris_mean
 パッケージを読込む | **`library(package)`**      | 
 
 引数などが分からなくなったら`F1`キーでヘルプを呼び出すか、ヘルプ・ペインで直接検索してください。または、「R」をつけてググるか [seek R <i class="fa fa-external-link"></i>](http://seekr.jp/){target="_blank" title="seek R"}で。
+
+
+# 演習
+
+## 目次
+
+1. 演習のための補足説明
+1. **演習1～5**
+    * 『ソフトウェアメトリクス統計分析入門』から
+        * 中間変数を作成せずに計算する方法の基本的な形
+    * anscombe（アンスコム）のデータ例
+        * `ggplot2`で使えるような形式への変換
+    * データフレームの型を変換する
+        * データフレーム型の制限を知る
+    * チケット数をカウントする
+        * クロス集計の基本的な形
+    * チケット数をカウントする（その２）
+        * 時系列での集計と`ggplot2`での描画のために
 
 
 # 演習１
@@ -296,6 +314,7 @@ open <- redmine %>%
 # Closed
 close <- redmine %>% 
   dplyr::filter(open >= "2017-1-1" & open <= "2017-12-31") %>% 
+  dplyr::filter(close >= "2017-1-1" & close <= "2017-12-31") %>% 
   dplyr::mutate(week = lubridate::week(close),
                 status_flag = ifelse(status == "Closed", "closed", "open")) %>% 
   dplyr::mutate(flag = ifelse(status_flag == "closed", 1, 0)) %>% 
