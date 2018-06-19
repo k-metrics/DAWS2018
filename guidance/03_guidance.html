@@ -113,7 +113,7 @@
       <h1 data-config-title><!-- populated from slide_config.json --></h1>
       <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
       <p data-config-presenter><!-- populated from slide_config.json --></p>
-            <p style="margin-top: 6px; margin-left: -2px;">2018年06月18日</p>
+            <p style="margin-top: 6px; margin-left: -2px;">2018年06月19日</p>
           </hgroup>
   </slide>
 
@@ -127,14 +127,14 @@
 <li>『ソフトウェアメトリクス統計分析入門』から
 
 <ul>
-<li>中間変数を作成せずに計算する方法の基本的な形</li>
+<li>dplyrの基本的な使い方を学ぶ（パイプによる処理）</li>
 </ul></li>
 <li>anscombe（アンスコム）のデータ例
 
 <ul>
-<li><code>ggplot2</code>で使えるような形式への変換</li>
+<li>tidyrの基本的な使い方を学ぶ（典型的な縦横変換）</li>
 </ul></li>
-<li>データフレームの型を変換する
+<li>データフレームを変換する
 
 <ul>
 <li>データフレーム型の制限を知る</li>
@@ -142,12 +142,12 @@
 <li>チケット数をカウントする
 
 <ul>
-<li>クロス集計の基本的な形</li>
+<li>クロス集計の方法を学ぶ（基本的な集計の形）</li>
 </ul></li>
 <li>チケット数をカウントする（その２）
 
 <ul>
-<li>時系列での集計と<code>ggplot2</code>での描画のために</li>
+<li>時系列でのデータ集計方法を学ぶ（可視化のための前処理）</li>
 </ul></li>
 </ul></li>
 </ol>
@@ -156,7 +156,7 @@
 
 </article></slide><slide class=""><hgroup><h2>変数の型</h2></hgroup><article >
 
-<p>変数には以下の型があり型宣言は不要です（代入すれば自動的にデータに見合った型の変数が作成されます）。主に使うのはベクトル型とデータフレーム型です。</p>
+<p>変数には以下の型があり型宣言は不要です。</p>
 
 <table class = 'rmdtable'>
 <tr class="header">
@@ -165,7 +165,7 @@
 </tr>
 <tr class="odd">
 <td align="left">ベクトル型</td>
-<td align="left"><strong>一種類のデータ型</strong>の値を<strong>任意の個数</strong>扱える変数型</td>
+<td align="left"><strong>一種類のデータ型</strong>の値を<strong>任意の個数</strong>扱える変数型（<code>x</code>や<code>y</code>と表現することが多い）</td>
 </tr>
 <tr class="even">
 <td align="left">マトリクス型（行列型）</td>
@@ -177,7 +177,7 @@
 </tr>
 <tr class="even">
 <td align="left">データフレーム型</td>
-<td align="left"><strong>異なるデータ型で同じ長さ</strong>のベクトル変数を複数個まとめた変数型</td>
+<td align="left"><strong>異なるデータ型で同じ長さ</strong>のベクトル変数を<strong>任意の個数</strong>扱える変数型（<code>df</code>と表現することが多い）</td>
 </tr>
 <tr class="odd">
 <td align="left">リスト型</td>
@@ -191,7 +191,7 @@
 
 </article></slide><slide class=""><hgroup><h2>データ型</h2></hgroup><article >
 
-<p>変数の値として取りうるデータの型には以下のものがあります。</p>
+<p>変数の値には以下の型があり代入時の型指定は不要です。</p>
 
 <table class = 'rmdtable'>
 <tr class="header">
@@ -233,7 +233,7 @@
 
 </article></slide><slide class=""><hgroup><h2>特殊な値</h2></hgroup><article >
 
-<p>特殊な値を扱う為の定数（予約語）が定義されています。</p>
+<p>特殊な値を扱うための定数（予約語）が定義されています。</p>
 
 <table class = 'rmdtable'>
 <tr class="header">
@@ -269,7 +269,7 @@
 </tr>
 <tr class="odd">
 <td align="left">アクセス演算子</td>
-<td align="left"><code>$</code>（テータフレーム型の列への）, <code>[]</code>（ベクトル型の値への）</td>
+<td align="left"><code>$</code>（テータフレーム型の列の参照）, <code>[]</code>（ベクトル型の値の参照）</td>
 </tr>
 <tr class="even">
 <td align="left">単項演算子</td>
@@ -297,7 +297,8 @@
 
 <p>代入演算子はその名の通り演算結果などを代入します。代入方向は<code>&lt;-</code>の通り演算子の右辺を演算子の左辺に代入します。</p>
 
-<pre class = 'prettyprint lang-r'>iris_mean &lt;- iris %&gt;% dplyr::group_by(Species) %&gt;%
+<pre class = 'prettyprint lang-r'>iris_mean &lt;- iris %&gt;% 
+  dplyr::group_by(Species) %&gt;%
   dplyr::summarise_all(dplyr::funs(mean))
 
 iris_mean</pre>
@@ -332,13 +333,13 @@ iris_mean</pre>
 </tr>
 <tr class="even">
 <td align="left">数列を作成する</td>
-<td align="left"><strong><code>seq(n:m)</code></strong></td>
-<td align="left"></td>
+<td align="left"><strong><code>seq(from, to, by)</code></strong></td>
+<td align="left">返り値はベクトル型</td>
 </tr>
 <tr class="odd">
 <td align="left">値の範囲を知る</td>
 <td align="left"><strong><code>range(x)</code></strong></td>
-<td align="left">返り値はベクトル</td>
+<td align="left">返り値はベクトル型</td>
 </tr>
 <tr class="even">
 <td align="left">パッケージを読込む</td>
@@ -361,14 +362,14 @@ iris_mean</pre>
 <li>『ソフトウェアメトリクス統計分析入門』から
 
 <ul>
-<li>中間変数を作成せずに計算する方法の基本的な形</li>
+<li>dplyrの基本的な使い方を学ぶ（パイプによる処理）</li>
 </ul></li>
 <li>anscombe（アンスコム）のデータ例
 
 <ul>
-<li><code>ggplot2</code>で使えるような形式への変換</li>
+<li>tidyrの基本的な使い方を学ぶ（典型的な縦横変換）</li>
 </ul></li>
-<li>データフレームの型を変換する
+<li>データフレームを変換する
 
 <ul>
 <li>データフレーム型の制限を知る</li>
@@ -376,21 +377,21 @@ iris_mean</pre>
 <li>チケット数をカウントする
 
 <ul>
-<li>クロス集計の基本的な形</li>
+<li>クロス集計の方法を学ぶ（基本的な集計の形）</li>
 </ul></li>
 <li>チケット数をカウントする（その２）
 
 <ul>
-<li>時系列での集計と<code>ggplot2</code>での描画のために</li>
+<li>時系列でのデータ集計方法を学ぶ（可視化のための前処理）</li>
 </ul></li>
 </ul></li>
 </ol>
 
 </article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>演習１</h2></hgroup><article  id="-1">
 
-</article></slide><slide class=""><hgroup><h2>メトリクス統計分析入門 演習1.4</h2></hgroup><article  id="-1.4">
+</article></slide><slide class=""><hgroup><h2>メトリクス統計分析入門から</h2></hgroup><article >
 
-<p>生産性に加えて、工数予実割合も加味してプロジェクトの評価をしようと考えています。以下の条件、方法に従い、各プロジェクトをA～Eの5段階で評価してください（詳細はテンプレート参照方）。</p>
+<p>メトリクス統計分析入門の演習1.4からの問題です。生産性に加えて、工数予実割合も加味してプロジェクトの評価をしようと考えています。以下の条件、方法に従い、各プロジェクトをA～Eの5段階で評価してください（詳細はテンプレート参照方）。</p>
 
 <ul>
 <li>データ分布の確認は省略してください（外れ値の判定も不要です）</li>
@@ -457,7 +458,7 @@ iris_mean</pre>
 </tr>
 </table>
 
-</article></slide><slide class=""><hgroup><h2>演習1.4 解答例</h2></hgroup><article  id="1.4-">
+</article></slide><slide class=""><hgroup><h2>解答例</h2></hgroup><article >
 
 <table class = 'rmdtable'>
 <tr class="header">
@@ -544,13 +545,13 @@ iris_mean</pre>
 
 </article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>演習２</h2></hgroup><article  id="-2">
 
-</article></slide><slide class=""><hgroup><h2>整然データに変換する</h2></hgroup><article >
+</article></slide><slide class=""><hgroup><h2>anscombe（アンスコム）のデータ例</h2></hgroup><article  id="anscombe">
 
 <strong><code>anscombe</code></strong>データ例を以下のような整然データに変換してください。<br/>　<br/>
 
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["group"],"name":[1],"type":["chr"],"align":["left"]},{"label":["x"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["y"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"10","3":"8.04"},{"1":"2","2":"10","3":"9.14"},{"1":"3","2":"10","3":"7.46"},{"1":"4","2":"8","3":"6.58"},{"1":"1","2":"7","3":"4.82"},{"1":"2","2":"7","3":"7.26"},{"1":"3","2":"7","3":"6.42"},{"1":"4","2":"8","3":"7.91"},{"1":"1","2":"5","3":"5.68"},{"1":"2","2":"5","3":"4.74"},{"1":"3","2":"5","3":"5.73"},{"1":"4","2":"8","3":"6.89"},{"1":"1","2":"8","3":"6.95"},{"1":"2","2":"8","3":"8.14"},{"1":"3","2":"8","3":"6.77"},{"1":"4","2":"8","3":"5.76"},{"1":"1","2":"13","3":"7.58"},{"1":"2","2":"13","3":"8.74"},{"1":"3","2":"13","3":"12.74"},{"1":"4","2":"8","3":"7.71"},{"1":"1","2":"9","3":"8.81"},{"1":"2","2":"9","3":"8.77"},{"1":"3","2":"9","3":"7.11"},{"1":"4","2":"8","3":"8.84"},{"1":"1","2":"11","3":"8.33"},{"1":"2","2":"11","3":"9.26"},{"1":"3","2":"11","3":"7.81"},{"1":"4","2":"8","3":"8.47"},{"1":"1","2":"14","3":"9.96"},{"1":"2","2":"14","3":"8.10"},{"1":"3","2":"14","3":"8.84"},{"1":"4","2":"8","3":"7.04"},{"1":"1","2":"6","3":"7.24"},{"1":"2","2":"6","3":"6.13"},{"1":"3","2":"6","3":"6.08"},{"1":"4","2":"8","3":"5.25"},{"1":"1","2":"4","3":"4.26"},{"1":"2","2":"4","3":"3.10"},{"1":"3","2":"4","3":"5.39"},{"1":"4","2":"19","3":"12.50"},{"1":"1","2":"12","3":"10.84"},{"1":"2","2":"12","3":"9.13"},{"1":"3","2":"12","3":"8.15"},{"1":"4","2":"8","3":"5.56"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["group"],"name":[1],"type":["chr"],"align":["left"]},{"label":["x"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["y"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"10","3":"8.04"},{"1":"1","2":"7","3":"4.82"},{"1":"1","2":"5","3":"5.68"},{"1":"1","2":"8","3":"6.95"},{"1":"1","2":"13","3":"7.58"},{"1":"1","2":"9","3":"8.81"},{"1":"1","2":"11","3":"8.33"},{"1":"1","2":"14","3":"9.96"},{"1":"1","2":"6","3":"7.24"},{"1":"1","2":"4","3":"4.26"},{"1":"1","2":"12","3":"10.84"},{"1":"2","2":"10","3":"9.14"},{"1":"2","2":"7","3":"7.26"},{"1":"2","2":"5","3":"4.74"},{"1":"2","2":"8","3":"8.14"},{"1":"2","2":"13","3":"8.74"},{"1":"2","2":"9","3":"8.77"},{"1":"2","2":"11","3":"9.26"},{"1":"2","2":"14","3":"8.10"},{"1":"2","2":"6","3":"6.13"},{"1":"2","2":"4","3":"3.10"},{"1":"2","2":"12","3":"9.13"},{"1":"3","2":"10","3":"7.46"},{"1":"3","2":"7","3":"6.42"},{"1":"3","2":"5","3":"5.73"},{"1":"3","2":"8","3":"6.77"},{"1":"3","2":"13","3":"12.74"},{"1":"3","2":"9","3":"7.11"},{"1":"3","2":"11","3":"7.81"},{"1":"3","2":"14","3":"8.84"},{"1":"3","2":"6","3":"6.08"},{"1":"3","2":"4","3":"5.39"},{"1":"3","2":"12","3":"8.15"},{"1":"4","2":"8","3":"6.58"},{"1":"4","2":"8","3":"7.91"},{"1":"4","2":"8","3":"6.89"},{"1":"4","2":"8","3":"5.76"},{"1":"4","2":"8","3":"7.71"},{"1":"4","2":"8","3":"8.84"},{"1":"4","2":"8","3":"8.47"},{"1":"4","2":"8","3":"7.04"},{"1":"4","2":"8","3":"5.25"},{"1":"4","2":"19","3":"12.50"},{"1":"4","2":"8","3":"5.56"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script></div>
 
 </article></slide><slide class=""><hgroup><h2>ヒント</h2></hgroup><article  id="-1">
@@ -592,7 +593,7 @@ iris_mean</pre>
 
 </article></slide><slide class=""><hgroup><h2>データフレームを変換する</h2></hgroup><article >
 
-<code>iris</code>データセットを以下のような形に変換してください。<br/>　<br/>
+<code>iris</code>データセットを以下のような形に変換してください。変換後の行数に注意してください。<br/>　<br/>
 
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
@@ -689,14 +690,14 @@ Redmineのチケットをオープンした日（作成日）とステータス�
 <ul>
 <li>2017年に起票されたチケット（開始日が2017/1/1から2017/12/31）が対象</li>
 <li>集計は週次（2017年の第1週から第53週）</li>
-<li>オープンチケットは開始日で、クローズチケットは終了日で週次に集計<br/></li>
-<li>共に累計も計算する</li>
+<li>オープンチケットは開始日で、クローズチケットは終了日で集計<br/></li>
+<li>累計も計算する</li>
 <li>データがない週も考慮する</li>
 </ul>
 
 <p>変数名は日本語ですが英語に変更しておいた方が処理の記述が楽です。</p>
 
-</article></slide><slide class=""><hgroup><h2>解答例</h2></hgroup><article >
+</article></slide><slide class=""><hgroup><h2>解答例</h2></hgroup><article  id="-1">
 
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
