@@ -25,7 +25,7 @@
         usePrettify: true,
         enableSlideAreas: true,
         enableTouch: true,
-                        favIcon: 'fig/hex-tidyverse.png',
+                        favIcon: 'fig\hex-tidyverse.png',
               },
 
       // Author information
@@ -87,7 +87,7 @@
       position: absolute;
       bottom: 20px;
       left: 60px;
-      background: url(fig/hex-tidyverse.png) no-repeat 0 50%;
+      background: url(fig\hex-tidyverse.png) no-repeat 0 50%;
       -webkit-background-size: 30px 30px;
       -moz-background-size: 30px 30px;
       -o-background-size: 30px 30px;
@@ -113,7 +113,7 @@
       <h1 data-config-title><!-- populated from slide_config.json --></h1>
       <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
       <p data-config-presenter><!-- populated from slide_config.json --></p>
-            <p style="margin-top: 6px; margin-left: -2px;">2018年06月18日</p>
+            <p style="margin-top: 6px; margin-left: -2px;">2018年06月19日</p>
           </hgroup>
   </slide>
 
@@ -127,14 +127,14 @@
 <li>『ソフトウェアメトリクス統計分析入門』から
 
 <ul>
-<li>中間変数を作成せずに計算する方法の基本的な形</li>
+<li>dplyrの基本的な使い方を学ぶ（パイプによる処理）</li>
 </ul></li>
 <li>anscombe（アンスコム）のデータ例
 
 <ul>
-<li><code>ggplot2</code>で使えるような形式への変換</li>
+<li>tidyrの基本的な使い方を学ぶ（典型的な縦横変換）</li>
 </ul></li>
-<li>データフレームの型を変換する
+<li>データフレームを変換する
 
 <ul>
 <li>データフレーム型の制限を知る</li>
@@ -142,12 +142,12 @@
 <li>チケット数をカウントする
 
 <ul>
-<li>クロス集計の基本的な形</li>
+<li>クロス集計の方法を学ぶ（基本的な集計の形）</li>
 </ul></li>
 <li>チケット数をカウントする（その２）
 
 <ul>
-<li>時系列での集計と<code>ggplot2</code>での描画のために</li>
+<li>時系列でのデータ集計方法を学ぶ（可視化のための前処理）</li>
 </ul></li>
 </ul></li>
 </ol>
@@ -156,7 +156,7 @@
 
 </article></slide><slide class=""><hgroup><h2>変数の型</h2></hgroup><article >
 
-<p>変数には以下の型があり型宣言は不要です（代入すれば自動的にデータに見合った型の変数が作成されます）。主に使うのはベクトル型とデータフレーム型です。</p>
+<p>変数には以下の型があり型宣言は不要です。</p>
 
 <table class = 'rmdtable'>
 <tr class="header">
@@ -165,7 +165,7 @@
 </tr>
 <tr class="odd">
 <td align="left">ベクトル型</td>
-<td align="left"><strong>一種類のデータ型</strong>の値を<strong>任意の個数</strong>扱える変数型</td>
+<td align="left"><strong>一種類のデータ型</strong>の値を<strong>任意の個数</strong>扱える変数型（<code>x</code>や<code>y</code>と表現することが多い）</td>
 </tr>
 <tr class="even">
 <td align="left">マトリクス型（行列型）</td>
@@ -177,7 +177,7 @@
 </tr>
 <tr class="even">
 <td align="left">データフレーム型</td>
-<td align="left"><strong>異なるデータ型で同じ長さ</strong>のベクトル変数を複数個まとめた変数型</td>
+<td align="left"><strong>異なるデータ型で同じ長さ</strong>のベクトル変数を<strong>任意の個数</strong>扱える変数型（<code>df</code>と表現することが多い）</td>
 </tr>
 <tr class="odd">
 <td align="left">リスト型</td>
@@ -191,7 +191,7 @@
 
 </article></slide><slide class=""><hgroup><h2>データ型</h2></hgroup><article >
 
-<p>変数の値として取りうるデータの型には以下のものがあります。</p>
+<p>変数の値には以下の型があり代入時の型指定は不要です。</p>
 
 <table class = 'rmdtable'>
 <tr class="header">
@@ -233,7 +233,7 @@
 
 </article></slide><slide class=""><hgroup><h2>特殊な値</h2></hgroup><article >
 
-<p>特殊な値を扱う為の定数（予約語）が定義されています。</p>
+<p>特殊な値を扱うための定数（予約語）が定義されています。</p>
 
 <table class = 'rmdtable'>
 <tr class="header">
@@ -269,7 +269,7 @@
 </tr>
 <tr class="odd">
 <td align="left">アクセス演算子</td>
-<td align="left"><code>$</code>（テータフレーム型の列への）, <code>[]</code>（ベクトル型の値への）</td>
+<td align="left"><code>$</code>（テータフレーム型の列の参照）, <code>[]</code>（ベクトル型の値の参照）</td>
 </tr>
 <tr class="even">
 <td align="left">単項演算子</td>
@@ -297,7 +297,8 @@
 
 <p>代入演算子はその名の通り演算結果などを代入します。代入方向は<code>&lt;-</code>の通り演算子の右辺を演算子の左辺に代入します。</p>
 
-<pre class = 'prettyprint lang-r'>iris_mean &lt;- iris %&gt;% dplyr::group_by(Species) %&gt;%
+<pre class = 'prettyprint lang-r'>iris_mean &lt;- iris %&gt;% 
+  dplyr::group_by(Species) %&gt;%
   dplyr::summarise_all(dplyr::funs(mean))
 
 iris_mean</pre>
@@ -361,14 +362,14 @@ iris_mean</pre>
 <li>『ソフトウェアメトリクス統計分析入門』から
 
 <ul>
-<li>中間変数を作成せずに計算する方法の基本的な形</li>
+<li>dplyrの基本的な使い方を学ぶ（パイプによる処理）</li>
 </ul></li>
 <li>anscombe（アンスコム）のデータ例
 
 <ul>
-<li><code>ggplot2</code>で使えるような形式への変換</li>
+<li>tidyrの基本的な使い方を学ぶ（典型的な縦横変換）</li>
 </ul></li>
-<li>データフレームの型を変換する
+<li>データフレームを変換する
 
 <ul>
 <li>データフレーム型の制限を知る</li>
@@ -376,21 +377,21 @@ iris_mean</pre>
 <li>チケット数をカウントする
 
 <ul>
-<li>クロス集計の基本的な形</li>
+<li>クロス集計の方法を学ぶ（基本的な集計の形）</li>
 </ul></li>
 <li>チケット数をカウントする（その２）
 
 <ul>
-<li>時系列での集計と<code>ggplot2</code>での描画のために</li>
+<li>時系列でのデータ集計方法を学ぶ（可視化のための前処理）</li>
 </ul></li>
 </ul></li>
 </ol>
 
 </article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>演習１</h2></hgroup><article  id="-1">
 
-</article></slide><slide class=""><hgroup><h2>メトリクス統計分析入門 演習1.4</h2></hgroup><article  id="-1.4">
+</article></slide><slide class=""><hgroup><h2>メトリクス統計分析入門から</h2></hgroup><article >
 
-<p>生産性に加えて、工数予実割合も加味してプロジェクトの評価をしようと考えています。以下の条件、方法に従い、各プロジェクトをA～Eの5段階で評価してください（詳細はテンプレート参照方）。</p>
+<p>メトリクス統計分析入門の演習1.4からの問題です。生産性に加えて、工数予実割合も加味してプロジェクトの評価をしようと考えています。以下の条件、方法に従い、各プロジェクトをA～Eの5段階で評価してください（詳細はテンプレート参照方）。</p>
 
 <ul>
 <li>データ分布の確認は省略してください（外れ値の判定も不要です）</li>
@@ -457,7 +458,7 @@ iris_mean</pre>
 </tr>
 </table>
 
-</article></slide><slide class=""><hgroup><h2>演習1.4 解答例</h2></hgroup><article  id="1.4-">
+</article></slide><slide class=""><hgroup><h2>演習１ 解答例</h2></hgroup><article  id="-">
 
 <table class = 'rmdtable'>
 <tr class="header">
@@ -544,7 +545,7 @@ iris_mean</pre>
 
 </article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>演習２</h2></hgroup><article  id="-2">
 
-</article></slide><slide class=""><hgroup><h2>整然データに変換する</h2></hgroup><article >
+</article></slide><slide class=""><hgroup><h2>anscombe（アンスコム）のデータ例</h2></hgroup><article  id="anscombe">
 
 <strong><code>anscombe</code></strong>データ例を以下のような整然データに変換してください。<br/>　<br/>
 
@@ -592,7 +593,7 @@ iris_mean</pre>
 
 </article></slide><slide class=""><hgroup><h2>データフレームを変換する</h2></hgroup><article >
 
-<code>iris</code>データセットを以下のような形に変換してください。<br/>　<br/>
+<code>iris</code>データセットを以下のような形に変換してください。変換後の行数に注意してください。<br/>　<br/>
 
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
