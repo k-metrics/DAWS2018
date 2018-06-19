@@ -28,7 +28,7 @@ require(tidyverse)
     * 演習
 
 
-# 演習
+# 演習１
 
 
 ## アンスコムのデータ例
@@ -38,8 +38,9 @@ require(tidyverse)
 anscombe %>%
   tibble::rownames_to_column("id") %>%
   tidyr::gather(key, value, -id) %>%
-  tidyr::separate(key, c("axis", "group"), 1) %>%
+  tidyr::separate(col = key, into = c("axis", "group"), sep = 1) %>% # DT::datatable()
   tidyr::spread(axis, value) %>% 
+  # dplyr::mutate(id = as.integer(id)) %>% dplyr::arrange(id) %>% 
   ggplot2::ggplot(ggplot2::aes(x, y))+
     ggplot2::geom_point()+
     ggplot2::geom_smooth(method = lm, se = FALSE, fullrange = TRUE)+
@@ -54,6 +55,9 @@ anscombe %>%
 散布図を描く           | **`ggplot2::geom_point()`**         | 
 回帰線を描く           | **`ggplot2::geom_smooth()`**        |
 層別に描く             | **`ggplot2::facet_wrap()`**         | 
+
+
+# 演習２
 
 
 ## オープン・クローズチャート
@@ -139,6 +143,26 @@ df_date %>%
 置き換える             | **`replace()`**                         | 
 NAか調べる             | **`is.na()`**                           |
 データフレームを結合する | **`dplyr::left/right_join()`**        |
+
+
+# 演習３
+
+## 層別散布図
+`iris`データセットを下図のようにグラフ化してください。
+
+```{r, echo=FALSE}
+iris %>% 
+  tibble::rowid_to_column("ID") %>%
+  tidyr::gather(key, value, -Species, -ID) %>% 
+  # print() %>% 
+  tidyr::separate(key, into = c("Part", "Dimension")) %>% # DT::datatable()
+  # print() %>% 
+  tidyr::spread(key = Dimension, value) %>% 
+  # print() %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Length, y = Width)) + 
+    ggplot2::geom_point(ggplot2::aes(colour = Species, shape = Part),
+                        size = 2)
+```
 
 
 ## License
