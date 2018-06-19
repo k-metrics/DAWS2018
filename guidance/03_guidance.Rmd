@@ -157,7 +157,7 @@ NAを取り除きたい   | **`tidyr::drop_na()`**      |
 変数を追加したい   | **`dplyr::mutate()`**       | 
 
 
-## 演習１ 解答例
+## 解答例
 ```{r echo=FALSE}
 require(tidyverse)
 
@@ -205,7 +205,8 @@ anscombe %>%
   tidyr::gather(key, value, -id) %>%
   tidyr::separate(key, c("axis", "group"), 1) %>%
   tidyr::spread(axis, value) %>% 
-  dplyr::select(-id)
+  dplyr::select(-id) %>% 
+  dplyr::arrange(group)
 ```
 
 
