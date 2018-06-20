@@ -305,15 +305,22 @@ redmine <- "../data/redmine_data_utf8.csv" %>%
   dplyr::mutate(open = lubridate::as_date(open),
                 close = lubridate::as_date(open))
 
+# Open - これだとオープン中のチケットしかカウントしてない
+# open <- redmine %>% 
+#   dplyr::filter(open >= "2017-1-1" & open <= "2017-12-31") %>% 
+#   dplyr::mutate(week = lubridate::week(open),
+#                 status_flag = ifelse(status == "Closed", "closed", "open")) %>% 
+#   dplyr::mutate(flag = ifelse(status_flag == "open", 1, 0)) %>% 
+#   dplyr::group_by(week) %>% 
+#   dplyr::summarise(open = sum(flag))
 
-# Open
+# Open - こちらがオープンしたチケット全部
 open <- redmine %>% 
   dplyr::filter(open >= "2017-1-1" & open <= "2017-12-31") %>% 
-  dplyr::mutate(week = lubridate::week(open),
-                status_flag = ifelse(status == "Closed", "closed", "open")) %>% 
-  dplyr::mutate(flag = ifelse(status_flag == "open", 1, 0)) %>% 
+  dplyr::mutate(week = lubridate::week(open)) %>% 
   dplyr::group_by(week) %>% 
-  dplyr::summarise(open = sum(flag))
+  dplyr::summarise(open = n())
+
 
 # Closed
 close <- redmine %>% 
