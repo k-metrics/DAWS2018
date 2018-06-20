@@ -50,7 +50,7 @@ require(tidyverse)
 
 * 特徴
     * GIS（地理情報システム）などと同じ[**レイヤー構造**](http://id.fnshr.info/2011/10/22/ggplot2/)
-    * **ggplot2::aes**の考え方を覚えるのがひとつのポイント
+    * **ggplot2::aes**という考え方（ポイント）
     * 出来ないないことは**関連パッケージで補える**柔軟性
         * QQプロットはqqplotr, 格子配置はggExtra, etc
     * 忖度してくれない（とりあえずでデータを突っ込んでも描画はしない）
@@ -58,7 +58,7 @@ require(tidyverse)
 
 
 ## 必要なデータ形式
-* ggplot2はデータフレーム型のデータを引数に取ります
+* ggplot2はデータフレーム型のデータを第一引数に取ります
 * X軸用データ、Y軸用データ、グループ化データの三項目が基本的なデータ項目
 
 　 | x           | y           | group, colour, fill, ... 
@@ -80,48 +80,61 @@ iris
 ```
 
 
-## 散布図の例
-```{r}
+## 散布図
+```{r, echo=FALSE}
 ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, colour = Species)) +
   geom_point()
 ```
 
 
-## 箱ひげ図の例
-```{r}
+## ヒストグラム
+```{r, echo=FALSE}
+ggplot(iris, aes(x = Petal.Length, fill = Species)) + 
+  geom_histogram(alpha = 0.5)                         # position = "stack"
+```
+
+
+## 箱ひげ図
+```{r, echo=FALSE}
 ggplot(iris, aes(x = Species, y = Sepal.Length, colour = Species)) +
   geom_boxplot()
 ```
 
 
-## ベースを描く
+# 散布図基本編
+
+
+## 座標を指定する（ベースのレイヤーを作る）
 ```{r}
-ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length))
+iris %>% ggplot(aes(x = Sepal.Width, y = Sepal.Length))
 ```
 
 
-## 散布図を重ねる
+## 散布図を重ねる（レイヤーを重ねる）
 ```{r}
-ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
+iris %>% ggplot(aes(x = Sepal.Width, y = Sepal.Length)) +
   geom_point()
 ```
 
 
-## 散布図に回帰直線を重ねる
+## 散布図に回帰直線を重ねる（レイヤーを重ねる）
 ```{r}
-ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
+iris %>% ggplot(aes(x = Sepal.Width, y = Sepal.Length)) +
   geom_point() + geom_smooth(method = "lm", se = FALSE)
 ```
 
 
-## 散布図を層別（色別）で描画する
+# 散布図応用編
+
+
+## 散布図を層別にする
 ```{r}
 ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
   geom_point(aes(colour = Species))
 ```
 
 
-## 層別（色別）散布図に回帰直線を重ねる（あれ？）
+## 層別散布図に回帰直線を重ねる（あれ？）
 ```{r}
 ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
   geom_point(aes(colour = Species)) + geom_smooth(method = "lm", se = FALSE)
@@ -149,48 +162,25 @@ ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
 ```
 
 
-## 層別グラフを描くには`ggplot2::facet_*`関数
+# ヒストグラム基本編
+
+
+## 座標を指定する（ベースのレイヤーを作る）
 ```{r}
-ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + facet_wrap(~ Species)
+iris %>% ggplot(aes(x = Petal.Length))
 ```
 
 
-## 同様にグラフを重ねていく
+## ヒストグラムを重ねる
 ```{r}
-ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + facet_wrap(~ Species) + 
-  geom_point() + geom_smooth(method = "lm", se = FALSE)
-```
-
-
-## 色別の有効範囲は層別しない時と同じ
-```{r}
-ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, colour = Species)) +
-  geom_point() + geom_smooth(method = "lm", se = FALSE) + facet_wrap(~ Species)
-```
-
-
-## 散布図だけ色別
-```{r}
-ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + facet_wrap(~ Species) +
-  geom_point(aes(colour = Species)) + geom_smooth(method = "lm", se = FALSE)
-```
-
-
-## 回帰直線だけ色別
-```{r}
-ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + geom_point() +
-  facet_wrap(~ Species) + geom_smooth(aes(colour = Species), method = "lm", se = FALSE) 
-```
-
-
-## ヒストグラム
-```{r}
-ggplot(iris, aes(x = Petal.Length)) + 
+iris %>% ggplot(aes(x = Petal.Length)) + 
   geom_histogram()
 ```
 
 
-## 層別（色別）ヒストグラム - stack
+# ヒストグラム応用編
+
+## ヒストグラムを層別にする - stack
 ```{r}
 ggplot(iris, aes(x = Petal.Length, fill = Species)) + 
   geom_histogram(alpha = 0.5)                         # position = "stack"
@@ -217,7 +207,7 @@ ggplot(iris, aes(x = Petal.Length, fill = Species)) +
 `ggplot2::geom_histgram`関数のデフォルト設定では**階級数が30に固定**されています。階級数（まはた階級幅）を一意に決める方法はありませんが、Rでは`pritty`関数を用いることで適切な階級幅を求めることができます。
 
 ```{r, eval=FALSE}
-pritty(x, n)
+pretty(x, n)
 ```
 
 　  
@@ -230,21 +220,116 @@ n    | ヒストグラムの分割数（通常はスタージェスの公式[`nc
 
 ## 階級幅を指定する
 ```{r}
-breaks <- pretty(iris$Petal.Length, nclass.Sturges(iris$Petal.Length))
+breaks <- with(iris, pretty(Petal.Length, nclass.Sturges(Petal.Length)))
 ggplot(iris, aes(x = Petal.Length, fill = Species)) + 
   geom_histogram(breaks = breaks, position = "identity", alpha = 0.5)
 ```
 
 
+# 箱ひげ図基本編
+
+
+## 座標を指定する（ベースのレイヤーを作る）
+```{r}
+iris %>% ggplot(aes(x = Species, y = Sepal.Length))
+```
+
+
+## 箱ひげ図を重ねる
+```{r}
+iris %>% ggplot(aes(x = Species, y = Sepal.Length)) +
+  geom_boxplot()
+```
+
+
+# 箱ひげ図応用編
+
+
+## 層別（色別）箱ひげ図
+```{r}
+ggplot(iris, aes(x = Species, y = Sepal.Length)) +
+  geom_boxplot(aes(colour = Species))
+```
+
+
+## 層別（色別）箱ひげ図
+```{r}
+ggplot(iris, aes(x = Species, y = Sepal.Length)) +
+  geom_boxplot(aes(fill = Species), alpha = 0.5)
+```
+
+
+## 層別（色別）箱ひげ図
+```{r}
+ggplot(iris, aes(x = Species, y = Sepal.Length)) +
+  geom_boxplot(aes(colour = Species, fill = Species), alpha = 0.5)
+```
+
+
+## 箱ひげ図は基本的に層別で使う
+```{r}
+ggplot(iris, aes(x = NA, y = Sepal.Length)) +
+  geom_boxplot()
+```
+
+
+## 頻度分布を重ねる
+```{r}
+ggplot(iris, aes(x = Species, y = Sepal.Length, colour = Species)) +
+  geom_boxplot() + geom_dotplot(binaxis = "y", stackdir = "up", dotsize = 0.75)
+```
+
+
+# より見やすく
+
+
+## 層別グラフを個別に描く`facet_*`関数
+```{r}
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + facet_wrap(~ Species)
+```
+
+
+## グラフを重ねることも可能
+```{r}
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + facet_wrap(~ Species) + 
+  geom_point() + geom_smooth(method = "lm", se = FALSE)
+```
+
+
+## 色の有効範囲は同じ
+```{r}
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, colour = Species)) +
+  geom_point() + geom_smooth(method = "lm", se = FALSE) + facet_wrap(~ Species)
+```
+
+
+## 散布図だけ色別
+```{r}
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + facet_wrap(~ Species) +
+  geom_point(aes(colour = Species)) + geom_smooth(method = "lm", se = FALSE)
+```
+
+
+## 回帰直線だけ色別
+```{r}
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + geom_point() +
+  facet_wrap(~ Species) + geom_smooth(aes(colour = Species), method = "lm", se = FALSE) 
+```
+
+
+# その他の描画関数
+
+
 ## その他の描画関数
 geom object  | 描画内容       | 類似object
 -------------|----------------|------------
+geom_abline  | 参照線         | geom_hline, geom_vline
 geom_bar     | 棒グラフ       | geom_col
-geom_boxplot | 箱ひげ図       | geom_violin
-geom_dotplot | ドットチャート |
 geom_errorbar | エラーバー    | geom_crossbar
 geom_line    | 折れ線グラフ   | geom_path
+geom_rug     | ラグプロット   | 
 geom_text    | テキストラベル | geom_label
+geom_violin  | バイオリンプロット | 
 
 
 ## 復習のためのリソース
