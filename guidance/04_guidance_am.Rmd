@@ -203,8 +203,8 @@ ggplot(iris, aes(x = Petal.Length, fill = Species)) +
 
 
 
-## 階級幅の計算方法
-`ggplot2::geom_histgram`関数のデフォルト設定では**階級数が30に固定**されています。階級数（まはた階級幅）を一意に決める方法はありませんが、Rでは`pritty`関数を用いることで適切な階級幅を求めることができます。
+## 階級の計算方法
+`ggplot2::geom_histgram`関数のデフォルト設定では**階級数が30に固定**されています。階級数（まはた階級幅）を一意に決める方法はありませんが、Rでは`pritty`関数を用いることで適切な階級（数、幅）を求めることができます。
 
 ```{r, eval=FALSE}
 pretty(x, n)
@@ -218,7 +218,7 @@ x    | ヒストグラムを描くためのデータ（ベクトル型）
 n    | ヒストグラムの分割数（通常はスタージェスの公式[`nclass.Sturges(x)`]などで求める）
 
 
-## 階級幅を指定する
+## 階級を指定する
 ```{r}
 breaks <- with(iris, pretty(Petal.Length, nclass.Sturges(Petal.Length)))
 ggplot(iris, aes(x = Petal.Length, fill = Species)) + 
