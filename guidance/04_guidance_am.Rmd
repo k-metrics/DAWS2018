@@ -339,6 +339,7 @@ geom_violin  | バイオリンプロット |
 
 　  
 
+* [ggplot2再入門 <i class="fa fa-external-link"></i>](https://speakerdeck.com/yutannihilation/ggplot2zai-ru-men){target="_blank" title="Speaker Deck"}
 * [ggplot2逆引き <i class="fa fa-external-link"></i>](http://yutannihilation.github.io/ggplot2-gyakubiki/)
 * [グラフ描画ggplot2の辞書的まとめ20のコード <i class="fa fa-external-link"></i>](https://mrunadon.github.io/ggplot2/)
 * [ggplot2 — きれいなグラフを簡単に合理的に  <i class="fa fa-external-link"></i>](https://heavywatal.github.io/rstats/ggplot2.html)
