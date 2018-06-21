@@ -130,7 +130,7 @@ gridExtra::grid.arrange(gg_prod, gg_rate)
 # 演習４
 
 ## 層別箱ひげ図
-`iris`データセットを下図のようにグラフ化してください。
+`iris`データセットのがく片の長さを下図のようにグラフ化してください。
 
 ```{r, echo=FALSE, warning=FALSE}
 iris %>% 
@@ -141,6 +141,7 @@ iris %>%
   tidyr::gather(key, value, -Species, -ID) %>% 
   tidyr::separate(key, into = c("Part", "Dimension")) %>%
   tidyr::spread(key = Dimension, value) %>% 
+  dplyr::filter(Part == "Sepal") %>% 
   ggplot2::ggplot(ggplot2::aes(x = Species)) +
     ggplot2::geom_boxplot(ggplot2::aes(y = Length))
 ```

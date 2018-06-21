@@ -4,7 +4,7 @@ author: "【午前の部】効率的で綺麗な可視化 [鈴木さんぽう, C
 date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
 output:
   ioslides_presentation:
-    css: style.css
+    css: style_img.css
     df_print: paged
     logo: fig/hex-ggplot2.png
     smaller: false
@@ -21,6 +21,7 @@ require(tidyverse)
 ## 本日の内容
 1. **効率的で綺麗な可視化（６０～９０分程度）**
     * 整然データ（tidy data）とは？（復習）
+    * 可視化の重要性
     * ggplot2とは？
     * ggplot2の基本
         * 散布図
@@ -42,6 +43,16 @@ require(tidyverse)
 * Rで最も使うデータ・フレーム型は整然データにしておくべき
     * 雑然データへの変換は簡単
     * 整然データなら可視化（見える化）も簡単
+
+
+## 可視化の重要性
+* 下図では全てのデータの**統計量が同じ！**
+    * 数字を眺めてるだけでは判断を間違う可能性がある
+    * 分析の最初には必ずデータの分布を確認する癖をつける
+
+![The Datasaurus Doze](../data/DinoSequential.gif)
+
+<!-- ![The Datasaurus Doze](https://github.com/stephlocke/lazyCDN/blob/master/DinoSequential.gif?raw=true) -->
 
 
 ## ggplot2とは？
