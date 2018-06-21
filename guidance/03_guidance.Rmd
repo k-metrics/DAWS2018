@@ -303,7 +303,7 @@ redmine <- "../data/redmine_data_utf8.csv" %>%
   dplyr::select(ID = '#', status = 'ステータス', open = '作成日',
                 close = '終了日') %>% 
   dplyr::mutate(open = lubridate::as_date(open),
-                close = lubridate::as_date(open))
+                close = lubridate::as_date(close))
 
 # Open - これだとオープン中のチケットしかカウントしてない
 # open <- redmine %>% 
