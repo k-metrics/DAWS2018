@@ -308,13 +308,14 @@ data.frame(week = seq(1:53)) %>%
                 close = ifelse(is.na(close), 0, close)) %>% 
   dplyr::mutate(cumopen = cumsum(open), cumclose = cumsum(close)) %>% 
   dplyr::select(-open, -close) %>% 
-  tidyr::gather(key, value = tickets, -week) %>% 
-  dplyr::bind_cols(op, .) %>% 
-  dplyr::select(-week1) %>% 
-  ggplot2::ggplot(ggplot2::aes(x = week)) +
-    ggplot2::geom_bar(ggplot2::aes(y = tickets, fill = key),
+  dplyr::rename(open = cumopen, close = cumclose) %>% 
+  tidyr::gather(key, value = tickets, -week) %>%
+  dplyr::bind_cols(op, .) %>%
+  dplyr::rename(daily = key, cum = key1) %>% 
+  ggplot2::ggplot() +
+    ggplot2::geom_bar(ggplot2::aes(x = week, y = tickets, fill = daily),
                       stat = "identity", position = "dodge", alpha = 0.5) +
-    ggplot2::geom_line(ggplot2::aes(y = tickets1, colour = key1))
+    ggplot2::geom_line(ggplot2::aes(x = week1, y = tickets1, colour = cum))
 ```
 
 
