@@ -135,17 +135,40 @@ output:
 
 ### 午前の部
 * [ガイダンス <i class="fa fa-external-link-square"></i>](./guidance/04_guidance_am.html){target="_blank" title="ioslide"}
-    * [ggplot2のすゝめ <i class="fa fa-external-link-square"></i>](https://k-metrics.github.io/cabinet/program/basics_ggplot2.html){target="_blank" title="GitHub Pages"}
-        * [データの可視化 <i class="fa fa-external-link"></i>](https://kazutan.github.io/JSSP2018_spring/visualization.html){target="_blank" title="【参考資料】日本社会心理学会 第5回春の方法論セミナー資料"}
-        * [ggplot2を使ってみる <i class="fa fa-external-link"></i>](https://www.dropbox.com/s/ea9vnt5u7g31eht/esj65_ggplot2.pdf?dl=0){target="_blank" title="【参考資料】生態学会大会2018 [W12] データ解析で出会う統計的問題"}
+    * [データの可視化 <i class="fa fa-external-link"></i>](https://kazutan.github.io/JSSP2018_spring/visualization.html){target="_blank" title="【参考資料】日本社会心理学会 第5回春の方法論セミナー資料"}
+    * [ggplot2を使ってみる <i class="fa fa-external-link"></i>](https://www.dropbox.com/s/ea9vnt5u7g31eht/esj65_ggplot2.pdf?dl=0){target="_blank" title="【参考資料】生態学会大会2018 [W12] データ解析で出会う統計的問題"}
+
+　  
+
+1. 効率的で綺麗な可視化（６０～９０分程度） 
+    * 整然データ（tidy data）とは？（復習）
+    * 可視化の重要性
+    * ggplot2とは？
+    * ggplot2の基本 
+        * 散布図
+        * ヒストグラム
+        * 箱ひげ図
+    * 復習のためのリソース　  
 
 　  
 
 ### 午後の部
 * [ガイダンス <i class="fa fa-external-link-square"></i>](./guidance/04_guidance_pm.html){target="_blank" title="ioslide"}
 　  
+1. 演習1～5
+    * アンスコムのデータ例 
+        * 第３回の演習結果を可視化してみる
+    * 層別散布図 
+        * データの見方を変えてみる
+    * ヒストグラム 
+        * 任意の階級幅で描いてみる
+    * 層別箱ひげ図 
+        * 全体と因子別を比較してみる
+    * オープン・クローズチャート 
+        * チケットの処理状況を把握する
 
-<!-- * [演習用テンプレート <i class="fa fa-external-link-square"></i>](./template/template_ggplot.html){target="_blank" title="HTML Format"} -->
+　  
+
 * [演習用テンプレート <i class="fa fa-file-code-o"></i> （右クリックでダウンロード）](./template/template_ggplot.Rmd)
 
 　  
