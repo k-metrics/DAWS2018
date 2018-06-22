@@ -25,7 +25,7 @@
         usePrettify: true,
         enableSlideAreas: true,
         enableTouch: true,
-                        favIcon: 'fig/hex-tidyverse.png',
+                        favIcon: 'fig\hex-tidyverse.png',
               },
 
       // Author information
@@ -87,7 +87,7 @@
       position: absolute;
       bottom: 20px;
       left: 60px;
-      background: url(fig/hex-tidyverse.png) no-repeat 0 50%;
+      background: url(fig\hex-tidyverse.png) no-repeat 0 50%;
       -webkit-background-size: 30px 30px;
       -moz-background-size: 30px 30px;
       -o-background-size: 30px 30px;
@@ -113,7 +113,7 @@
       <h1 data-config-title><!-- populated from slide_config.json --></h1>
       <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
       <p data-config-presenter><!-- populated from slide_config.json --></p>
-            <p style="margin-top: 6px; margin-left: -2px;">2018年06月21日</p>
+            <p style="margin-top: 6px; margin-left: -2px;">2018年06月22日</p>
           </hgroup>
   </slide>
 
@@ -741,6 +741,42 @@ Redmineのチケットをオープンした日（作成日）とステータス�
 <td align="left">データフレームを作成する</td>
 <td align="left"><strong><code>data.frame()</code></strong></td>
 <td align="left">Base R</td>
+</tr>
+</table>
+
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>演習６ 超難問</h2></hgroup><article  id="-">
+
+</article></slide><slide class=""><hgroup><h2>こんな事もできます</h2></hgroup><article >
+
+<p><code>iris</code>データセットを用いて以下のように品種、弁毎に四分位値を計算してください（ググればコードは分かると思いますが、かなりの難問。だけど覚えると便利）。</p>
+
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Species"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["part"],"name":[2],"type":["chr"],"align":["left"]},{"label":["0%"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["25%"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["50%"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["75%"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["100%"],"name":[7],"type":["dbl"],"align":["right"]}],"data":[{"1":"setosa","2":"Petal.Length","3":"1.0","4":"1.400","5":"1.50","6":"1.575","7":"1.9","_rn_":"1"},{"1":"setosa","2":"Petal.Width","3":"0.1","4":"0.200","5":"0.20","6":"0.300","7":"0.6","_rn_":"2"},{"1":"setosa","2":"Sepal.Length","3":"4.3","4":"4.800","5":"5.00","6":"5.200","7":"5.8","_rn_":"3"},{"1":"setosa","2":"Sepal.Width","3":"2.3","4":"3.200","5":"3.40","6":"3.675","7":"4.4","_rn_":"4"},{"1":"versicolor","2":"Petal.Length","3":"3.0","4":"4.000","5":"4.35","6":"4.600","7":"5.1","_rn_":"5"},{"1":"versicolor","2":"Petal.Width","3":"1.0","4":"1.200","5":"1.30","6":"1.500","7":"1.8","_rn_":"6"},{"1":"versicolor","2":"Sepal.Length","3":"4.9","4":"5.600","5":"5.90","6":"6.300","7":"7.0","_rn_":"7"},{"1":"versicolor","2":"Sepal.Width","3":"2.0","4":"2.525","5":"2.80","6":"3.000","7":"3.4","_rn_":"8"},{"1":"virginica","2":"Petal.Length","3":"4.5","4":"5.100","5":"5.55","6":"5.875","7":"6.9","_rn_":"9"},{"1":"virginica","2":"Petal.Width","3":"1.4","4":"1.800","5":"2.00","6":"2.300","7":"2.5","_rn_":"10"},{"1":"virginica","2":"Sepal.Length","3":"4.9","4":"6.225","5":"6.50","6":"6.900","7":"7.9","_rn_":"11"},{"1":"virginica","2":"Sepal.Width","3":"2.2","4":"2.800","5":"3.00","6":"3.175","7":"3.8","_rn_":"12"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script></div>
+
+</article></slide><slide class=""><hgroup><h2>ヒント</h2></hgroup><article  id="-5">
+
+<table class = 'rmdtable'>
+<tr class="header">
+<th align="left">やりたいこと</th>
+<th align="left">利用する関数例</th>
+<th align="left">備考</th>
+</tr>
+<tr class="odd">
+<td align="left">四分位値を求める</td>
+<td align="left"><strong><code>quantile()</code></strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">グループ処理を上手くやる</td>
+<td align="left"><strong><code>dplyr::do()</code></strong></td>
+<td align="left">Do anything</td>
+</tr>
+<tr class="odd">
+<td align="left">上手くやったのを取り出す</td>
+<td align="left"><strong><code>rbind(), cbind()</code></strong></td>
+<td align="left"></td>
 </tr>
 </table>
 
