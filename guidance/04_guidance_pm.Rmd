@@ -160,6 +160,21 @@ iris %>%
 
 # 演習５
 
+## 層別箱ひげ図
+`iris`データセットを下図のようにグラフ化してください。
+
+```{r, echo=FALSE}
+iris %>% 
+  tidyr::gather(part, value, -Species) %>% 
+  dplyr::group_by(Species, part) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = part, y = value)) + 
+    ggplot2::geom_boxplot(ggplot2::aes(fill = Species), alpha = 0.5)
+```
+
+
+
+# 演習６
+
 ## オープン・クローズチャート
 第３回の演習５で求めたデータを元にオープン・クローズチャートを描いてください。
 
@@ -210,7 +225,7 @@ data.frame(week = seq(1:53)) %>%
 
 
 
-# 演習６
+# 演習７
 
 ## オープン・クローズチャート
 第３回の演習５で求めたデータを元に日毎のオープン、クローズ数を棒グラフで描いてください。
@@ -265,7 +280,7 @@ Y軸を指定して描く      | `ggplot2::geom_bar(stat)`          |
 
 
 
-# 演習７
+# 演習８
 
 ## オープン・クローズチャート
 演習５と演習６で描いたグラフを一つにまとめて描いてください。
@@ -321,6 +336,7 @@ data.frame(week = seq(1:53)) %>%
 
 ## ヒント
 ノーヒント
+
 
 
 ## License
