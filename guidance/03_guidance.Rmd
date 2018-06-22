@@ -162,11 +162,11 @@ NAを取り除きたい   | **`tidyr::drop_na()`**      |
 require(tidyverse)
 
 # データの読み込み(for Windows)
-# x <- "../data/data.csv" %>%
-#   read.csv() %>%
+x <- "../data/data.csv" %>%
+  read.csv() %>%
 # データの読み込み(for Ubuntu)
-x <- "../data/data_utf8.csv" %>%
-  read.csv(encoding = "UTF-8") %>%
+# x <- "../data/data_utf8.csv" %>%
+#   read.csv(encoding = "UTF-8") %>%
   dplyr::rename(pj = 'プロジェクト名', prod = '生産性', rate = '工数予実割合') %>% 
   tidyr::drop_na()
 
@@ -353,6 +353,30 @@ data.frame(week = seq(1:53)) %>%
 NAかどうか判定する     | **`is.na()`**                      | Base R
 累計を計算する         | **`cumsum()`**                     | Base R
 データフレームを作成する | **`data.frame()`**               | Base R
+
+
+
+# 演習６ 超難問
+
+## こんな事もできます
+`iris`データセットを用いて以下のように品種、弁毎に四分位値を計算してください（ググればコードは分かると思いますが、かなりの難問。だけど覚えると便利）。
+
+```{r, echo=FALSE}
+iris %>% 
+  tidyr::gather(part, value, -Species) %>% 
+  dplyr::group_by(Species, part) %>% 
+  dplyr::do(qt = quantile(.$value)) %>%
+  cbind(do.call(rbind, .$qt)) %>%
+  dplyr::select(-qt)
+```
+
+
+## ヒント
+やりたいこと           | 利用する関数例                     | 備考
+-----------------------|------------------------------------|---
+四分位値を求める       | **`quantile()`**                   | 
+グループ処理を上手くやる | **`dplyr::do()`**                | Do anything
+上手くやったのを取り出す | **`rbind(), cbind()`**           | 
 
 
 
