@@ -13,7 +13,7 @@ output:
 :------------:|:---------:|:---------------------------|:-----------
 [第1回](#S01) | 2018/5/12 | 分析環境の構築と動作確認   | R/RStudio, Git, packrat
 [第2回](#S02) | 2018/6/16 | データハンドリング入門     | tidyverse
-[第3回](#S03) | 2018/7/14 | データハンドリング入門２（仮）   | tidyverse
+[第3回](#S03) | 2018/7/14 | データハンドリング入門２   | tidyverse
 [第4回](#S04) | 2018/9/15 | 効率的で綺麗な可視化       | ggplot2
 [第5回](#S05) | 2018/10/13 | 再現性のあるレポーティング | R Markdown
 第6回以降     |     　    | 内容未定                   | 
@@ -101,7 +101,7 @@ output:
 
 　  
 
-## 第3回 データハンドリング入門２（仮） {#S03}
+## 第3回 データハンドリング入門２ {#S03}
 実際にtidyverseを使ってデータを処理することでtidyverseへの理解を深めます。
 
 * [tidyverse <i class="fa fa-external-link"></i>](https://www.tidyverse.org/){target="_blank" title="tidyverse, RStudio"} : Easily Install and Load the 'Tidyverse'
