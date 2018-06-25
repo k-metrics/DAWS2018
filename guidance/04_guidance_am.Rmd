@@ -117,7 +117,7 @@ ggplot(iris, aes(x = Species, y = Sepal.Length, colour = Species)) +
 # 散布図基本編
 
 
-## 座標を指定する（ベースのレイヤーを作る）
+## 座標を指定する（ベース座標のレイヤーを作る）
 ```{r}
 iris %>% ggplot(aes(x = Sepal.Width, y = Sepal.Length))
 ```
@@ -175,6 +175,22 @@ ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
 ```
 
 
+## `aes`関数の影響範囲
+* **ベース座標（`ggplot`関数）で指定**した`aes`関数のパラメータは**全てのレイヤー（`geom_`関数）**に対して有効
+```{r, eval=FALSE}
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, colour = Species)) +
+  geom_point() + geom_smooth(method = "lm", se = FALSE)
+```
+
+　  
+
+* **各レイヤー（`geom_`関数）で指定**した`aes`関数のパラメータは**各レイヤー（`geom_`関数）内のみ**で有効
+```{r, eval=FALSE}
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
+  geom_point() + geom_smooth(aes(colour = Species), method = "lm", se = FALSE)
+```
+
+
 # ヒストグラム基本編
 
 
@@ -211,13 +227,13 @@ ggplot(iris, aes(x = Petal.Length, fill = Species)) +
 ```{r}
 ggplot(iris, aes(x = Petal.Length, fill = Species)) + 
   geom_histogram(aes(y = ..density..), position = "identity", alpha = 0.5) +
-  geom_density(alpha = 0.25)
+  geom_density(colour = "darkgray", alpha = 0.25)
 ```
 
 
 
 ## 階級の計算方法
-`ggplot2::geom_histgram`関数のデフォルト設定では**階級数が30に固定**されています。階級数（まはた階級幅）を一意に決める方法はありませんが、Rでは`pritty`関数を用いることで適切な階級（数、幅）を求めることができます。
+`ggplot2::geom_histogram`関数のデフォルト設定では**階級数が30に固定**されています。階級数（または階級幅）を一意に決める方法はありませんが、Rでは`pritty`関数を用いることで適切な階級（数、幅）を求めることができます。
 
 ```{r, eval=FALSE}
 pretty(x, n)
