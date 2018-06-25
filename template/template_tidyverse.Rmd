@@ -39,6 +39,8 @@ require(tidyverse)
     * クロス集計の基本的な形
 1. チケット数をカウントする（その２）
     * 時系列での集計と`ggplot2`での描画のために
+1. 層別で複数の値を一度に得る
+    * dplyrの真骨頂
 
 　  
 
@@ -71,7 +73,8 @@ Markdown記法に関してはRStudioのヘルプから参照してください�
 
 ```{r}
 # データの読み込み
-"../data/data_utf8.csv" %>% 
+"https://k-metrics.github.io/2018dasg/data/data_utf8.csv" %>%
+# "../data/data_utf8.csv" %>% 
   readr::read_csv(locale=locale(encoding="UTF-8"))
 
 # 読み込んだデータの確認
@@ -114,8 +117,9 @@ iris
 Redmineのチケットをオープンした日（作成日）とステータスでクロス集計してください。  
 
 ```{r}
-"../data/redmine_data_utf8.csv" %>% 
-  readr::read_csv()
+"https://k-metrics.github.io/2018dasg/data/redmine_data_utf8.csv" %>%
+# "../data/redmine_data_utf8.csv" %>% 
+  readr::read_csv(locale = locale(encoding = "UTF-8"))
 
 ```
 
@@ -135,8 +139,19 @@ Redmineのチケットをオープンした日（作成日）とステータス�
 変数名は日本語ですが英語に変更しておいた方が処理の記述が楽です。
 
 ```{r}
-"../data/redmine_data_utf8.csv" %>% 
-  readr::read_csv()
+"https://k-metrics.github.io/2018dasg/data/redmine_data_utf8.csv" %>% 
+# "../data/redmine_data_utf8.csv" %>% 
+  readr::read_csv(locale = locale(encoding = "UTF-8"))
+
+```
+
+　  
+
+# 演習６
+`iris`データセットの四分位値を`Species`ごとに層別で求めてください。ただし、計算結果はデータフレーム型にしてください。
+
+```{r}
+iris
 
 ```
 
