@@ -113,7 +113,7 @@
       <h1 data-config-title><!-- populated from slide_config.json --></h1>
       <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
       <p data-config-presenter><!-- populated from slide_config.json --></p>
-            <p style="margin-top: 6px; margin-left: -2px;">2018年06月23日</p>
+            <p style="margin-top: 6px; margin-left: -2px;">2018年06月25日</p>
           </hgroup>
   </slide>
 
@@ -744,7 +744,28 @@ Redmineのチケットをオープンした日（作成日）とステータス�
 </tr>
 </table>
 
-</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>演習６ 超難問</h2></hgroup><article  id="-">
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>演習６</h2></hgroup><article  id="-6">
+
+</article></slide><slide class=""><hgroup><h2>メトリクス統計分析入門から</h2></hgroup><article  id="-1">
+
+<p>演習１においてNAデータを削除せずにプロジェクトを評価してください。Zスコアは生産性のZスコアと工数予実割合のZスコアの平均値としますが、NAデータがある場合は片方のZスコアの値としてください。<br/>　<br/>（解答例省略）</p>
+
+</article></slide><slide class=""><hgroup><h2>ヒント</h2></hgroup><article  id="-5">
+
+<table class = 'rmdtable'>
+<tr class="header">
+<th align="left">やりたいこと</th>
+<th align="left">利用する関数例</th>
+<th align="left">備考</th>
+</tr>
+<tr class="odd">
+<td align="left">NAかどうか調べる</td>
+<td align="left"><strong><code>is.na()</code></strong></td>
+<td align="left"></td>
+</tr>
+</table>
+
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>演習７　難問</h2></hgroup><article >
 
 </article></slide><slide class=""><hgroup><h2>こんな事もできます</h2></hgroup><article >
 
@@ -755,7 +776,7 @@ Redmineのチケットをオープンした日（作成日）とステータス�
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Species"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["part"],"name":[2],"type":["chr"],"align":["left"]},{"label":["0%"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["25%"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["50%"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["75%"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["100%"],"name":[7],"type":["dbl"],"align":["right"]}],"data":[{"1":"setosa","2":"Petal.Length","3":"1.0","4":"1.400","5":"1.50","6":"1.575","7":"1.9","_rn_":"1"},{"1":"setosa","2":"Petal.Width","3":"0.1","4":"0.200","5":"0.20","6":"0.300","7":"0.6","_rn_":"2"},{"1":"setosa","2":"Sepal.Length","3":"4.3","4":"4.800","5":"5.00","6":"5.200","7":"5.8","_rn_":"3"},{"1":"setosa","2":"Sepal.Width","3":"2.3","4":"3.200","5":"3.40","6":"3.675","7":"4.4","_rn_":"4"},{"1":"versicolor","2":"Petal.Length","3":"3.0","4":"4.000","5":"4.35","6":"4.600","7":"5.1","_rn_":"5"},{"1":"versicolor","2":"Petal.Width","3":"1.0","4":"1.200","5":"1.30","6":"1.500","7":"1.8","_rn_":"6"},{"1":"versicolor","2":"Sepal.Length","3":"4.9","4":"5.600","5":"5.90","6":"6.300","7":"7.0","_rn_":"7"},{"1":"versicolor","2":"Sepal.Width","3":"2.0","4":"2.525","5":"2.80","6":"3.000","7":"3.4","_rn_":"8"},{"1":"virginica","2":"Petal.Length","3":"4.5","4":"5.100","5":"5.55","6":"5.875","7":"6.9","_rn_":"9"},{"1":"virginica","2":"Petal.Width","3":"1.4","4":"1.800","5":"2.00","6":"2.300","7":"2.5","_rn_":"10"},{"1":"virginica","2":"Sepal.Length","3":"4.9","4":"6.225","5":"6.50","6":"6.900","7":"7.9","_rn_":"11"},{"1":"virginica","2":"Sepal.Width","3":"2.2","4":"2.800","5":"3.00","6":"3.175","7":"3.8","_rn_":"12"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script></div>
 
-</article></slide><slide class=""><hgroup><h2>ヒント</h2></hgroup><article  id="-5">
+</article></slide><slide class=""><hgroup><h2>ヒント</h2></hgroup><article  id="-6">
 
 <table class = 'rmdtable'>
 <tr class="header">
@@ -776,6 +797,42 @@ Redmineのチケットをオープンした日（作成日）とステータス�
 <tr class="odd">
 <td align="left">上手くやったのを取り出す</td>
 <td align="left"><strong><code>rbind(), cbind()</code></strong></td>
+<td align="left"></td>
+</tr>
+</table>
+
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>演習８　難問</h2></hgroup><article  id="-1">
+
+</article></slide><slide class=""><hgroup><h2>層別計算の便利さ</h2></hgroup><article >
+
+<p><code>iris</code>データセットを用いて回帰モデル（<code>Sepal.Length ~ Sepal.Width</code>）を層別に求めてみましょう。回帰モデルの返り値は四分位値よりも複雑なので要約には<code>broom</code>パッケージを用います。</p>
+
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Species"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["term"],"name":[2],"type":["chr"],"align":["left"]},{"label":["estimate"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["std.error"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["statistic"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["p.value"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"setosa","2":"(Intercept)","3":"2.6390012","4":"0.31001431","5":"8.512514","6":"3.742438e-11"},{"1":"setosa","2":"Sepal.Width","3":"0.6904897","4":"0.08989888","5":"7.680738","6":"6.709843e-10"},{"1":"versicolor","2":"(Intercept)","3":"3.5397347","4":"0.56287357","5":"6.288685","6":"9.069049e-08"},{"1":"versicolor","2":"Sepal.Width","3":"0.8650777","4":"0.20193757","5":"4.283887","6":"8.771860e-05"},{"1":"virginica","2":"(Intercept)","3":"3.9068365","4":"0.75706053","5":"5.160534","6":"4.656345e-06"},{"1":"virginica","2":"Sepal.Width","3":"0.9015345","4":"0.25310551","5":"3.561892","6":"8.434625e-04"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script></div>
+
+</article></slide><slide class=""><hgroup><h2>ヒント</h2></hgroup><article  id="-7">
+
+<table class = 'rmdtable'>
+<tr class="header">
+<th align="left">やりたいこと</th>
+<th align="left">利用する関数例</th>
+<th align="left">備考</th>
+</tr>
+<tr class="odd">
+<td align="left">グループ処理を上手くやる</td>
+<td align="left"><strong><code>dplyr::do()</code></strong></td>
+<td align="left">Do anything</td>
+</tr>
+<tr class="even">
+<td align="left">線形回帰の計算</td>
+<td align="left"><strong><code>lm()</code></strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">線形回帰の結果を要約する</td>
+<td align="left"><strong><code>broom::tidy(), broom::augment(), broom::glance()</code></strong></td>
 <td align="left"></td>
 </tr>
 </table>
