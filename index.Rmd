@@ -111,7 +111,7 @@ output:
 ### 午前・午後の部
 * [ガイダンス <i class="fa fa-external-link-square"></i>](./guidance/03_guidance.html){target="_blank" title="第3回 ガイダンス"}
 
-1. 演習のための補足説明（1時間程度）
+1. 演習のための補足説明（30分程度）
 1. 演習1～5
     * 『ソフトウェアメトリクス統計分析入門』から
         * dplyrの基本的な使い方を学ぶ（パイプによる処理）
