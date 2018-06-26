@@ -339,5 +339,21 @@ data.frame(week = seq(1:53)) %>%
 
 
 
+# 演習９
+
+## 複数の因子で層別する
+`ToothGrowth`データセットを用いて`dose`と`supp`で層別ヒストグラムを描いてください。また、密度推定を重ねてみなさい。
+
+```{r, echo=FALSE}
+ToothGrowth %>% 
+  dplyr::mutate(dose = as.factor(dose)) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = len, fill = supp)) +
+    ggplot2::facet_wrap(~ dose) +
+    ggplot2::geom_histogram(ggplot2::aes(y = ..density..), alpha = 0.5,
+                            position = "identity") + 
+    ggplot2::geom_density(alpha = 0.25, colour = "black", size = 0.25)
+```
+
+
 ## License
 CC BY-NC-SA 4.0, Sampo Suzuki
