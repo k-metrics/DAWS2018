@@ -410,14 +410,6 @@ iris %>%
 #  broom::augment(lm_res)
 # モデル評価値などを表示する場合
 #  broom::glance(lm_re)
-
-# purrrを使う場合
-# require(purrr)
-# iris %>% 
-#   split(.$Species) %>% 
-# # リストの因子（Species）水準毎に処理をしデータフレームにまとめる
-#   purrr::map_dfr(~ lm(Sepal.Length ~ Sepal.Width, data = .) %>% broom::tidy(),
-#                  .id = "Species")
 ```
 
 
