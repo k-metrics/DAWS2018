@@ -103,7 +103,7 @@ ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, colour = Species)) +
 
 
 ## ヒストグラム
-データの値の分布を把握する
+データの値の度数分布を把握する
 
 ```{r, echo=FALSE}
 ggplot(iris, aes(x = Petal.Length, fill = Species)) + 
@@ -112,7 +112,7 @@ ggplot(iris, aes(x = Petal.Length, fill = Species)) +
 
 
 ## 箱ひげ図
-データ数が多い場合にその分布（四分位値）を把握する
+統計量（五数要約）を視覚的に把握する（分布がつかみにくいのでドットチャートとの併用やヴァイオリンプロットが使われることも多い）
 
 ```{r, echo=FALSE}
 ggplot(iris, aes(x = Species, y = Sepal.Length, colour = Species)) +
