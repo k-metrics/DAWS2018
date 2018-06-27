@@ -422,5 +422,25 @@ iris %>%
 
 
 
+# 演習９　超難問
+
+## `purrr`を使ってみる
+演習８を`purrr`パッケージを用いて解いてみましょう。`purrr`パッケージの使い方はググって調べてみましょう （`dplyr::do`関数は将来的に廃止される可能性があるらしいので参考まで）。  
+　  
+余談：「超難問」の超の使い方はあっている？  
+　　　可能性は「高い低い」、「大きい小さい」、「あるない」？
+
+```{r, echo=FALSE}
+# purrrを使う場合
+require(purrr)
+iris %>%
+  split(.$Species) %>%
+# リストの因子（Species）水準毎に処理をしデータフレームにまとめる
+  purrr::map_dfr(~ lm(Sepal.Length ~ Sepal.Width, data = .) %>% broom::tidy(),
+                 .id = "Species")
+```
+
+
+
 ## License
 CC BY-NC-SA 4.0, Sampo Suzuki
