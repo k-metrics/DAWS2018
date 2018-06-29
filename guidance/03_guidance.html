@@ -248,7 +248,7 @@
 </tr>
 <tr class="odd">
 <td align="left">NULL</td>
-<td align="left">空 ＝ 何もない（何も存在しない）。0(zero)や下記のNAとは異なります</td>
+<td align="left">空 ＝ 何もない（何も存在しない）。<code>0</code>や下記の<code>NA</code>とは異なります</td>
 </tr>
 <tr class="even">
 <td align="left">NA</td>
@@ -256,11 +256,15 @@
 </tr>
 <tr class="odd">
 <td align="left">NaN</td>
-<td align="left">非数（Not a Number）。数値では表現できないもの例えばlog(-1)とか0/0が該当します</td>
+<td align="left">非数（Not a Number）。数値では表現できないもの例えば<code>log(-1)</code>とか<code>0/0</code>が該当します</td>
 </tr>
 <tr class="even">
 <td align="left">Inf</td>
-<td align="left">0(zero)除算時等は、NaNではなくInf/-Inf（無限大）になります</td>
+<td align="left"><code>0</code>除算時等は、<code>NaN</code>ではなく<code>Inf</code>/<code>-Inf</code>（無限大）になります</td>
+</tr>
+<tr class="odd">
+<td align="left">TRUE, FALSE</td>
+<td align="left">Boolean。TRUEは<code>1</code>、FALSEは<code>0</code>と等価です</td>
 </tr>
 </table>
 
@@ -285,7 +289,7 @@
 </tr>
 <tr class="even">
 <td align="left">パイプ演算子</td>
-<td align="left"><code>%&gt;%</code>（テストする限り優先順位はここと判断できる）</td>
+<td align="left"><code>%&gt;%</code>（テストする限り優先順位はここと判断）</td>
 </tr>
 <tr class="odd">
 <td align="left">比較演算子</td>
