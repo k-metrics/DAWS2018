@@ -201,6 +201,7 @@ x %>%
 ```
 
 
+
 # 演習２
 
 ## anscombe（アンスコム）のデータ例
@@ -225,6 +226,7 @@ anscombe %>%
 列名を分割する         | **`tidyr::separete()`**            |
 ユニーク番号を付与する | **`tibble::rownames_to_cloumn()`** | 
 列を選択する           | **`dplyr::select()`**              |
+
 
 
 # 演習３
@@ -258,21 +260,18 @@ sepal <- iris %>%
 データフレームを結合する | **`dplyr::left_join()`**         | 
 
 
+
 # 演習４
 
-## チケット数をカウントする
-Redmineのチケットをオープンした日（作成日）とステータスでクロス集計してください。  
-　  
-```{r, echo=FALSE}
-redmine <- "../data/redmine_data_utf8.csv" %>% 
-  readr::read_csv() %>% 
-  dplyr::select(ID = '#', status = 'ステータス', open = '作成日')
+## 統計量のクロス集計
+`mtcars`データセットを用いて`gear`（ギア数）と`cyl`（シリンダ数）で`mpg`（燃費）の平均値をクロス集計してください。
 
-redmine %>% 
-  dplyr::mutate(open = lubridate::as_date(open)) %>% 
-  dplyr::group_by(open, status) %>% 
-  dplyr::summarise(n = n()) %>% 
-  tidyr::spread(key = status, value = n)
+```{r, echo=FALSE}
+mtcars %>% 
+  dplyr::select(mpg, cyl, gear) %>% 
+  dplyr::group_by(cyl, gear) %>% 
+  dplyr::summarise_all(mean, na.rm = TRUE) %>% 
+  tidyr::spread(key = cyl, value = mpg)
 ```
 
 
@@ -280,11 +279,10 @@ redmine %>%
 やりたいこと           | 利用する関数例                     | 備考
 -----------------------|------------------------------------|---
 列を選択する           | **`dplyr::select()`**              | 
-日時を日付に変換する   | **`lubridate::as_date()`**         | 
-列をまとめる           | **`tidyr::gather()`**              | 
 行を列にする           | **`tidyr::spread()`**              | 
 行をグルーピングする   | **`dplyr::group_by`**              | 
-行の個数を数える       | **`dplyr::n`**                     | 
+（統計量を）要約する   | **`dplyr::summarise_all`**         | 全変数に対して
+
 
 
 # 演習５
@@ -363,7 +361,7 @@ NAかどうか判定する     | **`is.na()`**                      |
 
 
 
-# 演習が終わったら
+# 演習が終わってしまったら
 
 
 
@@ -384,7 +382,7 @@ NAかどうか調べる   | **`is.na()`**      |
 
 # 演習７　難問
 
-## こんな事もできます
+## 複数の返り値がある場合
 `iris`データセットを用いて以下のように品種、弁毎に四分位値を計算してください（ググればコードは分かると思いますが、かなりの難問。だけど覚えると便利）。
 
 ```{r, echo=FALSE}
@@ -400,7 +398,7 @@ iris %>%
 ## ヒント
 やりたいこと           | 利用する関数例                     | 備考
 -----------------------|------------------------------------|---
-四分位値を求める       | **`quantile()`**                   | 
+四分位値を求める       | **`quantile()`**                   | 返り値は５個のベクトル
 グループ処理を上手くやる | **`dplyr::do()`**                | Do anything
 上手くやったのを取り出す | **`rbind(), cbind()`**           | 
 
@@ -408,7 +406,7 @@ iris %>%
 
 # 演習８　難問
 
-## 層別計算の便利さ
+## より複雑な返り値（リスト型）の場合
 `iris`データセットを用いて回帰モデル（`Sepal.Length ~ Sepal.Width`）を層別に求めてみましょう。回帰モデルの返り値は四分位値よりも複雑なので要約には`broom`パッケージを用います。
 
 ```{r, echo=FALSE}
@@ -428,7 +426,7 @@ iris %>%
 やりたいこと           | 利用する関数例                     | 備考
 -----------------------|------------------------------------|---
 グループ処理を上手くやる | **`dplyr::do()`**                | Do anything
-線形回帰の計算         | **`lm()`**                   | 
+線形回帰の計算         | **`lm()`**                         | 返り値はリスト型
 線形回帰の結果を要約する | **`broom::tidy(), broom::augment(), broom::glance()`** | 
 
 
