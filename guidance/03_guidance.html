@@ -113,7 +113,7 @@
       <h1 data-config-title><!-- populated from slide_config.json --></h1>
       <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
       <p data-config-presenter><!-- populated from slide_config.json --></p>
-            <p style="margin-top: 6px; margin-left: -2px;">2018年06月30日</p>
+            <p style="margin-top: 6px; margin-left: -2px;">2018年07月01日</p>
           </hgroup>
   </slide>
 
@@ -277,19 +277,19 @@
 </tr>
 <tr class="odd">
 <td align="left">アクセス演算子</td>
-<td align="left"><code>$</code>（テータフレーム型の列参照）, <code>[]</code>（ベクトル型の値参照）, <code>.</code>（引数参照：パイプ演算子内）</td>
+<td align="left"><code>$</code>（テータフレーム型の列参照）, <code>[]</code>（ベクトル型の値参照）, <code>.</code>（明示的引数参照：パイプ用）</td>
 </tr>
 <tr class="even">
-<td align="left">単項演算子</td>
-<td align="left"><code>-</code>（マイナス）</td>
+<td align="left">各演算子</td>
+<td align="left"><code>^</code>（べき乗）, <code>-</code>（単項演算子のマイナス）, <code>:</code>（等差数列）</td>
 </tr>
 <tr class="odd">
-<td align="left">算術演算子</td>
-<td align="left"><code>*</code>（乗算）, <code>/</code>（除算）, <code>+</code>（加算）, <code>-</code>（減算）</td>
+<td align="left">特殊二項演算子</td>
+<td align="left"><code>%/%</code>（商）, <code>%%</code>（剰余）, <code>%&gt;%</code>（パイプ演算子）など</td>
 </tr>
 <tr class="even">
-<td align="left">パイプ演算子</td>
-<td align="left"><code>%&gt;%</code>（テストする限り優先順位はここと判断）</td>
+<td align="left">四則演算子</td>
+<td align="left"><code>*</code>（乗算）, <code>/</code>（除算）, <code>+</code>（加算）, <code>-</code>（減算）</td>
 </tr>
 <tr class="odd">
 <td align="left">比較演算子</td>
@@ -305,9 +305,40 @@
 </tr>
 </table>
 
+</article></slide><slide class=""><hgroup><h2>パイプ演算子（<code>%&gt;%</code>）の優先順位</h2></hgroup><article >
+
+<pre class = 'prettyprint lang-r'>-1 %&gt;% exp()</pre>
+
+<pre >## [1] 0.3678794</pre>
+
+<pre class = 'prettyprint lang-r'>1 + -1 %&gt;% exp()</pre>
+
+<pre >## [1] 1.367879</pre>
+
+<pre class = 'prettyprint lang-r'>(1 + -1) %&gt;% exp()</pre>
+
+<pre >## [1] 1</pre>
+
+</article></slide><slide class=""><hgroup><h2>パイプ演算子（<code>%&gt;%</code>）の優先順位</h2></hgroup><article  id="-1">
+
+<p>パイプ演算子と他の演算子を直接組み合わせる場合は注意が必要です。</p>
+
+<pre class = 'prettyprint lang-r'>iris %&gt;% .$Sepal.Length %&gt;% head(3)</pre>
+
+<pre >## [1] 5.1 4.9 4.7</pre>
+
+<pre class = 'prettyprint lang-r'>iris %&gt;% -(.$Sepal.Length) %&gt;% head(3)    # head(iris - iris$Sepal.Length, 3)</pre>
+
+<pre >## Warning in Ops.factor(left, right): &#39;-&#39; not meaningful for factors</pre>
+
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Sepal.Length"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Sepal.Width"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Petal.Length"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Petal.Width"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Species"],"name":[5],"type":["lgl"],"align":["right"]}],"data":[{"1":"0","2":"-1.6","3":"-3.7","4":"-4.9","5":"NA","_rn_":"1"},{"1":"0","2":"-1.9","3":"-3.5","4":"-4.7","5":"NA","_rn_":"2"},{"1":"0","2":"-1.5","3":"-3.4","4":"-4.5","5":"NA","_rn_":"3"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script></div>
+
 </article></slide><slide class=""><hgroup><h2>代入演算子（<code>&lt;-</code>）</h2></hgroup><article  id="-">
 
-<p>代入演算子はその名の通り演算結果などを代入します。代入方向は<code>&lt;-</code>の通り演算子の右辺を演算子の左辺に代入します。パイプ演算子が連続する場合は最終結果が代入されます。</p>
+<p>代入演算子はその名の通り演算結果などを代入します。代入方向は<code>&lt;-</code>の通り演算子の右辺を演算子の左辺に代入します。パイプ演算子が連続する場合は優先順位の通り最終結果が代入されます。</p>
 
 <pre class = 'prettyprint lang-r'>iris_mean &lt;- iris %&gt;% 
   dplyr::group_by(Species) %&gt;%
