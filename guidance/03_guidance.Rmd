@@ -33,11 +33,23 @@ require(tidyverse)
         * 時系列でのデータ集計方法を学ぶ（可視化のための前処理）
 
 
+## Data Science Workflow
+データハンドリングは分析プロセスの始まりに位置し、プロセスの全てに影響があります。
+
+![Fig. [Data Science Workflow, CC BY 4.0 RStudio, Inc.](https://github.com/rstudio/RStartHere)](./fig/dswf.png)
+
+
 ## tidyverse + ggplot2 が使えるようになると...
 このようなグラフも簡単に描けるようになります。
 
 ![ヒートマップ](./fig/heatmap.png)
 
+
+## 推奨図書
+タイトル通りRStudioを使ってスクレイピングからレポーティングまでを網羅した一冊。
+今年度勉強会の基本的な内容をほぼ網羅している。（[技術評論社 <i class="fa fa-external-link"></i>](http://gihyo.jp/book/2018/978-4-7741-9853-8){target="_blank" title="RユーザのためのRStudio［実践］入門"}）
+
+![](./fig/rstudio_getting_started.jpg)
 
 
 # 演習のための補足説明
@@ -187,11 +199,11 @@ NAを取り除きたい   | **`tidyr::drop_na()`**      |
 require(tidyverse)
 
 # データの読み込み(for Windows)
-# x <- "../data/data.csv" %>%
-#   read.csv() %>%
+x <- "../data/data.csv" %>%
+  read.csv() %>%
 # データの読み込み(for Ubuntu)
-x <- "../data/data_utf8.csv" %>%
-  read.csv(encoding = "UTF-8") %>%
+# x <- "../data/data_utf8.csv" %>%
+#   read.csv(encoding = "UTF-8") %>%
   dplyr::rename(pj = 'プロジェクト名', prod = '生産性', rate = '工数予実割合') %>% 
   tidyr::drop_na()
 
