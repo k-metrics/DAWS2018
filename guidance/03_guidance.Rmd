@@ -33,11 +33,23 @@ require(tidyverse)
         * 時系列でのデータ集計方法を学ぶ（可視化のための前処理）
 
 
+## Data Science Workflow
+データハンドリングは分析プロセスの始まりに位置し、プロセスの全てに影響があります。
+
+![Fig. [Data Science Workflow, CC BY 4.0 RStudio, Inc.](https://github.com/rstudio/RStartHere)](./fig/dswf.png)
+
+
 ## tidyverse + ggplot2 が使えるようになると...
 このようなグラフも簡単に描けるようになります。
 
 ![ヒートマップ](./fig/heatmap.png)
 
+
+## 推奨図書の変更
+タイトル通りRStudioを使ってスクレイピングからレポーティングまでを網羅した一冊。
+今年度勉強会での基本的な内容をほぼ網羅している。（[技術評論社 <i class="fa fa-external-link"></i>](http://gihyo.jp/book/2018/978-4-7741-9853-8){target="_blank" title="RユーザのためのRStudio［実践］入門"}）
+
+![](./fig/rstudio_getting_started.jpg)
 
 
 # 演習のための補足説明
@@ -86,7 +98,7 @@ TRUE, FALSE | Boolean。TRUEは`1`、FALSEは`0`と等価です
 -----------------|-----
 アクセス演算子 | `$`（テータフレーム型の列参照）, `[]`（ベクトル型の値参照）, `.`（明示的引数参照：パイプ用）
 各演算子       | `^`（べき乗）, `-`（単項演算子のマイナス）, `:`（等差数列）
-特殊二項演算子 | `%/%`（商）, `%%`（剰余）, `%>%`（パイプ演算子）など
+特殊二項演算子 | `%/%`（商）, `%%`（剰余）, **`%>%`（パイプ演算子）**など
 四則演算子     | `*`（乗算）, `/`（除算）, `+`（加算）, `-`（減算）
 比較演算子     | `<`, `>`, `<=`, `>=`, `==`, `!=`
 論理演算子     | `!`（否定）, `&`（論理積）, `|`（論理和）
@@ -107,7 +119,7 @@ TRUE, FALSE | Boolean。TRUEは`1`、FALSEは`0`と等価です
 
 ```{r}
 iris %>% .$Sepal.Length %>% head(3)
-iris %>% -(.$Sepal.Length) %>% head(3)    # head(iris - iris$Sepal.Length, 3)
+iris %>% -(.$Sepal.Length) %>% head(3)
 ```
 
 
@@ -383,10 +395,41 @@ NAかどうか判定する     | **`is.na()`**                      |
 
 
 
-# 演習６
+# 演習６　発想の転換
+
+## クロス集計から比率を計算する
+`ggplot2::mpg`データセットを`class`と`trans`でクロス集計し、**`class`ごと**に`trans`の比率を求めてください。
+
+```{r, echo=FALSE}
+ggplot2::mpg %>% 
+  dplyr::count(class, trans) %>% 
+  tidyr::spread(key = class, value = n) %>%
+  tidyr::gather(key, value, -trans) %>%
+  dplyr::mutate(value = dplyr::if_else(is.na(value), 0L, value)) %>% 
+  tidyr::spread(key, value) %>% 
+  dplyr::mutate_if(is.numeric, prop.table) %>% 
+  tidyr::gather(key, value, -trans) %>% 
+  dplyr::mutate(value = dplyr::if_else(value == 0, NA_real_, round(value, 2))) %>% 
+  tidyr::spread(key, value) %>% 
+  as.data.frame() %>% 
+  tibble::column_to_rownames("trans")
+```
+
+
+## ヒント
+やりたいこと       | 利用する関数例              | 備考
+-------------------|-----------------------------|---
+比率を計算する     | **`prop.table()`**          | NAがあると計算不可
+NAかどうか調べる   | **`is.na()`**               | 
+条件判定関数       | **`dplyr::if_else()`**, **`ifelse()`** | 
+データ型を持つNA   | **`NA_integer_`**, **`NA_real_`** | 
+
+
+
+# 演習７　応用
 
 ## メトリクス統計分析入門から
-演習１において欠損値があるレコード（行）を削除せずにプロジェクトを評価してください。Zスコアは生産性のZスコアと工数予実割合のZスコアの平均値としますが、欠損値がある場合は片方のZスコアの値とします。  
+演習１において**欠損値があるレコード（行）を削除せず**にプロジェクトを評価してください。Zスコアは生産性のZスコアと工数予実割合のZスコアの平均値としますが、欠損値がある場合は片方のZスコアの値とします。  
 　  
 （解答例省略）
 
@@ -398,7 +441,7 @@ NAかどうか調べる   | **`is.na()`**      |
 
 
 
-# 演習７　難問
+# 演習８　難問
 
 ## 複数の返り値がある場合
 `iris`データセットを用いて以下のように品種、弁毎に四分位値を計算してください（ググればコードは分かると思いますが、かなりの難問。だけど覚えると便利）。
@@ -416,13 +459,13 @@ iris %>%
 ## ヒント
 やりたいこと           | 利用する関数例                     | 備考
 -----------------------|------------------------------------|---
-四分位値を求める       | **`quantile()`**                   | 返り値は５個のベクトル
+四分位値を求める       | **`quantile()`**                   | 返り値は５個でベクトル型
 グループ処理を上手くやる | **`dplyr::do()`**                | Do anything
 上手くやったのを取り出す | **`rbind(), cbind()`**           | 
 
 
 
-# 演習８　難問
+# 演習９　難問
 
 ## より複雑な返り値（リスト型）の場合
 `iris`データセットを用いて回帰モデル（`Sepal.Length ~ Sepal.Width`）を層別に求めてみましょう。回帰モデルの返り値は四分位値よりも複雑なので要約には`broom`パッケージを用います。
@@ -449,7 +492,7 @@ iris %>%
 
 
 
-# 演習９　超難問
+# 演習１０　超難問
 
 ## `purrr`を使ってみる
 演習８を`purrr`パッケージを用いて解いてみましょう。`purrr`パッケージの使い方はググってみましょう （`dplyr::do`関数は将来的に廃止される可能性があるらしいので参考問題です）。  
