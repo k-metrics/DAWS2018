@@ -398,7 +398,7 @@ NAかどうか判定する     | **`is.na()`**                      |
 # 演習６　発想の転換
 
 ## クロス集計から比率を計算する
-`ggplot2::mpg`データセットを`class`と`trans`でクロス集計し、`class`ごとに`trans`の比率を計算してください。
+`ggplot2::mpg`データセットを`class`と`trans`でクロス集計し、**`class`ごと**に`trans`の比率を求めてください。
 
 ```{r, echo=FALSE}
 ggplot2::mpg %>% 
