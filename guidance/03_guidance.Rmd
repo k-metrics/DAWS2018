@@ -45,7 +45,7 @@ require(tidyverse)
 ![ヒートマップ](./fig/heatmap.png)
 
 
-## 推奨図書の変更尾
+## 推奨図書の変更
 タイトル通りRStudioを使ってスクレイピングからレポーティングまでを網羅した一冊。
 今年度勉強会での基本的な内容をほぼ網羅している。（[技術評論社 <i class="fa fa-external-link"></i>](http://gihyo.jp/book/2018/978-4-7741-9853-8){target="_blank" title="RユーザのためのRStudio［実践］入門"}）
 
@@ -98,7 +98,7 @@ TRUE, FALSE | Boolean。TRUEは`1`、FALSEは`0`と等価です
 -----------------|-----
 アクセス演算子 | `$`（テータフレーム型の列参照）, `[]`（ベクトル型の値参照）, `.`（明示的引数参照：パイプ用）
 各演算子       | `^`（べき乗）, `-`（単項演算子のマイナス）, `:`（等差数列）
-特殊二項演算子 | `%/%`（商）, `%%`（剰余）, `%>%`（パイプ演算子）など
+特殊二項演算子 | `%/%`（商）, `%%`（剰余）, **`%>%`（パイプ演算子）**など
 四則演算子     | `*`（乗算）, `/`（除算）, `+`（加算）, `-`（減算）
 比較演算子     | `<`, `>`, `<=`, `>=`, `==`, `!=`
 論理演算子     | `!`（否定）, `&`（論理積）, `|`（論理和）
@@ -119,7 +119,7 @@ TRUE, FALSE | Boolean。TRUEは`1`、FALSEは`0`と等価です
 
 ```{r}
 iris %>% .$Sepal.Length %>% head(3)
-iris %>% -(.$Sepal.Length) %>% head(3)    # head(iris - iris$Sepal.Length, 3)
+iris %>% -(.$Sepal.Length) %>% head(3)
 ```
 
 
@@ -199,11 +199,11 @@ NAを取り除きたい   | **`tidyr::drop_na()`**      |
 require(tidyverse)
 
 # データの読み込み(for Windows)
-x <- "../data/data.csv" %>%
-  read.csv() %>%
+# x <- "../data/data.csv" %>%
+#   read.csv() %>%
 # データの読み込み(for Ubuntu)
-# x <- "../data/data_utf8.csv" %>%
-#   read.csv(encoding = "UTF-8") %>%
+x <- "../data/data_utf8.csv" %>%
+  read.csv(encoding = "UTF-8") %>%
   dplyr::rename(pj = 'プロジェクト名', prod = '生産性', rate = '工数予実割合') %>% 
   tidyr::drop_na()
 
