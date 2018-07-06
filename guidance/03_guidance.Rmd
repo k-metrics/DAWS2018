@@ -47,7 +47,7 @@ require(tidyverse)
 
 ## 推奨図書の変更
 タイトル通りRStudioを使ってスクレイピングからレポーティングまでを網羅した一冊。
-今年度勉強会での基本的な内容をほぼ網羅している。（[技術評論社 <i class="fa fa-external-link"></i>](http://gihyo.jp/book/2018/978-4-7741-9853-8){target="_blank" title="RユーザのためのRStudio［実践］入門"}）
+今年度勉強会での[基本的な内容をほぼ網羅 <i class="fa fa-external-link"></i>](https://pbs.twimg.com/media/DhZF9pFW0AMjUME.jpg:large){target="_blank" title="Twitter"}している。（[技術評論社 <i class="fa fa-external-link"></i>](http://gihyo.jp/book/2018/978-4-7741-9853-8){target="_blank" title="RユーザのためのRStudio［実践］入門"}）
 
 ![](./fig/rstudio_getting_started.jpg)
 
@@ -199,11 +199,11 @@ NAを取り除きたい   | **`tidyr::drop_na()`**      |
 require(tidyverse)
 
 # データの読み込み(for Windows)
-# x <- "../data/data.csv" %>%
-#   read.csv() %>%
+x <- "../data/data.csv" %>%
+  read.csv() %>%
 # データの読み込み(for Ubuntu)
-x <- "../data/data_utf8.csv" %>%
-  read.csv(encoding = "UTF-8") %>%
+# x <- "../data/data_utf8.csv" %>%
+#   read.csv(encoding = "UTF-8") %>%
   dplyr::rename(pj = 'プロジェクト名', prod = '生産性', rate = '工数予実割合') %>% 
   tidyr::drop_na()
 
