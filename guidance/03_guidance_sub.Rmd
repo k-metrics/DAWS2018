@@ -26,6 +26,63 @@ require(tidyverse)
 library(tidyverse)
 ```
 
+## `mean`
+平均値を計算する。
+```{r}
+mean(iris$Sepal.Length)
+```
+
+## `sd`
+標準偏差を計算する。
+```{r}
+sd(iris$Sepal.Length)
+```
+
+## `round`
+数値を任意の桁数で丸める。
+```{r}
+round(mean(iris$Sepal.Length), 2)
+```
+
+## `range`
+値の範囲を調べる。
+```{r}
+range(iris$Sepal.Length)
+```
+
+## `seq`
+任意の数列を作る。
+```{r}
+seq(from = 1, to = 5, by = 0.5)
+```
+
+## `scale`
+標準化（Zスコア化）する。
+```{r}
+scale(iris$Sepal.Length,
+      center = mean(iris$Sepal.Length), scale = sd(iris$Sepal.Length)) %>% 
+  as.vector()
+```
+
+## `cut`
+任意のランク分けをする。
+```{r}
+scale(iris$Sepal.Length,
+      center = mean(iris$Sepal.Length), scale = sd(iris$Sepal.Length)) %>% 
+  cut(., breaks = c(-3.0, -1.0, 1.0, 3.0), labels = c("Low", "Med", "High"))
+```
+
+## `cumsum`
+```{r}
+cumsum(iris$Sepal.Length)
+```
+
+## `ifelse`
+条件で計算する。
+```{r}
+ifelse(iris$Sepal.Length > 5, iris$Sepal.Length - 5, NA)
+```
+
 　  
 
 # dplyrパッケージ
@@ -106,18 +163,21 @@ iris %>%
 # tidyrパッケージ
 
 ## `gather`
+任意の**列**をまとめる（tidy dataにする）。
 ```{r}
 iris %>% 
   tidyr::gather(key = "part", value = "value", -Species)
 ```
 
 ## `spread`
+任意の**列**を展開する（messy dataにする）。
 ```{r}
 sleep %>% 
   tidyr::spread(key = group, value = extra)
 ```
 
 ## `separate`
+任意の**列**を任意の文字で分割する。
 ```{r}
 iris %>% 
   tidyr::gather(key = "part", value = "value", -Species) %>% 
@@ -125,7 +185,7 @@ iris %>%
 ```
 
 ## `drop_na`
-データフレームの任意の列（またはデータフレーム全体）にあるNAレコードを削除します。`dplyr::slice`関数は任意の行を選択する関数です。
+任意の列にある**NAレコードを削除**する。
 ```{r}
 airquality %>% 
   tidyr::drop_na(Solar.R)
@@ -136,6 +196,7 @@ airquality %>%
 # tibbleパッケージ
 
 ## `rowid_to_column`
+行の識別記号（または行名）を列データにする。
 ```{r}
 iris %>% 
   tibble::rowid_to_column("id")
