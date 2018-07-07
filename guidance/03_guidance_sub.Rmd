@@ -1,0 +1,147 @@
+---
+title: "第３回データ分析勉強会　補助資料"
+author: "鈴木さんぽう, CC BY-NC-SA 4.0"
+date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
+output:
+  html_document:
+    css: style.css
+    df_print: paged
+    toc: yes
+    toc_float:
+      collapsed: yes
+      smooth_scroll: no
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = TRUE)
+
+require(tidyverse)
+```
+
+# 基本パッケージ
+
+## `library`
+追加パッケージを読み込む。
+```{r}
+library(tidyverse)
+```
+
+　  
+
+# dplyrパッケージ
+
+## `filter`
+任意の**行**を選択（抽出）する。
+```{r}
+iris %>% 
+  dplyr::filter(Species == "setosa")
+```
+
+## `rename`
+任意の**列**の名前を変更する。
+```{r}
+iris %>% 
+  dplyr::rename('品種' = Species)
+```
+
+## `select`
+任意の**列**を選択（抽出）する。
+```{r}
+iris %>% 
+  dplyr::select(Sepal.Length, Sepal.Width)
+```
+
+## `summarise`
+任意の**列**を要約する。
+```{r}
+iris %>% 
+  dplyr::summarise(Sepal.Length = mean(Sepal.Length, Sepal.Width = mean(Sepal.Width)))
+```
+
+## `summarise_if`
+条件に一致する**列**を要約する。
+```{r}
+iris %>% 
+  dplyr::summarise_if(is.numeric, mean)
+```
+
+## `count`
+任意の**列**のデータをカウントする。
+```{r}
+iris %>% 
+  dplyr::count(Species)
+```
+
+## `group_by`
+任意の**列（因子）**でグループ分けする。
+```{r}
+iris %>% 
+  dplyr::group_by(Species) %>% 
+  dplyr::summarise_all(mean)
+```
+
+## `mutate`
+任意の計算をした**列**を追加する。
+```{r}
+iris %>% 
+  dplyr::mutate(Sepal = Sepal.Length + Sepal.Width)
+```
+
+## `mutate_if`
+```{r}
+iris %>% 
+  dplyr::mutate_if(is.numeric, log10)
+```
+
+## `transmutate`
+任意の計算した**列**だけを残す。
+```{r}
+iris %>% 
+  dplyr::transmute(Sepal.Length, Sepal.Width,
+                   Sepal = Sepal.Length + Sepal.Width, Species)
+```
+
+　  
+
+# tidyrパッケージ
+
+## `gather`
+```{r}
+iris %>% 
+  tidyr::gather(key = "part", value = "value", -Species)
+```
+
+## `spread`
+```{r}
+sleep %>% 
+  tidyr::spread(key = group, value = extra)
+```
+
+## `separate`
+```{r}
+iris %>% 
+  tidyr::gather(key = "part", value = "value", -Species) %>% 
+  tidyr::separate(col = part, into = c("element", "dimension"))
+```
+
+## `drop_na`
+データフレームの任意の列（またはデータフレーム全体）にあるNAレコードを削除します。`dplyr::slice`関数は任意の行を選択する関数です。
+```{r}
+airquality %>% 
+  tidyr::drop_na(Solar.R)
+```
+
+　  
+
+# tibbleパッケージ
+
+## `rowid_to_column`
+```{r}
+iris %>% 
+  tibble::rowid_to_column("id")
+```
+
+　  
+
+# License
+CC BY-NC-SA 4.0, Sampo Suzuki
