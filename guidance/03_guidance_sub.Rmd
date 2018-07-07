@@ -112,7 +112,7 @@ iris %>%
 任意の**列**を要約する。
 ```{r}
 iris %>% 
-  dplyr::summarise(Sepal.Length = mean(Sepal.Length, Sepal.Width = mean(Sepal.Width)))
+  dplyr::summarise(Sepal.Length = mean(Sepal.Length), Sepal.Width = mean(Sepal.Width))
 ```
 
 ## `summarise_if`
@@ -123,14 +123,14 @@ iris %>%
 ```
 
 ## `count`
-任意の**列**のデータをカウントする。
+任意の**列**のデータ数をカウントする。
 ```{r}
 iris %>% 
   dplyr::count(Species)
 ```
 
 ## `group_by`
-任意の**列（因子）**でグループ分けする。
+任意の**列（因子）**でグループ分けする。`group_by`は他の関数と組み合わせて使うのが前提。
 ```{r}
 iris %>% 
   dplyr::group_by(Species) %>% 
@@ -145,6 +145,7 @@ iris %>%
 ```
 
 ## `mutate_if`
+条件に一致する**列**を追加（上書き）する。
 ```{r}
 iris %>% 
   dplyr::mutate_if(is.numeric, log10)
