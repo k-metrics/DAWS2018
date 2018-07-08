@@ -125,6 +125,7 @@ output:
         * 時系列でのデータ集計方法を学ぶ（可視化のための前処理）
 
 * [演習用テンプレート <i class="fa fa-file-code-o"></i> （右クリックでダウンロード）](./template/template_tidyverse.Rmd)
+* [補助資料 <i class="fa fa-external-link-square"></i>](./guidance/03_guidance_sub.html){target="_blank" title="関数の使用例"}
 
 　  
 
