@@ -199,11 +199,11 @@ NAを取り除きたい   | **`tidyr::drop_na()`**      |
 require(tidyverse)
 
 # データの読み込み(for Windows)
-# x <- "../data/data.csv" %>%
-#   read.csv() %>%
+x <- "../data/data.csv" %>%
+  read.csv() %>%
 # データの読み込み(for Ubuntu)
-x <- "../data/data_utf8.csv" %>%
-  read.csv(encoding = "UTF-8") %>%
+# x <- "../data/data_utf8.csv" %>%
+#   read.csv(encoding = "UTF-8") %>%
   dplyr::rename(pj = 'プロジェクト名', prod = '生産性', rate = '工数予実割合') %>% 
   tidyr::drop_na()
 
@@ -371,8 +371,10 @@ close <- redmine %>%
 data.frame(week = seq(1:53)) %>% 
   dplyr::left_join(open, by = "week") %>% 
   dplyr::left_join(close, by = "week") %>% 
-  dplyr::mutate(open = ifelse(is.na(open), 0, open),
-                close = ifelse(is.na(close), 0, close)) %>% 
+  # dplyr::mutate(open = ifelse(is.na(open), 0, open),
+  #               close = ifelse(is.na(close), 0, close)) %>% 
+  dplyr::mutate(open = tidyr::replace_na(open, 0),
+                close = tidyr::replace_na(close, 0)) %>% 
   dplyr::mutate(cumopen = cumsum(open), cumclose = cumsum(close)) %>% 
   dplyr::select('週' = week, 'オープン数' = open, 'オープン数累計' = cumopen,
                 'クローズ数' = close, 'クローズ数累計' = cumclose)
@@ -385,7 +387,7 @@ data.frame(week = seq(1:53)) %>%
 日時を日付に変換する   | **`lubridate::as_date()`**         | 
 日付を週に変換する     | **`lubridate::week()`**            | 
 値を判断する           | **`ifelse()`, dplyr::if_else()**   | if_else推奨
-NAかどうか判定する     | **`is.na()`**                      | 
+NAを任意の値に置き換える | **`tidyr::replace_na()`**        | 
 累計を計算する         | **`cumsum()`**                     | 
 データフレームを作成する | **`data.frame()`**               | 
 

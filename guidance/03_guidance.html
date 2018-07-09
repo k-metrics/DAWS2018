@@ -25,7 +25,7 @@
         usePrettify: true,
         enableSlideAreas: true,
         enableTouch: true,
-                        favIcon: 'fig/hex-tidyverse.png',
+                        favIcon: 'fig\hex-tidyverse.png',
               },
 
       // Author information
@@ -87,7 +87,7 @@
       position: absolute;
       bottom: 20px;
       left: 60px;
-      background: url(fig/hex-tidyverse.png) no-repeat 0 50%;
+      background: url(fig\hex-tidyverse.png) no-repeat 0 50%;
       -webkit-background-size: 30px 30px;
       -moz-background-size: 30px 30px;
       -o-background-size: 30px 30px;
@@ -113,7 +113,7 @@
       <h1 data-config-title><!-- populated from slide_config.json --></h1>
       <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
       <p data-config-presenter><!-- populated from slide_config.json --></p>
-            <p style="margin-top: 6px; margin-left: -2px;">2018年07月07日</p>
+            <p style="margin-top: 6px; margin-left: -2px;">2018年07月09日</p>
           </hgroup>
   </slide>
 
@@ -777,8 +777,8 @@ iris_mean</pre>
 <td align="left">if_else推奨</td>
 </tr>
 <tr class="even">
-<td align="left">NAかどうか判定する</td>
-<td align="left"><strong><code>is.na()</code></strong></td>
+<td align="left">NAを任意の値に置き換える</td>
+<td align="left"><strong><code>tidyr::replace_na()</code></strong></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
@@ -820,8 +820,8 @@ iris_mean</pre>
 <td align="left">NAがあると計算不可</td>
 </tr>
 <tr class="even">
-<td align="left">NAかどうか調べる</td>
-<td align="left"><strong><code>is.na()</code></strong></td>
+<td align="left">NAを任意の値と入れ替える</td>
+<td align="left"><strong><code>tidyr::replace_na</code></strong></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
