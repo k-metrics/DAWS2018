@@ -405,7 +405,8 @@ ggplot2::mpg %>%
   dplyr::count(class, trans) %>% 
   tidyr::spread(key = class, value = n) %>%
   tidyr::gather(key, value, -trans) %>%
-  dplyr::mutate(value = dplyr::if_else(is.na(value), 0L, value)) %>% 
+  # dplyr::mutate(value = dplyr::if_else(is.na(value), 0L, value)) %>% 
+  dplyr::mutate(value = tidyr::replace_na(value, replace = 0L)) %>% 
   tidyr::spread(key, value) %>% 
   dplyr::mutate_if(is.numeric, prop.table) %>% 
   tidyr::gather(key, value, -trans) %>% 
@@ -420,7 +421,7 @@ ggplot2::mpg %>%
 やりたいこと       | 利用する関数例              | 備考
 -------------------|-----------------------------|---
 比率を計算する     | **`prop.table()`**          | NAがあると計算不可
-NAかどうか調べる   | **`is.na()`**               | 
+NAを任意の値と入れ替える | **`tidyr::replace_na`** | 
 条件判定関数       | **`dplyr::if_else()`**, **`ifelse()`** | 
 データ型を持つNA   | **`NA_integer_`**, **`NA_real_`** | 
 
