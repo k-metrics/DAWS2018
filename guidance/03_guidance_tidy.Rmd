@@ -1,0 +1,94 @@
+---
+title: "第３回データ分析勉強会　補足説明"
+author: "鈴木さんぽう, CC BY-NC-SA 4.0"
+date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
+output:
+  html_document:
+    css: style.css
+    df_print: paged
+    toc: yes
+    toc_float:
+      collapsed: yes
+      smooth_scroll: no
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = TRUE)
+
+require(tidyverse)
+```
+
+# gather and spread
+話を分かりやすくするために`Petal.Width`が`0.1`のレコードだけを抽出したもので説明します。
+```{r, error=TRUE}
+iris %>% 
+  dplyr::filter(Petal.Width == 0.1)
+```
+
+　  
+まず、`gather`関数でロング型（縦長）に変換します。
+```{r}
+iris %>% 
+  dplyr::filter(Petal.Width == 0.1) %>% 
+  tidyr::gather(key = "part", value = "value", -Species)
+```
+
+　  
+次に`gather`関数でロング型（縦長）に変換したものを`spread`関数でワイド型（横長）に変換しますが、エラーになって変換できません。
+```{r, error=TRUE}
+iris %>% 
+  dplyr::filter(Petal.Width == 0.1) %>% 
+  tidyr::gather(key = "part", value = "value", -Species) %>% 
+  tidyr::spread(key = part, value = value)
+```
+原因はエラーメッセージに表示されている通り重複行があるため、どこに展開すべきか判断がつかないためです。  
+　  
+`part`と`value`をひとまとめにして表示すると分かりやすいですが、この場合は7行目と8行目がワイド型にする場合に何行目へ配置すべきか区別がつかないことが分かります。
+```{r}
+iris %>% 
+  dplyr::filter(Petal.Width == 0.1) %>% 
+  tidyr::gather(key = "part", value = "value", -Species) %>% 
+  tidyr::unite(part, value, col = "size")
+```
+
+　  
+重複行を弾くと8レコードが重複していることが分かります。
+```{r}
+iris %>% 
+  dplyr::filter(Petal.Width == 0.1) %>% 
+  tidyr::gather(key = "part", value = "value", -Species) %>% 
+  tidyr::unite(part, value, col = "size") %>% 
+  dplyr::distinct()
+```
+
+　  
+これを解決するには、予め行識別ができるようなIDを付与しておきます。
+```{r}
+iris %>% 
+  dplyr::filter(Petal.Width == 0.1) %>% 
+  tibble::rowid_to_column("id")                                # 行識別を追加
+```
+
+　  
+先程の7行目と8行目は識別番号による区別出来るようになっていることが分かります。
+```{r}
+iris %>% 
+  dplyr::filter(Petal.Width == 0.1) %>% 
+  tibble::rowid_to_column("id") %>%
+  tidyr::gather(key = "part", value = "value", -Species, -id)
+```
+
+　  
+これで無事に元のワイド型（横長）に変換することができるようになります。
+```{r}
+iris %>% 
+  dplyr::filter(Petal.Width == 0.1) %>% 
+  tibble::rowid_to_column("id") %>%
+  tidyr::gather(key = "part", value = "value", -Species, -id) %>% 
+  tidyr::spread(key = part, value = value)                # 行識別で区別される
+```
+
+　  
+
+# License
+CC BY-NC-SA 4.0, Sampo Suzuki
