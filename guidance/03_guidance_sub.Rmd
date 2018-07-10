@@ -6,6 +6,7 @@ output:
   html_document:
     css: style.css
     df_print: paged
+    highlight: pygments
     toc: yes
     toc_float:
       collapsed: yes
@@ -205,19 +206,20 @@ iris %>%
 
 　  
 
-
-　  
-
 # lubridateパッケージ
 
 ## `as_date`
-
+日時データを日付データにする。
 ```{r}
+c("2014-10-10 05:31:00", "2016-04-22 03:06:00", "2014-10-23 06:03:00") %>% 
+  lubridate::as_date()
 ```
 
 ## `week`
-
+日時（日付）データから週番号を求める。
 ```{r}
+c("2014-10-10 05:31:00", "2014-10-01 03:06:00", "2014-10-23 06:03:00") %>% 
+  lubridate::week()
 ```
 
 　  
