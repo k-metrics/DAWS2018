@@ -6,6 +6,7 @@ output:
   html_document:
     css: style.css
     df_print: paged
+    highlight: pygments
     toc: yes
     toc_float:
       collapsed: yes
@@ -13,7 +14,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 
 require(tidyverse)
 ```
@@ -59,9 +60,9 @@ x %>%
                 rank = cut(z, breaks = breaks, labels = levels)) %>% 
   dplyr::mutate(prod_z = round(prod_z, 2), rate_z = round(rate_z, 2),
                 z = round(z, 2), ss = round(ss)) %>% 
-  dplyr::rename(`プロジェクト` = pj, `生産性` = prod, `工数予実割合` = rate,
-                `生産性Z値` = prod_z, `工数予実割合Z値` = rate_z,
-                `Zスコア` = z, `偏差値` = ss, `評価` = rank)
+  dplyr::rename('プロジェクト' = pj, '生産性' = prod, '工数予実割合' = rate,
+                '生産性Z値' = prod_z, '工数予実割合Z値' = rate_z,
+                'Zスコア' = z, '偏差値' = ss, '評価' = rank)
 ```
 
 　  
@@ -227,14 +228,15 @@ levels <- c("E", "D", "C", "B", "A")            # 因子の順番に注意
 x %>% 
   dplyr::mutate(prod_z = as.vector(scale(prod, y$prod_mean, y$prod_sd)),
                 rate_z = as.vector(-scale(rate, y$rate_mean, y$rate_sd)),
-                z = (prod_z + rate_z)/2,
+                z = ifelse(is.na(prod_z), rate_z, (prod_z + rate_z)/2),
+                z = ifelse(is.na(rate_z), prod_z, (prod_z + rate_z)/2),
                 ss = z*10 + 50,
                 rank = cut(z, breaks = breaks, labels = levels)) %>% 
   dplyr::mutate(prod_z = round(prod_z, 2), rate_z = round(rate_z, 2),
                 z = round(z, 2), ss = round(ss)) %>% 
-  dplyr::rename(`プロジェクト` = pj, `生産性` = prod, `工数予実割合` = rate,
-                `生産性Z値` = prod_z, `工数予実割合Z値` = rate_z,
-                `Zスコア` = z, `偏差値` = ss, `評価` = rank)
+  dplyr::rename('プロジェクト' = pj, '生産性' = prod, '工数予実割合' = rate,
+                '生産性Z値' = prod_z, '工数予実割合Z値' = rate_z,
+                'Zスコア' = z, '偏差値' = ss, '評価' = rank)
 ```
 
 　  
@@ -277,7 +279,7 @@ iris %>%
 　  
 
 # 演習１０　`purrr`を使ってみる
-演習８を`purrr`パッケージを用いて解いてみましょう。`purrr`パッケージの使い方はググってみましょう （`dplyr::do`関数は将来的に廃止される可能性があるらしいので参考問題です）。  
+演習９を`purrr`パッケージを用いて解いてみましょう。`purrr`パッケージの使い方はググってみましょう （`dplyr::do`関数は将来的に廃止される可能性があるらしいので参考問題です）。  
 　  
 余談：「超難問」の超の使い方はあっている？  
 　　　可能性は「高い低い」、「大きい小さい」、「あるない」？
