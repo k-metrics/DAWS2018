@@ -205,5 +205,22 @@ iris %>%
 
 　  
 
+
+　  
+
+# lubridateパッケージ
+
+## `as_date`
+
+```{r}
+```
+
+## `week`
+
+```{r}
+```
+
+　  
+
 # License
 CC BY-NC-SA 4.0, Sampo Suzuki
