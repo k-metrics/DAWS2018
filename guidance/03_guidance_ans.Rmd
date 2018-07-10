@@ -4,6 +4,7 @@ author: "鈴木さんぽう, CC BY-NC-SA 4.0"
 date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
 output:
   html_document:
+    code_folding: hide
     css: style.css
     df_print: paged
     highlight: pygments
@@ -19,6 +20,9 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 require(tidyverse)
 ```
 
+　  
+解答例のコードを見る場合は`[Code]`ボタンをクリックしてください。  
+　  
 
 # 演習１　メトリクス統計分析入門から
 メトリクス統計分析入門の演習1.4からの問題です。生産性に加えて、工数予実割合も加味してプロジェクトの評価をしようと考えています。以下の条件、方法に従い、各プロジェクトをA～Eの5段階で評価してください（詳細はテンプレート参照方）。
