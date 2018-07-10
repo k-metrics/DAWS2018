@@ -253,9 +253,9 @@ div.tocify {
   tidyr::gather(key = &quot;part&quot;, value = &quot;value&quot;, -Species) %&gt;% 
   tidyr::spread(key = part, value = value)</code></pre>
 <pre><code>## Error: Duplicate identifiers for rows (11, 12, 13, 14, 15), (16, 17, 18, 19, 20), (1, 2, 3, 4, 5), (6, 7, 8, 9, 10)</code></pre>
-<p>原因はエラーメッセージに表示されている通り重複行があるため、どこに展開すべきか判断がつかないためです。<br />
+<p>原因はエラーメッセージに表示されている通り重複行があるため、データをどこへ配置すべきか判断がつかないためです。<br />
 　<br />
-<code>part</code>と<code>value</code>をひとまとめにして表示すると分かりやすいですが、この場合は7行目と8行目がワイド型にする場合に何行目へ配置すべきか区別がつかないことが分かります。</p>
+<code>part</code>と<code>value</code>をひとまとめにして表示すると分かりやすいですが、この場合は7行目と8行目が重複しておりワイド型にする場合にどちらを何行目へ配置すべきか区別がつかないことが分かります。</p>
 <pre class="r"><code>iris %&gt;% 
   dplyr::filter(Petal.Width == 0.1) %&gt;% 
   tidyr::gather(key = &quot;part&quot;, value = &quot;value&quot;, -Species) %&gt;% 
@@ -266,7 +266,7 @@ div.tocify {
   </script>
 </div>
 <p>　<br />
-重複行を弾くと8レコードが重複していることが分かります。</p>
+試しに重複行を弾くと8行重複していることが分かります。</p>
 <pre class="r"><code>iris %&gt;% 
   dplyr::filter(Petal.Width == 0.1) %&gt;% 
   tidyr::gather(key = &quot;part&quot;, value = &quot;value&quot;, -Species) %&gt;% 
@@ -278,7 +278,7 @@ div.tocify {
   </script>
 </div>
 <p>　<br />
-これを解決するには、予め行識別ができるようなIDを付与しておきます。</p>
+これを解決するには予め行識別ができるようにIDを付与しておきます。</p>
 <pre class="r"><code>iris %&gt;% 
   dplyr::filter(Petal.Width == 0.1) %&gt;% 
   tibble::rowid_to_column(&quot;id&quot;)                                # 行識別を追加</code></pre>
@@ -288,7 +288,7 @@ div.tocify {
   </script>
 </div>
 <p>　<br />
-先程の7行目と8行目は識別番号による区別出来るようになっていることが分かります。</p>
+先程の7行目と8行目は識別番号により区別出来るようになっていることが分かります。</p>
 <pre class="r"><code>iris %&gt;% 
   dplyr::filter(Petal.Width == 0.1) %&gt;% 
   tibble::rowid_to_column(&quot;id&quot;) %&gt;%
