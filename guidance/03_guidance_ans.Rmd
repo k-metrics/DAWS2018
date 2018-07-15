@@ -4,7 +4,7 @@ author: "鈴木さんぽう, CC BY-NC-SA 4.0"
 date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
 output:
   html_document:
-    code_folding: hide
+    code_folding: show
     css: style.css
     df_print: paged
     highlight: pygments
@@ -21,7 +21,9 @@ require(tidyverse)
 ```
 
 　  
-解答例のコードを見る場合は`[Code]`ボタンをクリックしてください。  
+第３回で行った演習の解答例です。必ずしもこのコードが最適という訳ではありませんので参考程度に利用してください。なお、勉強会当日とコードを変えてあるものもあります。  
+　  
+Rの関数はヘルプで記載されている引数の順番通りに引数を指定した場合は引数名を記述する必要はありませんが、あえて明示的に引数名を記述している場合もあります。また、関数の前に記述しているパッケージ名はパッケージが読み込まれている場合には記述必要はありませんが、追加パッケージに限り、どのパッケージの関数かが分かるようにあえて記述してあります。  
 　  
 
 # 演習１　メトリクス統計分析入門から
@@ -37,33 +39,92 @@ require(tidyverse)
 　  
 
 ## 解答例
+この問題のポイントはdplyrパッケージの基本的な処理方法を知る点にあります。
 ```{r}
 # データの読み込み(for Ubuntu)
 x <- "../data/data_utf8.csv" %>%
   read.csv(encoding = "UTF-8") %>%
+  # Rは日本語の変数名（列名）を扱うのが不得手なので変数名（列名）が日本語の
+  # 場合には英数字に変換しておくことを推奨（または日本語は''で括る）
   dplyr::rename(pj = 'プロジェクト名', prod = '生産性', rate = '工数予実割合') %>% 
+  # 欠損値（NA）があれば無条件に削除
   tidyr::drop_na()
 
-# 平均値と標準偏差の計算
+# 平均値と標準偏差を計算
 y <- x %>% 
+  # 関数名を""で括ると変数名に入るので識別しやすくなる
   dplyr::summarise_if(is.numeric, c("mean", "sd"), na.rm = TRUE)
 
-# 評価換算のための基礎数値
-breaks <- c(-Inf, -1.5, -0.5, 0.5, 1.5, Inf)
-levels <- c("E", "D", "C", "B", "A")            # 因子の順番に注意
+# 評価換算のための基礎数値を設定
+breaks <- c(-Inf, -1.5, -0.5, 0.5, 1.5, Inf)    # 区切る幅
+labels <- c("E", "D", "C", "B", "A")            # 因子の順番に注意
 
 # Zスコアと偏差値、ランクの計算
 x %>% 
+  # scale関数の返り値はマトリクス型なのでベクトル型に変換しておく
   dplyr::mutate(prod_z = as.vector(scale(prod, y$prod_mean, y$prod_sd)),
                 rate_z = as.vector(-scale(rate, y$rate_mean, y$rate_sd)),
+  # mutate関数は関数内での計算結果をすぐに参照できる
                 z = (prod_z + rate_z)/2,
                 ss = z*10 + 50,
-                rank = cut(z, breaks = breaks, labels = levels)) %>% 
+  # cut関数は階級計算のための関数
+                rank = cut(z, breaks = breaks, labels = labels)) %>% 
+  # 数字の丸めはどこで実行しても可
   dplyr::mutate(prod_z = round(prod_z, 2), rate_z = round(rate_z, 2),
                 z = round(z, 2), ss = round(ss)) %>% 
+  # 表示の際に変数名（列名）を日本語に戻すとわかりやすくなる
   dplyr::rename('プロジェクト' = pj, '生産性' = prod, '工数予実割合' = rate,
                 '生産性Z値' = prod_z, '工数予実割合Z値' = rate_z,
                 'Zスコア' = z, '偏差値' = ss, '評価' = rank)
+```
+
+　  
+
+## Tips
+
+### summarise関数
+`summarize_if`関数は条件に合致する変数（列）に対して指定の計算を行います。以下の例では、数値の列だけを対象にするため`.predicate`に`is.numeric`関数を指定しています。関数名が渡せれば良いので指定の際に`()`は必要ありません。`.funs`には計算したい関数または数式を指定します。ベクトル型にすることで複数の指定を一度にできます。なお、`c`関数はベクトル変数を作成するための関数です。
+```{r}
+dplyr::summarise_if(x,
+                    .predicate = is.numeric,
+                    .funs = c("mean", "sd"), na.rm = TRUE)
+```
+
+`.funs`で複数の関数を指定する場合`""`で括らないくても指定は可能ですが、変数名（列名）が長くなる点に留意してください。
+```{r}
+dplyr::summarise_if(x,
+                    .predicate = is.numeric,
+                    .funs = c(mean, sd), na.rm = TRUE)
+```
+
+関数指定に違和感がある場合は`''`で指定するとコードの記述に統一感が出ます。
+```{r}
+dplyr::summarise_if(x,
+                    .predicate = 'is.numeric',
+                    .funs = c('mean', 'sd'), na.rm = TRUE)
+```
+
+　  
+
+### scale関数
+`scale`関数の`center`と`scale`は自動的に計算されますので指定しなくても構いません。計算結果はマトリクス型の返り値の属性として格納されています。
+```{r}
+scale(x$prod) %>% head()
+scale(x$prod, center = y$prod_mean, scale = y$prod_sd) %>% head()
+```
+
+　  
+
+### cut関数
+`cut`関数は`breaks`で指定する階級のどこに入るかを計算する関数です。`labels`を指定しない場合にはどの階級なのかを示す`(a, b]`（$a \lt x \le b$の意味）で表示されます。
+```{r}
+cut(x$rate, breaks = c(-Inf, -1.5, -0.5, 0.5, 1.5, Inf))
+```
+
+`labels`を指定すると指定したラベル（文字型）で階級が置き換えられます。
+```{r}
+cut(x$rate, breaks = c(-Inf, -1.5, -0.5, 0.5, 1.5, Inf),
+    labels = c("不可", "可", "良", "優", "秀"))
 ```
 
 　  
@@ -74,14 +135,53 @@ x %>%
 　  
 
 ## 解答例
+この演習のポイントは典型的な縦横変換（ロング-ワイド変換）の際に行を識別するための情報が必要であるという点です。
 ```{r}
 anscombe %>%
+  # 行を識別できるようにIDを付与しておきます
   tibble::rownames_to_column("id") %>%
-  tidyr::gather(key, value, -id) %>%
+  # id以外の変数（列）をkeyとvalueに渡します
+  tidyr::gather(key = "key", value = "value", -id) %>%
+  # key例のxn, ynを文字と数値に分割します
   tidyr::separate(key, c("axis", "group"), 1) %>%
+  # axisとvalueを変数（列）と展開します
   tidyr::spread(axis, value) %>% 
+  # 付与したIDは不要なので削除しておきます
   dplyr::select(-id) %>% 
+  # groupで並べ替えしておきます
   dplyr::arrange(group)
+```
+
+　  
+
+## Tips
+
+### rownames_to_column関数
+`rownames_to_column`関数は行名を変数（列）として扱えるようにします。変数（列）は文字型になりますので、数値型（整数型）として扱いたい場合には`rowid_to_column`関数を用いてください。なお、`var`で指定するのは変数名（列名）です。
+```{r}
+anscombe %>% tibble::rownames_to_column(var = "ID")
+anscombe %>% tibble::rowid_to_column(var = "ID")
+```
+
+　  
+
+### gather関数
+`gather`関数は指定した変数（列）の名前を`key`で指定する変数（列）へ、その値を`value`で指定する列にまとめる関数です。変数（列）の指定には`-`を用いて「除外する」指定方法もあります。なお、`key`と`value`を指定する際に新しくできる変数（列）として`""`で括るのが推奨されています。
+```{r}
+anscombe %>% 
+  tibble::rowid_to_column(var = "ID") %>% 
+  tidyr::gather(key = "key", value = "value", x1, x2, x3, x4, y1, y2, y3, y4)
+```
+
+　  
+
+### spread関数
+`spread`関数は`key`で指定した変数（列）の値を変数名（列名）に`value`で指定した変数（列）の値を該当する`key`の変数名（列名）の中身に振り分ける関数です。なお、`gather`関数と異なり`key`と`value`を指定するものは既存の変数（列）であることから`""`で**括らない**ことが推奨されています。
+```{r}
+anscombe %>% 
+  tibble::rowid_to_column(var = "ID") %>% 
+  tidyr::gather(key = "key", value = "value", x1, x2, x3, x4, y1, y2, y3, y4) %>% 
+  tidyr::spread(key = key, value = value)
 ```
 
 　  
@@ -92,19 +192,20 @@ anscombe %>%
 　  
 
 ## 解答例
+この演習のポイントはデータフレーム型の制限を知る点にあります。
 ```{r}
-petal <- iris %>% 
+(petal <- iris %>% 
   dplyr::select(Petal.Length, Petal.Width, Species) %>% 
-  tidyr::gather(key = Petal, value = Petal.value, -Species) %>% 
-  tibble::rowid_to_column("ID")
+  tidyr::gather(key = "Petal", value = "Petal.value", -Species) %>% 
+  tibble::rowid_to_column("ID"))
 
-sepal <- iris %>% 
+(sepal <- iris %>% 
   dplyr::select(Sepal.Length, Sepal.Width, Species) %>% 
-  tidyr::gather(key = Sepal, value = Sepal.value, -Species) %>% 
-  tibble::rowid_to_column("ID")
+  tidyr::gather(key = "Sepal", value = "Sepal.value", -Species) %>% 
+  tibble::rowid_to_column("ID"))
 
 (petal %>% 
-  dplyr::left_join(sepal, by = c("ID", "Species")) %>% 
+  dplyr::left_join(sepal, by = c("ID")) %>% 
   dplyr::select(-ID))
 ```
 
@@ -116,12 +217,38 @@ sepal <- iris %>%
 　  
 
 ## 解答例
+この演習のポイントはクロス集計（ピボットテーブル）の作り方を知る点にあります。
 ```{r}
 mtcars %>% 
-  dplyr::select(mpg, cyl, gear) %>% 
+  # gearとcylでグループ化します
   dplyr::group_by(cyl, gear) %>% 
-  dplyr::summarise_all(mean, na.rm = TRUE) %>% 
+  # グループ単位でmpgの平均値を求めます
+  dplyr::summarise(mpg = mean(mpg, na.rm = TRUE)) %>% 
+  print() %>% 
+  # 横に広げてクロス集計表の形にします
   tidyr::spread(key = cyl, value = mpg)
+```
+
+## Tips
+### group_by
+`group_by`関数は指定の変数（列）でグループ化する関数です。任意の数の変数（列）を指定することが可能ですが、`spread`関数では一つの変数（列）しか展開できませんのでクロス集計表にする場合は以下のような形になります。
+```{r}
+mtcars %>% 
+  dplyr::group_by(cyl, gear, am) %>% 
+  dplyr::summarise(mpg = mean(mpg, na.rm = TRUE)) %>% 
+  dplyr::mutate(mpg = round(mpg, digits = 2)) %>% 
+  tidyr::spread(key = cyl, value = mpg)
+```
+
+　  
+
+### count関数
+この演習では統計量のクロス集計を行いましたが度数集計を行う場合は`count`関数を用います。`count`関数は`group_by`関数と`summarize`関数の機能を持ちあわせた関数ですので`group_by`する必要はありません。
+```{r}
+mtcars %>% 
+  dplyr::count(cyl, gear) %>% 
+  print() %>% 
+  tidyr::spread(key = cyl, value = n)
 ```
 
 　  
@@ -133,7 +260,7 @@ mtcars %>%
 
 * 2017年に起票されたチケット（開始日が2017/1/1から2017/12/31）が対象
 * 集計は週次（2017年の第1週から第53週）
-* オープンチケットは開始日で、クローズチケットは終了日で集計  
+* オープンチケットは~~開始日~~**作成日**で、クローズチケットは終了日で集計  
 * 累計も計算する
 * データがない週も考慮する
 
@@ -142,40 +269,70 @@ mtcars %>%
 　  
 
 ## 解答例
+この演習のポイントは今までの演習で学んだことを応用する点にあります。
 ```{r}
-redmine <- "../data/redmine_data_utf8.csv" %>% 
+(redmine <- "../data/redmine_data_utf8.csv" %>% 
   readr::read_csv() %>% 
+  # 日本語変数名は英数文字に変換しておきます
   dplyr::select(ID = '#', status = 'ステータス', open = '作成日',
                 close = '終了日') %>% 
+  # 日時のデータを日付のデータに変換しておきます
   dplyr::mutate(open = lubridate::as_date(open),
-                close = lubridate::as_date(close))
+                close = lubridate::as_date(close)))
 
-# Open
-open <- redmine %>% 
+# Openチケットの数を数えます
+(open <- redmine %>% 
+  # 集計対象の2017年のチケットのみに絞ります
   dplyr::filter(open >= "2017-1-1" & open <= "2017-12-31") %>% 
+  # チケットがオープンになった日の週番号を求めます
   dplyr::mutate(week = lubridate::week(open)) %>% 
-  dplyr::group_by(week) %>% 
-  dplyr::summarise(open = n())
+  dplyr::group_by(week) %>%
+  # フラグの数を用いて集計します
+  dplyr::summarise(open = n()))
 
-# Closed
-close <- redmine %>% 
+# Closedチケットの数を数えます
+(close <- redmine %>% 
+  # ステータスが"Closed"のものだけを対象とする
+  dplyr::filter(status == "Closed") %>% 
+  # 集計対象の2017年にオープンしたチケットのみに絞ります
   dplyr::filter(open >= "2017-1-1" & open <= "2017-12-31") %>% 
+  # 更にその中で2017年にクローズしたチケットのみに絞ります
   dplyr::filter(close >= "2017-1-1" & close <= "2017-12-31") %>% 
-  dplyr::mutate(week = lubridate::week(close),
-                status_flag = ifelse(status == "Closed", "closed", "open")) %>% 
-  dplyr::mutate(flag = ifelse(status_flag == "closed", 1, 0)) %>% 
-  dplyr::group_by(week) %>% 
-  dplyr::summarise(close = sum(flag))
-
+  # チケットがクローズになった日の週番号を求めます
+  dplyr::mutate(week = lubridate::week(close)) %>% 
+  # 週番号でグループ化して
+  dplyr::group_by(week) %>%
+  # フラグの数を用いて集計します
+  dplyr::summarise(close = n()))
+  
 # 週次の集計
+# 週番号のデータフレームを作ります
 data.frame(week = seq(1:53)) %>% 
+  # 週番号を元にチケットを集計したデータを結合します
   dplyr::left_join(open, by = "week") %>% 
   dplyr::left_join(close, by = "week") %>% 
+  # NAは0(zero)に変換しておきます（この場合はチケットがない=0(zero)が成り立つので）
   dplyr::mutate(open = tidyr::replace_na(open, 0),
                 close = tidyr::replace_na(close, 0)) %>% 
+  # オープン数とクローズ数の累計を計算します
   dplyr::mutate(cumopen = cumsum(open), cumclose = cumsum(close)) %>% 
-  dplyr::select('週' = week, 'オープン数' = open, 'オープン数累計' = cumopen,
+  # 表示のために変数名を日本語に変更します（selectは順番の変更ができる）
+  dplyr::select('週番号' = week, 'オープン数' = open, 'オープン数累計' = cumopen,
                 'クローズ数' = close, 'クローズ数累計' = cumclose)
+```
+
+　  
+
+## Tips
+### cumulative関数
+cumulative関数は累積、累計（累和）などを計算するウィンドウ関数と言われるものです。
+```{r}
+cumsum(1:10)
+cumprod(1:10)
+
+c(3:1, 2:0, 4:2)
+cummin(c(3:1, 2:0, 4:2))
+cummax(c(3:1, 2:0, 4:2))
 ```
 
 　  
@@ -186,19 +343,27 @@ data.frame(week = seq(1:53)) %>%
 　  
 
 ## 解答例
+この問題のポイントは複数列に同一操作を行いたい場合には**tidy data形式にすることで一括でできる**という点にあります。
 ```{r}
 ggplot2::mpg %>% 
+  # クロス集計して度数を求めます
   dplyr::count(class, trans) %>% 
+  # 一度、展開して全項目にデータが入るようにします（NAで埋める）
   tidyr::spread(key = class, value = n) %>%
-  tidyr::gather(key, value, -trans) %>%
+  # tidy data形式に変換します
+  tidyr::gather(key = "key", value = "value", -trans) %>%
+  # NAを一括で0に変換します
   dplyr::mutate(value = tidyr::replace_na(value, replace = 0L)) %>% 
+  # 比率を求めるために再度、展開します
   tidyr::spread(key, value) %>% 
+  # 変数（列）ごとに比率を求めます
   dplyr::mutate_if(is.numeric, prop.table) %>% 
-  tidyr::gather(key, value, -trans) %>% 
+  # 再びtidy data形式に変換し
+  tidyr::gather(key = "key", value = "value", -trans) %>% 
+  # 0をNAに一、その他は小数点以下2桁に丸めるます
   dplyr::mutate(value = dplyr::if_else(value == 0, NA_real_, round(value, 2))) %>% 
-  tidyr::spread(key, value) %>% 
-  as.data.frame() %>% 
-  tibble::column_to_rownames("trans")
+  # 再び展開
+  tidyr::spread(key = key, value = value)
 ```
 
 　  
@@ -208,6 +373,7 @@ ggplot2::mpg %>%
 　  
 
 ## 解答例
+この演習のポイントはNAの扱い方を知る点にあります。
 ```{r}
 # データの読み込み(for Ubuntu)
 x <- "../data/data_utf8.csv" %>%
@@ -239,12 +405,21 @@ x %>%
 
 　  
 
+# **注意**
+以降はdplyrやtidyrの基本動作を理解した上で演習してください。  
+　  
+
+---
+
+　  
+
 # 演習８　複数の返り値がある場合
 `iris`データセットを用いて以下のように品種、弁毎に四分位値を計算してください（ググればコードは分かると思いますが、かなりの難問。だけど覚えると便利）。
 
 　  
 
 ## 解答例
+この演習のポイントは`mutate`関数では処理できない複数の返り値を処理する方法を知る点にあります。
 ```{r}
 iris %>% 
   tidyr::gather(part, value, -Species) %>% 
@@ -262,6 +437,7 @@ iris %>%
 　  
 
 ## 解答例
+この演習のポイントは演習８より複雑なリスト型の返り値を処理する方法を知る点にあります。
 ```{r}
 iris %>% 
   dplyr::group_by(Species) %>% 
@@ -285,12 +461,13 @@ iris %>%
 　  
 
 ## 解答例
+この演習のポイントは将来的にはシュリンクするであろう`dplyr::do`関数の後継となる`purrr`パッケージの有用性を知ることにあります。
 ```{r, echo=FALSE}
 # purrrを使う場合
 require(purrr)
 iris %>%
   split(.$Species) %>%
-# リストの因子（Species）水準毎に処理をしデータフレームにまとめる
+  # リストの因子（Species）水準毎に処理をしデータフレームにまとめる
   purrr::map_dfr(~ lm(Sepal.Length ~ Sepal.Width, data = .) %>% broom::tidy(),
                  .id = "Species")
 ```
