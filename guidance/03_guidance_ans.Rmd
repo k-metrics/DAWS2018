@@ -1,5 +1,5 @@
 ---
-title: "第３回データ分析勉強会　演習解答例"
+title: "第３回データ分析勉強会 演習解答例"
 author: "鈴木さんぽう, CC BY-NC-SA 4.0"
 date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
 output:
@@ -21,12 +21,12 @@ require(tidyverse)
 ```
 
 　  
-第３回で行った演習の解答例です。必ずしもこのコードが最適という訳ではありませんので参考程度に利用してください。なお、勉強会当日とコードを変えてあるものもあります。  
+第３回で行った演習の解答例です。必ずしもこのコードが最適という訳ではありませんので参考程度に利用してください。なお、勉強会当日説明とコードを変えてあるものもあります。  
 　  
 Rの関数はヘルプで記載されている引数の順番通りに引数を指定した場合は引数名を記述する必要はありませんが、あえて明示的に引数名を記述している場合もあります。また、関数の前に記述しているパッケージ名はパッケージが読み込まれている場合には記述必要はありませんが、追加パッケージに限り、どのパッケージの関数かが分かるようにあえて記述してあります。  
 　  
 
-# 演習１　メトリクス統計分析入門から
+# 演習１ メトリクス統計分析から
 メトリクス統計分析入門の演習1.4からの問題です。生産性に加えて、工数予実割合も加味してプロジェクトの評価をしようと考えています。以下の条件、方法に従い、各プロジェクトをA～Eの5段階で評価してください（詳細はテンプレート参照方）。
 
 * データ分布の確認は省略してください（外れ値の判定も不要です）
@@ -129,7 +129,7 @@ cut(x$rate, breaks = c(-Inf, -1.5, -0.5, 0.5, 1.5, Inf),
 
 　  
 
-# 演習２　anscombeのデータ例
+# 演習２ アンスコムのデータ例
 **`anscombe`**のデータ例を整然データに変換してください。 
 
 　  
@@ -186,7 +186,7 @@ anscombe %>%
 
 　  
 
-# 演習３　データフレームを変換する
+# 演習３ データフレームの制限
 `iris`データセットを以下のような形に変換してください。変換後の行数に注意してください。  
 
 　  
@@ -211,7 +211,7 @@ anscombe %>%
 
 　  
 
-# 演習４　統計量のクロス集計
+# 演習４ クロス集計
 `mtcars`データセットを用いて`gear`（ギア数）と`cyl`（シリンダ数）で`mpg`（燃費）の平均値をクロス集計してください。
 
 　  
@@ -224,7 +224,6 @@ mtcars %>%
   dplyr::group_by(cyl, gear) %>% 
   # グループ単位でmpgの平均値を求めます
   dplyr::summarise(mpg = mean(mpg, na.rm = TRUE)) %>% 
-  print() %>% 
   # 横に広げてクロス集計表の形にします
   tidyr::spread(key = cyl, value = mpg)
 ```
@@ -247,13 +246,18 @@ mtcars %>%
 ```{r}
 mtcars %>% 
   dplyr::count(cyl, gear) %>% 
-  print() %>% 
+  tidyr::spread(key = cyl, value = n)
+
+# 上記と等価のコード
+mtcars %>% 
+  dplyr::group_by(cyl, gear) %>% 
+  dplyr::summarize(n = n()) %>% 
   tidyr::spread(key = cyl, value = n)
 ```
 
 　  
 
-# 演習５　チケット数をカウントする
+# 演習５ 時系列の集計
 オープン・クローズチャートを作成するために2017年に起票されたRedmineのチケットを週単位でオープンチケットとクローズチケットに分けて集計してください。チケットデータは"data"フォルダ内にあります。    
 　  
 集計条件
@@ -325,19 +329,18 @@ data.frame(week = seq(1:53)) %>%
 
 ## Tips
 ### cumulative関数
-cumulative関数は累積、累計（累和）などを計算するウィンドウ関数と言われるものです。
+cumulative関数は累積、累計（累和）などを計算するウィンドウ関数と言われるものです。詳細は[チートシート <i class="fa fa-external-link"></i>](https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf){target="_blank" title="Data Transformation Cheat Sheet"}のVector Functions項を参照してください。
 ```{r}
+# 累積
 cumsum(1:10)
-cumprod(1:10)
 
-c(3:1, 2:0, 4:2)
-cummin(c(3:1, 2:0, 4:2))
-cummax(c(3:1, 2:0, 4:2))
+# 累計（累和）
+cumprod(1:10)
 ```
 
 　  
 
-# 演習６　クロス集計から比率を計算する
+# 演習６ 発想の転換
 `ggplot2::mpg`データセットを`class`と`trans`でクロス集計し、**`class`ごと**に`trans`の比率を求めてください。
 
 　  
@@ -368,7 +371,7 @@ ggplot2::mpg %>%
 
 　  
 
-# 演習７　メトリクス統計分析入門から
+# 演習７ 演習１改
 演習１において**欠損値があるレコード（行）を削除せず**にプロジェクトを評価してください。Zスコアは生産性のZスコアと工数予実割合のZスコアの平均値としますが、欠損値がある場合は片方のZスコアの値とします。  
 　  
 
@@ -386,7 +389,7 @@ y <- x %>%
 
 # 評価換算のための基礎数値
 breaks <- c(-Inf, -1.5, -0.5, 0.5, 1.5, Inf)
-levels <- c("E", "D", "C", "B", "A")            # 因子の順番に注意
+labels <- c("E", "D", "C", "B", "A")            # 因子の順番に注意
 
 # Zスコアと偏差値、ランクの計算
 x %>% 
@@ -395,7 +398,7 @@ x %>%
                 z = ifelse(is.na(prod_z), rate_z, (prod_z + rate_z)/2),
                 z = ifelse(is.na(rate_z), prod_z, (prod_z + rate_z)/2),
                 ss = z*10 + 50,
-                rank = cut(z, breaks = breaks, labels = levels)) %>% 
+                rank = cut(z, breaks = breaks, labels = labels)) %>% 
   dplyr::mutate(prod_z = round(prod_z, 2), rate_z = round(rate_z, 2),
                 z = round(z, 2), ss = round(ss)) %>% 
   dplyr::rename('プロジェクト' = pj, '生産性' = prod, '工数予実割合' = rate,
@@ -405,15 +408,15 @@ x %>%
 
 　  
 
-# **注意**
-以降はdplyrやtidyrの基本動作を理解した上で演習してください。  
+# **注意** ここから先は
+以降の演習はdplyrやtidyrの基本動作を理解した上で演習してください。  
 　  
 
 ---
 
 　  
 
-# 演習８　複数の返り値がある場合
+# 演習８ 層別の計算
 `iris`データセットを用いて以下のように品種、弁毎に四分位値を計算してください（ググればコードは分かると思いますが、かなりの難問。だけど覚えると便利）。
 
 　  
@@ -431,7 +434,7 @@ iris %>%
 
 　  
 
-# 演習９　より複雑な返り値（リスト型）の場合
+# 演習９ 層別の計算２
 `iris`データセットを用いて回帰モデル（`Sepal.Length ~ Sepal.Width`）を層別に求めてみましょう。回帰モデルの返り値は四分位値よりも複雑なので要約には`broom`パッケージを用います。
 
 　  
@@ -442,17 +445,39 @@ iris %>%
 iris %>% 
   dplyr::group_by(Species) %>% 
   dplyr::do(lm_res = lm(Sepal.Length ~ Sepal.Width, data = .)) %>% 
-# coefficientsを表示する場合
+# coefficientsを表示します
   broom::tidy(lm_res)
-# 計算値、残差などを表示する場合
-#  broom::augment(lm_res)
-# モデル評価値などを表示する場合
-#  broom::glance(lm_re)
 ```
 
 　  
 
-# 演習１０　`purrr`を使ってみる
+## Tips
+
+### 予測値や残差などを表示する
+予測値（fitted value）や残差などを表示する場合には`augument`関数をもちいます。
+```{r}
+iris %>% 
+  dplyr::group_by(Species) %>% 
+  dplyr::do(lm_res = lm(Sepal.Length ~ Sepal.Width, data = .)) %>% 
+# 予測値、残差などを表示する場合
+  broom::augment(lm_res)
+```
+
+　  
+
+### モデル評価などを表示する
+回帰モデル自体の評価結果を表示する場合には`glance`関数をもちいます。
+```{r}
+iris %>% 
+  dplyr::group_by(Species) %>% 
+  dplyr::do(lm_res = lm(Sepal.Length ~ Sepal.Width, data = .)) %>% 
+# モデル評価値などを表示する場合
+　 broom::glance(lm_res)
+```
+
+　  
+
+# 演習１０ purrr
 演習９を`purrr`パッケージを用いて解いてみましょう。`purrr`パッケージの使い方はググってみましょう （`dplyr::do`関数は将来的に廃止される可能性があるらしいので参考問題です）。  
 　  
 余談：「超難問」の超の使い方はあっている？  
@@ -462,14 +487,15 @@ iris %>%
 
 ## 解答例
 この演習のポイントは将来的にはシュリンクするであろう`dplyr::do`関数の後継となる`purrr`パッケージの有用性を知ることにあります。
-```{r, echo=FALSE}
+```{r}
 # purrrを使う場合
-require(purrr)
 iris %>%
+  # 種別ごとにリスト化します
   split(.$Species) %>%
-  # リストの因子（Species）水準毎に処理をしデータフレームにまとめる
-  purrr::map_dfr(~ lm(Sepal.Length ~ Sepal.Width, data = .) %>% broom::tidy(),
-                 .id = "Species")
+  # 種別ごとに回帰モデルを計算します
+  purrr::map(~ lm(Sepal.Length ~ Sepal.Width, data = .x)) %>%
+  # 結果をデータフレーム型にします
+  purrr::map_dfr(broom::tidy, .id = "Species") 
 ```
 
 　  
