@@ -25,7 +25,7 @@
         usePrettify: true,
         enableSlideAreas: true,
         enableTouch: true,
-                        favIcon: 'fig/hex-rmarkdown.png',
+                        favIcon: 'fig\hex-rmarkdown.png',
               },
 
       // Author information
@@ -87,7 +87,7 @@
       position: absolute;
       bottom: 20px;
       left: 60px;
-      background: url(fig/hex-rmarkdown.png) no-repeat 0 50%;
+      background: url(fig\hex-rmarkdown.png) no-repeat 0 50%;
       -webkit-background-size: 30px 30px;
       -moz-background-size: 30px 30px;
       -o-background-size: 30px 30px;
@@ -98,7 +98,7 @@
     }
   </style>
 
-  <link href="data:text/css;charset=utf-8,%0Ah1%20%7B%0Aborder%2Dbottom%3A%20solid%202%2E5px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%20solid%202%2E0px%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%20solid%201%2E5px%3B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%20solid%201%2E0px%3B%20%7D%0A%0Astrong%20%7B%0Abackground%3A%20linear%2Dgradient%28transparent%2070%25%2C%20%23a7d6ff%2060%25%29%0A%7D%0A%0A%2Ecaption%20%7B%0Afont%2Dsize%3A%2075%25%3B%0A%7D" rel="stylesheet" type="text/css" />
+  <link href="data:text/css;charset=utf-8,%0Ah1%20%7B%0Aborder%2Dbottom%3A%20solid%202%2E5px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%20solid%202%2E0px%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%20solid%201%2E5px%3B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%20solid%201%2E0px%3B%20%7D%0A%0Astrong%20%7B%0Abackground%3A%20linear%2Dgradient%28transparent%2070%25%2C%20%23a7d6ff%2060%25%29%0A%7D%0A%0A%2Ecaption%20%7B%0Afont%2Dsize%3A%2075%25%3B%0A%7D%0A" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -113,7 +113,7 @@
       <h1 data-config-title><!-- populated from slide_config.json --></h1>
       <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
       <p data-config-presenter><!-- populated from slide_config.json --></p>
-            <p style="margin-top: 6px; margin-left: -2px;">2018年06月18日</p>
+            <p style="margin-top: 6px; margin-left: -2px;">2018年07月18日</p>
           </hgroup>
   </slide>
 
@@ -164,6 +164,19 @@
 <li>Markdown（コード以外の文書を記述する箇所）</li>
 </ul></li>
 </ul>
+
+</article></slide><slide class=""><hgroup><h2>R Markdownで使える言語</h2></hgroup><article  id="r-markdown">
+
+<pre class = 'prettyprint lang-r'>names(knitr::knit_engines$get())</pre>
+
+<pre >##  [1] &quot;awk&quot;       &quot;bash&quot;      &quot;coffee&quot;    &quot;gawk&quot;      &quot;groovy&quot;   
+##  [6] &quot;haskell&quot;   &quot;lein&quot;      &quot;mysql&quot;     &quot;node&quot;      &quot;octave&quot;   
+## [11] &quot;perl&quot;      &quot;psql&quot;      &quot;Rscript&quot;   &quot;ruby&quot;      &quot;sas&quot;      
+## [16] &quot;scala&quot;     &quot;sed&quot;       &quot;sh&quot;        &quot;stata&quot;     &quot;zsh&quot;      
+## [21] &quot;highlight&quot; &quot;Rcpp&quot;      &quot;tikz&quot;      &quot;dot&quot;       &quot;c&quot;        
+## [26] &quot;fortran&quot;   &quot;fortran95&quot; &quot;asy&quot;       &quot;cat&quot;       &quot;asis&quot;     
+## [31] &quot;stan&quot;      &quot;block&quot;     &quot;block2&quot;    &quot;js&quot;        &quot;css&quot;      
+## [36] &quot;sql&quot;       &quot;go&quot;        &quot;python&quot;    &quot;julia&quot;</pre>
 
 </article></slide><slide class=""><hgroup><h2>演習（テーマ設定）</h2></hgroup><article >
 

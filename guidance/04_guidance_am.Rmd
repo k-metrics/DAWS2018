@@ -6,6 +6,7 @@ output:
   ioslides_presentation:
     css: style_img.css
     df_print: paged
+    highlight: pygments
     logo: fig/hex-ggplot2.png
     smaller: false
     widescreen: true
@@ -63,7 +64,7 @@ require(tidyverse)
 
 * 特徴
     * GIS（地理情報システム）などと同じ[**レイヤー構造**](http://id.fnshr.info/2011/10/22/ggplot2/)
-    * **ggplot2::aes**という考え方（ポイント）
+    * **ggplot2::aes**（エステティック関数）という考え方
     * 出来ないないことは**関連パッケージで補える**柔軟性
         * QQプロットはqqplotr, 格子配置はggExtra, etc
     * 忖度してくれない（とりあえずでデータを突っ込んでも描画はしない）
@@ -72,7 +73,7 @@ require(tidyverse)
 
 ## 必要なデータ形式
 * ggplot2はデータフレーム型のデータを第一引数に取ります
-* X軸用データ、Y軸用データ、グループ化データの三項目が基本的なデータ項目
+* 第一引数内にX軸用データ、Y軸用データ、グループ化データの三項目が必要です（当然、描くグラフにより変わります）
 
 　 | x           | y           | group, colour, fill, ... 
 :-:|:----------:|:-----------:|:------------------:
@@ -244,13 +245,16 @@ ggplot(iris, aes(x = Petal.Length, fill = Species)) +
 ```{r, eval=FALSE}
 pretty(x, n)
 ```
-
 　  
 
 引数 | 説明
 :---:|:-----
 x    | ヒストグラムを描くためのデータ（ベクトル型）
 n    | ヒストグラムの分割数（通常はスタージェスの公式[`nclass.Sturges(x)`]などで求める）
+
+　  
+注）`cut`関数は値がどの階級に含まれるかを調べる関数
+
 
 
 ## 階級を指定する
