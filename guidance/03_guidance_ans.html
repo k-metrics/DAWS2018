@@ -267,7 +267,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">第３回データ分析勉強会 演習解答例</h1>
 <h4 class="author"><em>鈴木さんぽう, CC BY-NC-SA 4.0</em></h4>
-<h4 class="date"><em>2018年07月15日</em></h4>
+<h4 class="date"><em>2018年07月18日</em></h4>
 
 </div>
 
@@ -406,7 +406,8 @@ x <span class="op">%&gt;%</span><span class="st"> </span>
 ## [43] (0.5,1.5]  (1.5, Inf] (0.5,1.5]  (-0.5,0.5] (1.5, Inf] (1.5, Inf]
 ## [49] (0.5,1.5]  (1.5, Inf] (0.5,1.5]  (1.5, Inf]
 ## Levels: (-Inf,-1.5] (-1.5,-0.5] (-0.5,0.5] (0.5,1.5] (1.5, Inf]</code></pre>
-<p><code>labels</code>を指定すると指定したラベル（文字型）で階級が置き換えられます。</p>
+<p>この結果を集計すると度数分布表になります。<br />
+<code>labels</code>を指定すると指定したラベル（文字型）で階級が置き換えられます。</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cut</span>(x<span class="op">$</span>rate, <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="op">-</span><span class="ot">Inf</span>, <span class="op">-</span><span class="fl">1.5</span>, <span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">1.5</span>, <span class="ot">Inf</span>),
     <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;不可&quot;</span>, <span class="st">&quot;可&quot;</span>, <span class="st">&quot;良&quot;</span>, <span class="st">&quot;優&quot;</span>, <span class="st">&quot;秀&quot;</span>))</code></pre></div>
 <pre><code>##  [1] 優 優 優 優 優 優 優 優 優 優 優 秀 秀 優 優 秀 秀 秀 優 優 秀 秀 優
