@@ -236,7 +236,7 @@ data.frame(week = seq(1:53)) %>%
 # 演習６
 
 ## 層別箱ひげ図
-`iris`データセットのがく片（Sepal）の長さを下図のようにグラフ化してください。
+`iris`データセットのがく片（Sepal）の長さを下図のようにグラフ化してください。`All`は品種で分けない全てのデータです。
 
 ```{r, echo=FALSE, warning=FALSE}
 iris %>% 
@@ -285,7 +285,7 @@ iris %>%
 # 演習７
 
 ## オープン・クローズチャート
-第３回の演習５で求めたデータを元に日毎のオープン、クローズ数を棒グラフで描いてください。
+第３回の演習５で求めたデータを元に週毎のオープン、クローズ数を棒グラフで描いてください。
 
 ```{r, echo=FALSE}
 redmine <- "../data/redmine_data_utf8.csv" %>% 
@@ -353,7 +353,7 @@ Y軸を指定して描く      | `ggplot2::geom_bar(stat)`          |
 # 演習８
 
 ## オープン・クローズチャート
-演習５と演習６で描いたグラフを一つにまとめて描いてください。
+演習５と演習７で描いたグラフを一つにまとめて描いてください。
 
 ```{r, echo=FALSE}
 redmine <- "../data/redmine_data_utf8.csv" %>% 
@@ -430,9 +430,9 @@ ToothGrowth %>%
   dplyr::mutate(dose = as.factor(dose)) %>% 
   ggplot2::ggplot(ggplot2::aes(x = len, fill = supp)) +
     ggplot2::facet_wrap(~ dose) +
-    ggplot2::geom_histogram(ggplot2::aes(y = ..density..), alpha = 0.5,
+    ggplot2::geom_histogram(ggplot2::aes(y = ..density..), alpha = 0.25,
                             position = "identity") + 
-    ggplot2::geom_density(ggplot2::aes(colour = supp), alpha = 0.25, size = 0.25)
+    ggplot2::geom_density(ggplot2::aes(colour = supp), alpha = 0.5, size = 0.25)
 ```
 
 
