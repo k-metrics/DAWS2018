@@ -51,7 +51,7 @@ require(tidyverse)
     * 数字を眺めてるだけでは判断を間違う可能性がある
     * 分析の最初には必ずデータの分布を確認する癖をつける
 
-![The Datasaurus Doze](../data/DinoSequential.gif)
+<center>![The Datasaurus Doze](../data/DinoSequential.gif)</center>
 
 <!-- ![The Datasaurus Doze](https://github.com/stephlocke/lazyCDN/blob/master/DinoSequential.gif?raw=true) -->
 
