@@ -356,6 +356,13 @@ ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + geom_point() +
 ```
 
 
+## より分かりやすく
+```{r, warning=FALSE}
+ggplot(iris, aes(Sepal.Width, fill = Species)) + facet_wrap(~ Species) + 
+    geom_histogram(position = "identity", alpha = 0.75) + gghighlight::gghighlight()
+```
+
+
 # その他の描画関数
 
 
