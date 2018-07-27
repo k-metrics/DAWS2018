@@ -95,7 +95,7 @@ iris
 
 
 ## irisとは？
-アイリス（ギリシャ語のイリスが語源）とはアヤメ科アヤメ属の多年草。花は三個の花弁（内花、Petal）と三個の萼片（外花、Sepal）から構成される。Setosaの和名はヒオウギアヤメ、他は不明。iris datasetはフィッシャーの線形判別分析に用いられたデータらしい（[irisの正体](http://d.hatena.ne.jp/tsutatsutatsuta/20121206/1354737461)）。
+アイリス（ギリシャ語のイリスに由来）とはアヤメ科アヤメ属の多年草。花は三個の花弁（内花、Petal）と三個の萼片（外花、Sepal）から構成される。Setosaの和名はヒオウギアヤメ、Versicolor、Virginicaはカキツバタに分類されるらしい。iris datasetはフィッシャーの線形判別分析に用いられたデータ（[irisの正体](http://d.hatena.ne.jp/tsutatsutatsuta/20121206/1354737461)）。
 
 ![http://suruchifialoke.com/2016-10-13-machine-learning-tutorial-iris-classification/](./fig/fishers_iris.png)
 
