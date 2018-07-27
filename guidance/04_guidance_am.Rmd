@@ -51,7 +51,7 @@ require(tidyverse)
     * 数字を眺めてるだけでは判断を間違う可能性がある
     * 分析の最初には必ずデータの分布を確認する癖をつける
 
-<center>![The Datasaurus Doze](../data/DinoSequential.gif)</center>
+![The Datasaurus Doze](../data/DinoSequential.gif)
 
 <!-- ![The Datasaurus Doze](https://github.com/stephlocke/lazyCDN/blob/master/DinoSequential.gif?raw=true) -->
 
@@ -92,6 +92,19 @@ require(tidyverse)
 ```{r}
 iris
 ```
+
+
+## irisデータセットの要約統計量
+```{r}
+iris %>% 
+  skimr::skim_to_wide()
+```
+
+
+## irisとは？
+アイリス（ギリシャ語のイリスに由来）とはアヤメ科アヤメ属の多年草。花は三個の花弁（内花、Petal）と三個の萼片（外花、Sepal）から構成される。Setosaの和名はヒオウギアヤメ、Versicolor、Virginicaはカキツバタに分類されるらしい。iris datasetはフィッシャーの線形判別分析に用いられたデータ（[irisの正体](http://d.hatena.ne.jp/tsutatsutatsuta/20121206/1354737461)）。
+
+![http://suruchifialoke.com/2016-10-13-machine-learning-tutorial-iris-classification/](./fig/fishers_iris.png)
 
 
 ## 散布図
@@ -240,7 +253,7 @@ ggplot(iris, aes(x = Petal.Length, fill = Species)) +
 
 
 ## 階級の計算方法
-`ggplot2::geom_histogram`関数のデフォルト設定では**階級数が30に固定**されています。階級数（または階級幅）を一意に決める方法はありませんが、Rでは`pritty`関数を用いることで適切な階級（数、幅）を求めることができます。
+`ggplot2::geom_histogram`関数のデフォルト設定では**階級数が30に固定**されています。階級数（または階級幅）を一意に決める方法はありませんが、Rでは`pretty`関数を用いることで適切な階級（数、幅）を求めることができます。
 
 ```{r, eval=FALSE}
 pretty(x, n)
@@ -270,13 +283,13 @@ ggplot(iris, aes(x = Petal.Length, fill = Species)) +
 
 ## 座標を指定する（ベースのレイヤーを作る）
 ```{r}
-iris %>% ggplot(aes(x = Species, y = Sepal.Length))
+iris %>% ggplot(aes(x = Species, y = Petal.Length))
 ```
 
 
 ## 箱ひげ図を重ねる
 ```{r}
-iris %>% ggplot(aes(x = Species, y = Sepal.Length)) +
+iris %>% ggplot(aes(x = Species, y = Petal.Length)) +
   geom_boxplot()
 ```
 
@@ -286,35 +299,35 @@ iris %>% ggplot(aes(x = Species, y = Sepal.Length)) +
 
 ## 層別（色別）箱ひげ図
 ```{r}
-ggplot(iris, aes(x = Species, y = Sepal.Length)) +
+ggplot(iris, aes(x = Species, y = Petal.Length)) +
   geom_boxplot(aes(colour = Species))
 ```
 
 
 ## 層別（色別）箱ひげ図
 ```{r}
-ggplot(iris, aes(x = Species, y = Sepal.Length)) +
+ggplot(iris, aes(x = Species, y = Petal.Length)) +
   geom_boxplot(aes(fill = Species), alpha = 0.5)
 ```
 
 
 ## 層別（色別）箱ひげ図
 ```{r}
-ggplot(iris, aes(x = Species, y = Sepal.Length)) +
+ggplot(iris, aes(x = Species, y = Petal.Length)) +
   geom_boxplot(aes(colour = Species, fill = Species), alpha = 0.5)
 ```
 
 
 ## 箱ひげ図は基本的に層別で使う
 ```{r}
-ggplot(iris, aes(x = NA, y = Sepal.Length)) +
+ggplot(iris, aes(x = NA, y = Petal.Length)) +
   geom_boxplot()
 ```
 
 
 ## 頻度分布を重ねる
 ```{r}
-ggplot(iris, aes(x = Species, y = Sepal.Length, colour = Species)) +
+ggplot(iris, aes(x = Species, y = Petal.Length, colour = Species)) +
   geom_boxplot() + geom_dotplot(binaxis = "y", stackdir = "up", dotsize = 0.75)
 ```
 
@@ -324,46 +337,43 @@ ggplot(iris, aes(x = Species, y = Sepal.Length, colour = Species)) +
 
 ## 層別グラフを個別に描く`facet_*`関数
 ```{r}
-ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + facet_wrap(~ Species)
+ggplot(iris, aes(x = Petal.Width, y = Petal.Length)) + facet_wrap(~ Species)
 ```
 
 
 ## グラフを重ねることも可能
 ```{r}
-ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + facet_wrap(~ Species) + 
+ggplot(iris, aes(x = Petal.Width, y = Petal.Length)) + facet_wrap(~ Species) + 
   geom_point() + geom_smooth(method = "lm", se = FALSE)
 ```
 
 
 ## 色の有効範囲は同じ
 ```{r}
-ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, colour = Species)) +
+ggplot(iris, aes(x = Petal.Width, y = Petal.Length, colour = Species)) +
   geom_point() + geom_smooth(method = "lm", se = FALSE) + facet_wrap(~ Species)
 ```
 
 
 ## 散布図だけ色別
 ```{r}
-ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + facet_wrap(~ Species) +
+ggplot(iris, aes(x = Petal.Width, y = Petal.Length)) + facet_wrap(~ Species) +
   geom_point(aes(colour = Species)) + geom_smooth(method = "lm", se = FALSE)
 ```
 
 
 ## 回帰直線だけ色別
 ```{r}
-ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + geom_point() +
+ggplot(iris, aes(x = Petal.Width, y = Petal.Length)) + geom_point() +
   facet_wrap(~ Species) + geom_smooth(aes(colour = Species), method = "lm", se = FALSE) 
 ```
 
 
 ## より分かりやすく
 ```{r, warning=FALSE}
-ggplot(iris, aes(Sepal.Width, fill = Species)) + facet_wrap(~ Species) + 
+ggplot(iris, aes(Petal.Length, fill = Species)) + facet_wrap(~ Species) +
     geom_histogram(position = "identity", alpha = 0.75) + gghighlight::gghighlight()
 ```
-
-
-# その他の描画関数
 
 
 ## その他の描画関数
@@ -376,6 +386,24 @@ geom_line    | 折れ線グラフ   | geom_path
 geom_rug     | ラグプロット   | 
 geom_text    | テキストラベル | geom_label
 geom_violin  | バイオリンプロット | 
+
+
+# まとめ
+
+
+## ggplot2を使うためのポイント
+```{r, eval=FALSE}
+ggplot(data = df,                     # 描画するデータセット（tidy data）を指定
+       mapping = aes(x, y,            # グラフ軸とデータの対応を指定
+                     colour, ...)) +  # 色（グループ）とデータの対応を指定
+  geom_point(...) +                   # 描画するグラフを指定
+  geom_smooth(...) +                  # 重ね合わせるグラフを指定
+  ...                                 # その他、軸や背景などのグラフ要素を指定
+```
+
+ggplot2パッケージを用いる場合には、描画対象となるデータを含んだデータセット（**tidy data**）が必要です。なので、dplyrパッケージやtidyrパッケージを駆使してデータセットをいかに作るかが最初のポイントになります。  
+
+データセットを指定したら各座標に割り当てるデータやグルーピングするためのデータなどを指定します。どのようなグラフでも指定方法はggplot2の文法にしたがいます。なので、エステティック関数（aes）の使い方が二つ目のポイントになります。（[最新版チートシート](https://github.com/rstudio/cheatsheets/blob/master/data-visualization-2.1.pdf)）
 
 
 ## 復習のためのリソース
