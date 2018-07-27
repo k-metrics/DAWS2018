@@ -94,6 +94,12 @@ iris
 ```
 
 
+## irisとは？
+アイリス（ギリシャ語のイリスが語源）とはアヤメ科アヤメ属の多年草。花は三個の花弁（内花、Petal）と三個の萼片（外花、Sepal）から構成される。Setosaの和名はヒオウギアヤメ、他は不明。iris datasetはフィッシャーの線形判別分析に用いられたデータらしい（[irisの正体](http://d.hatena.ne.jp/tsutatsutatsuta/20121206/1354737461)）。
+
+![http://suruchifialoke.com/2016-10-13-machine-learning-tutorial-iris-classification/](./fig/fishers_iris.png)
+
+
 ## 散布図
 二変数の関係を把握する
 
@@ -358,12 +364,9 @@ ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + geom_point() +
 
 ## より分かりやすく
 ```{r, warning=FALSE}
-ggplot(iris, aes(Sepal.Width, fill = Species)) + facet_wrap(~ Species) + 
-    geom_histogram(position = "identity", alpha = 0.75) + gghighlight::gghighlight()
+# ggplot(iris, aes(Sepal.Width, fill = Species)) + facet_wrap(~ Species) + 
+#     geom_histogram(position = "identity", alpha = 0.75) + gghighlight::gghighlight()
 ```
-
-
-# その他の描画関数
 
 
 ## その他の描画関数
@@ -376,6 +379,24 @@ geom_line    | 折れ線グラフ   | geom_path
 geom_rug     | ラグプロット   | 
 geom_text    | テキストラベル | geom_label
 geom_violin  | バイオリンプロット | 
+
+
+# まとめ
+
+
+## ggplot2を使うためのポイント
+```{r, eval=FALSE}
+ggplot(data = df,                     # 描画するデータセット（tidy data）を指定
+       mapping = aes(x, y,            # グラフ軸とデータの対応を指定
+                     colour, ...)) +  # 色（グループ）とデータの対応を指定
+  geom_point(...) +                   # 描画するグラフを指定
+  geom_smooth(...) +                  # 重ね合わせるグラフを指定
+  ...                                 # その他、軸や背景などのグラフ要素を指定
+```
+
+ggplot2パッケージを用いる場合には、描画対象となるデータを含んだデータセット（**tidy data**）が必要です。なので、dplyrパッケージやtidyrパッケージを駆使してデータセットをいかに作るかが最初のポイントになります。  
+
+データセットを指定したら各座標に割り当てるデータやグルーピングするためのデータなどを指定します。どのようなグラフでも指定方法はggplot2の文法にしたがいます。なので、エステティック関数（aes）の使い方が二つ目のポイントになります。（[最新版チートシート](https://github.com/rstudio/cheatsheets/blob/master/data-visualization-2.1.pdf)）
 
 
 ## 復習のためのリソース
