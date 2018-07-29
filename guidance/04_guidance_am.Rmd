@@ -59,12 +59,12 @@ require(tidyverse)
 ## ggplot2とは？
 * Create Elegant Data Visualisations Using **the Grammar of Graphics**
     * 文字通り統一された文法で様々なグラフを描けるパッケージ
-    * tidyverseシリーズなので**整然データ**を前提とした設計
-    * といっても現時点ではパイプ演算子（`%>%`）は使えません
+    * tidyverseシリーズなので**整然データ（tidy data）**を前提とした設計
+    * といっても現時点ではggplot2内でパイプ演算子（`%>%`）を使えません
 
 * 特徴
     * GIS（地理情報システム）などと同じ[**レイヤー構造**](http://id.fnshr.info/2011/10/22/ggplot2/)
-    * **ggplot2::aes**（エステティック・マッピング）という考え方
+    * **エステティック・マッピング**（ggplot2::aes）という考え方
     * 出来ないないことは**関連パッケージで補える**柔軟性
         * QQプロットはqqplotr, 格子配置はggExtra, etc
     * 忖度してくれない（とりあえずでデータを突っ込んでも描画はしない）
@@ -73,7 +73,7 @@ require(tidyverse)
 
 ## 必要なデータ形式
 * ggplot2はデータフレーム型のデータを第一引数に取ります
-* 第一引数内にX軸用データ、Y軸用データ、グループ化データの三項目が必要です（当然、描くグラフにより変わります）
+* 第一引数内に軸用データ、グループ化データが必要です（描くグラフにより必要な軸データは変わります）
 
 　 | x           | y           | group, colour, fill, ... 
 :-:|:----------:|:-----------:|:------------------:
@@ -85,6 +85,19 @@ require(tidyverse)
 つまり、**整然データ（tidy data）が必要**
 
 
+## 基本的な考え方
+ggplot2は前述のように整然データ（tidy data）を利用したレイヤー構造なので描画するには以下の手順が基本となります。
+
+1. 描画したいデータセット（tidy data）を指定する
+1. グラフ軸と変数（列）やグルーピングと変数（列）の対応を指定する（エステティック・マッピング）
+1. 描画するグラフを指定する（前項の軸とグループの設定は描くグラフに依存）
+1. 必要に応じて描画するグラフを追加指定する
+1. 軸や背景などのグラフ要素を指定する
+
+　  
+描きたいグラフに応じてエステティック・マッピングの指定を変えることがポイントの一つ。
+
+
 # ggplot2の基本
 
 
@@ -94,17 +107,17 @@ iris
 ```
 
 
+## irisとは？
+アイリス（ギリシャ語のイリスに由来）とはアヤメ科アヤメ属の多年草。花は三個の花弁（内花、Petal）と三個の萼片（外花、Sepal）から構成される。Setosaの和名はヒオウギアヤメ、Versicolor、Virginicaはカキツバタに分類されるらしい。iris datasetはフィッシャーの線形判別分析に用いられたデータ（[irisの正体](http://d.hatena.ne.jp/tsutatsutatsuta/20121206/1354737461)）。
+
+![http://suruchifialoke.com/2016-10-13-machine-learning-tutorial-iris-classification/](./fig/fishers_iris.png)
+
+
 ## irisデータセットの要約統計量
 ```{r}
 iris %>% 
   skimr::skim_to_wide()
 ```
-
-
-## irisとは？
-アイリス（ギリシャ語のイリスに由来）とはアヤメ科アヤメ属の多年草。花は三個の花弁（内花、Petal）と三個の萼片（外花、Sepal）から構成される。Setosaの和名はヒオウギアヤメ、Versicolor、Virginicaはカキツバタに分類されるらしい。iris datasetはフィッシャーの線形判別分析に用いられたデータ（[irisの正体](http://d.hatena.ne.jp/tsutatsutatsuta/20121206/1354737461)）。
-
-![http://suruchifialoke.com/2016-10-13-machine-learning-tutorial-iris-classification/](./fig/fishers_iris.png)
 
 
 ## 散布図
@@ -388,10 +401,7 @@ geom_text    | テキストラベル | geom_label
 geom_violin  | バイオリンプロット | 
 
 
-# まとめ
-
-
-## ggplot2を使うためのポイント
+## まとめ
 ```{r, eval=FALSE}
 ggplot(data = df,                     # 描画するデータセット（tidy data）を指定
        mapping = aes(x, y,            # グラフ軸とデータの対応を指定
@@ -403,7 +413,7 @@ ggplot(data = df,                     # 描画するデータセット（tidy da
 
 ggplot2パッケージを用いる場合には、描画対象となるデータを含んだデータセット（**tidy data**）が必要です。なので、dplyrパッケージやtidyrパッケージを駆使してデータセットをいかに作るかが最初のポイントになります。  
 
-データセットを指定したら各座標に割り当てるデータやグルーピングするためのデータなどを指定します。どのようなグラフでも指定方法はggplot2の文法にしたがいます。なので、エステティック関数（aes）の使い方が二つ目のポイントになります。（[最新版チートシート](https://github.com/rstudio/cheatsheets/blob/master/data-visualization-2.1.pdf)）
+データセットを指定したら各座標に割り当てるデータやグルーピングするためのデータなどを指定します。どのようなグラフでも指定方法はggplot2の文法にしたがいます。（[最新版チートシート](https://github.com/rstudio/cheatsheets/blob/master/data-visualization-2.1.pdf)）
 
 
 ## 復習のためのリソース
