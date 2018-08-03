@@ -431,5 +431,9 @@ ggplot2パッケージを用いる場合には、描画対象となるデータ�
 * [公式Reference（英語） <i class="fa fa-external-link"></i>](http://ggplot2.tidyverse.org/reference/index.html)
 
 
+## {data-background=./fig/fromDatatoViz.png}
+[from Data to Viz](https://www.data-to-viz.com/)
+
+
 ## License
 CC BY-NC-SA 4.0, Sampo Suzuki
