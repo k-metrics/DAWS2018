@@ -25,7 +25,7 @@
         usePrettify: true,
         enableSlideAreas: true,
         enableTouch: true,
-                        favIcon: 'fig\hex-rmarkdown.png',
+                        favIcon: 'fig/hex-rmarkdown.png',
               },
 
       // Author information
@@ -87,7 +87,7 @@
       position: absolute;
       bottom: 20px;
       left: 60px;
-      background: url(fig\hex-rmarkdown.png) no-repeat 0 50%;
+      background: url(fig/hex-rmarkdown.png) no-repeat 0 50%;
       -webkit-background-size: 30px 30px;
       -moz-background-size: 30px 30px;
       -o-background-size: 30px 30px;
@@ -113,7 +113,7 @@
       <h1 data-config-title><!-- populated from slide_config.json --></h1>
       <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
       <p data-config-presenter><!-- populated from slide_config.json --></p>
-            <p style="margin-top: 6px; margin-left: -2px;">2018年07月18日</p>
+            <p style="margin-top: 6px; margin-left: -2px;">2018年08月04日</p>
           </hgroup>
   </slide>
 
@@ -167,6 +167,8 @@
 
 </article></slide><slide class=""><hgroup><h2>R Markdownで使える言語</h2></hgroup><article  id="r-markdown">
 
+<p>当然、使用する言語がインストールされていることが前提ですが、これだけの言語がChunkで使えます。</p>
+
 <pre class = 'prettyprint lang-r'>names(knitr::knit_engines$get())</pre>
 
 <pre >##  [1] &quot;awk&quot;       &quot;bash&quot;      &quot;coffee&quot;    &quot;gawk&quot;      &quot;groovy&quot;   
@@ -177,6 +179,8 @@
 ## [26] &quot;fortran&quot;   &quot;fortran95&quot; &quot;asy&quot;       &quot;cat&quot;       &quot;asis&quot;     
 ## [31] &quot;stan&quot;      &quot;block&quot;     &quot;block2&quot;    &quot;js&quot;        &quot;css&quot;      
 ## [36] &quot;sql&quot;       &quot;go&quot;        &quot;python&quot;    &quot;julia&quot;</pre>
+
+<p>RStudio v1.2ではマルチプログラム言語対応が強化されるらしい（特にpython）。</p>
 
 </article></slide><slide class=""><hgroup><h2>演習（テーマ設定）</h2></hgroup><article >
 
@@ -197,7 +201,27 @@
 <li>書籍とかには掲載されていない分布表を作ってみる（自由度の高いt分布表）</li>
 <li>デート本、ＳＭ本、統計学基礎の例題や問題を解いてみる</li>
 <li>Redmineチケットや政府統計を可視化したり仮説検定したりしてみる</li>
-<li>K-POPの相関を分析してみる</li>
+<li>K-POPの何かの相関を分析してみる</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>オープンデータの例</h2></hgroup><article >
+
+<ul>
+<li><a href='https://www.data.jma.go.jp/gmd/risk/obsdl/index.php' title=''>過去の気象データ・ダウンロード（気象庁）</a>
+
+<ul>
+<li>1872年からの観測データ。気温の他に日照/日射、雲量/天気などのデータがダウンロード可能。ただし、ダウンロードできるデータ量に制限があるので必要に応じて分割してダウンロードする必要があります。</li>
+</ul></li>
+<li><a href='https://www.nstac.go.jp/statcompe/' title=''>教育用標準データセット（統計データ分析コンペディション）</a>
+
+<ul>
+<li><a href='https://www.e-stat.go.jp/' title=''>e-Stat（総務省統計局）</a>に収録されている「都道府県・市区町村のすがた（社会・人口統計体系）」の市区町村データから約100項目余を抜き出し、縦に市区町村、横にデータ項目が並ぶ表形式のデータに整備したもの。（当該ページより一部抜粋）</li>
+</ul></li>
+<li>Rに組み込まれているデータセット
+
+<ul>
+<li>標準パッケージ（datasets）に組み込まれているデータセット、追加パッケージ（ggplot2など）に組み込まれているデータセットなど（<a href='https://qiita.com/wakuteka/items/95ac758070f6f4d89a96' title=''>R言語 標準データセットの私的まとめ</a>）</li>
+</ul></li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>チーム分け（仮）</h2></hgroup><article >
