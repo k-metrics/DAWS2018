@@ -33,7 +33,7 @@ require(tidyverse)
 
 
 ## IEEE Spectrum Ranking 2018
-Rは前年に比べるとLanguage Rank(+-0), Spectrum Ranking(-5.3)。
+Rは前年に比べるとLanguage Rank(+-0), Spectrum Ranking(-5.4)。
 
 ![[IEEE Spectrum Ranking 2018](https://spectrum.ieee.org/static/interactive-the-top-programming-languages-2018)](./fig/IEEE_Spectrum_Runking_2018.png)
 
