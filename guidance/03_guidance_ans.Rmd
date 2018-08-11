@@ -330,12 +330,12 @@ data.frame(week = seq(1:53)) %>%
 
 ## Tips
 ### cumulative関数
-cumulative関数は累積、累計（累和）などを計算するウィンドウ関数と言われるものです。詳細は[チートシート <i class="fa fa-external-link"></i>](https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf){target="_blank" title="Data Transformation Cheat Sheet"}のVector Functions項を参照してください。
+cumulative関数は累計（累和）、累積などを計算するウィンドウ関数と言われるものです。詳細は[チートシート <i class="fa fa-external-link"></i>](https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf){target="_blank" title="Data Transformation Cheat Sheet"}のVector Functions項を参照してください。
 ```{r}
-# 累積
+# 累計（累和）
 cumsum(1:10)
 
-# 累計（累和）
+# 累積
 cumprod(1:10)
 ```
 
