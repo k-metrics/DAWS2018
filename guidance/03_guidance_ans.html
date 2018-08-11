@@ -267,7 +267,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">第３回データ分析勉強会 演習解答例</h1>
 <h4 class="author"><em>鈴木さんぽう, CC BY-NC-SA 4.0</em></h4>
-<h4 class="date"><em>2018年07月18日</em></h4>
+<h4 class="date"><em>2018年08月11日</em></h4>
 
 </div>
 
@@ -466,7 +466,7 @@ x <span class="op">%&gt;%</span><span class="st"> </span>
 </div>
 <div id="gather" class="section level3">
 <h3>gather関数</h3>
-<p><code>gather</code>関数は指定した変数（列）の名前を<code>key</code>で指定する変数（列）へ、その値を<code>value</code>で指定する列にまとめる関数です。変数（列）の指定には<code>-</code>を用いて「除外する」指定方法もあります。なお、<code>key</code>と<code>value</code>を指定する際に新しくできる変数（列）として<code>&quot;&quot;</code>で括るのが推奨されています。</p>
+<p><code>gather</code>関数は指定した変数（列）の名前を<code>key</code>で指定する変数（列）へ、その値を<code>value</code>で指定する列にまとめる関数です。変数（列）の指定には<code>-</code>を用いて「除外する」指定方法もあります。なお、<code>key</code>と<code>value</code>を指定する際に<strong>新しくできる変数（列）は<code>&quot;&quot;</code>で括る</strong>ことが推奨されています。</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">anscombe <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>tibble<span class="op">::</span><span class="kw">rowid_to_column</span>(<span class="dt">var =</span> <span class="st">&quot;ID&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>tidyr<span class="op">::</span><span class="kw">gather</span>(<span class="dt">key =</span> <span class="st">&quot;key&quot;</span>, <span class="dt">value =</span> <span class="st">&quot;value&quot;</span>, x1, x2, x3, x4, y1, y2, y3, y4)</code></pre></div>
@@ -479,7 +479,7 @@ x <span class="op">%&gt;%</span><span class="st"> </span>
 </div>
 <div id="spread" class="section level3">
 <h3>spread関数</h3>
-<p><code>spread</code>関数は<code>key</code>で指定した変数（列）の値を変数名（列名）に<code>value</code>で指定した変数（列）の値を該当する<code>key</code>の変数名（列名）の中身に振り分ける関数です。なお、<code>gather</code>関数と異なり<code>key</code>と<code>value</code>を指定するものは既存の変数（列）であることから<code>&quot;&quot;</code>で<strong>括らない</strong>ことが推奨されています。</p>
+<p><code>spread</code>関数は<code>key</code>で指定した変数（列）の値を変数名（列名）に<code>value</code>で指定した変数（列）の値を該当する<code>key</code>の変数名（列名）の中身に振り分ける関数です。なお、<code>gather</code>関数と異なり<code>key</code>と<code>value</code>を指定する際に<strong>既存の変数（列）は<code>&quot;&quot;</code>で括らない</strong>ことが推奨されています。</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">anscombe <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>tibble<span class="op">::</span><span class="kw">rowid_to_column</span>(<span class="dt">var =</span> <span class="st">&quot;ID&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>tidyr<span class="op">::</span><span class="kw">gather</span>(<span class="dt">key =</span> <span class="st">&quot;key&quot;</span>, <span class="dt">value =</span> <span class="st">&quot;value&quot;</span>, x1, x2, x3, x4, y1, y2, y3, y4) <span class="op">%&gt;%</span><span class="st"> </span>
@@ -698,7 +698,7 @@ mtcars <span class="op">%&gt;%</span><span class="st"> </span>
 <p>　</p>
 <div id="-5" class="section level2">
 <h2>解答例</h2>
-<p>この問題のポイントは複数列に同一操作を行いたい場合には<strong>tidy data形式にすることで一括でできる</strong>という点にあります。</p>
+<p>この問題のポイントは複数列に同一操作を行いたい場合には<strong>tidy data形式にすることで一括で処理できるようになる</strong>点にあります。</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ggplot2<span class="op">::</span>mpg <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="co"># クロス集計して度数を求めます</span>
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw">count</span>(class, trans) <span class="op">%&gt;%</span><span class="st"> </span>
@@ -780,7 +780,7 @@ x <span class="op">%&gt;%</span><span class="st"> </span>
 <p>　</p>
 <div id="-7" class="section level2">
 <h2>解答例</h2>
-<p>この演習のポイントは<code>mutate</code>関数では処理できない複数の返り値を処理する方法を知る点にあります。</p>
+<p>この演習のポイントは<code>mutate</code>関数では処理できない複数の返り値がある場合の処理方法を知る点にあります。</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>tidyr<span class="op">::</span><span class="kw">gather</span>(part, value, <span class="op">-</span>Species) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(Species, part) <span class="op">%&gt;%</span><span class="st"> </span>
@@ -857,7 +857,7 @@ x <span class="op">%&gt;%</span><span class="st"> </span>
 <p>　</p>
 <div id="-9" class="section level2">
 <h2>解答例</h2>
-<p>この演習のポイントは将来的にはシュリンクするであろう<code>dplyr::do</code>関数の後継となる<code>purrr</code>パッケージの有用性を知ることにあります。</p>
+<p>この演習のポイントは将来的にはシュリンクする可能性があると噂あれている<code>dplyr::do</code>関数の後継となる<code>purrr</code>パッケージの有用性を知ることにあります。</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># purrrを使う場合</span>
 iris <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="co"># 種別ごとにリスト化します</span>
