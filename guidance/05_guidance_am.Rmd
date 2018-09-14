@@ -31,37 +31,83 @@ require(tidyverse)
 ## R Markdown概説
 * R Markdownとは？
     * Rのコードや**実行結果を文書に埋め込める**Markdown記法
-    * 実行結果をレポートにできる仕組みは**他言語には（ほぼ）ない**
-        * 唯一の例外：Jupyter Notebook（旧 IPython Notebook）
+    * 実行結果を直接レポートにできる仕組みは**他言語には（ほぼ）ない**
+        * 例外：Jupyter Notebook（旧 IPython Notebook）
 * Markdownとは？
     * **プレーンテキストで**体裁のある文書を作成するための記法
     * シンプル＆ライトウェイト、テキストなので**VCSで管理可能**
     * 変換ソフト（pandoc）の利用で**多種多様なフォーマット**に変換可能
-* [R Markdown Basics](https://k-metrics.github.io/cabinet/communicate/rmd_basics.html)
-    * YAML（体裁、出力フォーマットを指定する箇所）
-    * (Code) Chunk（コードを記述する箇所）
-    * Markdown（コード以外の文書を記述する箇所）
+* シンプルな記述
+    * **YAML**（体裁、出力フォーマットを指定する箇所）
+    * (Code) **Chunk**（実行させたいコードを記述する箇所）
+    * **Markdown**（コード以外の文書を記述する箇所）
 
 
-## R Markdownで使える言語
+## R Markdownでできること
+* **報告書・プレゼン資料の作成**
+    * PDF形式だけでなくdocx形式やRTF形式もサポート（[pandoc<i class="fa fa-external-link"></i>](http://sky-y.github.io/site-pandoc-jp/users-guide/){target="_blank" title="a universal document converter"}依存）
+        * 同一ソースで複数のフォーマットに対応可能
+* **論文や書籍の作成**
+    * （主に）海外系の学会・雑誌であれば [専用パッケージ<i class="fa fa-external-link"></i>](https://github.com/rstudio/rticles){target="_blank" title="LaTeX Journal Article Templates for R Markdown"}が用意されている
+    * [bookdownパッケージ<i class="fa fa-external-link"></i>](https://bookdown.org/home/){target="_blank" title="Write HTML, PDF, ePub, and Kindle books with R Markdown"}を用いることで書籍原稿の作成が可能
+* **Webページやblogの作成**
+    * R Markdown Web Site機能が標準装備（今回のサイトはこれで作成）
+    * [blogdownパッケージ<i class="fa fa-external-link"></i>](https://bookdown.org/yihui/blogdown/){target="_blank" title="blogdown"}を用いることでblogも作成可能
+* その他
+    * データの俯瞰に便利な[ダッシュボード<i class="fa fa-external-link"></i>](https://rmarkdown.rstudio.com/flexdashboard/examples.html){target="_blank" title="flexdashboard"}を作成可能
+
+
+## 業務での利用例
+* 複数のデータを用いたレコードチェックの手順を記録するのに利用
+![架空データ](./fig/record_checker_2.png)
+
+
+## R以外の言語にも対応
 当然、使用する言語がインストールされていることが前提ですが、これだけの言語がChunkで使えます。
 ```{r}
 names(knitr::knit_engines$get())
 ```
 
 
-## 演習（テーマ設定）
+## R Markdown Basics
+* [R Markdown Basics](https://k-metrics.github.io/cabinet/communicate/rmd_basics.html)
+    * YAML（体裁、出力フォーマットを指定する箇所）
+        * YAML Ain't Markup Language
+        * 構造化データなどを文字列にシリアライズ（直列化）するための形式
+    * (Code) Chunk（コードを記述する箇所）
+        * **R Markdown特有**の記述
+        * 様々な言語による実行コードの記述・実行と実行制御が可能
+    * Markdown（コード以外の文書を記述する箇所）
+        * 軽量マークアップ言語（マークアップ言語：HTML, XMLなど）
+        * [GitHub Flavored Markdown<i class="fa fa-external-link"></i>](https://guides.github.com/features/mastering-markdown/#GitHub-flavored-markdown){target="_blank" title="Mastering Markdown, GitHub Guides"}などの方言多数
+
+
+# 演習
+
+
+## 演習（テーマ設定）について
 * チームごとに何をレポートするかのテーマを設定します
 * 設定したテーマに対してR Markdownでレポートを作成します
-    * データ（の一部）を変えてレポーティングできるとベスト
-    * テーマやデータに対して特に制限は設けません（公序良俗は考えて）
+    * テーマやデータに対して特に制限は設けません（常識的な範囲で）
     * フォーマットはHTMLであればドキュメント形式プレゼン形式を問いません
+        * 勉強会サイトで公開できるように
+
 
 ### テーマ例
 * 書籍とかには掲載されていない分布表を作ってみる（自由度の高いt分布表）
 * デート本、ＳＭ本、統計学基礎の例題や問題を解いてみる
 * Redmineチケットや政府統計を可視化したり仮説検定したりしてみる
 * K-POPの何かの相関を分析してみる
+
+
+## データ例
+* [e-Stat<i class="fa fa-external-link"></i>](https://www.e-stat.go.jp/){target="_blank" title="政府統計の総合窓口"}
+* [過去の気象データ・ダウンロード<i class="fa fa-external-link"></i>](https://www.data.jma.go.jp/gmd/risk/obsdl/index.php){target="_blank" title="気象庁"}
+* [データカタログサイト<i class="fa fa-external-link"></i>](http://www.data.go.jp/){target="_blank" title="DATA.GO.JP"}
+* [統計データ分析コンペティション<i class="fa fa-external-link"></i>](https://www.nstac.go.jp/statcompe/){target="_blank" title="教育用標準データセット"}
+* [統計解析に使えるデータセットまとめ<i class="fa fa-external-link"></i>](http://hoxo-m.hatenablog.com/entry/20120214/p1){target="_blank" title="ほくそ笑む"}
+* 上記以外に「サンプルデータ」や「オープンデータ」、「〇〇データ」などで検索
+    * 利用規約などに注意してください
 
 
 ## チーム分け（仮）
