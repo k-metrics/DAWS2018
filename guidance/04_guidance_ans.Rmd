@@ -1,5 +1,5 @@
 ---
-title: "第４回データ分析勉強会"
+title: "第４回データ分析勉強会 演習解答例"
 author: "【午後の部】効率的で綺麗な可視化 [鈴木さんぽう, CC BY-NC-SA 4.0]"
 date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
 output:
@@ -21,9 +21,10 @@ require(tidyverse)
 ```
 
 　  
-第３回で行った演習の解答例です。必ずしもこのコードが最適という訳ではありませんので参考程度に利用してください。なお、勉強会当日説明とコードを変えてあるものもあります。  
+第４回で行った演習の解答例です。必ずしもこのコードが最適という訳ではありませんので参考程度に利用してください。なお、勉強会当日説明とコードを変えてあるものもあります。  
 　  
 Rの関数はヘルプで記載されている引数の順番通りに引数を指定した場合は引数名を記述する必要はありませんが、あえて明示的に引数名を記述している場合もあります。また、関数の前に記述しているパッケージ名はパッケージが読み込まれている場合には記述必要はありませんが、追加パッケージに限り、どのパッケージの関数かが分かるようにあえて記述してあります。  
+
 　  
 
 # 演習１ アンスコムのデータ例
@@ -59,6 +60,7 @@ anscombe %>%
 ### `fullrange`オプション
 `ggplot2::geom_smooth`関数で回帰線を描く場合、デフォルトでは外挿となる部分については描かれません。これは回帰による予測は既知のデータを基にし、そのデータの範囲の内側の数値を予測することでありデータの存在しない外挿については、誤った結果を招く可能性があるためです。  
 しかし、外挿に対しても回帰線を描きたい場合には`ggplot2::geom_smooth`関数で`fullrange`オプションを指定してください。  
+
 　  
 
 # 演習２ 層別散布図
@@ -87,6 +89,7 @@ iris %>%
 
 ### `shape`オプション
 `ggplot2::geom_point`関数のように点を描く関数で点の形状を変更するには`ggplot2::aes`関数で指定するエステティック・マッピングにおいて`shape`オプションを指定します。  
+
 　  
 
 # 演習３ ヒストグラム
@@ -125,6 +128,7 @@ gridExtra::grid.arrange(gg_prod, gg_rate)
 
 ### `breaks`オプション
 `geom_histgram`関数において階級幅を任意に指定する場合は`breaks`オプションを利用することをおすゝめします。`breaks`オプションは度数分布表における階級指定と同義です。  
+
 　  
 
 # 演習４ 層別箱ひげ図
@@ -135,12 +139,12 @@ iris %>%
   # まず、各部位の幅と長さをまとめます
   tidyr::gather(key = "part", value = "value", -Species) %>% 
   # 横軸に部位、縦軸に値をとります
-  ggplot2::ggplot(ggplot2::aes(x = part, y = value)) + 
-    # 品種で色分けして箱ひげ図を描きます
-    ggplot2::geom_boxplot(ggplot2::aes(fill = Species), alpha = 0.5)
+  ggplot2::ggplot(ggplot2::aes(x = part, y = value, fill = Species)) + 
+    # 箱ひげ図を描きます
+    ggplot2::geom_boxplot(alpha = 0.5)
 ```
 
-
+　  
 
 # 演習５ オープン・クローズチャート
 第３回の演習５で求めたデータを元にオープン・クローズチャートを描いてください。
@@ -198,70 +202,38 @@ data.frame(week = seq(1:53)) %>%
     ggplot2::geom_line()
 ```
 
-## ヒント
-
-やりたいこと           | 利用する関数例                     | 備考
------------------------|------------------------------------|---
-折れ線グラフを描く     | `ggplot2::geom_line`               | 
-
-
-
-# ここから先は任意
-
 　  
 
-# 演習６
-
-## 層別箱ひげ図
+# 演習６ 層別箱ひげ図
 `iris`データセットのがく片（Sepal）の長さを下図のようにグラフ化してください。`All`は品種で分けない全てのデータです。
 
-```{r, warning=FALSE}
+```{r, warning=TRUE}
 iris %>% 
   # Speciesの値を全てAllにします
   dplyr::mutate(Species = "All") %>% 
-  # print() %>% 
   # 元のirisデータセットを行方向に結合します
   dplyr::bind_rows(iris) %>%
-  # print() %>% 
   # 結合によって文字型になったSpiceisを因子型にします
   dplyr::mutate(Species = as.factor(Species)) %>% 
-  # print() %>% 
   # 行を識別できるようにIDを付与しておきます
   tibble::rowid_to_column("ID") %>%
-  # print() %>% 
   # ロング型に変換します
   tidyr::gather(key = "key", value = "value", -Species, -ID) %>% 
-  # print() %>% 
   # 部位でフィルタリングできるように分割します
   tidyr::separate(key, into = c("Part", "Dimension")) %>%
-  # print() %>% 
   # 幅と長さを展開しておきます
   tidyr::spread(key = Dimension, value = value) %>% 
-  # print() %>% 
   # 萼片（Sepal）だけを抽出します
   dplyr::filter(Part == "Sepal") %>% 
-  # print() %>% 
   # 横軸をSpeciesに指定します
   ggplot2::ggplot(ggplot2::aes(x = Species)) +
     # 縦軸に長さを指定して箱ひげ図を描きます
     ggplot2::geom_boxplot(ggplot2::aes(y = Length))
 ```
 
+　  
 
-## ヒント
-* 演習２の応用で因子分けされていない全体のデータをどうつくるかがポイントです
-
-やりたいこと           | 利用する関数例                      | 備考
------------------------|-------------------------------------|---
-データフレームをつなげる | `dplyr::row_bind()`               | 行方向
-層別指定する           | `ggplot2::aes(group)`               | 
-箱ひげ図を描く         | `ggplot2::geom_boxplot()`           | 
-
-
-
-# 演習７
-
-## オープン・クローズチャート
+# 演習７ オープン・クローズチャート
 第３回の演習５で求めたデータを元に週毎のオープン、クローズ数を棒グラフで描いてください。
 
 ```{r}
@@ -300,36 +272,63 @@ close <- redmine %>%
   dplyr::summarise(close = n())
 
 # 週次の集計
+# 週次の集計するために53週分のデータフレームを作成します
+data.frame(week = seq(1:53)) %>% 
+  # 前段で集計したチケット数を週番号を元に結合します
+  dplyr::left_join(open, by = "week") %>% 
+  dplyr::left_join(close, by = "week") %>% 
+  # NA（チケットなし）のレコードを0（zero）に変換します
+  dplyr::mutate(open = ifelse(is.na(open), 0, open),
+                close = ifelse(is.na(close), 0, close)) %>% 
+  # 累積を計算します
+  dplyr::mutate(cumopen = cumsum(open), cumclose = cumsum(close)) %>% 
+  # unpivot
+  tidyr::gather(key = "key", value = "tickets", -week) %>% 
+  # オープン、クローズ数のみを抽出する
+  dplyr::filter(key == "open" | key == "close") %>% 
+  # 横軸を週に縦軸をチケット数を指定します
+  ggplot2::ggplot(ggplot2::aes(x = week, y = tickets, fill = key)) + 
+    # 棒グラフを描きます
+    ggplot2::geom_bar(stat = "identity", position = "dodge", alpha = 0.5)
+```
+
+
+## Tips
+
+### `ggplot2::geom_bar`関数
+棒グラフを層別に描くには描くには`stat`オプションと`position`オプションを指定する必要があります。`stat`オプションを指定していない場合（デフォルトで使用する場合）には`ggplot2::geom_histgram`関数と同様に度数を表示します。度数以外の任意の値をグラフ化するには`stat`オプションに`identity`を指定してください。
+
+```{r}
 data.frame(week = seq(1:53)) %>% 
   dplyr::left_join(open, by = "week") %>% 
   dplyr::left_join(close, by = "week") %>% 
   dplyr::mutate(open = ifelse(is.na(open), 0, open),
                 close = ifelse(is.na(close), 0, close)) %>% 
   dplyr::mutate(cumopen = cumsum(open), cumclose = cumsum(close)) %>% 
-# unpivot
   tidyr::gather(key = "key", value = "tickets", -week) %>% 
-  # オープン、クローズ数のみを抽出する
   dplyr::filter(key == "open" | key == "close") %>% 
-  # 横軸を週に
   ggplot2::ggplot(ggplot2::aes(x = week, y = tickets, fill = key)) + 
-    # 
+    ggplot2::geom_bar(stat = "identity", alpha = 0.5)
+```
+
+　  
+`position`オプションを指定しない場合（デフォルトで使用する場合）には上図のようにスタック形式で表示されますので、層別に個々に表示した場合は`position = "dodge"`を指定してください。
+```{r}
+data.frame(week = seq(1:53)) %>% 
+  dplyr::left_join(open, by = "week") %>% 
+  dplyr::left_join(close, by = "week") %>% 
+  dplyr::mutate(open = ifelse(is.na(open), 0, open),
+                close = ifelse(is.na(close), 0, close)) %>% 
+  dplyr::mutate(cumopen = cumsum(open), cumclose = cumsum(close)) %>% 
+  tidyr::gather(key = "key", value = "tickets", -week) %>% 
+  dplyr::filter(key == "open" | key == "close") %>% 
+  ggplot2::ggplot(ggplot2::aes(x = week, y = tickets, fill = key)) + 
     ggplot2::geom_bar(stat = "identity", position = "dodge", alpha = 0.5)
 ```
 
+　  
 
-## ヒント
-
-やりたいこと           | 利用する関数例                     | 備考
------------------------|------------------------------------|---
-棒グラフを描く         | `ggplot2::geom_bar`                | 
-Y軸を指定して描く      | `ggplot2::geom_bar(stat)`          | 
-因子毎に独立させて描く | `ggplot2::geom_bar(position)`      | 
-
-
-
-# 演習８
-
-## オープン・クローズチャート
+# 演習８ オープン・クローズチャート
 演習５と演習７で描いたグラフを一つにまとめて描いてください。
 
 ```{r}
@@ -367,12 +366,14 @@ close <- redmine %>%
   # フラグの数を用いて集計します
   dplyr::summarise(close = n())
 
-op <- data.frame(week = seq(1:53)) %>% 
+# 日毎のオープン・クローズチケットのデータフレームを作成する
+daily <- data.frame(week = seq(1:53)) %>% 
   dplyr::left_join(open, by = "week") %>% 
   dplyr::left_join(close, by = "week") %>% 
   tidyr::gather(key = "key", value = "tickets", -week) %>% 
   dplyr::mutate(tickets = ifelse(is.na(tickets), 0, tickets))
 
+# 累積のオープン・クローズチケットのデータフレームを作成する
 data.frame(week = seq(1:53)) %>% 
   dplyr::left_join(open, by = "week") %>% 
   dplyr::left_join(close, by = "week") %>% 
@@ -382,23 +383,19 @@ data.frame(week = seq(1:53)) %>%
   dplyr::select(-open, -close) %>% 
   dplyr::rename(open = cumopen, close = cumclose) %>% 
   tidyr::gather(key = "key", value = "tickets", -week) %>%
-  dplyr::bind_cols(op, .) %>%
+  # 日毎のデータフレームと結合する
+  dplyr::bind_cols(daily, .) %>%
   dplyr::rename(daily = key, cum = key1) %>% 
-  ggplot2::ggplot() +
+  # 棒グラフと折れ線グラフでは参照する列が異なる点に注意
+  ggplot2::ggplot() + 
     ggplot2::geom_bar(ggplot2::aes(x = week, y = tickets, fill = daily),
                       stat = "identity", position = "dodge", alpha = 0.5) +
     ggplot2::geom_line(ggplot2::aes(x = week1, y = tickets1, colour = cum))
 ```
 
+　  
 
-## ヒント
-ノーヒント
-
-
-
-# 演習９
-
-## 複数の因子で層別する
+# 演習９ 複数の因子で層別する
 `ToothGrowth`データセットを用いて`dose`と`supp`で層別ヒストグラムを描いてください。また、密度推定を重ねてみなさい。
 
 ```{r}
@@ -412,6 +409,7 @@ ToothGrowth %>%
     ggplot2::geom_density(ggplot2::aes(colour = supp), alpha = 0.5, size = 0.25)
 ```
 
+　  
 
-## License
+# License
 CC BY-NC-SA 4.0, Sampo Suzuki
