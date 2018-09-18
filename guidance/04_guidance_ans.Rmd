@@ -1,0 +1,449 @@
+---
+title: "第４回データ分析勉強会 演習解答例"
+author: "【午後の部】効率的で綺麗な可視化 [鈴木さんぽう, CC BY-NC-SA 4.0]"
+date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
+output:
+  html_document:
+    code_folding: show
+    css: style.css
+    df_print: paged
+    highlight: pygments
+    toc: yes
+    toc_float:
+      collapsed: yes
+      smooth_scroll: no
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+
+require(tidyverse)
+```
+
+　  
+第４回で行った演習の解答例です。必ずしもこのコードが最適という訳ではありませんので参考程度に利用してください。なお、勉強会当日説明とコードを変えてあるものもあります。  
+　  
+Rの関数はヘルプで記載されている引数の順番通りに引数を指定した場合は引数名を記述する必要はありませんが、あえて明示的に引数名を記述している場合もあります。また、関数の前に記述しているパッケージ名はパッケージが読み込まれている場合には記述必要はありませんが、追加パッケージに限り、どのパッケージの関数かが分かるようにあえて記述してあります。  
+
+　  
+
+# 演習１ アンスコムのデータ例
+アンスコムのデータ例（`anscombe`）を下図のようにグラフ化してください。  
+　  
+
+## 解答例
+この問題のポイントは描画に必要なデータを作り出す点にあります。
+```{r}
+# アンスコムのデータ例は組み込みデータセットとしてRに標準装備されています。
+anscombe %>% 
+  # 行を識別できるようにIDを付与しておきます（tibble::rowid_to_column関数でも可）
+  tibble::rownames_to_column("id") %>%
+  # id以外の変数（列）をkeyとvalueに渡します
+  tidyr::gather(key = "key", value = "value", -id) %>%
+  # key列のxn, ynを文字と数値に分割します
+  tidyr::separate(key, c("axis", "group"), 1) %>%
+  # axisとvalueを変数（列）へ展開します
+  tidyr::spread(axis, value) %>% 
+  # グラフの軸を指定します
+  ggplot2::ggplot(ggplot2::aes(x = x, y = y)) +
+    # 散布図を描きます
+    ggplot2::geom_point() +
+    # 回帰線を描きます（デフォルトでは外挿にあたる部分は描かれない点に注意）
+    ggplot2::geom_smooth(method = lm, se = FALSE, fullrange = TRUE) +
+    # グループでグラフを分けます
+    ggplot2::facet_wrap(~ group, nrow = 2)
+```
+
+
+## Tips
+
+### `fullrange`オプション
+`ggplot2::geom_smooth`関数で回帰線を描く場合、デフォルトでは外挿となる部分については描かれません。これは回帰による予測は既知のデータを基にし、そのデータの範囲の内側の数値を予測することでありデータの存在しない外挿については、誤った結果を招く可能性があるためです。  
+しかし、外挿に対しても回帰線を描きたい場合には`ggplot2::geom_smooth`関数で`fullrange`オプションを指定してください。  
+
+　  
+
+# 演習２ 層別散布図
+`iris`データセットを下図のようにグラフ化してください。
+
+## 解答例
+この演習のポイントは演習1と同様に描画に必要なデータを作り出す方法を学ぶことにあります。
+```{r}
+iris %>% 
+  # 行を識別できるようにIDを付与しておきます
+  tibble::rowid_to_column("ID") %>%
+  # まず、各部位の幅と長さをまとめます
+  tidyr::gather(key = "key", value = "value", -Species, -ID) %>% 
+  # 次に部位と幅・長さに分けます
+  tidyr::separate(key, into = c("Part", "Dimension")) %>%
+  # 幅と長さを展開します
+  tidyr::spread(key = Dimension, value) %>% 
+  # 横軸に幅、縦軸に長さをとります
+  ggplot2::ggplot(ggplot2::aes(x = Width, y = Length)) + 
+    # 品種を色別、部位を形にして散布図を描きます
+    ggplot2::geom_point(ggplot2::aes(colour = Species, shape = Part), size = 2)
+```
+
+
+## Tips
+
+### `shape`オプション
+`ggplot2::geom_point`関数のように点を描く関数で点の形状を変更するには`ggplot2::aes`関数で指定するエステティック・マッピングにおいて`shape`オプションを指定します。  
+
+　  
+
+# 演習３ ヒストグラム
+第３回の『メトリクス統計分析入門』の演習問題にある生産性（階級幅200）と工数予実割合（階級幅0.25）のヒストグラムを描いてください。
+
+```{r}
+# 生産性のヒストグラム
+gg_prod <- "../data/data.csv" %>% 
+  readr::read_csv(locale = locale(encoding = "CP932")) %>% 
+  dplyr::rename(project = 'プロジェクト名', prod = '生産性',
+                rate = '工数予実割合') %>% 
+  # NAがあるレコードを削除しておきます
+  dplyr::filter(!is.na(prod)) %>% 
+  # 生産性を横軸に指定します
+  ggplot2::ggplot(ggplot2::aes(x = prod)) + 
+    # 階級幅200でヒストグラムを描きます
+    ggplot2::geom_histogram(breaks = seq(0, 3000, 200))
+
+# 工数予実割合のヒスとグラム
+gg_rate <- "../data/data.csv" %>% 
+  readr::read_csv(locale = locale(encoding = "CP932")) %>% 
+  dplyr::rename(project = 'プロジェクト名', prod = '生産性',
+                rate = '工数予実割合') %>% 
+  # NAがあるレコードを削除しておきます
+  dplyr::filter(!is.na(rate)) %>% 
+  # 工数予実割合を横軸に指定します
+  ggplot2::ggplot(ggplot2::aes(x = rate)) + 
+    # 階級幅0.25でヒストグラムを描きます
+    ggplot2::geom_histogram(breaks = seq(0, 3, 0.25))
+
+gridExtra::grid.arrange(gg_prod, gg_rate)
+```
+
+
+## Tips
+
+### `breaks`オプション
+`geom_histgram`関数において階級幅を任意に指定する場合は`breaks`オプションを利用することをおすゝめします。`breaks`オプションは度数分布表における階級指定と同義です。  
+
+　  
+
+### `gridExtra`パッケージ
+`ggplot2`パッケージを用いて描いた複数のグラフを格子状に配してひとつの図（グラフ）にするには`gridExtra`パッケージが便利です。  
+```{r}
+gg_Petal.Length <- iris %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Petal.Length, fill = Species)) + 
+    ggplot2::geom_histogram(position = "identity", alpha = 0.75)
+
+gg_Petal.Width <- iris %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Petal.Width, fill = Species)) + 
+    ggplot2::geom_histogram(position = "identity", alpha = 0.75)
+
+gg_Sepal.Length <- iris %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Sepal.Length, fill = Species)) + 
+    ggplot2::geom_histogram(position = "identity", alpha = 0.75)
+
+gg_Sepal.Width <- iris %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Sepal.Width, fill = Species)) + 
+    ggplot2::geom_histogram(position = "identity", alpha = 0.75)
+
+gridExtra::grid.arrange(gg_Petal.Length, gg_Petal.Width,
+                        gg_Sepal.Length, gg_Sepal.Width,
+                        ncol = 2)
+```
+
+　  
+`gridExtra::grid.arrange`関数は単に`ggplot2`オブジェクトを配置するだけで、軸の調整等は行われない点に留意してください。  
+
+　  
+
+# 演習４ 層別箱ひげ図
+`iris`データセットを下図のようにグラフ化してください。
+
+```{r}
+iris %>% 
+  # まず、各部位の幅と長さをまとめます
+  tidyr::gather(key = "part", value = "value", -Species) %>% 
+  # 横軸に部位、縦軸に値をとります
+  ggplot2::ggplot(ggplot2::aes(x = part, y = value, fill = Species)) +
+    # 箱ひげ図を描きます
+    ggplot2::geom_boxplot(alpha = 0.5)
+```
+
+　  
+
+# 演習５ オープン・クローズチャート
+第３回の演習５で求めたデータを元にオープン・クローズチャートを描いてください。
+
+```{r}
+redmine <- "../data/redmine_data_utf8.csv" %>% 
+  readr::read_csv() %>% 
+  # 日本語変数名は英数文字に変換しておきます
+  dplyr::select(ID = '#', status = 'ステータス', open = '作成日',
+                close = '終了日') %>% 
+  # 日時のデータを日付のデータに変換しておきます
+  dplyr::mutate(open = lubridate::as_date(open),
+                close = lubridate::as_date(close))
+
+# Openチケットの数を数えます
+open <- redmine %>% 
+  # 集計対象の2017年のチケットのみに絞ります
+  dplyr::filter(open >= "2017-1-1" & open <= "2017-12-31") %>% 
+  # チケットがオープンになった日の週番号を求めます
+  dplyr::mutate(week = lubridate::week(open)) %>% 
+  dplyr::group_by(week) %>%
+  # フラグの数を用いて集計します
+  dplyr::summarise(open = n())
+
+# Closedチケットの数を数えます
+close <- redmine %>% 
+  # ステータスが"Closed"のものだけを対象とする
+  dplyr::filter(status == "Closed") %>% 
+  # 集計対象の2017年にオープンしたチケットのみに絞ります
+  dplyr::filter(open >= "2017-1-1" & open <= "2017-12-31") %>% 
+  # 更にその中で2017年にクローズしたチケットのみに絞ります
+  dplyr::filter(close >= "2017-1-1" & close <= "2017-12-31") %>% 
+  # チケットがクローズになった日の週番号を求めます
+  dplyr::mutate(week = lubridate::week(close)) %>% 
+  # 週番号でグループ化して
+  dplyr::group_by(week) %>%
+  # フラグの数を用いて集計します
+  dplyr::summarise(close = n())
+
+# 週次の集計するために53週分のデータフレームを作成します
+data.frame(week = seq(1:53)) %>% 
+  # 前段で集計したチケット数を週番号を元に結合します
+  dplyr::left_join(open, by = "week") %>% 
+  dplyr::left_join(close, by = "week") %>% 
+  # NA（チケットなし）のレコードを0（zero）に変換します
+  dplyr::mutate(open = ifelse(is.na(open), 0, open),
+                close = ifelse(is.na(close), 0, close)) %>% 
+  # 累積を計算します
+  dplyr::mutate(cumopen = cumsum(open), cumclose = cumsum(close)) %>% 
+  # unpivot
+  tidyr::gather(key = "key", value = "tickets", -week) %>% 
+  # 累積データのみを抽出します
+  dplyr::filter(key == "cumopen" | key == "cumclose") %>% 
+  ggplot2::ggplot(ggplot2::aes(x = week, y = tickets, colour = key)) + 
+    ggplot2::geom_line()
+```
+
+　  
+
+# 演習６ 層別箱ひげ図
+`iris`データセットのがく片（Sepal）の長さを下図のようにグラフ化してください。`All`は品種で分けない全てのデータです。
+
+```{r, warning=TRUE}
+iris %>% 
+  # Speciesの値を全てAllにします
+  dplyr::mutate(Species = "All") %>% 
+  # 元のirisデータセットを行方向に結合します
+  dplyr::bind_rows(iris) %>%
+  # 結合によって文字型になったSpiceisを因子型にします
+  dplyr::mutate(Species = as.factor(Species)) %>% 
+  # 行を識別できるようにIDを付与しておきます
+  tibble::rowid_to_column("ID") %>%
+  # ロング型に変換します
+  tidyr::gather(key = "key", value = "value", -Species, -ID) %>% 
+  # 部位でフィルタリングできるように分割します
+  tidyr::separate(key, into = c("Part", "Dimension")) %>%
+  # 幅と長さを展開しておきます
+  tidyr::spread(key = Dimension, value = value) %>% 
+  # 萼片（Sepal）だけを抽出します
+  dplyr::filter(Part == "Sepal") %>% 
+  # 横軸をSpeciesに指定します
+  ggplot2::ggplot(ggplot2::aes(x = Species)) +
+    # 縦軸に長さを指定して箱ひげ図を描きます
+    ggplot2::geom_boxplot(ggplot2::aes(y = Length))
+```
+
+　  
+
+# 演習７ オープン・クローズチャート
+第３回の演習５で求めたデータを元に週毎のオープン、クローズ数を棒グラフで描いてください。
+
+```{r}
+redmine <- "../data/redmine_data_utf8.csv" %>% 
+  readr::read_csv() %>% 
+  # 日本語変数名は英数文字に変換しておきます
+  dplyr::select(ID = '#', status = 'ステータス', open = '作成日',
+                close = '終了日') %>% 
+  # 日時のデータを日付のデータに変換しておきます
+  dplyr::mutate(open = lubridate::as_date(open),
+                close = lubridate::as_date(close))
+
+# Openチケットの数を数えます
+open <- redmine %>% 
+  # 集計対象の2017年のチケットのみに絞ります
+  dplyr::filter(open >= "2017-1-1" & open <= "2017-12-31") %>% 
+  # チケットがオープンになった日の週番号を求めます
+  dplyr::mutate(week = lubridate::week(open)) %>% 
+  dplyr::group_by(week) %>%
+  # フラグの数を用いて集計します
+  dplyr::summarise(open = n())
+
+# Closedチケットの数を数えます
+close <- redmine %>% 
+  # ステータスが"Closed"のものだけを対象とする
+  dplyr::filter(status == "Closed") %>% 
+  # 集計対象の2017年にオープンしたチケットのみに絞ります
+  dplyr::filter(open >= "2017-1-1" & open <= "2017-12-31") %>% 
+  # 更にその中で2017年にクローズしたチケットのみに絞ります
+  dplyr::filter(close >= "2017-1-1" & close <= "2017-12-31") %>% 
+  # チケットがクローズになった日の週番号を求めます
+  dplyr::mutate(week = lubridate::week(close)) %>% 
+  # 週番号でグループ化して
+  dplyr::group_by(week) %>%
+  # フラグの数を用いて集計します
+  dplyr::summarise(close = n())
+
+# 週次の集計
+# 週次の集計するために53週分のデータフレームを作成します
+data.frame(week = seq(1:53)) %>% 
+  # 前段で集計したチケット数を週番号を元に結合します
+  dplyr::left_join(open, by = "week") %>% 
+  dplyr::left_join(close, by = "week") %>% 
+  # NA（チケットなし）のレコードを0（zero）に変換します
+  dplyr::mutate(open = ifelse(is.na(open), 0, open),
+                close = ifelse(is.na(close), 0, close)) %>% 
+  # 累積を計算します
+  dplyr::mutate(cumopen = cumsum(open), cumclose = cumsum(close)) %>% 
+  # unpivot
+  tidyr::gather(key = "key", value = "tickets", -week) %>% 
+  # オープン、クローズ数のみを抽出する
+  dplyr::filter(key == "open" | key == "close") %>% 
+  # 横軸を週に縦軸をチケット数を指定します
+  ggplot2::ggplot(ggplot2::aes(x = week, y = tickets, fill = key)) + 
+    # 棒グラフを描きます
+    ggplot2::geom_bar(stat = "identity", position = "dodge", alpha = 0.5)
+```
+
+
+## Tips
+
+### `ggplot2::geom_bar`関数
+棒グラフを層別に描くには描くには`stat`オプションと`position`オプションを指定する必要があります。`stat`オプションを指定していない場合（デフォルトで使用する場合）には`ggplot2::geom_histgram`関数と同様に度数を表示します。度数以外の任意の値をグラフ化するには`stat`オプションに`identity`を指定してください。
+
+```{r}
+data.frame(week = seq(1:53)) %>% 
+  dplyr::left_join(open, by = "week") %>% 
+  dplyr::left_join(close, by = "week") %>% 
+  dplyr::mutate(open = ifelse(is.na(open), 0, open),
+                close = ifelse(is.na(close), 0, close)) %>% 
+  dplyr::mutate(cumopen = cumsum(open), cumclose = cumsum(close)) %>% 
+  tidyr::gather(key = "key", value = "tickets", -week) %>% 
+  dplyr::filter(key == "open" | key == "close") %>% 
+  ggplot2::ggplot(ggplot2::aes(x = week, y = tickets, fill = key)) + 
+    ggplot2::geom_bar(stat = "identity", alpha = 0.5)
+```
+
+　  
+`position`オプションを指定しない場合（デフォルトで使用する場合）には上図のようにスタック形式で表示されますので、層別に個々に表示した場合は`position = "dodge"`を指定してください。
+```{r}
+data.frame(week = seq(1:53)) %>% 
+  dplyr::left_join(open, by = "week") %>% 
+  dplyr::left_join(close, by = "week") %>% 
+  dplyr::mutate(open = ifelse(is.na(open), 0, open),
+                close = ifelse(is.na(close), 0, close)) %>% 
+  dplyr::mutate(cumopen = cumsum(open), cumclose = cumsum(close)) %>% 
+  tidyr::gather(key = "key", value = "tickets", -week) %>% 
+  dplyr::filter(key == "open" | key == "close") %>% 
+  ggplot2::ggplot(ggplot2::aes(x = week, y = tickets, fill = key)) + 
+    ggplot2::geom_bar(stat = "identity", position = "dodge", alpha = 0.5)
+```
+
+　  
+
+# 演習８ オープン・クローズチャート
+演習５と演習７で描いたグラフを一つにまとめて描いてください。
+
+```{r}
+redmine <- "../data/redmine_data_utf8.csv" %>% 
+  readr::read_csv() %>% 
+  # 日本語変数名は英数文字に変換しておきます
+  dplyr::select(ID = '#', status = 'ステータス', open = '作成日',
+                close = '終了日') %>% 
+  # 日時のデータを日付のデータに変換しておきます
+  dplyr::mutate(open = lubridate::as_date(open),
+                close = lubridate::as_date(close))
+
+# Openチケットの数を数えます
+open <- redmine %>% 
+  # 集計対象の2017年のチケットのみに絞ります
+  dplyr::filter(open >= "2017-1-1" & open <= "2017-12-31") %>% 
+  # チケットがオープンになった日の週番号を求めます
+  dplyr::mutate(week = lubridate::week(open)) %>% 
+  dplyr::group_by(week) %>%
+  # フラグの数を用いて集計します
+  dplyr::summarise(open = n())
+
+# Closedチケットの数を数えます
+close <- redmine %>% 
+  # ステータスが"Closed"のものだけを対象とする
+  dplyr::filter(status == "Closed") %>% 
+  # 集計対象の2017年にオープンしたチケットのみに絞ります
+  dplyr::filter(open >= "2017-1-1" & open <= "2017-12-31") %>% 
+  # 更にその中で2017年にクローズしたチケットのみに絞ります
+  dplyr::filter(close >= "2017-1-1" & close <= "2017-12-31") %>% 
+  # チケットがクローズになった日の週番号を求めます
+  dplyr::mutate(week = lubridate::week(close)) %>% 
+  # 週番号でグループ化して
+  dplyr::group_by(week) %>%
+  # フラグの数を用いて集計します
+  dplyr::summarise(close = n())
+
+# 日毎のオープン・クローズチケットのデータフレームを作成する
+daily <- data.frame(week = seq(1:53)) %>% 
+  dplyr::left_join(open, by = "week") %>% 
+  dplyr::left_join(close, by = "week") %>% 
+  tidyr::gather(key = "key", value = "tickets", -week) %>% 
+  dplyr::mutate(tickets = ifelse(is.na(tickets), 0, tickets))
+
+# 累積のオープン・クローズチケットのデータフレームを作成する
+data.frame(week = seq(1:53)) %>% 
+  dplyr::left_join(open, by = "week") %>% 
+  dplyr::left_join(close, by = "week") %>% 
+  dplyr::mutate(open = ifelse(is.na(open), 0, open),
+                close = ifelse(is.na(close), 0, close)) %>% 
+  dplyr::mutate(cumopen = cumsum(open), cumclose = cumsum(close)) %>% 
+  dplyr::select(-open, -close) %>% 
+  dplyr::rename(open = cumopen, close = cumclose) %>% 
+  tidyr::gather(key = "key", value = "tickets", -week) %>%
+  # 日毎のデータフレームと結合する
+  dplyr::bind_cols(daily, .) %>%
+  dplyr::rename(daily = key, cum = key1) %>% 
+  # 棒グラフと折れ線グラフでは参照する列が異なる点に注意
+  ggplot2::ggplot() + 
+    ggplot2::geom_bar(ggplot2::aes(x = week, y = tickets, fill = daily),
+                      stat = "identity", position = "dodge", alpha = 0.5) +
+    ggplot2::geom_line(ggplot2::aes(x = week1, y = tickets1, colour = cum))
+```
+
+　  
+
+# 演習９ 複数の因子で層別する
+`ToothGrowth`データセットを用いて`dose`と`supp`で層別ヒストグラムを描いてください。また、密度推定を重ねてみなさい。
+
+```{r}
+ToothGrowth %>% 
+  # doseを因子型に変換します
+  dplyr::mutate(dose = as.factor(dose)) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = len, fill = supp)) +
+    ggplot2::facet_wrap(~ dose) +
+    ggplot2::geom_histogram(ggplot2::aes(y = ..density..), alpha = 0.25,
+                            position = "identity") + 
+    ggplot2::geom_density(ggplot2::aes(colour = supp), alpha = 0.5, size = 0.25)
+```
+
+　  
+
+# 参考資料
+第4回の勉強会で説明した内容は基本的な部分のみですので、応用的な使い方などを知りたい場合は[こちらのページ<i class="fa-external-link-square"></i>](https://k-metrics.github.io/cabinet/visualize/index.html){target="_blank" title="Visualize"}を参照してください。  
+
+　  
+
+# License
+CC BY-NC-SA 4.0, Sampo Suzuki
