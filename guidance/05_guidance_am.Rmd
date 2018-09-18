@@ -28,7 +28,7 @@ require(tidyverse)
 
 # 再現性のあるレポーティング
 
-## R Markdown概説
+## R Markdownとは？
 * R Markdownとは？
     * Rのコードや**実行結果を文書に埋め込める**Markdown記法
     * 実行結果を直接レポートにできる仕組みは**他言語には（ほぼ）ない**
@@ -68,6 +68,8 @@ require(tidyverse)
 names(knitr::knit_engines$get())
 ```
 
+RStudio v1.2からR言語以外の言語サポートが強化されるらしい。
+
 
 ## R Markdown Basics
 * [R Markdown Basics](https://k-metrics.github.io/cabinet/communicate/rmd_basics.html)
@@ -100,14 +102,15 @@ names(knitr::knit_engines$get())
 * K-POPの何かの相関を分析してみる
 
 
-## データ例
+## オープンデータの例
 * [e-Stat<i class="fa fa-external-link"></i>](https://www.e-stat.go.jp/){target="_blank" title="政府統計の総合窓口"}
 * [過去の気象データ・ダウンロード<i class="fa fa-external-link"></i>](https://www.data.jma.go.jp/gmd/risk/obsdl/index.php){target="_blank" title="気象庁"}
+    * 1872年からの観測データ。気温の他に日照/日射、雲量/天気などのデータがダウンロード可能。ただし、ダウンロードできるデータ量に制限があるので必要に応じて分割してダウンロードする必要があります。
 * [データカタログサイト<i class="fa fa-external-link"></i>](http://www.data.go.jp/){target="_blank" title="DATA.GO.JP"}
 * [統計データ分析コンペティション<i class="fa fa-external-link"></i>](https://www.nstac.go.jp/statcompe/){target="_blank" title="教育用標準データセット"}
+    * e-Stat（総務省統計局）に収録されている「都道府県・市区町村のすがた（社会・人口統計体系）」の市区町村データから約100項目余を抜き出し、縦に市区町村、横にデータ項目が並ぶ表形式のデータに整備したもの。（当該ページより一部抜粋）
 * [統計解析に使えるデータセットまとめ<i class="fa fa-external-link"></i>](http://hoxo-m.hatenablog.com/entry/20120214/p1){target="_blank" title="ほくそ笑む"}
-* 上記以外に「サンプルデータ」や「オープンデータ」、「〇〇データ」などで検索
-    * 利用規約などに注意してください
+* 今回は**スクレイピング禁止**（スクレイピングは攻撃と見なされる可能性があり施設側に迷惑がかかるため）
 
 
 ## チーム分け（仮）

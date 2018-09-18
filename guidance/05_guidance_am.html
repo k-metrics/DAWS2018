@@ -113,7 +113,7 @@
       <h1 data-config-title><!-- populated from slide_config.json --></h1>
       <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
       <p data-config-presenter><!-- populated from slide_config.json --></p>
-            <p style="margin-top: 6px; margin-left: -2px;">2018年09月14日</p>
+            <p style="margin-top: 6px; margin-left: -2px;">2018年09月18日</p>
           </hgroup>
   </slide>
 
@@ -136,7 +136,7 @@
 
 </article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>再現性のあるレポーティング</h2></hgroup><article >
 
-</article></slide><slide class=""><hgroup><h2>R Markdown概説</h2></hgroup><article  id="r-markdown">
+</article></slide><slide class=""><hgroup><h2>R Markdownとは？</h2></hgroup><article  id="r-markdown">
 
 <ul>
 <li>R Markdownとは？
@@ -217,6 +217,8 @@
 ## [31] &quot;stan&quot;      &quot;block&quot;     &quot;block2&quot;    &quot;js&quot;        &quot;css&quot;      
 ## [36] &quot;sql&quot;       &quot;go&quot;        &quot;python&quot;    &quot;julia&quot;</pre>
 
+<p>RStudio v1.2からR言語以外の言語サポートが強化されるらしい。</p>
+
 </article></slide><slide class=""><hgroup><h2>R Markdown Basics</h2></hgroup><article  id="r-markdown-basics">
 
 <ul>
@@ -271,19 +273,23 @@
 <li>K-POPの何かの相関を分析してみる</li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>データ例</h2></hgroup><article >
+</article></slide><slide class=""><hgroup><h2>オープンデータの例</h2></hgroup><article >
 
 <ul>
 <li><a href='https://www.e-stat.go.jp/' title=''>e-Stat<i class="fa fa-external-link"></i></a></li>
-<li><a href='https://www.data.jma.go.jp/gmd/risk/obsdl/index.php' title=''>過去の気象データ・ダウンロード<i class="fa fa-external-link"></i></a></li>
-<li><a href='http://www.data.go.jp/' title=''>データカタログサイト<i class="fa fa-external-link"></i></a></li>
-<li><a href='https://www.nstac.go.jp/statcompe/' title=''>統計データ分析コンペティション<i class="fa fa-external-link"></i></a></li>
-<li><a href='http://hoxo-m.hatenablog.com/entry/20120214/p1' title=''>統計解析に使えるデータセットまとめ<i class="fa fa-external-link"></i></a></li>
-<li>上記以外に「サンプルデータ」や「オープンデータ」、「〇〇データ」などで検索
+<li><a href='https://www.data.jma.go.jp/gmd/risk/obsdl/index.php' title=''>過去の気象データ・ダウンロード<i class="fa fa-external-link"></i></a>
 
 <ul>
-<li>利用規約などに注意してください</li>
+<li>1872年からの観測データ。気温の他に日照/日射、雲量/天気などのデータがダウンロード可能。ただし、ダウンロードできるデータ量に制限があるので必要に応じて分割してダウンロードする必要があります。</li>
 </ul></li>
+<li><a href='http://www.data.go.jp/' title=''>データカタログサイト<i class="fa fa-external-link"></i></a></li>
+<li><a href='https://www.nstac.go.jp/statcompe/' title=''>統計データ分析コンペティション<i class="fa fa-external-link"></i></a>
+
+<ul>
+<li>e-Stat（総務省統計局）に収録されている「都道府県・市区町村のすがた（社会・人口統計体系）」の市区町村データから約100項目余を抜き出し、縦に市区町村、横にデータ項目が並ぶ表形式のデータに整備したもの。（当該ページより一部抜粋）</li>
+</ul></li>
+<li><a href='http://hoxo-m.hatenablog.com/entry/20120214/p1' title=''>統計解析に使えるデータセットまとめ<i class="fa fa-external-link"></i></a></li>
+<li>今回は<strong>スクレイピング禁止</strong>（スクレイピングは攻撃と見なされる可能性があり施設側に迷惑がかかるため）</li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>チーム分け（仮）</h2></hgroup><article >
