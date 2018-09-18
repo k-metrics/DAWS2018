@@ -28,7 +28,7 @@ require(tidyverse)
 
 # 再現性のあるレポーティング
 
-## R Markdown概説
+## R Markdownとは？
 * R Markdownとは？
     * Rのコードや**実行結果を文書に埋め込める**Markdown記法
     * 実行結果を直接レポートにできる仕組みは**他言語には（ほぼ）ない**
@@ -67,6 +67,8 @@ require(tidyverse)
 ```{r}
 names(knitr::knit_engines$get())
 ```
+
+RStudio v1.2からR言語以外の言語サポートが強化されるらしい。
 
 
 ## R Markdown Basics
