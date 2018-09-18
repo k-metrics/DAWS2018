@@ -45,7 +45,7 @@ anscombe %>%
   # axisとvalueを変数（列）へ展開します
   tidyr::spread(axis, value) %>% 
   # グラフの軸を指定します
-  ggplot2::ggplot(ggplot2::aes(x, y)) +
+  ggplot2::ggplot(ggplot2::aes(x = x, y = y)) +
     # 散布図を描きます
     ggplot2::geom_point() +
     # 回帰線を描きます（デフォルトでは外挿にあたる部分は描かれない点に注意）
@@ -131,6 +131,35 @@ gridExtra::grid.arrange(gg_prod, gg_rate)
 
 　  
 
+### `gridExtra`パッケージ
+`ggplot2`パッケージを用いて描いた複数のグラフを格子状に配してひとつの図（グラフ）にするには`gridExtra`パッケージが便利です。  
+```{r}
+gg_Petal.Length <- iris %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Petal.Length, fill = Species)) + 
+    ggplot2::geom_histogram(position = "identity", alpha = 0.75)
+
+gg_Petal.Width <- iris %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Petal.Width, fill = Species)) + 
+    ggplot2::geom_histogram(position = "identity", alpha = 0.75)
+
+gg_Sepal.Length <- iris %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Sepal.Length, fill = Species)) + 
+    ggplot2::geom_histogram(position = "identity", alpha = 0.75)
+
+gg_Sepal.Width <- iris %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Sepal.Width, fill = Species)) + 
+    ggplot2::geom_histogram(position = "identity", alpha = 0.75)
+
+gridExtra::grid.arrange(gg_Petal.Length, gg_Petal.Width,
+                        gg_Sepal.Length, gg_Sepal.Width,
+                        ncol = 2)
+```
+
+　  
+`gridExtra::grid.arrange`関数は単に`ggplot2`オブジェクトを配置するだけで、軸の調整等は行われない点に留意してください。  
+
+　  
+
 # 演習４ 層別箱ひげ図
 `iris`データセットを下図のようにグラフ化してください。
 
@@ -139,7 +168,7 @@ iris %>%
   # まず、各部位の幅と長さをまとめます
   tidyr::gather(key = "part", value = "value", -Species) %>% 
   # 横軸に部位、縦軸に値をとります
-  ggplot2::ggplot(ggplot2::aes(x = part, y = value, fill = Species)) + 
+  ggplot2::ggplot(ggplot2::aes(x = part, y = value, fill = Species)) +
     # 箱ひげ図を描きます
     ggplot2::geom_boxplot(alpha = 0.5)
 ```
@@ -408,6 +437,11 @@ ToothGrowth %>%
                             position = "identity") + 
     ggplot2::geom_density(ggplot2::aes(colour = supp), alpha = 0.5, size = 0.25)
 ```
+
+　  
+
+# 参考資料
+第4回の勉強会で説明した内容は基本的な部分のみですので、応用的な使い方などを知りたい場合は[こちらのページ<i class="fa-external-link-square"></i>](https://k-metrics.github.io/cabinet/visualize/index.html){target="_blank" title="Visualize"}を参照してください。  
 
 　  
 
