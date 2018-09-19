@@ -32,7 +32,7 @@ require(tidyverse)
 ## 再現性とは？
 * **データから分析結果が再現できる**こと
     * 再現可能性（Reproducibility）ともいわれる
-    * [CRAN Taskの一つ<i class="fa fa-external-link"></i>](https://cran.r-project.org/web/views/ReproducibleResearch.html){target="_blank" title="Reproducible Research"}
+    * [CRAN Taskの一つ（Reproducible Research）<i class="fa fa-external-link"></i>](https://cran.r-project.org/web/views/ReproducibleResearch.html){target="_blank" title="Reproducible Research"}
 
 　  
 
@@ -48,15 +48,14 @@ require(tidyverse)
 * 分析作業と文書化が同時に行える仕組みを利用する
     * この仕組みが**R Markdown**
 
-　  
-
 * R Markdownを使うと
     * **再現可能性**の確保
         * 常に同じ結果が得られる
     * **作業効率**の向上
         * 分析作業とレポーティングが同時進行
-    * **リバイズ（revise）対応**が容易
-        * 追加分析や別データでの分析など
+    * **リバイズ（改訂）対応**が容易
+        * 追加分析や別データでの分析への対応が容易
+        * Gitのような版管理システム（VCS）と組み合わせることで変更点の把握が容易
 
 
 ## R Markdownとは？
@@ -114,8 +113,24 @@ RStudio v1.2からR言語以外の言語サポート、特にPythonのサポー�
 
 
 ## Preview Editor
-R Markdownをプレビューしながら編集したい場合は、Microsftの [Visual Studio Code<i class="fa fa-external-link"></i>](https://code.visualstudio.com/){target="_blank" title=""}が便利
+プレビューしながら編集したい場合はMicrosoftの [Visual Studio Code<i class="fa fa-external-link"></i>](https://code.visualstudio.com/){target="_blank" title=""}が便利
 ![](./fig/vscode_preview.png)
+
+
+## 復習のためのリソース
+* [R Markdown Basics<i class="fa fa-external-link"></i>](https://k-metrics.github.io/cabinet/communicate/rmd_basics.html){target="_blank" title="勉強会Cabinet"}
+
+　  
+
+* [R Markdown入門<i class="fa fa-external-link"></i>](https://kazutan.github.io/kazutanR/Rmd_intro.html){target="_blank" title="Kazutan.R"}
+* [R Markdown<i class="fa fa-external-link"></i>](https://rmarkdown.rstudio.com/){target="_blank" title="RStudio"}
+* [R Markdown Cheat Sheet<i class="fa fa-external-link"></i>](https://www.rstudio.com/resources/cheatsheets/#rmarkdown){target="_blank" title="RStudio"}
+* [『再現可能性のすゝめ -RStudioによるデータ解析とレポート作成-』<i class="fa fa-external-link"></i>](http://www.kyoritsu-pub.co.jp/bookdetail/9784320112438){target="_blank" title="共立出版"} 
+
+　  
+R全般については  
+
+* [r-wakalang, 日本語slack community<i class="fa fa-external-link"></i>](https://qiita.com/uri/items/5583e91bb5301ed5a4ba){target="_blank" title="Qiita"}
 
 
 # 演習
