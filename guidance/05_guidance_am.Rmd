@@ -32,7 +32,7 @@ require(tidyverse)
 ## 再現性とは？
 * **データから分析結果が再現できる**こと
     * 再現可能性（Reproducibility）ともいわれる
-    * [CRAN Taskの一つ（Reproducible Research）<i class="fa fa-external-link"></i>](https://cran.r-project.org/web/views/ReproducibleResearch.html){target="_blank" title="Reproducible Research"}
+    * 再現可能性は[CRAN Taskの一つ（Reproducible Research）<i class="fa fa-external-link"></i>](https://cran.r-project.org/web/views/ReproducibleResearch.html){target="_blank" title="Reproducible Research"}
 
 　  
 
@@ -41,21 +41,21 @@ require(tidyverse)
 * 過去の分析を見直した時に何をやっているか理解できることも重要
     * その場限りの分析では知見の蓄積にならない
 * 文書化（記録）されない**手作業（データ整形、コピペなど）が再現性を阻害**する
-    * 人の記憶は絶対じゃない
+    * 人の記憶は絶対じゃない、手作業では間違いが混入しやすい
 
 
 ## 再現可能性を確保するには
-* 分析作業と文書化が同時に行える仕組みを利用する
+* 分析と文書化が同時に行える仕組みを利用する
     * この仕組みが**R Markdown**
 
 * R Markdownを使うと
     * **再現可能性**の確保
         * 常に同じ結果が得られる
     * **作業効率**の向上
-        * 分析作業とレポーティングが同時進行
+        * 分析とレポーティングが同時進行
     * **リバイズ（改訂）対応**が容易
         * 追加分析や別データでの分析への対応が容易
-        * Gitのような版管理システム（VCS）と組み合わせることで変更点の把握が容易
+        * 版管理システム（VCS）と組み合わせることで変更点の把握が容易
 
 
 ## R Markdownとは？
@@ -74,7 +74,7 @@ require(tidyverse)
 
 ## R Markdownでできること
 * **報告書・プレゼン資料の作成**
-    * PDF形式だけでなくdocx形式やRTF形式もサポート（[pandoc<i class="fa fa-external-link"></i>](http://sky-y.github.io/site-pandoc-jp/users-guide/){target="_blank" title="a universal document converter"}依存）
+    * HTML形式だけでなくPDF形式やdocx形式もサポート（[pandoc<i class="fa fa-external-link"></i>](http://sky-y.github.io/site-pandoc-jp/users-guide/){target="_blank" title="a universal document converter"}依存）
         * 同一ソースで複数のフォーマットに対応可能
 * **論文や書籍の作成**
     * （主に）海外系の学会・雑誌であれば [専用パッケージ<i class="fa fa-external-link"></i>](https://github.com/rstudio/rticles){target="_blank" title="LaTeX Journal Article Templates for R Markdown"}が用意されている
@@ -86,12 +86,12 @@ require(tidyverse)
     * データの俯瞰に便利な[ダッシュボード<i class="fa fa-external-link"></i>](https://rmarkdown.rstudio.com/flexdashboard/examples.html){target="_blank" title="flexdashboard"}を作成可能
 
 
-## 業務での利用例
-![これは架空データによる処理例です](./fig/record_checker_2.png)
+## データチェックでの利用例
+![これは架空データによる利用例です](./fig/record_checker_2.png)
 
 
 ## R以外の言語にも対応
-当然、使用する言語がインストールされていることが前提ですが、これだけの言語がChunkで使えます。
+これだけの言語がChunk内で使えます（言語環境がインストールされていることが前提）。
 ```{r}
 names(knitr::knit_engines$get())
 ```
@@ -220,7 +220,7 @@ E      |    |
 * これらを非エンジニアでも実現できるのが**tidyverseを中心としたモダンなR**
     * [Six Reasons To Learn R For Business<i class="fa fa-external-link"></i>](https://www.r-bloggers.com/six-reasons-to-learn-r-for-business/){target="_blank" title="R Bloggers"}
 * データ分析はソフトウェア開発者と同じようなプログラミング**周辺知識を必要**とする時代
-    * BTS(Redmine, etc), VSC(Git, etc), DBMS(SQL), VM(Docker, etc), ...
+    * BTS(Redmine, etc), VCS(Git, etc), DBMS(SQL), VM(Docker, etc), ...
 * 分析技術も必要だけど**使えるデータ**（$\neq$記録）を作らせるスキルも必要
     * データクレンジングでなんとかならない場合も多い
 
