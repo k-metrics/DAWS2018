@@ -209,6 +209,22 @@ D      |    |
 E      |    | 
 
 
-## License
+# クロージング
+
+
+## シリーズ最後に
+* **データハンドリング（前処理）は**可視化や分析に必要な**基本的なスキル**
+* データハンドリング（前処理）だけでも使い道は様々
+* データを扱う際には可視化して分布を確認する癖をつけておく
+* 更に一連の処理の際に**再現可能性を確保**しておくことが必須条件になりつつある
+* これらを非エンジニアでも実現できるのが**tidyverseを中心としたモダンなR**
+    * [Six Reasons To Learn R For Business<i class="fa fa-external-link"></i>](https://www.r-bloggers.com/six-reasons-to-learn-r-for-business/){target="_blank" title="R Bloggers"}
+* データ分析はソフトウェア開発者と同じようなプログラミング**周辺知識を必要**とする時代
+    * BTS(Redmine, etc), VSC(Git, etc), DBMS(SQL), VM(Docker, etc), ...
+* 分析技術も必要だけど**使えるデータ**（$\neq$記録）を作らせるスキルも必要
+    * データクレンジングでなんとかならない場合も多い
+
+
+## enjoy!
 
 CC BY-NC-SA 4.0, Sampo Suzuki
