@@ -86,8 +86,20 @@ require(tidyverse)
     * データの俯瞰に便利な[ダッシュボード<i class="fa fa-external-link"></i>](https://rmarkdown.rstudio.com/flexdashboard/examples.html){target="_blank" title="flexdashboard"}を作成可能
 
 
-## データチェックでの利用例
+## 報告書の例
 ![これは架空データによる利用例です](./fig/record_checker_2.png)
+
+
+## 書籍系の例
+![Edward Tufte Style](./fig/rmarkdown_tufte.png)
+
+
+## Webページの例
+![R Markdown Website + GitHub Pages](./fig/rmarkdown_website.png)
+
+
+## Blogの例
+![blogdown + Hugo（静的サイトジェネレーター） + GitHub + Netlify（静的Webサイトホスティング）](./fig/rmarkdown_blogdown.png)
 
 
 ## R以外の言語にも対応
