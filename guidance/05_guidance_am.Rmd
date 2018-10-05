@@ -44,6 +44,10 @@ require(tidyverse)
     * 人の記憶は絶対じゃない、手作業では間違いが混入しやすい
 
 
+## 再現可能性ムーブメント？
+![Wonderful R Vol.3 & Vol.4 連続で再現可能性がテーマ](./fig/WonderfulR.png)
+
+
 ## 再現可能性を確保するには
 * 分析と文書化が同時に行える仕組みを利用する
     * この仕組みが**R Markdown**
@@ -62,6 +66,7 @@ require(tidyverse)
 * Rのコードや**実行結果を文書に埋め込める**Markdown記法
 * 実行結果を直接レポートにできる仕組みは**他言語には（ほぼ）ない**
     * 例外：Jupyter Notebook（旧 IPython Notebook）
+        * これに触発されたのが**R Notebook**機能と思われる
 * Markdownとは？
     * **プレーンテキストで**体裁のある文書を作成するための記法
     * シンプル＆ライトウェイト、テキストなので**VCSで管理可能**
@@ -78,7 +83,7 @@ require(tidyverse)
         * 同一ソースで複数のフォーマットに対応可能
 * **論文や書籍の作成**
     * （主に）海外系の学会・雑誌であれば [専用パッケージ<i class="fa fa-external-link"></i>](https://github.com/rstudio/rticles){target="_blank" title="LaTeX Journal Article Templates for R Markdown"}が用意されている
-    * [bookdownパッケージ<i class="fa fa-external-link"></i>](https://bookdown.org/home/){target="_blank" title="Write HTML, PDF, ePub, and Kindle books with R Markdown"}を用いることで書籍原稿の作成が可能
+    * [bookdownパッケージ<i class="fa fa-external-link"></i>](https://bookdown.org/home/){target="_blank" title="Write HTML, PDF, ePub, and Kindle books with R Markdown"}を用いることで書籍の作成が可能
 * **Webページやblogの作成**
     * R Markdown Web Site機能が標準装備（今回のサイトはこれで作成）
     * [blogdownパッケージ<i class="fa fa-external-link"></i>](https://bookdown.org/yihui/blogdown/){target="_blank" title="blogdown"}を用いることでblogも作成可能
