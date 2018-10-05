@@ -45,7 +45,7 @@ require(tidyverse)
 
 
 ## 再現可能性ムーブメント？
-![Wonderful R Vol.3 & Vol.4 連続で再現可能性がテーマ](./fig/WonderfulR.png)
+![　　Wonderful R Vol.3 & Vol.4 連続で再現可能性がテーマ](./fig/WonderfulR.png)
 
 
 ## 再現可能性を確保するには
