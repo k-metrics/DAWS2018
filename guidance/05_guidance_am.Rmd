@@ -44,6 +44,10 @@ require(tidyverse)
     * 人の記憶は絶対じゃない、手作業では間違いが混入しやすい
 
 
+## 再現可能性ムーブメント？
+![　　Wonderful R Vol.3 & Vol.4 連続で再現可能性がテーマ](./fig/WonderfulR.png)
+
+
 ## 再現可能性を確保するには
 * 分析と文書化が同時に行える仕組みを利用する
     * この仕組みが**R Markdown**
@@ -62,6 +66,7 @@ require(tidyverse)
 * Rのコードや**実行結果を文書に埋め込める**Markdown記法
 * 実行結果を直接レポートにできる仕組みは**他言語には（ほぼ）ない**
     * 例外：Jupyter Notebook（旧 IPython Notebook）
+        * これに触発されたのが**R Notebook**機能と思われる
 * Markdownとは？
     * **プレーンテキストで**体裁のある文書を作成するための記法
     * シンプル＆ライトウェイト、テキストなので**VCSで管理可能**
@@ -69,7 +74,7 @@ require(tidyverse)
 * シンプルな記述
     * **YAML**（体裁、出力フォーマットを指定する箇所）
     * (Code) **Chunk**（実行させたいコードを記述する箇所）
-    * **Markdown**（コード以外の文書を記述する箇所）
+    * Text (**Markdown**)（コード以外の文書を記述する箇所）
 
 
 ## R Markdownでできること
@@ -78,7 +83,7 @@ require(tidyverse)
         * 同一ソースで複数のフォーマットに対応可能
 * **論文や書籍の作成**
     * （主に）海外系の学会・雑誌であれば [専用パッケージ<i class="fa fa-external-link"></i>](https://github.com/rstudio/rticles){target="_blank" title="LaTeX Journal Article Templates for R Markdown"}が用意されている
-    * [bookdownパッケージ<i class="fa fa-external-link"></i>](https://bookdown.org/home/){target="_blank" title="Write HTML, PDF, ePub, and Kindle books with R Markdown"}を用いることで書籍原稿の作成が可能
+    * [bookdownパッケージ<i class="fa fa-external-link"></i>](https://bookdown.org/home/){target="_blank" title="Write HTML, PDF, ePub, and Kindle books with R Markdown"}を用いることで書籍の作成が可能
 * **Webページやblogの作成**
     * R Markdown Web Site機能が標準装備（今回のサイトはこれで作成）
     * [blogdownパッケージ<i class="fa fa-external-link"></i>](https://bookdown.org/yihui/blogdown/){target="_blank" title="blogdown"}を用いることでblogも作成可能
@@ -119,14 +124,28 @@ RStudio v1.2からR言語以外の言語サポート、特にPythonのサポー�
     * (Code) Chunk（コードを記述する箇所）
         * **R Markdown特有**の記述
         * 様々な言語による実行コードの記述・実行と実行制御が可能
-    * Markdown（コード以外の文書を記述する箇所）
+    * (Text) Markdown（コード以外の文書を記述する箇所）
         * 軽量マークアップ言語（マークアップ言語：HTML, XMLなど）
         * [GitHub Flavored Markdown<i class="fa fa-external-link"></i>](https://guides.github.com/features/mastering-markdown/#GitHub-flavored-markdown){target="_blank" title="Mastering Markdown, GitHub Guides"}などの方言多数
 
 
-## Preview Editor
+## Live Preview Editor
 プレビューしながら編集したい場合はMicrosoftの [Visual Studio Code<i class="fa fa-external-link"></i>](https://code.visualstudio.com/){target="_blank" title=""}が便利
 ![](./fig/vscode_preview.png)
+
+
+## R Markdownの仕組み
+R Markdownによる再現可能性のあるドキュメント作成の仕組みは特別なものではなく汎用性のあるものです。ドキュメント生成の流れは以下のようになります。  
+
+<center> ![](https://d33wubrfki0l68.cloudfront.net/61d189fd9cdf955058415d3e1b28dd60e1bd7c9b/9791d/images/rmarkdownflow.png) </center>  
+　  
+`md`（markdown）ファイル以降の処理は[GitLab](https://about.gitlab.com/)や[Netlify](https://www.netlify.com/)などでも行われている処理と同じです。
+
+<center>
+> md -> **(build)** -> html, ... -> **(deploy)** -> service
+</center>
+　  
+加えて`Rmd`ファイルや`md`ファイルをGit/SVNで管理することにより**変更履歴まで含めた再現可能性**の確保とドキュメント発行が効率的にできるようになります。  
 
 
 ## 復習のためのリソース
@@ -137,6 +156,7 @@ RStudio v1.2からR言語以外の言語サポート、特にPythonのサポー�
 * [R Markdown入門<i class="fa fa-external-link"></i>](https://kazutan.github.io/kazutanR/Rmd_intro.html){target="_blank" title="Kazutan.R"}
 * [R Markdown<i class="fa fa-external-link"></i>](https://rmarkdown.rstudio.com/){target="_blank" title="RStudio"}
 * [R Markdown Cheat Sheet<i class="fa fa-external-link"></i>](https://www.rstudio.com/resources/cheatsheets/#rmarkdown){target="_blank" title="RStudio"}
+* [R Markdown: The Definitive Guide <i class="fa fa-external-link"></i>](https://bookdown.org/yihui/rmarkdown/){target="_blank" title="Bookdown"}
 * [『再現可能性のすゝめ -RStudioによるデータ解析とレポート作成-』<i class="fa fa-external-link"></i>](http://www.kyoritsu-pub.co.jp/bookdetail/9784320112438){target="_blank" title="共立出版"} 
 
 　  
@@ -171,7 +191,7 @@ R全般については
 * [統計データ分析コンペティション<i class="fa fa-external-link"></i>](https://www.nstac.go.jp/statcompe/){target="_blank" title="教育用標準データセット"}
     * e-Stat（総務省統計局）に収録されている「都道府県・市区町村のすがた（社会・人口統計体系）」の市区町村データから約100項目余を抜き出し、縦に市区町村、横にデータ項目が並ぶ表形式のデータに整備したもの。（当該ページより一部抜粋）
 * [統計解析に使えるデータセットまとめ<i class="fa fa-external-link"></i>](http://hoxo-m.hatenablog.com/entry/20120214/p1){target="_blank" title="ほくそ笑む"}
-* 今回は**スクレイピング禁止**（スクレイピングは攻撃と見なされる可能性があり施設側に迷惑がかかるため）
+* 今回は**スクレイピング禁止**（スクレイピングは攻撃と見なされる可能性あり）
 
 
 ## チーム分け（仮）
@@ -226,14 +246,14 @@ E      |    |
 
 ## シリーズ最後に
 * **データハンドリング（前処理）は**可視化や分析に必要な**基本的なスキル**
-* データハンドリング（前処理）だけでも使い道は様々
-* データを扱う際には可視化して分布を確認する癖をつけておく
+    * データハンドリング（前処理）だけでも使い道は様々
+    * データを扱う際には可視化して分布を確認する癖をつけておく
 * 更に一連の処理の際に**再現可能性を確保**しておくことが必須条件になりつつある
 * これらを非エンジニアでも実現できるのが**tidyverseを中心としたモダンなR**
     * [Six Reasons To Learn R For Business<i class="fa fa-external-link"></i>](https://www.r-bloggers.com/six-reasons-to-learn-r-for-business/){target="_blank" title="R Bloggers"}
 * データ分析はソフトウェア開発者と同じようなプログラミング**周辺知識を必要**とする時代
-    * BTS(Redmine, etc), VCS(Git, etc), DBMS(SQL), VM(Docker, etc), ...
-* 分析技術も必要だけど**使えるデータ**（$\neq$記録）を作らせるスキルも必要
+    * BTS(Redmine, etc), VCS(Git, etc), DBMS(SQL), VM(Docker, etc), Deploy, ...
+* 分析技術も必要だけど**使えるデータ（$\neq$記録）を作らせるスキル**も必要
     * データクレンジングでなんとかならない場合も多い
 
 
