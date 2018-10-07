@@ -82,50 +82,50 @@ $$y = b_{0} + b_{1}x_{1} + b_{2}x_{2} + ... + b_{n}x_{n}$$
 * 説明変数（与えられた値）から目的変数を**予測**する
 * 目的変数の値を大きく（または小さく）するには説明変数（これから与える値）をどうする（**制御**）か
 
-重回帰分析では上記のような線形モデル以外にも、**交互作用モデル**、2次式モデル、共分散分析モデル、一般線形化モデルなど様々なモデルを作ることができる。
+重回帰分析では上記のような線形モデル以外にも、交互作用モデル、2次式モデル、共分散分析モデル、一般線形化モデルなど様々なモデルを作ることができる。
 
 $$y = b_{0} + b_{1}x_{1} + ... + b_{n}x_{n} + b_{12}x_{1}x_{2} + ... + b_{(n-1)n}x_{n-1}x_{n}$$
 
 
 ## モデル式の評価
-（線形）重回帰モデルを評価するには線形単回帰モデルと同様に決定係数とp値に着目する。  
+（線形）重回帰モデルを評価するには線形単回帰モデルと同様に決定係数（自由度調整済み）とp値に着目する。  
 
-### 決定係数
+### 自由度調整済み決定係数
 ```{r}
 lm(mpg ~ cyl + disp + hp + drat + wt, data = mtcars) %>% broom::glance()
 ```
 　  
-決定係数（adj.r.squared）は説明変数が目的変数の変動の何パーセントを説明できているかを意味する値でこの場合は約$82\%$を説明変数で説明できていることが分かる。一方、モデルp値（p.value）は回帰式自体の有意性を表している。
+**自由度調整済み決定係数**（adj.r.squared）は説明変数が目的変数の変動の何パーセントを説明できているかを意味する値でこの場合は約$82\%$を説明できている。一方、**p値**（p.value）は回帰式自体の有意性を表している。
 
 
-## モデル式の判定（つづき）
-モデル式自体の評価を行ったら次に回帰係数のp値（p.value）を評価する。  
+## モデル式の評価（つづき）
+モデル式自体の評価を行ったら次に**回帰係数**をp値（p.value）を用いて評価する。  
 
 ### 回帰係数p値
 ```{r}
 lm(mpg ~ cyl + disp + hp + drat + wt, data = mtcars) %>% broom::tidy()
 ```
 　  
-この場合、切片と`cyl`、`drat`、`wt`を除いて適しているとは言い難い。
+　　この場合、切片と`cyl`、`hp`、`wt`を除いて適しているとは言い難い。
 
 
 ## 変数選択 
 このような場合、AIC値（赤池情報量基準）を元にしたステップワイズ変数選択を用いて最も適していると考えらえる変量を選択する方法がある。
 ```{r, include=FALSE}
-result <- step(lm(mpg ~ cyl + disp + hp + drat + wt + qsec + vs + am + gear + carb,
-     data = mtcars)) %>% broom::tidy()
+result <- step(lm(mpg ~ cyl + disp + hp + drat + wt, data = mtcars)) %>%
+  broom::tidy()
 ```
 
 ```{r, eval=FALSE}
-step(lm(mpg ~ cyl + disp + hp + drat + wt + qsec + vs + am + gear + carb,
-     data = mtcars)) %>% broom::tidy()
+step(lm(mpg ~ cyl + disp + hp + drat + wt, data = mtcars)) %>%
+  broom::tidy()
 ```
 
 ```{r, echo=FALSE}
 result
 ```
 
-このモデル式では決定係数が$0.8335$であり、先程のモデルより多くの変動を説明できていることが分かる。
+このモデル式では自由度調整済み決定係数が$0.8263$であり、先程のモデルよりは多くの変動を説明できていることが分かる。
 
 
 
@@ -134,25 +134,74 @@ result
 ## 次元縮約
 主成分分析や因子分析の目的である次元縮約とは多数ある変量をより少数の次元に要約することで変量の関係を把握しやすくするための手法です。次元縮約することで下表のようなことができるようになります。  
 
-　 | 主成分分析 | 因子分析 
-:-:|------------|---
-1  |共通因子の探索 | 共通因子の探索
-2  |　             | 独自要員の推定
-3  | 重みつき合計  | 
-4  | 可視化        | 
+　 | 主成分分析     | 因子分析 
+:-:|----------------|---
+1  | 共通因子の探索 | 共通因子の探索
+2  |　              | 独自要因の推定
+3  | 重みつき合計   | 
+4  | 可視化         | 
 
 
-## 分散説明率
-分散説明率とは分散の総和に対する各主成分得点の分散（の合計）の比。  
-<!-- $$\frac{主成分得点の分散（の合計）}{分散の総和（各変量の分散の総和=主成分得点の分散の総和）}$$ -->
+## 主成分分析
+主成分分析は前述の次元縮約を使って任意数の変量（変数）から「共通因子」を探索し「可視化」できる分析方法。乱暴にいえばｎ次元空間の変量（変数）の関係を２次元空間の主成分の関係へ写像する方法。  
 
-### 変量の分散総和と各変量の分散（の合計）
+![　『主成分分析について具体的な過程抜きでざっくり』より引用](./fig/PCA_image.png)
+
+
+## 分析手順
+主成分分析は以下の手順で行う  
+
+* 第一主軸としてｎ次元空間の中で最も分散の大きくなる軸を探す
+* 第二主軸として第一主軸に直行し最も分散が大きくなる軸を探す
+* 第三主軸として第一、第二主軸に直行し最も分散が大きくなる軸を探す
+* 以降、同様に第ｎ主軸までを探す
+* 各主成分軸上での個々の変数の座標値（主成分得点）を求める
+* 指標を使用して主成分数を決める
+    * 累積**分散説明率**
+    * １を超える**固有値の数**
+    * 固有値の折れ線の**屈曲点** − １
+
+
+## 分散の再配分
+主成分分析は各変量の分散を分散の総和を変えずに各主成分の分散に再分配する分析。  
+
+### 変量の分散総和と各変量の分散
 ```{r, echo=FALSE}
 mtcars %>% dplyr::select(wt, qsec, am) %>% 
   dplyr::summarize_all(.funs = var, na.rm = TRUE) %>% 
   tidyr::gather(key, value) %>% 
   dplyr::mutate(sum = sum(value)) %>% 
   tidyr::spread(key, value)
+```
+
+### 主成分得点の分散総和と主成分得点の分散
+```{r, echo=FALSE}
+mtcars %>% dplyr::select(wt, qsec, am) %>% 
+  prcomp(scale. = FALSE) %>% broom::tidy() %>% 
+  tidyr::spread(key = PC, value = value) %>% 
+  dplyr::select(-row) %>% 
+  dplyr::summarize_all(.funs = var, na.rm = TRUE) %>% 
+  tidyr::gather(key, value) %>% 
+  dplyr::mutate(sum = sum(value)) %>% 
+  tidyr::spread(key, value) %>% 
+  dplyr::rename(PC1 = `1`, PC2 = `2`, PC3 = `3`)
+```
+
+
+## 分散説明率
+分散説明率とは分散の総和に対する各主成分得点の分散の比のこと。
+
+### 主成分得点の分散総和と主成分得点の分散
+```{r, echo=FALSE}
+mtcars %>% dplyr::select(wt, qsec, am) %>% 
+  prcomp(scale. = FALSE) %>% broom::tidy() %>% 
+  tidyr::spread(key = PC, value = value) %>% 
+  dplyr::select(-row) %>% 
+  dplyr::summarize_all(.funs = var, na.rm = TRUE) %>% 
+  tidyr::gather(key, value) %>% 
+  dplyr::mutate(sum = sum(value)) %>% 
+  tidyr::spread(key, value) %>% 
+  dplyr::rename(PC1 = `1`, PC2 = `2`, PC3 = `3`)
 ```
 
 ### 主成分得点の分散総和と分散説明率
@@ -165,20 +214,43 @@ mtcars %>% dplyr::select(wt, qsec, am) %>%
   tidyr::gather(key, value) %>% 
   dplyr::mutate(sum = sum(value)) %>% 
   tidyr::spread(key, value) %>% 
-  dplyr::mutate(PC1 = round(`1`/sum, 2), PC2 = round(`2`/sum, 2),
-                PC3 = round(`3`/sum, 2)) %>% 
+  dplyr::mutate(PC1 = `1`/sum, PC2 = `2`/sum, PC3 = `3`/sum) %>% 
   dplyr::select(sum, PC1, PC2, PC3)
 ```
 
 この場合、第一、第二主成分得点で全体の$98\%$が説明できることが分かる。  
 
 
+## 固有値
+固有値は各変量の主成分負荷量の二乗和。主成分負荷量は主成分得点と変量の相関係数。
+
+### 主成分負荷量
+```{r, echo=FALSE}
+result <- mtcars %>% 
+  dplyr::select(wt, qsec, am) %>% 
+  prcomp(scale. = FALSE)
+
+t(t(result$rotation) * result$sdev) %>% as.data.frame()
+```
+
+### 固有値
+```{r, echo=FALSE}
+t(result$sdev ^ 2) %>% 
+  as.data.frame() %>% 
+  dplyr::rename(PC1 = V1, PC2 = V2, PC3 = V3)
+```
+
+
 ## 主成分分析の可視化
 主成分分析により求められた第一、第二主成分を用いて可視化することでデータの関係を把握しやすくなります。可視化には`ggbiplot`関数が便利です。
 ```{r, echo=FALSE}
+iris %>% dplyr::select(-Species) %>% prcomp(scale. = FALSE) %>% 
+  ggbiplot::ggbiplot(obs.scale = 1, var.scale = 1, ellipse = FALSE,
+                     circle = TRUE, groups = as.factor(iris$Species))
+
 mtcars %>% dplyr::select(wt, qsec, am) %>% prcomp(scale. = FALSE) %>% 
-  ggbiplot::ggbiplot(obs.scale = 1, var.scale = 1, ellipse = TRUE, circle = TRUE,
-                     groups = as.factor(mtcars$cyl))
+  ggbiplot::ggbiplot(obs.scale = 1, var.scale = 1, ellipse = FALSE,
+                     circle = TRUE, groups = as.factor(mtcars$cyl))
 ```
 
 
@@ -198,6 +270,7 @@ readr::read_csv("./data/pitc.csv", locale = locale(encoding = "CP932")) %>%
 
 ## 主成分分析結果（回転済）
 ```{r, echo=FALSE}
+
 header <- readr::read_csv("./data/pitc.csv", locale = locale(encoding = "CP932")) %>% 
   dplyr::select(row = `順位`, `投手名`, `チーム`)
 
@@ -206,8 +279,10 @@ readr::read_csv("./data/pitc.csv", locale = locale(encoding = "CP932")) %>%
   prcomp(., scale. = TRUE) %>% 
   broom::tidy() %>% 
   tidyr::spread(key = PC, value = value) %>% 
-  dplyr::left_join(header, ., by = "row")
+  dplyr::left_join(header, ., by = "row") %>% 
+  dplyr::select(-row)
 ```
+
 
 ## 主成分分析結果（可視化）
 ```{r, echo=FALSE}
@@ -248,6 +323,8 @@ readr::read_csv("./data/pitc.csv", locale = locale(encoding = "CP932")) %>%
 
 * [gacco 統計学III]()
 * [Rで主成分分析](https://www.casleyconsulting.co.jp/blog/engineer/119/)
+
+* [主成分分析とは <i class="fa fa-external-link"></i>](https://www.intage.co.jp/glossary/401/){target="_blank" title=""}
 
 ## enjoy!
 
