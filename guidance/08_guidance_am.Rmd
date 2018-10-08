@@ -157,9 +157,9 @@ result
 * 以降、同様に第ｎ主成分軸までを探す
 * 各主成分軸上での個々の変量（変数）の座標値（**主成分得点**）を求める
 * 指標を使用して主成分数を決める
-    1. 累積**分散説明率**（7〜8割以上ならまあいいかな）
-    1. 値が「1」を超える**固有値の数**
-    1. 降順に並べた固有値の折れ線の「**屈曲点** - 1」
+    1. 累積**分散説明率（寄与率）**（7〜8割以上ならまあいいかな）
+    1. 値が「1」を超える**（共分散の）固有値の数**
+    1. 降順に並べた（共分散の）固有値の折れ線の「**屈曲点** - 1」
     * 上記の値が一致しない場合は分析者の判断による
 
 
@@ -189,8 +189,8 @@ mtcars %>% dplyr::select(wt, qsec, am) %>%
 ```
 
 
-## 主成分数を決める（分散説明率）
-主成分数を決めるためにまず分散説明率を確認する。分散説明率とは分散の総和に対する各主成分得点の分散の比のこと。
+## 主成分数を決める（分散説明率（寄与率））
+主成分数を決めるためにまず分散説明率（寄与率）を確認する。分散説明率（寄与率）とは分散の総和に対する各主成分得点の分散の比のこと。
 
 ### 主成分得点の分散総和と主成分得点の分散
 ```{r, echo=FALSE}
@@ -205,7 +205,7 @@ mtcars %>% dplyr::select(wt, qsec, am) %>%
   dplyr::rename(PC1 = `1`, PC2 = `2`, PC3 = `3`)
 ```
 
-### 主成分得点の分散総和と分散説明率
+### 主成分得点の分散総和と分散説明率（寄与率）
 ```{r, echo=FALSE}
 mtcars %>% dplyr::select(wt, qsec, am) %>% 
   prcomp(scale. = FALSE) %>% broom::tidy() %>% 
@@ -222,8 +222,8 @@ mtcars %>% dplyr::select(wt, qsec, am) %>%
 この場合、第一、第二主成分得点で全体の$98\%$が説明できることが分かる。  
 
 
-## 主成分数を決める（固有値）
-固有値は各変量（変数）の**主成分負荷量**の二乗和。主成分負荷量は**主成分得点と変量（変数）との相関係数**。固有値が1を超えているものは主成分として採用できる。  
+## 主成分数を決める（（共分散の）固有値）
+（共分散の）固有値は各変量（変数）の**主成分負荷量**の二乗和。主成分負荷量は**主成分得点と変量（変数）との相関係数**。固有値が1を超えているものは主成分として採用できる。  
 
 ### 主成分負荷量（相関係数）
 ```{r, echo=FALSE}
@@ -280,21 +280,54 @@ mtcars %>% dplyr::select(wt, qsec, am) %>% prcomp(scale. = FALSE) %>%
 
 * 全ての主成分得点の**分散総和が「1」**
 * 第kと第l（$\neq$k）成分得点は**無相関**
-* 誤差の値を変えない
+* **誤差の値を変えない**
 
 回転させるのは主成分負荷量に「$0$」が多くなるようするため。  
+主成分負荷量が「$0$」（または、$0$に近い値）になれば、変量に対応する主成分は影響がない（少ない）ということであり、より、合理的な説明がしやすくなる。  
 
-主成分負荷量が「$0$」（または、$0$に近い値）になれば、対応する主成分は、その変量に対する影響がない（少ない）ということであり、より、合理的な説明がしやすくなる。  
 代表的な回転方法としてバリマックス回転法がある。  
 
 
-```{r, echo=FALSE}
-# これは回転？正規化？
-result <- mtcars %>% 
-  dplyr::select(wt, qsec, am) %>% 
+## Rで解く
+Rを利用して主成分分析を行うには`prcomp`関数を用います。数値データ以外は受け付けません。なお、`prcomp`関数の出力は**主成分得点**である点に注意してください（主成分負荷量ではありません）。  
+
+```{r}
+ggplot2::mpg %>% dplyr::select(displ, cyl, cty, hwy) %>% 
+  prcomp(scale. = TRUE)
+```
+
+
+## 分散説明率（寄与率）を求める
+分散説明率（寄与率）は`prcomp`関数の結果をサマライズするだけで求めることができます。  
+```{r}
+ggplot2::mpg %>% dplyr::select(displ, cyl, cty, hwy) %>% 
+  prcomp(scale. = TRUE) %>% summary()
+```
+
+
+## 
+```{r}
+ggplot2::mpg %>% dplyr::select(displ, cyl, cty, hwy) %>% 
+  prcomp(scale. = TRUE, retx = FALSE) %>% str()
+```
+
+
+## 主成分負荷量を求める
+主成分負荷量は前ページの主成分得点と標準偏差の積で求めることができます。転置処理（`t`関数）が必要な点に注意してください。  
+```{r}
+result <- ggplot2::mpg %>% dplyr::select(displ, cyl, cty, hwy) %>% 
   prcomp(scale. = TRUE)
 
 t(t(result$rotation) * result$sdev) %>% as.data.frame()
+```
+
+
+##　固有値
+固有値は主成分負荷量の二乗和ですので
+```{r}
+t(result$sdev ^ 2) %>% 
+  as.data.frame() %>% 
+  dplyr::rename(PC1 = V1, PC2 = V2, PC3 = V3)
 ```
 
 
@@ -366,6 +399,10 @@ readr::read_csv("./data/pitc.csv", locale = locale(encoding = "CP932")) %>%
 * [Rで主成分分析](https://www.casleyconsulting.co.jp/blog/engineer/119/)
 
 * [主成分分析とは <i class="fa fa-external-link"></i>](https://www.intage.co.jp/glossary/401/){target="_blank" title=""}
+
+* [ <i class="fa fa-external-link"></i>](https://www.statsbeginner.net/entry/2014/07/27/121214){target="_blank" title=""}
+* [ <i class="fa fa-external-link"></i>](https://statistics.co.jp/reference/software_R/statR_9_principal.pdf){target="_blank" title=""}
+
 
 ## enjoy!
 
