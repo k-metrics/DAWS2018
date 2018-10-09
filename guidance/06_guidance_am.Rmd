@@ -1,0 +1,316 @@
+---
+title: "第６回データ分析勉強会"
+author: "【午前の部】Redmineから自動的にチケットデータを取得しよう [松田元輝, CC BY-NC-SA 4.0]"
+date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
+output:
+  ioslides_presentation:
+    css: style_img.css
+    df_print: paged
+    highlight: pygments
+    logo: fig/hex-ggplot2.png
+    smaller: false
+    widescreen: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+
+require(shiny)
+require(tidyverse)
+require(ggplot2)
+require(redmineR)
+```
+
+
+## 本日の内容
+1. はじめに
+1. RedmineからAPI経由でチケットデータを取得する。
+1. チケットデータを整形する。
+1. データを可視化する。
+1. OpenCloseチャートを描く。
+1. Dashboardを作ってみる。（時間があれば）
+
+# はじめに
+
+## CSV出力 -> 可視化じゃだめなの？
+
+CSV出力だと**みんな**が**リアルタイム**で見れない。
+
+## 目指す場所
+
+メトリクスだけ見てても、開発の実態を知らないと気づけないことが多い。
+
+**開発者自身が**メトリクスを見て、**改善**を図るようにできると最強。
+
+そのため、**だれでも** **最新の**データが見れるようにしておくことが大切。
+
+自動的にRedmineからチケットデータを取得して、(なるべく)リアルタイムに表示する。
+
+## データ取得の方法
+
+今回はRedmineのREST API経由でチケットデータを取得します。
+
+RedmineのバックエンドにいるDB(MySQL,PostgreSQL,SQLite)に直接アクセスできるなら、
+DB直アクセスが一番おすすめです。
+
+* 取れないデータがない（REST APIからだと、Plug-inの拡張フィールドが取れなかったりする。）
+* 更新分だけを取得できる（updated_onでフィルタ）
+
+でも、大体はRedmineとDBは同じサーバ上に構築するので、
+DB側の設定でlocahostから以外のアクセスができないようになっている。（デフォルト）
+
+ということで、今回はとりあえずアカウントさえあればデータが取れるREST APIを使います。
+
+# Redmineへアクセスしてみる。
+
+## redmineRをインストールする。
+
+`redmineR`インストールの前に、`remotes`というパッケージをインストールしておく必要があるらしい。
+
+```
+install.packages("remotes")
+remotes::install_github("openanalytics/redmineR")
+```
+
+`redmineR`を読み込めればOK
+
+```
+library(redmineR)
+```
+
+## Redmineの情報を入力する。
+
+URLとAPIアクセストークンを環境変数に指定する。  
+APIアクセストークンはRedmineにログインして、個人設定ページから入手する。  
+
+```{r}
+Sys.setenv("REDMINE_URL" = "http://xxx.xxx.xxx/xxx")
+Sys.setenv("REDMINE_TOKEN" = "APIACCESSTOKEN")
+```
+
+## プロジェクトの一覧
+
+```{r context="data", cache=TRUE}
+redmine_projects()
+```
+
+# チケットデータを取得して整形する。
+
+## チケット一覧を取得する。
+
+`redmine_issues`でチケット一覧を取得する。  
+デフォルトだとクローズしたチケットを取得して来れない。  
+全てのステータスのチケットを取得するためには`status_id = "*"`を指定する。
+
+```{r load-data, context="data", cache=TRUE}
+issues <- redmine_issues(status_id = "*")
+```
+
+## デフォルトのチケット一覧を表示する。
+
+リストから選ぶ系のフィールドが`<list [2]>`になってしまっている。
+
+```{r echo=FALSE}
+issues
+```
+
+
+## データ型を見てみる
+
+```{r}
+sapply(issues,class)
+```
+
+
+## mutateを使ったけどうまく行かなかった。
+
+```
+issues %>%
+  dplyr::mutate(
+    created_on = as.POSIXct(strptime(created_on, "%Y-%m-%dT%H:%M:%S", tz="UCT")),
+    closed_on = as.POSIXct(strptime(closed_on, "%Y-%m-%dT%H:%M:%S", tz="UCT")),
+    updated_on = as.POSIXct(strptime(updated_on, "%Y-%m-%dT%H:%M:%S", tz="UCT")),
+    project = project["name"],
+    tracker = tracker[[1]]$name,
+    status = status[[1]]$name,
+    priority = priority[[1]]$name,
+    author = author[[1]]$name,
+    category = if_else(is.na(category), "", category[[2]]$name)
+    # fixed_version = fixed_version$name
+    # assigned_to = assigned_to$name
+    ) %>%
+  dplyr::select(id, project, tracker, status, priority, author, category, subject, description, done_ratio, created_on, updated_on, closed_on, estimated_hours) -> df
+```
+
+## 仕方ないので、for文で頑張る。
+
+次ページから詳細説明。
+
+```{r}
+df <- data.frame()
+for (i in 1:nrow(issues)){
+  df[i, "id"] <- issues[i, "id"]
+  df[i, "project"] <- issues[i, "project"][[1]]$name
+  df[i, "tracker"] <- issues[i, "tracker"][[1]]$name
+  df[i, "status"] <- issues[i, "status"][[1]]$name
+  df[i, "priority"] <- issues[i, "priority"][[1]]$name
+  df[i, "author"] <- issues[i, "author"][[1]]$name
+  df[i, "category"] <- ifelse(is.na(issues[i, "category"]), NA, issues[i, "category"][[1]]$name)
+  df[i, "fixed_version"] <- ifelse(is.na(issues[i, "fixed_version"]), NA, issues[i, "fixed_version"][[1]]$name)
+  df[i, "assigned_to"] <- ifelse(is.na(issues[i, "assigned_to"]), NA, issues[i, "assigned_to"][[1]]$name)
+  df[i, "created_on"] <- as.POSIXct(strptime(issues[i, "created_on"], "%Y-%m-%dT%H:%M:%S", tz="UCT"))
+  df[i, "updated_on"] <- as.POSIXct(strptime(issues[i, "updated_on"], "%Y-%m-%dT%H:%M:%S", tz="UCT"))
+  df[i, "closed_on"] <- as.POSIXct(strptime(issues[i, "closed_on"], "%Y-%m-%dT%H:%M:%S", tz="UCT"))
+}
+```
+
+## listの処理
+
+`issues$project`の構造はこんな感じなっている。
+
+```{r}
+issues[1, "project"]
+```
+
+`list`の1番目に`id`と`name`が入っている。
+
+```
+  df[i, "project"] <- issues[i, "project"][[1]]$name
+```
+
+## `NA`の処理
+
+`NA`が入っているカラムは`ifelse`で`NA`じゃなかった場合のみ、
+`list`の要素にアクセスするようにしないと、エラーになってしまう。
+
+```{r}
+  df[i, "category"] <- ifelse(is.na(issues[i, "category"]), NA, issues[i, "category"][[1]]$name)
+```
+
+## 日付の処理
+
+日付(created_on, closed_on, updated_on)は(残念ながら)文字列型。
+
+```{r}
+issues[1, "created_on"]
+```
+
+`as.POSIXct`を使って、日付型にする。
+
+```{r}
+  df[i, "created_on"] <- as.POSIXct(strptime(issues[i, "created_on"], "%Y-%m-%dT%H:%M:%S", tz="UCT"))
+```
+
+## これでオッケー？
+
+```{r echo=FALSE}
+df
+```
+
+## なんか日時がおかしい。。。
+
+```{r}
+df$created_on
+```
+
+
+## created_onなどをDate型に修正
+
+`as.Date.POSIXct`で日付型に変換する。
+
+```{r}
+as.Date.POSIXct(1538719009)
+```
+
+`mutate`で1つずつ変換してもいいが、`mutate_at`を使えば、まとめて変換できる。
+
+```{r}
+df <- df %>% 
+  dplyr::mutate_at(vars(created_on,updated_on,closed_on), as.Date.POSIXct)
+```
+
+## 日付が修正された
+
+```{r echo=FALSE}
+df
+```
+
+
+# 可視化する。
+
+## 棒グラフ
+
+```{r}
+df %>% 
+  ggplot(aes(x = status)) +
+  geom_bar() +
+  theme_bw(base_family = "HiraKakuProN-W3")
+```
+
+#＃ 円グラフ
+
+```{r}
+df %>% 
+  ggplot(aes(x="", fill=tracker)) +
+  geom_bar(width = 1) +
+  coord_polar("y") +
+  theme_bw(base_family = "HiraKakuProN-W3")
+```
+
+# Open/Closeチャートを描く。
+
+## Openチャートを作る
+
+```{r}
+open <- df %>% 
+  dplyr::group_by(created_on) %>% 
+  dplyr::count() %>% 
+  dplyr::rename(date = created_on,
+                open = n)
+open
+```
+
+## Closeチャートを作る
+
+```{r}
+close <- df %>% 
+  dplyr::filter(status=="終了") %>% 
+  dplyr::group_by(closed_on) %>% 
+  dplyr::count() %>% 
+  dplyr::rename(
+    date = closed_on,
+    close = n
+  )
+close
+```
+
+
+## openとcloseを結合
+
+```{r}
+max_date <- max(open$date, close$date)
+min_date <- min(open$date, close$date)
+openclose <- data.frame(date=seq(min_date, max_date, by = "day")) %>% 
+  dplyr::left_join(open, by = "date") %>%
+  dplyr::left_join(close, by = "date") %>% 
+  replace_na(list(open=0, close=0))
+
+openclose
+```
+
+## Open/Closeチャートを描く
+
+```{r}
+openclose$cumsum_open <- cumsum(openclose$open)
+openclose$cumsum_close <- cumsum(openclose$close)
+openclose
+```
+
+## Open/Closeチャートを描く
+
+```{r}
+openclose %>% 
+  ggplot(aes(x = date)) +
+  geom_line(aes(y = cumsum_close, color = "cumsum_close")) +
+  geom_line(aes(y = cumsum_open, color = "cumsum_open"))
+```

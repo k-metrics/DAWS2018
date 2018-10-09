@@ -1,0 +1,120 @@
+---
+title: "Redmine"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+require(tidyverse)
+require(redmineR)
+```
+
+```{r}
+Sys.setenv("REDMINE_URL" = "http://xxx.xxx.xxx/xxx")
+Sys.setenv("REDMINE_TOKEN" = "APIACCESSTOKEN")
+```
+```{r load-data, context="data", cache=TRUE}
+issues = redmine_issues(status_id = "*")
+df <- data.frame()
+for (i in 1:nrow(issues)){
+  df[i, "id"] <- issues[i, "id"]
+  df[i, "project"] <- issues[i, "project"][[1]]$name
+  df[i, "tracker"] <- issues[i, "tracker"][[1]]$name
+  df[i, "status"] <- issues[i, "status"][[1]]$name
+  df[i, "priority"] <- issues[i, "priority"][[1]]$name
+  df[i, "author"] <- issues[i, "author"][[1]]$name
+  df[i, "category"] <- ifelse(is.na(issues[i, "category"]), NA, issues[i, "category"][[1]]$name)
+  df[i, "fixed_version"] <- ifelse(is.na(issues[i, "fixed_version"]), NA, issues[i, "fixed_version"][[1]]$name)
+  df[i, "assigned_to"] <- ifelse(is.na(issues[i, "assigned_to"]), NA, issues[i, "assigned_to"][[1]]$name)
+  df[i, "created_on"] <- as.POSIXct(strptime(issues[i, "created_on"], "%Y-%m-%dT%H:%M:%S", tz="UCT"))
+  df[i, "updated_on"] <- as.POSIXct(strptime(issues[i, "updated_on"], "%Y-%m-%dT%H:%M:%S", tz="UCT"))
+  df[i, "closed_on"] <- as.POSIXct(strptime(issues[i, "closed_on"], "%Y-%m-%dT%H:%M:%S", tz="UCT"))
+}
+df <- df %>% 
+  dplyr::mutate_at(vars(created_on,updated_on,closed_on), as.Date.POSIXct)
+```
+
+```{r create-openclose, context="data", cache=TRUE}
+open <- df %>% 
+  dplyr::group_by(created_on) %>% 
+  dplyr::count() %>% 
+  dplyr::rename(date = created_on,
+                open = n)
+close <- df %>% 
+  dplyr::filter(status=="終了") %>% 
+  dplyr::group_by(closed_on) %>% 
+  dplyr::count() %>% 
+  dplyr::rename(
+    date = closed_on,
+    close = n
+  )
+max_date <- max(open$date, close$date)
+min_date <- min(open$date, close$date)
+openclose <- data.frame(date=seq(min_date, max_date, by = "day")) %>% 
+  dplyr::left_join(open, by = "date") %>%
+  dplyr::left_join(close, by = "date") %>% 
+  replace_na(list(open=0, close=0))
+openclose$cumsum_open <- cumsum(openclose$open)
+openclose$cumsum_close <- cumsum(openclose$close)
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### オープン/クローズチャート
+
+```{r}
+openclose %>% 
+  ggplot(aes(x = date)) +
+  geom_line(aes(y = cumsum_close, color = "cumsum_close")) +
+  geom_line(aes(y = cumsum_open, color = "cumsum_open"))
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### 総チケット数
+
+```{r}
+df %>% 
+  nrow() %>% 
+  valueBox()
+```
+
+### クローズチケット数
+
+```{r}
+df %>% 
+  dplyr::filter(status=="終了") %>% 
+  nrow() %>% 
+  valueBox()
+```
+
+### バグチケットのクローズ率
+
+```{r}
+open_bugs <- df %>% 
+  dplyr::filter(tracker=="バグ") %>% 
+  nrow()
+close_bugs <- df %>% 
+  dplyr::filter(tracker=="バグ", status=="終了") %>% 
+  nrow()
+
+gauge(close_bugs, min = 0, max = open_bugs)
+```
+
+### 機能実装率
+
+```{r}
+nopen <- df %>% 
+  dplyr::filter(tracker=="機能") %>% 
+  nrow()
+nclose <- df %>% 
+  dplyr::filter(tracker=="機能", status=="終了") %>% 
+  nrow()
+
+gauge(nclose, min = 0, max = nopen)
+```
