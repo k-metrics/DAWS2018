@@ -1,0 +1,57 @@
+---
+title: "第６回データ分析勉強会"
+author: "【午後の部】ダッシュボードを作ってみよう"
+date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
+output:
+  ioslides_presentation:
+    css: style_img.css
+    df_print: paged
+    highlight: pygments
+    logo: fig/hex-rmarkdown.png
+    smaller: false
+    widescreen: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Rのダッシュボードツール選定
+
+**R Markdown**で書けて、**Super easy**なflexdashboardを使いましょう。
+
+|flexdashboard|shinydashboard|
+|:---|:---|
+|R Markdown|Shiny UI code|
+|Super easy|Not quite as easy|
+|Static or dynamic|Dynamic|
+|CSS flexbox layout|Bootstrap grid layout|
+
+https://shiny.rstudio.com/articles/dashboards.html
+
+## flexdashboard用Rmarkdownファイルを作成
+
+ファイル -> 新規作成 -> R Markdown
+
+```{r out.heigh = "100px"}
+knitr::include_graphics("https://kazutan.github.io/kazutanR/pics/fdb_create.png")
+```
+
+## レイアウト
+
+`orientation: columns` or `orientation: rows` でグラフの区切り方（レイアウト）が変わる。  
+`-------`と`### `を使ってグラフの領域を指定する。
+
+[ここ](https://rmarkdown.rstudio.com/flexdashboard/using.html#layout)でわかりやすく解説されている。
+
+## 使えるグラフやコンポーネント
+
+- 普通のplot(ggplot2など)
+- [valueBox](https://rmarkdown.rstudio.com/flexdashboard/using.html#value_boxes)(数値)や[gauge](https://rmarkdown.rstudio.com/flexdashboard/using.html#gauges)(メーター)などダッシュボードっぽいもの
+
+## 演習
+
+あとは好きなようにダッシュボードを作ってみましょう！
+
+いろんな例  
+https://rmarkdown.rstudio.com/flexdashboard/examples.html
