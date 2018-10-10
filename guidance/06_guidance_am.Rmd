@@ -1,13 +1,13 @@
 ---
 title: "第６回データ分析勉強会"
-author: "【午前の部】Redmineから自動的にチケットデータを取得しよう [松田元輝, CC BY-NC-SA 4.0]"
+author: "【午前の部】Redmineから自動的にチケットデータを取得しよう"
 date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
 output:
   ioslides_presentation:
     css: style_img.css
     df_print: paged
     highlight: pygments
-    logo: fig/hex-ggplot2.png
+    logo: fig/hex-rmarkdown.png
     smaller: false
     widescreen: true
 ---
@@ -94,7 +94,7 @@ Sys.setenv("REDMINE_TOKEN" = "APIACCESSTOKEN")
 redmine_projects()
 ```
 
-# チケットデータを取得して整形する。
+# チケットデータを取得して整形
 
 ## チケット一覧を取得する。
 
@@ -174,7 +174,7 @@ issues[1, "project"]
 
 `list`の1番目に`id`と`name`が入っている。
 
-```
+```{r}
   df[i, "project"] <- issues[i, "project"][[1]]$name
 ```
 
@@ -184,7 +184,8 @@ issues[1, "project"]
 `list`の要素にアクセスするようにしないと、エラーになってしまう。
 
 ```{r}
-  df[i, "category"] <- ifelse(is.na(issues[i, "category"]), NA, issues[i, "category"][[1]]$name)
+  df[i, "category"] <- 
+    ifelse(is.na(issues[i, "category"]), NA, issues[i, "category"][[1]]$name)
 ```
 
 ## 日付の処理
@@ -198,7 +199,8 @@ issues[1, "created_on"]
 `as.POSIXct`を使って、日付型にする。
 
 ```{r}
-  df[i, "created_on"] <- as.POSIXct(strptime(issues[i, "created_on"], "%Y-%m-%dT%H:%M:%S", tz="UCT"))
+  df[i, "created_on"] <-
+    as.POSIXct(strptime(issues[i, "created_on"], "%Y-%m-%dT%H:%M:%S", tz="UCT"))
 ```
 
 ## これでオッケー？
@@ -241,21 +243,17 @@ df
 ## 棒グラフ
 
 ```{r}
-df %>% 
-  ggplot(aes(x = status)) +
-  geom_bar() +
-  theme_bw(base_family = "HiraKakuProN-W3")
+df %>% ggplot(aes(x = status)) +
+  geom_bar() + theme_bw(base_family = "HiraKakuProN-W3")
 ```
 
-#＃ 円グラフ
+## 円グラフ
 
-```{r}
-df %>% 
-  ggplot(aes(x="", fill=tracker)) +
-  geom_bar(width = 1) +
-  coord_polar("y") +
-  theme_bw(base_family = "HiraKakuProN-W3")
+```{r pie-chart-chunk}
+df %>% ggplot(aes(x="", fill=tracker)) +
+  geom_bar(width = 1) + coord_polar("y") + theme_bw(base_family = "HiraKakuProN-W3")
 ```
+
 
 # Open/Closeチャートを描く。
 

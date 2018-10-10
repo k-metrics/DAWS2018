@@ -81,7 +81,7 @@ Column {data-width=350}
 ```{r}
 df %>% 
   nrow() %>% 
-  valueBox()
+  valueBox(icon="glyphicon-unchecked")
 ```
 
 ### クローズチケット数
@@ -90,7 +90,7 @@ df %>%
 df %>% 
   dplyr::filter(status=="終了") %>% 
   nrow() %>% 
-  valueBox()
+  valueBox(icon="glyphicon-check")
 ```
 
 ### バグチケットのクローズ率
