@@ -187,7 +187,7 @@ output:
 　  
 
 ## 第5回 再現性のあるレポーティング {#S05}
-第3回までの総括として**`rmarkdown`**パッケージを用いた報告書作成を学びます。
+第4回までの総括として**`rmarkdown`**パッケージを用いた報告書作成を学びます。
 
 * [rmarkdown <i class="fa fa-external-link"></i>](https://rmarkdown.rstudio.com/){target="_blank" title="rmarkdown, RStudio"} : Dynamic Documents for R
 
