@@ -7,7 +7,7 @@ output:
     css: style_img.css
     df_print: paged
     highlight: pygments
-    logo: fig/hex-rmarkdown.png
+    # logo: fig/hex-rmarkdown.png
     smaller: false
     widescreen: true
 ---
@@ -15,10 +15,11 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 
-require(shiny)
-require(tidyverse)
-require(ggplot2)
+# require(shiny)      # shinyは使う必要はないと思われ
+# require(ggplot2)    # ggplot2はtidyverseから呼び出される
 require(redmineR)
+require(lubridate)    # 日時を扱うパッケージ(tidyverseシリーズ)
+require(tidyverse)    # tidyverseは最後に呼び出す方がコンフリクトの影響小
 ```
 
 
@@ -67,14 +68,15 @@ DB側の設定でlocahostから以外のアクセスができないようにな�
 
 `redmineR`インストールの前に、`remotes`というパッケージをインストールしておく必要があるらしい。
 
-```
+<!-- チャンクはRにしておくとコードハイライトが有効になる -->
+```{r, eval=FALSE}
 install.packages("remotes")
 remotes::install_github("openanalytics/redmineR")
 ```
 
 `redmineR`を読み込めればOK
 
-```
+```{r, eval=FALSE}
 library(redmineR)
 ```
 
@@ -83,15 +85,21 @@ library(redmineR)
 URLとAPIアクセストークンを環境変数に指定する。  
 APIアクセストークンはRedmineにログインして、個人設定ページから入手する。  
 
-```{r}
+```{r, eval=FALSE}
 Sys.setenv("REDMINE_URL" = "http://xxx.xxx.xxx/xxx")
 Sys.setenv("REDMINE_TOKEN" = "APIACCESSTOKEN")
 ```
 
-## プロジェクトの一覧
+<!-- こうすると実行はされるけどコードは表示されない -->
+```{r, include=FALSE}
+Sys.setenv("REDMINE_URL" = "https://www.redmine.org/")
+Sys.setenv("REDMINE_TOKEN" = "APIACCESSTOKEN")
+```
 
-```{r context="data", cache=TRUE}
-redmine_projects()
+## プロジェクトの一覧
+<!-- `redminer_df`クラスは何故かpaged表示をしてくれないので、表示の際はデータフレームに変換しておくと見やすい-->
+```{r context="data", cache=FALSE}
+redmineR::redmine_projects() %>% as.data.frame()
 ```
 
 # チケットデータを取得して整形
@@ -103,7 +111,9 @@ redmine_projects()
 全てのステータスのチケットを取得するためには`status_id = "*"`を指定する。
 
 ```{r load-data, context="data", cache=TRUE}
-issues <- redmine_issues(status_id = "*")
+# issues <- redmine_issues(status_id = "*")
+# issues <- redmine_issues()    # テスト用にcloseを除く
+# save(issues, file = "../data/_redmine_issues_all.RData")
 ```
 
 ## デフォルトのチケット一覧を表示する。
@@ -111,7 +121,7 @@ issues <- redmine_issues(status_id = "*")
 リストから選ぶ系のフィールドが`<list [2]>`になってしまっている。
 
 ```{r echo=FALSE}
-issues
+issues %>% as.data.frame()
 ```
 
 
@@ -123,6 +133,41 @@ sapply(issues,class)
 
 
 ## mutateを使ったけどうまく行かなかった。
+
+```{r}
+# リスト型変数にNAが含まれていても展開するための関数（）
+map_if_chr <- function(.x, .f) {
+  purrr::map_if(.x, !is.na(.x), .f) %>% 
+    purrr::map_chr(1L) %>% 
+    return()
+}
+
+# テスト用
+issues %>% 
+  # dplyr::sample_n(100) %>%   # テスト用に１００件に絞る
+  # custom_fieldsとparentが上手く展開できない...
+  dplyr::select(-custom_fields, -parent) %>% 
+  dplyr::mutate(
+    pjid = purrr::map_int(project, 'id'),     # 一種のキーなのでNAはありえない
+    project = map_if_chr(project, 'name'),
+    tracker = map_if_chr(tracker, 'name'),
+    status = map_if_chr(status, 'name'),
+    priority = map_if_chr(priority, 'name'),
+    author = map_if_chr(author, 'name'),
+    assigned_to = map_if_chr(assigned_to, 'name'),
+    category = map_if_chr(category, 'name'),
+    created_on = lubridate::ymd_hms(created_on, tz = "UTC"),
+    updated_on = lubridate::ymd_hms(updated_on, tz = "UTC"),
+    closed_on = lubridate::ymd_hms(closed_on, tz = "UTC"),
+    # custom_fields = map_if_chr(custom_fields, 'name'),
+    fixed_version = map_if_chr(fixed_version, 'name'),
+    start_date = lubridate::as_date(start_date),
+    due_date = lubridate::as_date(due_date)
+    # parent = map_if_chr(parent, 'name')
+  )
+# %>% readr::write_excel_csv(., path = "../data/_redmine_issues_all.csv")
+```
+
 
 ```
 issues %>%
