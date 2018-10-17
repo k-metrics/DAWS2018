@@ -205,7 +205,27 @@ output:
 　  
 
 ## 第6回 実践チケット分析 {#S06}
-（準備中）  
+[ Redmine <i class="fa fa-external-link"></i> ](http://www.redmine.org/){target="_blank" title="a flexible project management web application"}から [ REST API <i class="fa fa-external-link"></i> ](http://www.redmine.org/projects/redmine/wiki/Rest_api){target="_blank" title="Redmine API"}経由で自動的にチケットデータを取得し、ダッシュボードを作る流れをハンズオンで体験いただきます。  
+　  
+
+### 午前の部
+Redmineからチケットデータを取得して可視化する。  
+
+* なぜ自動取得するのか？
+* 前提パッケージのインストール
+* チケットデータの取得
+* データの整形
+* 簡単な可視化
+* オープン・クローズチャート
+
+　  
+
+### 午後の部
+ダッシュボードを作る。  
+
+* [ flexdashboard <i class="fa fa-external-link"></i> ](https://rmarkdown.rstudio.com/flexdashboard/){target="_blank" title="Easy interactive dashboards for R"}の説明
+* 実際にダッシュボードを作ってみる。
+
 　  
 
 ## 第7回 データインポート演習 {#S07}
