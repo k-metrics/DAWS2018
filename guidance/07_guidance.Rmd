@@ -1,0 +1,284 @@
+---
+title: "第７回データ分析勉強会"
+subtitle: "スクレイピングの呪文を覚えて、tidyverseをモノにする"
+author: "かとうたくみ"
+date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
+output:
+  ioslides_presentation:
+    css: style_img_07.css
+    df_print: paged
+    smaller: false
+    widescreen: true
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+
+require(tidyverse)
+require(rvest)
+```
+
+## 今日のゴール
+
+* 三法師匠の教えを身に備える
+* 現場で実践できるようになる（**試したくなる**）
+* Rでスクレイピングできるようになる
+
+## 本日の内容
+
+* スクレイピング解説
+* 課題の説明
+* チームに分かれて課題にチャレンジ
+* 各チームの成果共有
+
+# スクレイピング
+
+## スクレイピングとは？
+
+* Web上の情報をプログラミングコードで取得すること
+* Webサイトの情報のうち、欲しい部分だけを抽出する技術のこと
+
+```{r}
+"https://www.asahi.com/worldcup/schedule/" %>% 
+  read_html() %>% 
+  html_node(xpath = '//*[@id="GrpA"]/table') %>% 
+  html_table()
+```
+
+
+参考：[Google 先生に聞いても意外とわからなかったウェブスクレイピング基礎編](https://www.fascinatedwithtofu.com/2017/01/08/scraping1/)
+
+## 推奨図書
+通称『宇宙本』。RStudioを使ってスクレイピングからレポーティングまでを網羅した一冊。今年度勉強会での[基本的な内容をほぼ網羅 <i class="fa fa-external-link"></i>](https://pbs.twimg.com/media/DhZF9pFW0AMjUME.jpg:large){target="_blank" title="Twitter"}している。（[技術評論社 <i class="fa fa-external-link"></i>](http://gihyo.jp/book/2018/978-4-7741-9853-8){target="_blank" title="RユーザのためのRStudio［実践］入門"}）
+
+![](./fig/rstudio_getting_started.jpg)
+
+
+## Data Science Workflow での位置付け
+スクレイピングは、**Import** に位置付けられる。
+
+データソースから直接取り込むという点で、Import の更に前段も含んでいるという解釈も可能。
+
+![Fig. [Data Science Workflow, CC BY 4.0 RStudio, Inc.](https://github.com/rstudio/RStartHere)](./fig/dswf.png)
+
+
+## Rでスクレイピングするメリット {.smaller}
+
+* 解析、可視化をスクリプト化しても、ソースが変わってしまったら再現可能でない
+
+「素晴らしいじゃないか、ジョン。ところで以前渡したデータには間違いがあったんだ。」
+
+* Redmine, バグ管理システム等、Web上で管理されていることが多い
+* それらの集計機能では痒いところに手が届かず、ウンザリしちゃう
+* 毎日変動するデータを分析したければ、ダウンロードだけでも煩わしい
+* Rでも意外と簡単にスクレイピングできちゃう
+
+引用：「Wonderful R 3 再現可能性のすゝめ」（共立出版）
+<img src="./fig/wonderful_R_vol3.jpg" width="200">
+
+
+## やってみよう ・・・その前に
+
+スクレイピングする際には以下に気をつけましょう
+
+* 規約でスクレイピングを禁止していないか？（ツイッター等）
+
+ → API等を利用しよう
+
+* 著作権等に抵触しないか？
+
+ → 対象データ、用途、公開先を適切に
+
+* 相手サーバーから攻撃とみなされないか？
+
+ → 繰り返し処理で取得する場合は、Sleepする
+
+**基本的には自己責任です！**
+
+## 前提として必要となる用語
+
+今日の目的では深く知る必要はありませんが、免疫をつけてください。
+
+* HTML : HyperText Markup Language
+* DOM  : Document Object Model
+
+HTMLの要素を樹木のような階層構造に変換したもの
+
+* CSS  : Cascading Style Sheets
+
+HTML内のスタイル（文字の色や大きさなど）を定義する。
+
+* XML  : eXtensible Markup Language
+* XPath : XML Path Language
+
+## Chrome
+
+* ページのソースを表示
+* デベロッパーツール
+* ノードの中身を確認
+* 検証
+* CSSセレクタ、XPathをコピーする
+
+## CSS と XPath
+
+### CSS
+
+* HTML内の特定の部分の文字の色や大きさ、行間、余白などの情報を与える
+* HTML内にも記述できるが、CSSファイルを分けて用意する場合が多い
+* CSSセレクタを用いることで、HTML内の特定の要素にアクセスできる
+* '>' によって入れ子構造を表現できる
+
+### XPath
+
+* XMLの特定の要素にアクセスできるのが XPath
+* HTMLの要素にもアクセスできる
+
+**スクレイピングでは、CSSセレクタかXPathを使ってHTMLの要素にアクセスする**
+
+## rvest パッケージ
+
+* Rでスクレイピングするための代表的なツール
+* install.package("tidyverse") で一緒にインストールされる
+* library(tidyverse) で自動的に読み込まれるパッケージには含まれていない
+
+```{r}
+library(rvest)
+```
+
+
+## read_html
+
+* URLを指定するだけ
+* DOM形式に変換して保存する
+
+```{r}
+"https://www.asahi.com/worldcup/schedule/" %>% 
+  read_html()
+```
+
+## html_node
+
+* 読み込んだURLから指定の要素（ノード）を抽出する
+* CSSセレクタでの指定、XPathでの指定の２通りあり
+* 階層の深いノードにアクセスしたいときは、XPathによる指定が安全
+* XPath内でクォーテーションを使用している場合、シングルとダブルで区別できるようにすること
+
+```{r}
+"https://www.asahi.com/worldcup/schedule/" %>% 
+  read_html() %>% 
+  html_node(xpath = '//*[@id="GrpA"]/table')
+```
+
+## html_text
+
+* 抽出した要素を人が読める形に変換する
+
+```{r}
+"https://www.asahi.com/worldcup/schedule/" %>% 
+  read_html() %>% 
+  html_node(css = "title") %>% 
+  html_text()
+
+```
+
+## html_table
+
+* データフレーム 形式に変換する
+
+```{r}
+"https://www.asahi.com/worldcup/schedule/" %>% 
+  read_html() %>% 
+  html_node(xpath = '//*[@id="GrpA"]/table') %>% 
+  html_table()
+```
+
+
+## その他
+
+関数             | 用途       
+:---------------:|:----------:
+past0            | URLの切り貼りに
+for              | 複数のページから取得
+Sys.sleep        | 繰り返しアクセスする場合に間を空ける
+dplyr::mutate    | データ型の指定など
+dplyr::bind_rows | 複数ページから取得したデータを連結する
+
+
+## ログインが必要な場合
+1. ログイン状態のセッションを作る
+
+```{r eval=FALSE}
+login_page <- html_session("http://meqsrv2:89/redmine/login")
+
+login_form <- html_form(login_page)[[1]] %>% 
+ set_values(username="Kato", password="xxxxxxxxx")
+
+session <- submit_form(login_page, login_form) 
+```
+
+参考：[Qiita - rvest でログインしてスクレイピング](https://qiita.com/hoxo_m/items/59bedbf7e4c7c99cbf5a)
+
+## ログインが必要な場合
+1. セッション上でスクレイピング
+
+```{r eval=FALSE}
+
+session %>% 
+ jump_to("http://meqsrv2:89/redmine/projects/ne-v2-17-0-20/time_entries") %>% 
+ read_html() %>% 
+ html_node(xpath='//*[@id="content"]/form[2]/div[2]/table') %>% 
+ html_table()
+```
+
+
+プロジェクト  | 日付       | ユーザー  | 活動       | チケット        | 時間
+:------------:|:----------:|:---------:|:----------:|:---------------:|:----:
+プロジェクトA | 2018/09/13 | ほげほげ  | テスト実施 | #6685: NERF0618 | 11.0
+プロジェクトA | 2018/09/13 | ほげほげ  | テスト実施 | #6693: NERF0628 | 7.5
+プロジェクトA | 2018/09/12 | ぼけぼけ  | テスト実施 | #6688: NERF0622 | 5.0
+プロジェクトA | 2018/09/11 | 加藤 拓海 | レビュー   | #6692: NERF0627 | 0.5
+プロジェクトA | 2018/09/11 | ぼけぼけ  | テスト実施 | #6688: NERF0622 | 4.0
+プロジェクトA | 2018/09/10 | ほげほげ  | テスト実施 | #6689: NERF0624 | 6.5
+プロジェクトA | 2018/09/10 | ほげほげ  | テスト実施 | #6692: NERF0627 | 3.0
+プロジェクトA | 2018/09/07 | ぼけぼけ  | レビュー   | #6674: NERF0622 | 1.5
+プロジェクトA | 2018/09/07 | ぼけぼけ  | テスト実施 | #6692: NERF0627 | 2.0
+プロジェクトA | 2018/09/07 | 加藤 拓海 | レビュー   | #6679: NERF0628 | 0.5
+
+## RSelenium
+
+# 課題解説
+
+# 課題チャレンジ
+
+## チーム分け、重点項目
+
+## 困ったら
+
+* ググる
+* パクる
+* 巻き込む
+
+
+なりふり構わず、果敢に乗り越えてください！
+
+# 成果発表
+
+## 成果を共有しよう
+
+* リーダー以外の方が発表してください
+* 苦労した点と、それをどう乗り越えたか
+* 
+
+
+## まとめ
+* こんなことに感動した
+* これは紹介しておきたい
+    1. 紹介例
+    1. 紹介例
+
+## License
+
+CC BY-NC-SA 4.0, Takumi Kato  
+
+* 本資料中で引用してる画像などの著作権は原著作権者にあります。
+
+# Enjoy!
