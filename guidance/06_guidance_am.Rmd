@@ -1,66 +1,18 @@
 ---
 title: "第６回データ分析勉強会"
-author: "【午前の部】Redmineから自動的にチケットデータを取得しよう"
-date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
-output:
-  ioslides_presentation:
-    css: style_img.css
-    df_print: paged
-    highlight: pygments
-    # logo: fig/hex-rmarkdown.png
-    smaller: false
-    widescreen: true
+output: 
+  html_document:
+    css: style.css
+#    code_folding: none
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 
-# require(shiny)      # shinyは使う必要はないと思われ
-# require(ggplot2)    # ggplot2はtidyverseから呼び出される
 require(redmineR)
 require(lubridate)    # 日時を扱うパッケージ(tidyverseシリーズ)
 require(tidyverse)    # tidyverseは最後に呼び出す方がコンフリクトの影響小
 ```
-
-
-## 本日の内容
-1. はじめに
-1. RedmineからAPI経由でチケットデータを取得する。
-1. チケットデータを整形する。
-1. データを可視化する。
-1. OpenCloseチャートを描く。
-1. Dashboardを作ってみる。（時間があれば）
-
-# はじめに
-
-## CSV出力 -> 可視化じゃだめなの？
-
-CSV出力だと**みんな**が**リアルタイム**で見れない。
-
-## 目指す場所
-
-メトリクスだけ見てても、開発の実態を知らないと気づけないことが多い。
-
-**開発者自身が**メトリクスを見て、**改善**を図るようにできると最強。
-
-そのため、**だれでも** **最新の**データが見れるようにしておくことが大切。
-
-自動的にRedmineからチケットデータを取得して、(なるべく)リアルタイムに表示する。
-
-## データ取得の方法
-
-今回はRedmineのREST API経由でチケットデータを取得します。
-
-RedmineのバックエンドにいるDB(MySQL,PostgreSQL,SQLite)に直接アクセスできるなら、
-DB直アクセスが一番おすすめです。
-
-* 取れないデータがない（REST APIからだと、Plug-inの拡張フィールドが取れなかったりする。）
-* 更新分だけを取得できる（updated_onでフィルタ）
-
-でも、大体はRedmineとDBは同じサーバ上に構築するので、
-DB側の設定でlocahostから以外のアクセスができないようになっている。（デフォルト）
-
-ということで、今回はとりあえずアカウントさえあればデータが取れるREST APIを使います。
 
 # Redmineへアクセスしてみる。
 
@@ -70,12 +22,6 @@ DB側の設定でlocahostから以外のアクセスができないようにな�
 
 <!-- チャンクはRにしておくとコードハイライトが有効になる -->
 ```{r, eval=FALSE}
-# `devtools`パッケージがインストールされているはずなので`remotesz`は不要
-# このあたりは作者の好みか？
-# install.packages("remotes")
-# remotes::install_github("openanalytics/redmineR")
-
-# 一般的にはこちらが使われる
 devtools::install_github("openanalytics/redmineR")
 ```
 
@@ -101,13 +47,14 @@ Sys.setenv("REDMINE_URL" = "https://www.redmine.org/")
 Sys.setenv("REDMINE_TOKEN" = "APIACCESSTOKEN")
 ```
 
-## プロジェクトの一覧
+## 動作確認
+プロジェクトの一覧取得とかが軽めのAPIでおすすめ。
 <!-- `redminer_df`クラスは何故かpaged表示をしてくれないので、表示の際はデータフレームに変換しておくと見やすい-->
-```{r context="data", cache=FALSE}
+```{r context="data"}
 redmineR::redmine_projects() %>% as.data.frame()
 ```
 
-# チケットデータを取得して整形
+# チケットデータを取得する。
 
 ## チケット一覧を取得する。
 
@@ -115,30 +62,50 @@ redmineR::redmine_projects() %>% as.data.frame()
 デフォルトだとクローズしたチケットを取得して来れない。  
 全てのステータスのチケットを取得するためには`status_id = "*"`を指定する。
 
-```{r load-data, context="data", cache=TRUE}
-# issues <- redmine_issues(status_id = "*")
-# issues <- redmine_issues()    # テスト用にcloseを除く
+```{r, eval=FALSE}
+issues <- redmineR::redmine_issues(status_id = "*")
+# save(issues, file = "../data/_redmine_issues_all.RData")
+```
+皆様はこちらをお使いください。サンプル用データロードします。
+```{r}
 load("../data/_redmine_issues_all.RData")
 # save(issues, file = "../data/_redmine_issues_all.RData")
 ```
 
-## デフォルトのチケット一覧を表示する。
+## redmineRで取ってきたチケットを見てみる
 
-リストから選ぶ系のフィールドが`<list [2]>`になってしまっている。
-
-```{r echo=FALSE}
+```{r}
 issues %>% head(100) %>% as.data.frame()
 ```
 
-
-## データ型を見てみる
-
+リストから選ぶ系のフィールドが`<list [2]>`になってしまっている。
 ```{r}
-sapply(issues,class)
+issues$project[[1]]
+```
+
+リスト型のカラムは`NA`なこともある。
+```{r}
+issues %>% head(100) %>%
+  dplyr::select(id, assigned_to, category) %>%
+  as.data.frame()
 ```
 
 
-## mutateを使ったけどうまく行かなかった。
+
+日付が文字列型になってしまっている。
+```{r}
+issues %>% head(100) %>%
+  dplyr::select(id, created_on, closed_on, updated_on, start_date, due_date) %>% 
+  as_data_frame()
+```
+
+各カラムの型
+```{r}
+sapply(issues,class) %>% as.data.frame()
+```
+
+
+# データを整形する。
 
 ```{r}
 # リスト型変数にNAが含まれていても展開するための関数（）
@@ -148,8 +115,7 @@ map_if_chr <- function(.x, .f) {
     return()
 }
 
-# テスト用
-issues %>% 
+df <- issues %>% 
   # dplyr::sample_n(100) %>%   # テスト用に１００件に絞る
   # custom_fieldsが上手く展開できない...
   dplyr::select(-custom_fields) %>% 
@@ -171,71 +137,18 @@ issues %>%
     due_date = lubridate::as_date(due_date),
     parent = map_if_chr(parent, 'id')
   )
-
+df
 # %>% readr::write_excel_csv(., path = "../data/_redmine_issues_all.csv")
 ```
+以下、説明
 
-
-<!-- ``` -->
-<!-- issues %>% -->
-<!--   dplyr::mutate( -->
-<!--     created_on = as.POSIXct(strptime(created_on, "%Y-%m-%dT%H:%M:%S", tz="UCT")), -->
-<!--     closed_on = as.POSIXct(strptime(closed_on, "%Y-%m-%dT%H:%M:%S", tz="UCT")), -->
-<!--     updated_on = as.POSIXct(strptime(updated_on, "%Y-%m-%dT%H:%M:%S", tz="UCT")), -->
-<!--     project = project["name"], -->
-<!--     tracker = tracker[[1]]$name, -->
-<!--     status = status[[1]]$name, -->
-<!--     priority = priority[[1]]$name, -->
-<!--     author = author[[1]]$name, -->
-<!--     category = if_else(is.na(category), "", category[[2]]$name) -->
-<!--     # fixed_version = fixed_version$name -->
-<!--     # assigned_to = assigned_to$name -->
-<!--     ) %>% -->
-<!--   dplyr::select(id, project, tracker, status, priority, author, category, subject, description, done_ratio, created_on, updated_on, closed_on, estimated_hours) -> df -->
-<!-- ``` -->
-
-<!-- ## 仕方ないので、for文で頑張る。 -->
-
-<!-- 次ページから詳細説明。 -->
-
-<!-- ```{r} -->
-<!-- df <- data.frame() -->
-<!-- for (i in 1:nrow(issues)){ -->
-<!--   df[i, "id"] <- issues[i, "id"] -->
-<!--   df[i, "project"] <- issues[i, "project"][[1]]$name -->
-<!--   df[i, "tracker"] <- issues[i, "tracker"][[1]]$name -->
-<!--   df[i, "status"] <- issues[i, "status"][[1]]$name -->
-<!--   df[i, "priority"] <- issues[i, "priority"][[1]]$name -->
-<!--   df[i, "author"] <- issues[i, "author"][[1]]$name -->
-<!--   df[i, "category"] <- ifelse(is.na(issues[i, "category"]), NA, issues[i, "category"][[1]]$name) -->
-<!--   df[i, "fixed_version"] <- ifelse(is.na(issues[i, "fixed_version"]), NA, issues[i, "fixed_version"][[1]]$name) -->
-<!--   df[i, "assigned_to"] <- ifelse(is.na(issues[i, "assigned_to"]), NA, issues[i, "assigned_to"][[1]]$name) -->
-<!--   df[i, "created_on"] <- as.POSIXct(strptime(issues[i, "created_on"], "%Y-%m-%dT%H:%M:%S", tz="UCT")) -->
-<!--   df[i, "updated_on"] <- as.POSIXct(strptime(issues[i, "updated_on"], "%Y-%m-%dT%H:%M:%S", tz="UCT")) -->
-<!--   df[i, "closed_on"] <- as.POSIXct(strptime(issues[i, "closed_on"], "%Y-%m-%dT%H:%M:%S", tz="UCT")) -->
-<!-- } -->
-<!-- ``` -->
-
-<!-- ## listの処理 -->
-
-<!-- `issues$project`の構造はこんな感じなっている。 -->
-
-<!-- ```{r} -->
-<!-- issues[1, "project"] -->
-<!-- ``` -->
-
-<!-- `list`の1番目に`id`と`name`が入っている。 -->
-
-<!-- ```{r} -->
-<!--   df[i, "project"] <- issues[i, "project"][[1]]$name -->
-<!-- ``` -->
-
-## listの処理
+## リスト型
 リスト型変数は任意の型で任意の数のデータを任意な数だけ持てる柔軟性のあるデータ構造です。リスト型の中にリスト型をネストさせることも可能です。    
 ```{r}
 list(list(id = c(1, 2)), list(name = c("Defects")))
 ```
 
+## リスト型の処理
 このようなリスト型変数を扱うには`purrr`パッケージ（part of tidyverse）が便利です。例えばチケットの`project`データは以下のような構成になっています。    
 ```{r}
 issues %>% head(1) %>% dplyr::select(project) %>% purrr::flatten()
@@ -258,64 +171,20 @@ issues %>% dplyr::sample_n(100) %>% dplyr::select(assigned_to) %>%
                                         1L))
 ```
 
-
-
 `NA`が入っているカラムは`ifelse`で`NA`じゃなかった場合のみ、
 `list`の要素にアクセスするようにしないと、エラーになってしまう。
 
-```{r}
+```{r error=TRUE}
   df[i, "category"] <- 
     ifelse(is.na(issues[i, "category"]), NA, issues[i, "category"][[1]]$name)
 ```
-
-## 日付の処理
-
-日付(created_on, closed_on, updated_on)は(残念ながら)文字列型。
-
-```{r}
-issues[1, "created_on"]
-```
-
-`as.POSIXct`を使って、日付型にする。
-
-```{r}
-  df[i, "created_on"] <-
-    as.POSIXct(strptime(issues[i, "created_on"], "%Y-%m-%dT%H:%M:%S", tz="UCT"))
-```
-
-## これでオッケー？
-
-```{r echo=FALSE}
-df
-```
-
-## なんか日時がおかしい。。。
-
-```{r}
-df$created_on
-```
-
 
 ## created_onなどをDate型に修正
 文字列を日付型に変換するには`lubridate`パッケージを使うと分かりやすい。
 <!-- `as.Date.POSIXct`で日付型に変換する。 -->
 
 ```{r}
-as.Date.POSIXct(1538719009)
 lubridate::as_date("2018/10/05")
-```
-
-`mutate`で1つずつ変換してもいいが、`mutate_at`を使えば、まとめて変換できる。
-
-```{r}
-df <- df %>% 
-  dplyr::mutate_at(vars(created_on,updated_on,closed_on), as.Date.POSIXct)
-```
-
-## 日付が修正された
-
-```{r echo=FALSE}
-df
 ```
 
 
@@ -342,6 +211,9 @@ df %>% ggplot(aes(x="", fill=tracker)) +
 
 ```{r}
 open <- df %>% 
+  mutate(
+    created_on = lubridate::as_date(created_on)
+  ) %>% 
   dplyr::group_by(created_on) %>% 
   dplyr::count() %>% 
   dplyr::rename(date = created_on,
@@ -353,7 +225,8 @@ open
 
 ```{r}
 close <- df %>% 
-  dplyr::filter(status=="終了") %>% 
+  dplyr::filter(status=="Closed") %>% 
+  dplyr::mutate(closed_on = lubridate::as_date(closed_on)) %>% 
   dplyr::group_by(closed_on) %>% 
   dplyr::count() %>% 
   dplyr::rename(
