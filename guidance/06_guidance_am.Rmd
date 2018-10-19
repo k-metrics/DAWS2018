@@ -1,17 +1,25 @@
 ---
-title: "第６回データ分析勉強会"
+title: "第６回データ分析勉強会【午前】"
 output: 
   html_document:
+    # css: style.css
+    code_folding: show
     df_print: paged
-    css: style.css
-#    code_folding: none
+    highlight: "default"
+    md_extensions: -ascii_identifiers
+    number_section: yes
+    theme: "default"
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: yes
+      smooth_scroll: no
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 
 require(redmineR)
-require(lubridate)    # 日時を扱うパッケージ(tidyverseシリーズ)
 require(tidyverse)    # tidyverseは最後に呼び出す方がコンフリクトの影響小
 ```
 
@@ -31,6 +39,18 @@ devtools::install_github("openanalytics/redmineR")
 ```{r, eval=FALSE}
 library(redmineR)
 ```
+
+あとは`tidyverse`を読み込む
+```{r, eval=FALSE}
+require(tidyverse)    # tidyverseは最後に呼び出す方がコンフリクトの影響小
+```
+`tidyverse`のうち使うのはこの3つ
+
+|パッケージ  |  説明              |
+|------------|--------------------|
+|`dplyr`     |データフレーム操作  |
+|`lubridate` |日付操作            |
+|`ggplot2`   |可視化              |
 
 ## Redmineの情報を入力する。
 
@@ -221,7 +241,7 @@ open <- df %>%
   dplyr::count() %>% 
   dplyr::rename(date = created_on,
                 open = n)
-open
+open %>% head(100)
 ```
 
 ## Closeチャートを作る
@@ -236,7 +256,7 @@ close <- df %>%
     date = closed_on,
     close = n
   )
-close
+close %>% head(100)
 ```
 
 
@@ -258,7 +278,7 @@ openclose
 ```{r}
 openclose$cumsum_open <- cumsum(openclose$open)
 openclose$cumsum_close <- cumsum(openclose$close)
-openclose
+openclose %>% head(100)
 ```
 
 ## Open/Closeチャートを描く
