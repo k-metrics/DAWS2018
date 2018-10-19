@@ -2,6 +2,7 @@
 title: "第６回データ分析勉強会"
 output: 
   html_document:
+    df_print: paged
     css: style.css
 #    code_folding: none
 ---
@@ -68,7 +69,8 @@ issues <- redmineR::redmine_issues(status_id = "*")
 ```
 皆様はこちらをお使いください。サンプル用データロードします。
 ```{r}
-load("../data/_redmine_issues_all.RData")
+# .RDataはGitHubのデフォルトではignore対象なので、".RData_"に変えてあります
+load("../data/_redmine_issues_all.RData_")
 # save(issues, file = "../data/_redmine_issues_all.RData")
 ```
 
@@ -137,7 +139,8 @@ df <- issues %>%
     due_date = lubridate::as_date(due_date),
     parent = map_if_chr(parent, 'id')
   )
-df
+# データ数が多すぎてレンダリングに時間がかかりすぎるので先頭100行のみとする
+head(df, 100)
 # %>% readr::write_excel_csv(., path = "../data/_redmine_issues_all.csv")
 ```
 以下、説明
