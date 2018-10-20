@@ -12,39 +12,60 @@ require(tidyverse)
 require(redmineR)
 ```
 
-```{r}
+```{r, eval=FALSE}
 Sys.setenv("REDMINE_URL" = "http://xxx.xxx.xxx/xxx")
 Sys.setenv("REDMINE_TOKEN" = "APIACCESSTOKEN")
-```
-```{r load-data, context="data", cache=TRUE}
-issues = redmine_issues(status_id = "*")
-df <- data.frame()
-for (i in 1:nrow(issues)){
-  df[i, "id"] <- issues[i, "id"]
-  df[i, "project"] <- issues[i, "project"][[1]]$name
-  df[i, "tracker"] <- issues[i, "tracker"][[1]]$name
-  df[i, "status"] <- issues[i, "status"][[1]]$name
-  df[i, "priority"] <- issues[i, "priority"][[1]]$name
-  df[i, "author"] <- issues[i, "author"][[1]]$name
-  df[i, "category"] <- ifelse(is.na(issues[i, "category"]), NA, issues[i, "category"][[1]]$name)
-  df[i, "fixed_version"] <- ifelse(is.na(issues[i, "fixed_version"]), NA, issues[i, "fixed_version"][[1]]$name)
-  df[i, "assigned_to"] <- ifelse(is.na(issues[i, "assigned_to"]), NA, issues[i, "assigned_to"][[1]]$name)
-  df[i, "created_on"] <- as.POSIXct(strptime(issues[i, "created_on"], "%Y-%m-%dT%H:%M:%S", tz="UCT"))
-  df[i, "updated_on"] <- as.POSIXct(strptime(issues[i, "updated_on"], "%Y-%m-%dT%H:%M:%S", tz="UCT"))
-  df[i, "closed_on"] <- as.POSIXct(strptime(issues[i, "closed_on"], "%Y-%m-%dT%H:%M:%S", tz="UCT"))
-}
-df <- df %>% 
-  dplyr::mutate_at(vars(created_on,updated_on,closed_on), as.Date.POSIXct)
+issues <- redmineR::redmine_issues(status_id = "*")
 ```
 
-```{r create-openclose, context="data", cache=TRUE}
+```{r}
+# .RDataはGitHubのデフォルトではignore対象なので、".RData_"に変えてあります
+load("../data/_redmine_issues_all.RData_")
+```
+
+
+```{r load-data, context="data"}
+# リスト型変数にNAが含まれていても展開するための関数（）
+map_if_chr <- function(.x, .f) {
+  purrr::map_if(.x, !is.na(.x), .f) %>% 
+    purrr::map_chr(1L) %>% 
+    return()
+}
+
+df <- issues %>% 
+  # dplyr::sample_n(100) %>%   # テスト用に１００件に絞る
+  # custom_fieldsが上手く展開できない...
+  dplyr::select(-custom_fields) %>% 
+  dplyr::mutate(
+    pjid = purrr::map_int(project, 'id'),     # 一種のキーなのでNAはありえない
+    project = map_if_chr(project, 'name'),
+    tracker = map_if_chr(tracker, 'name'),
+    status = map_if_chr(status, 'name'),
+    priority = map_if_chr(priority, 'name'),
+    author = map_if_chr(author, 'name'),
+    assigned_to = map_if_chr(assigned_to, 'name'),
+    category = map_if_chr(category, 'name'),
+    created_on = lubridate::ymd_hms(created_on, tz = "UTC"),
+    updated_on = lubridate::ymd_hms(updated_on, tz = "UTC"),
+    closed_on = lubridate::ymd_hms(closed_on, tz = "UTC"),
+    # custom_fields = map_if_chr(custom_fields, 'name'),
+    fixed_version = map_if_chr(fixed_version, 'name'),
+    start_date = lubridate::as_date(start_date),
+    due_date = lubridate::as_date(due_date),
+    parent = map_if_chr(parent, 'id')
+  )
+```
+
+```{r create-openclose, context="data"}
 open <- df %>% 
+  dplyr::mutate(created_on=lubridate::as_date(created_on)) %>% 
   dplyr::group_by(created_on) %>% 
   dplyr::count() %>% 
   dplyr::rename(date = created_on,
                 open = n)
 close <- df %>% 
-  dplyr::filter(status=="終了") %>% 
+  dplyr::filter(status=="Closed") %>%
+  dplyr::mutate(closed_on=lubridate::as_date(closed_on)) %>% 
   dplyr::group_by(closed_on) %>% 
   dplyr::count() %>% 
   dplyr::rename(
@@ -88,7 +109,7 @@ df %>%
 
 ```{r}
 df %>% 
-  dplyr::filter(status=="終了") %>% 
+  dplyr::filter(status=="Closed") %>% 
   nrow() %>% 
   valueBox(icon="glyphicon-check")
 ```
@@ -97,10 +118,10 @@ df %>%
 
 ```{r}
 open_bugs <- df %>% 
-  dplyr::filter(tracker=="バグ") %>% 
+  dplyr::filter(tracker=="Defect") %>% 
   nrow()
 close_bugs <- df %>% 
-  dplyr::filter(tracker=="バグ", status=="終了") %>% 
+  dplyr::filter(tracker=="Defect", status=="Closed") %>% 
   nrow()
 
 gauge(close_bugs, min = 0, max = open_bugs)
@@ -110,10 +131,10 @@ gauge(close_bugs, min = 0, max = open_bugs)
 
 ```{r}
 nopen <- df %>% 
-  dplyr::filter(tracker=="機能") %>% 
+  dplyr::filter(tracker=="Feature") %>% 
   nrow()
 nclose <- df %>% 
-  dplyr::filter(tracker=="機能", status=="終了") %>% 
+  dplyr::filter(tracker=="Feature", status=="Closed") %>% 
   nrow()
 
 gauge(nclose, min = 0, max = nopen)
