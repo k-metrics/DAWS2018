@@ -31,7 +31,8 @@ https://shiny.rstudio.com/articles/dashboards.html
 
 ## flexdashboard用Rmarkdownファイルを作成
 
-ファイル -> 新規作成 -> R Markdown
+ファイル -> 新規作成 -> R Markdown  
+From Template -> Flex Dashboard
 
 ```{r out.heigh = "100px"}
 knitr::include_graphics("https://kazutan.github.io/kazutanR/pics/fdb_create.png")
