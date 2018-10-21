@@ -95,6 +95,7 @@ load("../data/_redmine_issues_all.RData_")
 ```
 
 ## redmineRで取ってきたチケットを見てみる
+[各フィールドの説明](https://k-metrics.netlify.com/post/2018-10/redminer/)
 
 ```{r}
 issues %>% head(100) %>% as.data.frame()
