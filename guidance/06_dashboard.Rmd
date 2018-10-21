@@ -87,11 +87,11 @@ Column {data-width=650}
 
 ### オープン/クローズチャート
 
-```{r}
+```{r, fig.width=6, fig.height=4}
 openclose %>% 
   ggplot(aes(x = date)) +
-  geom_line(aes(y = cumsum_close, color = "cumsum_close")) +
-  geom_line(aes(y = cumsum_open, color = "cumsum_open"))
+  geom_area(aes(y = cumsum_open, fill = "cumsum_open"), alpha = 0.5) +
+  geom_area(aes(y = cumsum_close, fill = "cumsum_close"), alpha = 0.5)
 ```
 
 Column {data-width=350}
