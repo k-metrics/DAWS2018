@@ -218,6 +218,7 @@ Redmineからチケットデータを取得して可視化する。
 - チケットデータを整形する。
 - データを可視化する。
 - OpenCloseチャートを描く。
+
 　  
 
 ### 午後の部
@@ -226,8 +227,11 @@ Redmineからチケットデータを取得して可視化する。
 
 * [ flexdashboard <i class="fa fa-external-link"></i> ](https://rmarkdown.rstudio.com/flexdashboard/){target="_blank" title="Easy interactive dashboards for R"}の説明
 * 実際にダッシュボードを作ってみる。  
+
+　  
 [演習用テンプレート <i class="fa fa-file-code-o"></i> （右クリックでダウンロード）](./template/06_guidance_template.Rmd)
 
+　  
 
 ## 第7回 データインポート演習 {#S07}
 （準備中）  
