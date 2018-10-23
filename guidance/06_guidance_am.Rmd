@@ -35,7 +35,7 @@ devtools::install_github("openanalytics/redmineR")
 ```
 
 `redmineR`を読み込めればOK
-```{r}
+```{r, eval=FALSE}
 library(redmineR)
 ```
 
@@ -50,7 +50,7 @@ library(redmineR)
 　  
 `lubridate`パッケージは`tidyverse`ファミリーですが`tidyverse`パッケージを読み込んだだけでは読み込まれないないので、別途、明示的に読み込んでください。  
 
-```{r}
+```{r, eval=FALSE}
 library(lubridate)
 library(tidyverse)    # tidyverseは最後に呼び出す方がコンフリクトの影響小
 ```
@@ -114,48 +114,41 @@ load("../data/_redmine_issues_all.RData_")
 　4.イレギュラーデータの確認
 　5.型の変換やNAの処理-->
 
+### まずは全体を俯瞰
 ```{r}
 issues %>% head(100) %>% as.data.frame()
 ```
+`<list [2]>`やら、`NA`やら、結構汚いデータなので、きれいにするところから始める。
 
+### 型（クラス）の確認
 
-リストから選ぶ系のフィールドが`<list [2]>`になってしまっている。
+```{r}
+issues %>% 
+  purrr::map_df(class)
+```
+
+projectやtrackerなど、リストから選ぶ系のフィールドが`list`型になってしまっている。`list(id="ID", name="NAME")`から`NAME`を取り出したい。
 ```{r}
 issues$project[[1]]
 ```
 
-リスト型のカラムは`NA`なこともある。
-```{r}
-issues %>% head(100) %>%
-  dplyr::select(id, assigned_to, category) %>%
-  as.data.frame()
-```
-
-
-
-日付が文字列型になってしまっている。
+日付、日時が文字列型になってしまっている。日付は`date`に、日時は`POSIXct`型に変換したい。
 ```{r}
 issues %>% head(100) %>%
   dplyr::select(id, created_on, closed_on, updated_on, start_date, due_date) %>% 
   as_data_frame()
 ```
 
-各カラムの型
+### `NA`有無の確認
+厄介なのは、リスト型のカラムの中にある`NA`。
 ```{r}
-sapply(issues,class) %>% as.data.frame()
-```
-
-```{r, include=FALSE, eval=FALSE}
-# sapply関数とpurrr::map関数は等価の処理をしてくれます
+# NAの有無確認
+issues %>% 
+  purrr::map_df(anyNA)
 # 型の確認
 issues %>% 
   purrr::map_df(class)
-
-# データ中にNAがあるかいなかを確認
-issues %>% 
-  purrr::map_df(anyNA)
 ```
-
 
 # データを整形する。
 <!-- 変換はmutate_atあたりでまとめた方がいいかも。list型でもparentだけは他の
@@ -236,9 +229,14 @@ issues %>% dplyr::sample_n(100) %>% dplyr::select(assigned_to) %>%
 ## created_onなどをDate型に修正
 文字列を日付型に変換するには`lubridate`パッケージを使うと分かりやすい。
 <!-- `as.Date.POSIXct`で日付型に変換する。 -->
-
+日付の場合は、`as_date`
 ```{r}
 lubridate::as_date("2018/10/05")
+```
+
+日時の場合は、`ymd_hms`
+```{r}
+lubridate::ymd_hms("2018-10-15T01:43:12Z", tz = "UTC")
 ```
 
 
@@ -253,6 +251,7 @@ lubridate::as_date("2018/10/05")
 ## 棒グラフ
 
 ```{r}
+#windowsFonts("MEI"=windowsFont("Meiryo"))
 df %>% ggplot(aes(x = status)) +
   geom_bar() + theme_bw(base_family = "HiraKakuProN-W3")
 ```
