@@ -23,9 +23,9 @@ require(redmineR)
 require(tidyverse)    # tidyverseは最後に呼び出す方がコンフリクトの影響小
 ```
 
-# Redmineへアクセスしてみる。
+# Redmineへアクセスしてみる
 
-## redmineRをインストールする。
+## redmineRをインストールする
 
 `redmineR`パッケージはGitHubからインストールするために`devtools`や`remotes`というパッケージを事前にインストールしておく必要があります。第1回勉強会にて環境構築した方は`devtools`パッケージがインストールされているハズですので、これを使います。  
 
@@ -62,7 +62,7 @@ tidyverse::tidyverse_conflicts()
 
 　  
 
-## Redmineの情報を入力する。
+## Redmineの情報を入力する
 
 URLとAPIアクセストークンを環境変数に指定する。  
 APIアクセストークンはRedmineにログインして、個人設定ページから入手する。  
@@ -85,9 +85,9 @@ Sys.setenv("REDMINE_TOKEN" = "APIACCESSTOKEN")
 redmineR::redmine_projects() %>% as.data.frame()
 ```
 
-# チケットデータを取得する。
+# チケットデータを取得する
 
-## チケット一覧を取得する。
+## チケット一覧を取得する
 
 `redmine_issues`でチケット一覧を取得する。  
 デフォルトだとクローズしたチケットを取得して来れない。  
@@ -150,7 +150,7 @@ issues %>%
   purrr::map_df(class)
 ```
 
-# データを整形する。
+# データを整形する
 <!-- 変換はmutate_atあたりでまとめた方がいいかも。list型でもparentだけは他の
 リスト型とはデータの入り方が異なるので、mutate_ifで一括処理ができない-->
 ```{r}
@@ -263,7 +263,7 @@ df %>% ggplot(aes(x="", fill=tracker)) +
 ```
 
 
-# Open/Closeチャートを描く。
+# Open/Closeチャートを描く
 
 ## Openチャートを作る
 
@@ -324,3 +324,85 @@ openclose %>%
   geom_line(aes(y = cumsum_close, color = "cumsum_close")) +
   geom_line(aes(y = cumsum_open, color = "cumsum_open"))
 ```
+
+# カスタムフィールドの扱い（未完成）
+
+## custom_fieldsの中身
+```{r, echo=FALSE}
+# 複数のcustom_fieldを持っている行を探しているだけ
+for(i in 1:nrow(issues)){
+  if(!is.na(issues[i,"custom_fields"])){
+    counter <- 0
+    for(custom_field in issues[i,"custom_fields"][[1]]){
+      if(custom_field["value"]!=""){
+        counter <- counter + 1
+      }
+    }
+    if(counter > 1){
+      tmp_custom_fields <- issues[i,"custom_fields"]
+      break
+    }
+  }
+}
+```
+
+```{r}
+tmp_custom_fields
+```
+
+とっても複雑な構造。。。  
+要するにこういうこと
+```{r, eval=FALSE}
+list(
+  list(
+    list(id=2, name="Resolution", value="Invalid"),
+    list(id=4, name="Affected version", value=133)
+  )
+)
+```
+
+|フィールド|フィールドの説明|
+|---|---|
+|id    |カスタムフィールドID|
+|name  |カスタムフィールド名|
+|value |カスタムフィールドの値(※)|
+
+※ プルダウンで選ぶ形式のカスタムフィールドの場合、
+valueは各選択肢へのIDになっている。
+実際の値を得るためには、バージョンやカスタムフィールドの情報を別途APIを叩いて入手するしかない。
+
+以下が、カスタムフィールドの値取得に必要なAPIだが、
+残念ながらredmineRでは取れない。
+そのため、REST Client（`RCurl` or `httr`がメジャーらしい）を使って、
+直接REST APIを叩くことになる。  
+jsonの中身を分析するだけなので、頑張ればできる。
+
+|フィールドの種類|API|必要な権限|
+|---|---|---|
+|version|[/projects/<project_id>/versions](http://www.redmine.org/projects/redmine/wiki/Rest_Versions)|普通でOK|
+|list|[/custom_fields](http://www.redmine.org/projects/redmine/wiki/Rest_CustomFields)|管理者権限|
+
+## カスタムフィールドをdata.frameに格納
+mutateやpurrr使っても上手くいかなかった。  
+そのため、for文でぶん回す。
+
+```{r}
+for(i in 1:nrow(df)){
+  if(!is.na(issues[i,"custom_fields"])){
+    for(custom_field in issues[i,"custom_fields"][[1]]){
+      if(!is.null(custom_field$value)){
+        df[i, custom_field$name] <- custom_field$value
+      }
+    }
+  }
+}
+```
+
+ResolutionとAffected versionが取れた。
+```{r}
+df %>% 
+  dplyr::select("id", "Resolution", "Affected version")
+```
+
+Affected versionの値はversionのID。
+実際にどのバージョンかを知るためには、version取得APIを叩いて、値を検索する。
