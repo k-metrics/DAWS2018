@@ -406,3 +406,67 @@ df %>%
 
 Affected versionの値はversionのID。
 実際にどのバージョンかを知るためには、version取得APIを叩いて、値を検索する。
+
+
+## カスタムフィールルドの展開
+`purrr`パッケージで処理する方法を模索中
+
+### カスタムフィールドの確認
+カスタムフィールドの中身を確認（または表示）したい場合は`knitr::kable`関数を用いると便利。
+```{r}
+issues %>% 
+  head() %>% 
+  dplyr::select(id, custom_fields) %>% 
+  knitr::kable()
+```
+
+### カスタムフィールドの展開
+リスト型変数がネストされているカスタムフィールドを展開するには、いったん、`list(list)`の状態を解消（アンネスト）して、展開後にNAになっているデータを削除する。  
+その後、リスト型変数の展開処理を行う。
+```{r}
+# id毎に展開できるがリストが展開されたままなのでまとめたい
+issues %>% 
+  head() %>% 
+  dplyr::select(id, custom_fields) %>% as.data.frame() %>% 
+  tidyr::unnest() %>% knitr::kable()
+
+map_if_chr <- function(.x, .f) {
+  purrr::map_if(.x, !is.na(.x), .f) %>% 
+    purrr::map_chr(1L) %>% 
+    return()
+}
+
+# unnested_issues <- issues %>%
+#   # head() %>%
+#   dplyr::select(id, custom_fields) %>% as.data.frame() %>%
+#   tidyr::unnest() %>% 
+#   tidyr::drop_na() %>% as.data.frame() %>% 
+#   tibble::rowid_to_column("rows")
+
+# 以下で展開できるが、`value`項のないデータがあるためこれらを処理しようとすると
+# エラーになる（揺れの処理が必要）
+# id     値
+# 16451  list(id = 4, name = "Affected version")
+# 16447  list(id = 4, name = "Affected version")
+# 16379　list(id = 4, name = "Affected version")
+# 16357　list(id = 4, name = "Affected version")
+
+# 上記のデータを除くと処理はできる
+issues %>%
+  head(100) %>%
+  dplyr::select(id, custom_fields) %>% as.data.frame() %>%
+  tidyr::unnest() %>% 
+  tidyr::drop_na() %>% 
+  dplyr::mutate(name = map_if_chr(custom_fields, 'name'),
+                value = map_if_chr(custom_fields, 'value')) %>% 
+  dplyr::select(-custom_fields) %>% 
+  tidyr::spread(key = name, value = value) %>% 
+  dplyr::left_join(issues, by = "id")
+
+```
+
+
+<!-- # list操作 -->
+<!-- # http://delta0726.web.fc2.com/packages/data/00_purrr.html -->
+<!-- # nested dataframe -->
+<!-- # https://suryu.me/post/r_advent_calendar_day3/ -->
