@@ -463,6 +463,54 @@ issues %>%
   tidyr::spread(key = name, value = value) %>% 
   dplyr::left_join(issues, by = "id")
 
+# エラー処理を考える
+# Redmineの過去の仕様らしくカスタムフィールドに値が設定されていない場合
+# リスト変数内の`value`項がない場合がある、項がないリスト型変数に対して
+# `purrr::map`関数を適用するとSTOPエラーになるために別の方法でリスト型
+# 変数を展開する必要がある
+
+cf_list <- issues %>% 
+  dplyr::select(id, custom_fields) %>% 
+  tidyr::unnest() %>% 
+  tidyr::drop_na() %>% 
+  dplyr::mutate()
+
+sample_issues <- issues %>% 
+  dplyr::filter(id > 16350 & id < 16460) %>% 
+  dplyr::select(id, custom_fields) %>% 
+  tidyr::unnest() %>% 
+  tidyr::drop_na() %>% 
+  dplyr::rename(pj = id)
+
+sample_issues %>% knitr::kable()
+
+# リスト型変数自体は`rlist::list.unzip`関数で展開できるが識別番号（PJID）が
+# 分からなくなってしまう
+sample_issues$custom_fields %>% rlist::list.unzip("union") %>% 
+  as.data.frame()
+
+# ベクトルとリストをリストへ結合するには以下でOK
+c(pj = sample_issues$pj[3], sample_issues$custom_fields[[3]])
+
+# そこで、まず、PJNOをリスト型変数の中へ取り込んでから展開してデータフレーム型へ
+# 戻すことでPJNO毎のカスタムフィールドが作成できる
+purrr::map2(sample_issues$pj, sample_issues$custom_fields,
+            .f = function(.x, .y) {c(pj = .x, .y)}) %>% 
+  rlist::list.unzip("union") %>% 
+  as.data.frame() %>% 
+  dplyr::select(-id) %>% 
+  tidyr::spread(key = name, value = value)
+
+# 全体に適用してみる
+purrr::map2(cf_list$id, cf_list$custom_fields,
+            .f = function(.x, .y) {c(iid = .x, .y)}) %>% 
+  rlist::list.unzip("union") %>% 
+  as.data.frame() %>% 
+  dplyr::select(-id) %>% 
+  tidyr::spread(key = name, value = value) %>% 
+  dplyr::rename(id = iid) %>% 
+  dplyr::left_join(issues, by = "id") %>% 
+  dplyr::arrange(dplyr::desc(id))
 ```
 
 
