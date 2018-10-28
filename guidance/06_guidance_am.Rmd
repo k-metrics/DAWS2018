@@ -526,22 +526,21 @@ purrr::map2_df(sample_issues$issue_id, sample_issues$custom_fields,
 
 `purrr::map2`関数群は、`purrr::map`関数群の拡張てきな関数群であり、二つの引数（`.x`, `.y`）に対して`.f`で指定した処理（関数や演算子など）を適用する関数です。ここでは出力を見やすくするためにデータフレーム型の出力にしていますが、実際の処理ではリスト型に出力するタイプの関数を用います。  
 　  
-次にこのチケット番号識別子を持つリスト型変数を`rlist`パッケージを用いて展開します。`rlist`パッケージは『Rプログラミング本格入門』原著の著者であるKun Ren氏が開発したリスト型変数を扱うためのパッケージで`tidyverse`な思想に合わせて作られています。  
-　  
+<!-- 次にこのチケット番号識別子を持つリスト型変数を`rlist`パッケージを用いて展開します。`rlist`パッケージは『Rプログラミング本格入門』原著の著者であるKun Ren氏が開発したリスト型変数を扱うためのパッケージで`tidyverse`な思想に合わせて作られています。   -->
+<!-- 　   -->
+
+<!-- ```{r} -->
+<!-- purrr::map2(sample_issues$issue_id, sample_issues$custom_fields, -->
+<!--             .f = function(.x, .y) {c(issue_id = .x, .y)}) %>%  -->
+<!--   rlist::list.unzip("union") -->
+<!-- ``` -->
+
+<!-- `rlist::unzip`関数の利点はリスト型変数に含まれていない変数（今回の場合は`value`）があってもNAとして出力してくれる点です。これにより、リスト型変数内の各変数は等長のベクトルとして出力されますので、晴れてデータフレーム型変数として扱うことが可能になります。   -->
+<!-- 　   -->
 
 ```{r}
-purrr::map2(sample_issues$issue_id, sample_issues$custom_fields,
-            .f = function(.x, .y) {c(issue_id = .x, .y)}) %>% 
-  rlist::list.unzip("union")
-```
-
-`rlist::unzip`関数の利点はリスト型変数に含まれていない変数（今回の場合は`value`）があってもNAとして出力してくれる点です。これにより、リスト型変数内の各変数は等長のベクトルとして出力されますので、晴れてデータフレーム型変数として扱うことが可能になります。  
-　  
-
-```{r}
-purrr::map2(sample_issues$issue_id, sample_issues$custom_fields,
-            .f = function(.x, .y) {c(issue_id = .x, .y)}) %>% 
-  rlist::list.unzip("union") %>% 
+purrr::map2_df(sample_issues$issue_id, sample_issues$custom_fields,
+               .f = function(.x, .y) {c(issue_id = .x, .y)}) %>% 
   as.data.frame()
 ```
 
@@ -549,10 +548,8 @@ purrr::map2(sample_issues$issue_id, sample_issues$custom_fields,
 　  
 
 ```{r}
-purrr::map2(sample_issues$issue_id, sample_issues$custom_fields,
-            .f = function(.x, .y) {c(issue_id = .x, .y)}) %>% 
-  rlist::list.unzip("union") %>% 
-  as.data.frame() %>% 
+purrr::map2_df(sample_issues$issue_id, sample_issues$custom_fields,
+               .f = function(.x, .y) {c(issue_id = .x, .y)}) %>% 
   dplyr::select(-id) %>% 
   tidyr::spread(key = name, value = value) %>% 
   dplyr::rename(id = issue_id)
@@ -570,10 +567,8 @@ cf_list <- issues %>%
   tidyr::unnest() %>% 
   tidyr::drop_na()
 
-df_cf <- purrr::map2(cf_list$id, cf_list$custom_fields,
-            .f = function(.x, .y) {c(iid = .x, .y)}) %>% 
-  rlist::list.unzip("union") %>% 
-  as.data.frame() %>% 
+df_cf <- purrr::map2_df(cf_list$id, cf_list$custom_fields,
+                        .f = function(.x, .y) {c(iid = .x, .y)}) %>% 
   dplyr::select(-id) %>% 
   tidyr::spread(key = name, value = value) %>% 
   dplyr::rename(id = iid) %>% 
@@ -587,100 +582,3 @@ issues %>%
 ここでは表示の都合上、チケット番号、タイトル、カスタムフィールドのみに絞ってありますが、結合処理により全てのリスト型変数に対する展開処理が終わったことになります。以降は各変数を用いた分析や可視化を行ってください。  
 　  
 
-<!-- リスト型変数がネストされているカスタムフィールドを展開するには、いったん、`list(list)`の状態を解消（アンネスト）して、展開後にNAになっているデータを削除する。   -->
-<!-- その後、リスト型変数の展開処理を行う。 -->
-
-```{r, include=FALSE, eval=FALSE}
-# id毎に展開できるがリストが展開されたままなのでまとめたい
-issues %>% 
-  head() %>% 
-  dplyr::select(id, custom_fields) %>% as.data.frame() %>% 
-  tidyr::unnest() %>% knitr::kable()
-
-map_if_chr <- function(.x, .f) {
-  purrr::map_if(.x, !is.na(.x), .f) %>% 
-    purrr::map_chr(1L) %>% 
-    return()
-}
-
-# unnested_issues <- issues %>%
-#   # head() %>%
-#   dplyr::select(id, custom_fields) %>% as.data.frame() %>%
-#   tidyr::unnest() %>% 
-#   tidyr::drop_na() %>% as.data.frame() %>% 
-#   tibble::rowid_to_column("rows")
-
-# 以下で展開できるが、`value`項のないデータがあるためこれらを処理しようとすると
-# エラーになる（揺れの処理が必要）
-# id     値
-# 16451  list(id = 4, name = "Affected version")
-# 16447  list(id = 4, name = "Affected version")
-# 16379　list(id = 4, name = "Affected version")
-# 16357　list(id = 4, name = "Affected version")
-
-# 上記のデータを除くと処理はできる
-issues %>%
-  head(100) %>%
-  dplyr::select(id, custom_fields) %>% as.data.frame() %>%
-  tidyr::unnest() %>% 
-  tidyr::drop_na() %>% 
-  dplyr::mutate(name = map_if_chr(custom_fields, 'name'),
-                value = map_if_chr(custom_fields, 'value')) %>% 
-  dplyr::select(-custom_fields) %>% 
-  tidyr::spread(key = name, value = value) %>% 
-  dplyr::left_join(issues, by = "id")
-
-# エラー処理を考える
-# Redmineの過去の仕様らしくカスタムフィールドに値が設定されていない場合
-# リスト変数内の`value`項がない場合がある、項がないリスト型変数に対して
-# `purrr::map`関数を適用するとSTOPエラーになるために別の方法でリスト型
-# 変数を展開する必要がある
-
-cf_list <- issues %>% 
-  dplyr::select(id, custom_fields) %>% 
-  tidyr::unnest() %>% 
-  tidyr::drop_na() %>% 
-  dplyr::mutate()
-
-sample_issues <- issues %>% 
-  dplyr::filter(id > 16350 & id < 16460) %>% 
-  dplyr::select(id, custom_fields) %>% 
-  tidyr::unnest() %>% 
-  tidyr::drop_na() %>% 
-  dplyr::rename(pj = id)
-
-sample_issues %>% knitr::kable()
-
-# リスト型変数自体は`rlist::list.unzip`関数で展開できるが識別番号（PJID）が
-# 分からなくなってしまう
-sample_issues$custom_fields %>% rlist::list.unzip("union") %>% 
-  as.data.frame()
-
-# ベクトルとリストをリストへ結合するには以下でOK
-c(pj = sample_issues$pj[3], sample_issues$custom_fields[[3]])
-
-# そこで、まず、PJNOをリスト型変数の中へ取り込んでから展開してデータフレーム型へ
-# 戻すことでPJNO毎のカスタムフィールドが作成できる
-purrr::map2(sample_issues$pj, sample_issues$custom_fields,
-            .f = function(.x, .y) {c(pj = .x, .y)}) %>% 
-  rlist::list.unzip("union") %>% 
-  as.data.frame() %>% 
-  dplyr::select(-id) %>% 
-  tidyr::spread(key = name, value = value)
-
-# 全体に適用してみる
-purrr::map2(cf_list$id, cf_list$custom_fields,
-            .f = function(.x, .y) {c(iid = .x, .y)}) %>% 
-  rlist::list.unzip("union") %>% 
-  as.data.frame() %>% 
-  dplyr::select(-id) %>% 
-  tidyr::spread(key = name, value = value) %>% 
-  dplyr::rename(id = iid) %>% 
-  dplyr::left_join(issues, by = "id") %>% 
-  dplyr::arrange(dplyr::desc(id))
-```
-
-<!-- # list操作 -->
-<!-- # http://delta0726.web.fc2.com/packages/data/00_purrr.html -->
-<!-- # nested dataframe -->
-<!-- # https://suryu.me/post/r_advent_calendar_day3/ -->
