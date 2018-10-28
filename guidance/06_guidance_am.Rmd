@@ -19,6 +19,7 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 
+require(rlist)
 require(redmineR)
 require(tidyverse)    # tidyverseは最後に呼び出す方がコンフリクトの影響小
 ```
@@ -408,11 +409,11 @@ Affected versionの値はversionのID。
 実際にどのバージョンかを知るためには、version取得APIを叩いて、値を検索する。
 
 
-## カスタムフィールルドの展開
-`purrr`パッケージで処理する方法を模索中
+# 効率的なカスタムフィールルドの展開
+カスタムフィールドは前述のようにリスト型変数がネストしている構造（入れ子構造）で、処理が厄介です。ネストを効率的に反復的に処理するには`purrr`パッケージを用います。
 
-### カスタムフィールドの確認
-カスタムフィールドの中身を確認（または表示）したい場合は`knitr::kable`関数を用いると便利。
+## カスタムフィールドの確認
+カスタムフィールドの中身を再確認しておきます。（このような場合は`knitr::kable`関数を用いると分かりやすい）
 ```{r}
 issues %>% 
   head() %>% 
@@ -420,10 +421,176 @@ issues %>%
   knitr::kable()
 ```
 
-### カスタムフィールドの展開
-リスト型変数がネストされているカスタムフィールドを展開するには、いったん、`list(list)`の状態を解消（アンネスト）して、展開後にNAになっているデータを削除する。  
-その後、リスト型変数の展開処理を行う。
+このようにカスタムフィールドはチケットによりフィールドがあったり、なかったり、数が異なっていたりしています。  
+　  
+
+## カスタムフィールドの展開
+カスタムフィールドを処理するには、最初にネスト構造を展開して単一のリスト型変数にすることから始めます。リスト構造を展開するには`tidyr::unnest`関数を用います。  
+　  
+
 ```{r}
+issues %>% 
+  head() %>% 
+  dplyr::select(id, custom_fields) %>% as.data.frame() %>% 
+  tidyr::unnest() %>% knitr::kable()
+```
+
+`tidyr::unnest`関数を用いると複数のリスト型変数がネストされている部分に対しては複数行に展開してくれますので、識別子（この場合はチケット番号である`id`）と共に適用する必要があります。また、`NA`の場合には`NULL`になりますので、この次の展開のために`NULL`データを削除しておきます。  
+　  
+
+```{r}
+issues %>% 
+  head() %>% 
+  dplyr::select(id, custom_fields) %>% as.data.frame() %>% 
+  tidyr::unnest() %>% 
+  tidyr::drop_na() %>% knitr::kable()
+```
+
+以降の処理は、前出の`purrr::map`関数群を適用することが出来るようになります。
+```{r}
+map_if_chr <- function(.x, .f) {
+  purrr::map_if(.x, !is.na(.x), .f) %>% 
+    purrr::map_chr(1L) %>% 
+    return()
+}
+
+issues %>%
+  head(100) %>%
+  dplyr::select(id, custom_fields) %>% as.data.frame() %>%
+  tidyr::unnest() %>% 
+  tidyr::drop_na() %>% 
+  dplyr::mutate(name = map_if_chr(custom_fields, 'name'),
+                value = map_if_chr(custom_fields, 'value')) %>% 
+  dplyr::select(-custom_fields) %>% 
+  tidyr::spread(key = name, value = value) %>% 
+  dplyr::left_join(issues, ., by = "id") %>% 
+  dplyr::select(id, 'Affected version', 'Resolution') %>%
+  dplyr::arrange(dplyr::desc(id))
+```
+
+
+## イレギュラー処理
+カスタムフィールドは上記のように展開できますが、実際には以下のように`Affected version`に`value`が存在しないというようなイレギュラーなデータが存在しています。  
+　  
+
+```{r}
+issues %>% 
+  dplyr::filter(id <= 16455 & id >= 16446) %>% 
+  dplyr::select(id, custom_fields) %>% 
+  tidyr::unnest() %>% knitr::kable()
+```
+
+このようなイレギュラーデータに対して`purrr::map`関数群を適用するとSTOPエラーを起こしてしまい処理が完了できません。  
+　  
+
+```{r, error=TRUE}
+issues %>% 
+  dplyr::filter(id <= 16455 & id >= 16446) %>% 
+  dplyr::select(id, custom_fields) %>% 
+  tidyr::unnest() %>% 
+  dplyr::mutate(name = map_if_chr(custom_fields, 'name'),
+                value = map_if_chr(custom_fields, 'value')) 
+```
+
+そこで、このようなイレギュラーデータを処理するには、一度、リスト型変数をデータフレーム型変数に展開しておく必要があります。  
+　  
+### イレギュラーデータの展開処理
+イレギュラーデータを再度確認しておきます。  
+　  
+
+```{r}
+sample_issues <- issues %>% 
+  dplyr::filter(id <= 16455 & id >= 16446) %>% 
+  dplyr::select(id, custom_fields) %>% 
+  tidyr::unnest() %>% 
+  tidyr::drop_na() %>% 
+  dplyr::rename(issue_id = id)
+
+sample_issues %>% knitr::kable()
+```
+
+このようにリスト型変数内にはチケット番号を識別するための識別子を持っていません。最初の`id`は、カスタムフィールドの識別子です。そこで、リスト型変数内にチケット番号の識別子（ここでは`issue_id`と名前を変えてあります）を入れ込みます。リスト型変数は`c`関数を用いて単純に結合するだけでリスト内の変数を追加できます。  
+　  
+
+```{r}
+c(issue_id = sample_issues$issue_id[1], sample_issues$custom_fields[[1]])
+```
+
+この結合処理を各データに対して反復して適用しますので、反復処理を得意とする`purrr`パッケージを利用します。  
+　  
+
+```{r}
+purrr::map2_df(sample_issues$issue_id, sample_issues$custom_fields,
+            .f = function(.x, .y) {c(issue_id = .x, .y)})
+```
+
+`purrr::map2`関数群は、`purrr::map`関数群の拡張てきな関数群であり、二つの引数（`.x`, `.y`）に対して`.f`で指定した処理（関数や演算子など）を適用する関数です。ここでは出力を見やすくするためにデータフレーム型の出力にしていますが、実際の処理ではリスト型に出力するタイプの関数を用います。  
+　  
+次にこのチケット番号識別子を持つリスト型変数を`rlist`パッケージを用いて展開します。`rlist`パッケージは『Rプログラミング本格入門』原著の著者であるKun Ren氏が開発したリスト型変数を扱うためのパッケージで`tidyverse`な思想に合わせて作られています。  
+　  
+
+```{r}
+purrr::map2(sample_issues$issue_id, sample_issues$custom_fields,
+            .f = function(.x, .y) {c(issue_id = .x, .y)}) %>% 
+  rlist::list.unzip("union")
+```
+
+`rlist::unzip`関数の利点はリスト型変数に含まれていない変数（今回の場合は`value`）があってもNAとして出力してくれる点です。これにより、リスト型変数内の各変数は等長のベクトルとして出力されますので、晴れてデータフレーム型変数として扱うことが可能になります。  
+　  
+
+```{r}
+purrr::map2(sample_issues$issue_id, sample_issues$custom_fields,
+            .f = function(.x, .y) {c(issue_id = .x, .y)}) %>% 
+  rlist::list.unzip("union") %>% 
+  as.data.frame()
+```
+
+これでチケット番号（Redmine上では`id`）に紐付いたカスタムフィールド情報を取得することができました。あとは、以前に学んだ`tidyr::spread`関数を用いてカスタムフィールド（`name`）が変数になるように展開します。  
+　  
+
+```{r}
+purrr::map2(sample_issues$issue_id, sample_issues$custom_fields,
+            .f = function(.x, .y) {c(issue_id = .x, .y)}) %>% 
+  rlist::list.unzip("union") %>% 
+  as.data.frame() %>% 
+  dplyr::select(-id) %>% 
+  tidyr::spread(key = name, value = value) %>% 
+  dplyr::rename(id = issue_id)
+```
+
+　  
+
+## カスタムフィールドの結合
+カスタムフィールドが展開できましたので、あとは、チケットデータに対して識別子であるチケット番号（`id`）を元に結合処理を行います「。  
+　  
+
+```{r}
+cf_list <- issues %>% 
+  dplyr::select(id, custom_fields) %>% 
+  tidyr::unnest() %>% 
+  tidyr::drop_na()
+
+df_cf <- purrr::map2(cf_list$id, cf_list$custom_fields,
+            .f = function(.x, .y) {c(iid = .x, .y)}) %>% 
+  rlist::list.unzip("union") %>% 
+  as.data.frame() %>% 
+  dplyr::select(-id) %>% 
+  tidyr::spread(key = name, value = value) %>% 
+  dplyr::rename(id = iid) %>% 
+  dplyr::arrange(dplyr::desc(id))
+
+issues %>% 
+  dplyr::select(id, subject) %>% 
+  dplyr::left_join(df_cf, by = "id")
+```
+
+ここでは表示の都合上、チケット番号、タイトル、カスタムフィールドのみに絞ってありますが、結合処理により全てのリスト型変数に対する展開処理が終わったことになります。以降は各変数を用いた分析や可視化を行ってください。  
+　  
+
+<!-- リスト型変数がネストされているカスタムフィールドを展開するには、いったん、`list(list)`の状態を解消（アンネスト）して、展開後にNAになっているデータを削除する。   -->
+<!-- その後、リスト型変数の展開処理を行う。 -->
+
+```{r, include=FALSE, eval=FALSE}
 # id毎に展開できるがリストが展開されたままなのでまとめたい
 issues %>% 
   head() %>% 
@@ -512,7 +679,6 @@ purrr::map2(cf_list$id, cf_list$custom_fields,
   dplyr::left_join(issues, by = "id") %>% 
   dplyr::arrange(dplyr::desc(id))
 ```
-
 
 <!-- # list操作 -->
 <!-- # http://delta0726.web.fc2.com/packages/data/00_purrr.html -->
