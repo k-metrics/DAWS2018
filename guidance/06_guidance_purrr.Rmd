@@ -1,0 +1,158 @@
+---
+title: "第６回データ分析勉強会"
+author: "【午前の部】実践チケット分析 - 効率的にリストを展開する"
+date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
+output:
+  ioslides_presentation:
+    css: style_img.css
+    df_print: paged
+    highlight: pygments
+    logo: fig/hex-purrr.png
+    smaller: false
+    widescreen: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+
+require(redmineR)
+require(tidyverse)    # tidyverseは最後に呼び出す方がコンフリクトの影響小
+
+load("../data/_redmine_issues_all.RData_")
+```
+
+# はじめに
+
+## purrrによる関数型プログラミング
+* 「関数型プログラミングを実現するためのパッケージ」とよく言われる
+* `tidyverse`ファミリーでtidyなアーキテクチャに基づいた設計
+* `apply`関数群や`plyr`パッケージを再設計したようなパッケージ
+    * 層別的な処理や反復処理に威力を発揮
+* 指定しするデータ（`.x`や`.y`）に対して指定する処理（`.f`）を適用する
+    * 指定できるデータは**ベクトル**型、または、**リスト**型
+    * 指定できる処理は関数に限らず、演算子でも可能
+* はっきり言って慣れないと**難しい**
+    * 無名関数やラムダ式といった聞きなれない言葉が出てくる
+* 使うと**すごく便利**
+    * 特にリスト型変数の処理は楽
+    * 習うより慣れよ
+
+
+# リスト型データの展開
+
+## 対象データ（Redmineチケット）
+既に学んだように`redmineR`パッケージで取得したデータはリスト型変数のばかり。
+```{r}
+issues %>% head()
+```
+
+
+## リスト型データの中身
+リスト型変数からは`id`か`name`が取得できれば可視化・分析につかえる。
+```{r}
+issues %>% head(5) %>% dplyr::select(id, project, tracker) %>% knitr::kable()
+```
+
+
+## そこで、purrr
+```{r}
+issues %>% head(5) %>% dplyr::select(id, tracker) %>% 
+  dplyr::mutate(tracker_name = purrr::map(tracker, 'name'))
+```
+
+
+## なにをやってるの？
+`purrr::map`関数は以下のような引数を取る関数で、**返り値はリスト型**です。
+
+```{r, eval=FALSE}
+purrr::map(.x, .f, ...)
+```
+
+第一引数（`.x`）に対して第二引数（`.f`）で指定した処理（関数や演算子など）を適用する関数です。この処理の場合、`.f`にリストの名前（"name"というリスト変数内の項目名）を指定していますのでインデックス参照が行われています。すなわち、
+　
+```{r, eval=FALSE}
+issues$tracker[[n]]$name
+```
+　  
+という参照を行っているのと等価の処理が行われています（n = 1, 2, ...）。  
+　  
+参考までに参照に使われる`[`や`[[`、`$`は演算子の一種（要素アクセス演算子とでもいうか）です。
+
+
+## でもリストのままじゃ嫌だ
+`purrr::map`関数は前述のように返り値がリストですので、**ベクトルの返り値**が欲しい場合は`purrr::map_`関数を用います。"name"は文字列なので、ここでは`purrr::map_chr`関数を用います。
+```{r}
+issues %>% head(5) %>% dplyr::select(id, tracker) %>% 
+  dplyr::mutate(tracker_name = purrr::map_chr(tracker, 'name'))
+```
+
+
+
+## 例外処理
+チケットデータには以下のように欠損値（`NA`）が含まれています。
+```{r}
+issues %>% dplyr::select(id, assigned_to, category) %>% head(5) %>% knitr::kable()
+```
+　  
+（つづく）
+
+
+## 例外処理（つづき）
+これを`purrr::map_`関数群で処理するとSTOPエラーとなり処理が完了できません。
+```{r, error=TRUE}
+issues %>% dplyr::select(id, assigned_to, category) %>% head(4) %>% 
+  dplyr::mutate(assignee = purrr::map_chr(assigned_to, 'name'),
+                cat_name = purrr::map_chr(category, 'name')) %>% knitr::kable()
+```
+　  
+欠損値を対象から外して処理するためには`purrr::map_if`関数を用います。`purrr::map_if`関数は第二引数`.p`で条件式を指定します。
+```{r, eval=FALSE}
+purrr::map_if(.x, .p, .f)
+```
+　  
+（つづく）
+
+
+## 例外処理（つづき）
+```{r}
+issues %>% dplyr::select(id, assigned_to, category) %>% head(4) %>% 
+  dplyr::mutate(assignee = purrr::map_if(assigned_to, !is.na(assigned_to), 'name'),
+                cat_name = purrr::map_if(category, !is.na(category), 'name'))
+```
+　  
+`purrr::map_if`関数も**返り値はリスト**なのベクトルの返り値が欲しい場合は、もう一段、処理をする必要があります。どうしたらよいでしょうか？  
+　  
+（つづく）
+
+
+## 例外処理（つづき）
+```{r}
+issues %>% dplyr::select(id, assigned_to, category) %>% head(4) %>% 
+  dplyr::mutate(assignee = purrr::map_if(assigned_to, !is.na(assigned_to), 'name') %>%
+                  purrr::map_chr(1L),
+                cat_name = purrr::map_if(category, !is.na(category), 'name') %>%
+                  purrr::map_chr(1L))
+```
+　  
+このような処理は、変換したいベクトルの型に合わせて関数化しておくと便利です。
+
+
+## 展開結果の例
+今までの処理を適用すると下記のようなチケットデータを得ることができます。  
+　  
+```{r, echo=FALSE}
+map_if_chr <- function(.x, .f) {
+  purrr::map_if(.x, !is.na(.x), .f) %>% 
+    purrr::map_chr(1L) %>% return()
+}
+
+issues %>% head(100) %>% 
+  dplyr::select(id, project, tracker, status, priority, author, 
+                assigned_to, category) %>% 
+  dplyr::mutate_if(is.list, map_if_chr, 'name')
+```
+
+
+
+# カスタムフィールドの展開
+
