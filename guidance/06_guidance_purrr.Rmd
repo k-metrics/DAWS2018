@@ -167,7 +167,7 @@ Redmineではカスタムフィールドと呼ばれるユーザが自由に定�
 
 カスタムフィールドをRのコードで表現すると下記のようなイメージになります。  
 ```{r, eval=FALSE}
-c(
+custom_fields <- c(
   list(list(id = n, name = "character", value = c("character", ...)),
        list(id = n, name = "character", value = c(m, ...)),
        ...),
@@ -189,7 +189,7 @@ name  |カスタムフィールド名称（「名称」欄に設定した値）
 value |カスタムフィールドの値（単一とは限らない）
 
 　  
-`value`はカスタムフィールドの表示形式により取れる値が変わります。
+`value`はカスタムフィールドの設定により取れる値が変わります。
 
 
 ## 実際のカスタムフィールド
