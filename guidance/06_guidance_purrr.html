@@ -31,7 +31,7 @@
       // Author information
       presenters: [
             {
-        name:  '【午前の部】実践チケット分析 - 効率的にリストを展開する' ,
+        name:  '【午前の部】実践チケット分析 - purrrで効率的にリストを展開する' ,
         company: '',
         gplus: '',
         twitter: '',
@@ -119,7 +119,7 @@
 
 <slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>はじめに</h2></hgroup><article >
 
-</article></slide><slide class=""><hgroup><h2>purrrによる関数型プログラミング</h2></hgroup><article  id="purrr">
+</article></slide><slide class=""><hgroup><h2>purrrパッケージ</h2></hgroup><article  id="purrr">
 
 <ul>
 <li>「関数型プログラミングを実現するためのパッケージ」とよく言われる</li>
@@ -127,13 +127,13 @@
 <li><code>apply</code>関数群や<code>plyr</code>パッケージを再設計したようなパッケージ
 
 <ul>
-<li>層別的な処理や反復処理に威力を発揮</li>
+<li>層別的な処理や<strong>反復処理に威力</strong>を発揮する</li>
 </ul></li>
 <li>指定しするデータ（<code>.x</code>や<code>.y</code>）に対して指定する処理（<code>.f</code>）を適用する
 
 <ul>
 <li>指定できるデータは<strong>ベクトル</strong>型、または、<strong>リスト</strong>型</li>
-<li>指定できる処理は関数に限らず、演算子でも可能</li>
+<li>指定できる処理は関数に限らず演算子でも可能</li>
 </ul></li>
 <li>はっきり言って慣れないと<strong>難しい</strong>
 
@@ -143,8 +143,7 @@
 <li>使うと<strong>すごく便利</strong>
 
 <ul>
-<li>特にリスト型変数の処理は楽</li>
-<li>習うより慣れよ</li>
+<li>特にリスト型変数の処理はめちゃくちゃ楽になる</li>
 </ul></li>
 </ul>
 
@@ -152,7 +151,7 @@
 
 </article></slide><slide class=""><hgroup><h2>対象データ（Redmineチケット）</h2></hgroup><article  id="redmine">
 
-<p>既に学んだように<code>redmineR</code>パッケージで取得したデータはリスト型変数のばかり。</p>
+<p>既に学んだように<code>redmineR</code>パッケージで取得したデータはリスト型変数ばかりで処理が面倒。</p>
 
 <pre class = 'prettyprint lang-r'>issues %&gt;% head()</pre>
 
@@ -161,9 +160,11 @@
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["id"],"name":[1],"type":["int"],"align":["right"]},{"label":["project"],"name":[2],"type":["list"],"align":["right"]},{"label":["tracker"],"name":[3],"type":["list"],"align":["right"]},{"label":["status"],"name":[4],"type":["list"],"align":["right"]},{"label":["priority"],"name":[5],"type":["list"],"align":["right"]},{"label":["author"],"name":[6],"type":["list"],"align":["right"]},{"label":["assigned_to"],"name":[7],"type":["list"],"align":["right"]},{"label":["category"],"name":[8],"type":["list"],"align":["right"]},{"label":["subject"],"name":[9],"type":["chr"],"align":["left"]},{"label":["description"],"name":[10],"type":["chr"],"align":["left"]},{"label":["done_ratio"],"name":[11],"type":["int"],"align":["right"]},{"label":["created_on"],"name":[12],"type":["chr"],"align":["left"]},{"label":["updated_on"],"name":[13],"type":["chr"],"align":["left"]},{"label":["closed_on"],"name":[14],"type":["chr"],"align":["left"]},{"label":["custom_fields"],"name":[15],"type":["list"],"align":["right"]},{"label":["fixed_version"],"name":[16],"type":["list"],"align":["right"]},{"label":["start_date"],"name":[17],"type":["chr"],"align":["left"]},{"label":["due_date"],"name":[18],"type":["chr"],"align":["left"]},{"label":["estimated_hours"],"name":[19],"type":["dbl"],"align":["right"]},{"label":["parent"],"name":[20],"type":["list"],"align":["right"]}],"data":[{"1":"29767","2":"<list [2]>","3":"<list [2]>","4":"<list [2]>","5":"<list [2]>","6":"<list [2]>","7":"<list [2]>","8":"<list [2]>","9":"Traditional Chinese translation (to r17594)","10":"* translations added\\r\\n** label_ldap, label_ldaps_verify_none, label_ldaps_verify_peer, label_ldaps_warning,, label_nothing_to_preview\\r\\n* translations moved\\r\\n** label_version_and_files, error_can_not_delete_auth_source, button_actions, mail_body_lost_password_validity\\r\\n","11":"0","12":"2018-10-15T01:43:12Z","13":"2018-10-15T01:43:12Z","14":"2018-06-26T16:17:40Z","15":"<lgl [1]>","16":"<lgl [1]>","17":"NA","18":"NA","19":"NA","20":"<lgl [1]>","_rn_":"1"},{"1":"29764","2":"<list [2]>","3":"<list [2]>","4":"<list [2]>","5":"<list [2]>","6":"<list [2]>","7":"<lgl [1]>","8":"<list [2]>","9":"new filed 'Related Issues Notes' for pair of related issues","10":"Requesting a new feature to add a new custom field 'Related Issues Notes' to allow user to add any optional notes/comments for every pair of 'Related Issues'.\\r\\n\\r\\nThis can allow user to capture optional comments/notes about how any two issues are related if relationship is established between any two issues using 'Related Issues' relationship type.\\r\\n\\r\\nUsage Scenario:\\r\\n\\r\\nThink that following trackers are defined in a project\\r\\n\\r\\n- Enhancement or Change Request\\r\\n\\r\\n- User Story \\r\\n\\r\\nWhenever any new enhancement / change request is requested it may impact multiple user stories.\\r\\n\\r\\nProject is using 'Related Issues' relation type to establish relationships between enhancements and user stories and this new custom field can help to capture any notes within redmine tool about how that enhancement / change request is impacting respective user story. \\r\\n\\r\\nThis functionality can be very helpful for the team to document impact to user stories by enhancements / change requests and quicker delivery of requested changes.","11":"0","12":"2018-10-13T23:57:48Z","13":"2018-10-13T23:57:48Z","14":"NA","15":"<list [1]>","16":"<lgl [1]>","17":"NA","18":"NA","19":"NA","20":"<lgl [1]>","_rn_":"2"},{"1":"29763","2":"<list [2]>","3":"<list [2]>","4":"<list [2]>","5":"<list [2]>","6":"<list [2]>","7":"<lgl [1]>","8":"<list [2]>","9":"Better linux distribution to install redmine","10":"hi to all, sorry for the question maybe OT.\\r\\nWhich is the best distribution to install redmine? Ubuntu or Centos?\\r\\n\\r\\nThanks in advice.","11":"0","12":"2018-10-13T07:38:37Z","13":"2018-10-14T00:10:53Z","14":"2018-10-14T00:10:53Z","15":"<list [1]>","16":"<lgl [1]>","17":"NA","18":"NA","19":"NA","20":"<lgl [1]>","_rn_":"3"},{"1":"29758","2":"<list [2]>","3":"<list [2]>","4":"<list [2]>","5":"<list [2]>","6":"<list [2]>","7":"<lgl [1]>","8":"<lgl [1]>","9":"Introduce optional pay per feature model of Redmine development","10":"What I'm proposing is a broad idea of moving to a model of development that can be actively supported by users.\\r\\n\\r\\nRedmine is a very successful project of invaluable significance for people and organizations around the world. I'm not afraid to ascribe it a significant contribution to rising global effectiveness and letting people get their work done in ordered and prioritised manner.\\r\\n\\r\\nYet due to the nature of FOSS development it lacks power to provide some needed and long awaited features. Browsing through issue history makes you find multiple issues as old as 10 years. People again and again ask for crucial features, but except for adding \"+1\" there is no easy way they can support development.\\r\\n\\r\\nWhy not let users - of which some are companies - fund development time according to their needs?\\r\\n\\r\\nI wrote proof of concept plugin that allows people to vote on Redmine issues by sending amount of cryptocurrencies. You can find it here: https://www.redmine.org/plugins/token-voting Be careful though: it is not something ready for production use. It requires further work.\\r\\n\\r\\nI think that you should consider possibility of using such pay per feature model as an option for future development. I cannot predict whether it will work for Redmine (or even work for any project at all). But I think it is worth trying. In case you find the idea interesting I'm ready to work on this plugin further. As an long time Redmine user I feel the desire to give something back to the community.","11":"0","12":"2018-10-11T21:58:17Z","13":"2018-10-12T23:54:54Z","14":"NA","15":"<list [1]>","16":"<lgl [1]>","17":"NA","18":"NA","19":"NA","20":"<lgl [1]>","_rn_":"4"},{"1":"29757","2":"<list [2]>","3":"<list [2]>","4":"<list [2]>","5":"<list [2]>","6":"<list [2]>","7":"<lgl [1]>","8":"<list [2]>","9":"Make \"First name\" and \"Last name\" optional (not required) in user's settings","10":"Reasoning:\\r\\n* in some Redmine installations first and last name may not be required as people might not know each other in person. *Login by itself may be enough to fulfill the need for identification* (see Github, Twitter and so on). This is especially true for open source projects communities.\\r\\n* some people may not like to be *forced to resign from their privacy*. When user is forced to provide data he does not want to, he will probably provide fake data. Value of fake data is not greater that that of no data. This is related to #28106.\\r\\n* there is already option in Redmine to set *user display format to login only* (instead of first/last name).\\r\\n* some jurisdictions may require sites that *gather personal data to comply with specific laws*. Again if Redmine is used by open source project communities it may place an unnecessary burden on site administrators.\\r\\n* some communities largely make *use of only one name* and requiring 2 names is requiring impossible. Related: #1595\\r\\n\\r\\nI propose to either:\\r\\n# Make first and last name optional\\r\\nor\\r\\n# Add administrative setting to control whether first and last names are optional or required.","11":"0","12":"2018-10-11T19:44:39Z","13":"2018-10-12T16:31:14Z","14":"NA","15":"<list [1]>","16":"<lgl [1]>","17":"NA","18":"NA","19":"NA","20":"<lgl [1]>","_rn_":"5"},{"1":"29756","2":"<list [2]>","3":"<list [2]>","4":"<list [2]>","5":"<list [2]>","6":"<list [2]>","7":"<lgl [1]>","8":"<list [2]>","9":"\\\\f and \\\\v characters in Textile markup may cause RegexpError exception","10":"When I make a new issue which includes some control codes, Redmine goes internal error but the issue is created.\\r\\nThen I go back to the previous view and refer the issue, Redmine goes internal error again.\\r\\n\\r\\nI tested some cases and found that in the NG case, the text starts with 0x20 0x0B.\\r\\nIf it starts with only 0x0B, the problem doesn't occur.\\r\\n\\r\\n* NG case\\r\\n<pre>\\r\\n   ADDRESS  +0 +1 +2 +3 +4 +5 +6 +7  +8 +9 +A +B +C +D +E +F  0123456789ABCDEF\\r\\n----------+-------------------------------------------------------------------\\r\\n  00000000: 20 0B 61 62 63 64 65 31  32 33 34 35 20 -- -- --   .abcde12345    \\r\\n<\/pre>\\r\\n\\r\\n* OK case\\r\\n<pre>\\r\\n   ADDRESS  +0 +1 +2 +3 +4 +5 +6 +7  +8 +9 +A +B +C +D +E +F  0123456789ABCDEF\\r\\n----------+-------------------------------------------------------------------\\r\\n  00000000: 0B 61 62 63 64 65 31 32  33 34 35 20 -- -- -- --  .abcde12345     \\r\\n<\/pre>\\r\\n\\r\\nEven if the text contains the control codes, redmine should not goes internal error, I think.\\r\\n\\r\\nIn order to reproduce the defect, please use the attached file.\\r\\nOpen it in the text editor and paste it in the description of the new issue in Redmine.\\r\\n\\r\\n\\r\\n","11":"0","12":"2018-10-11T06:47:41Z","13":"2018-10-14T13:20:35Z","14":"NA","15":"<list [2]>","16":"<list [2]>","17":"NA","18":"NA","19":"NA","20":"<lgl [1]>","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script></div>
 
+<p>　<br/>それでもCSVファイルに出力して処理するよりは楽。</p>
+
 </article></slide><slide class=""><hgroup><h2>リスト型データの中身</h2></hgroup><article >
 
-<p>リスト型変数からは<code>id</code>か<code>name</code>が取得できれば可視化・分析につかえる。</p>
+<p>リスト型データからは<code>id</code>か<code>name</code>が取得できれば可視化・分析につかえる。</p>
 
 <pre class = 'prettyprint lang-r'>issues %&gt;% head(5) %&gt;% dplyr::select(id, project, tracker) %&gt;% knitr::kable()</pre>
 
@@ -200,31 +201,33 @@
 </tr>
 </table>
 
-</article></slide><slide class=""><hgroup><h2>そこで、purrr</h2></hgroup><article  id="purrr">
+</article></slide><slide class=""><hgroup><h2>そこで、purrr::map</h2></hgroup><article  id="purrrmap">
 
-<pre class = 'prettyprint lang-r'>issues %&gt;% head(5) %&gt;% dplyr::select(id, tracker) %&gt;% 
+<pre class = 'prettyprint lang-r'>issues %&gt;% head() %&gt;% dplyr::select(id, tracker) %&gt;% 
   dplyr::mutate(tracker_name = purrr::map(tracker, &#39;name&#39;))</pre>
 
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["id"],"name":[1],"type":["int"],"align":["right"]},{"label":["tracker"],"name":[2],"type":["list"],"align":["right"]},{"label":["tracker_name"],"name":[3],"type":["list"],"align":["right"]}],"data":[{"1":"29767","2":"<list [2]>","3":"<chr [1]>"},{"1":"29764","2":"<list [2]>","3":"<chr [1]>"},{"1":"29763","2":"<list [2]>","3":"<chr [1]>"},{"1":"29758","2":"<list [2]>","3":"<chr [1]>"},{"1":"29757","2":"<list [2]>","3":"<chr [1]>"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["id"],"name":[1],"type":["int"],"align":["right"]},{"label":["tracker"],"name":[2],"type":["list"],"align":["right"]},{"label":["tracker_name"],"name":[3],"type":["list"],"align":["right"]}],"data":[{"1":"29767","2":"<list [2]>","3":"<chr [1]>"},{"1":"29764","2":"<list [2]>","3":"<chr [1]>"},{"1":"29763","2":"<list [2]>","3":"<chr [1]>"},{"1":"29758","2":"<list [2]>","3":"<chr [1]>"},{"1":"29757","2":"<list [2]>","3":"<chr [1]>"},{"1":"29756","2":"<list [2]>","3":"<chr [1]>"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script></div>
+
+<p>　<br/><code>list[2]</code>が<code>chr[1]</code>になってる！なんか期待できるかも？</p>
 
 </article></slide><slide class=""><hgroup><h2>なにをやってるの？</h2></hgroup><article >
 
-<p><code>purrr::map</code>関数は以下のような引数を取る関数で、<strong>返り値はリスト型</strong>です。</p>
+<p><code>purrr::map</code>関数は以下のような引数を取る関数で<strong>返り値はリスト型</strong>です。</p>
 
 <pre class = 'prettyprint lang-r'>purrr::map(.x, .f, ...)</pre>
 
-<p>第一引数（<code>.x</code>）に対して第二引数（<code>.f</code>）で指定した処理（関数や演算子など）を適用する関数です。この処理の場合、<code>.f</code>にリストの名前（&quot;name&quot;というリスト変数内の項目名）を指定していますのでインデックス参照が行われています。すなわち、 　</p>
+<p>第一引数（<code>.x</code>）に対して第二引数（<code>.f</code>）で指定した処理（関数や演算子など）を適用する関数です。前ページの処理では、<code>.f</code>に名前（&quot;name&quot;というリスト内の要素名）を指定していますのでインデックス参照が行われています。<br/>　<br/>すなわち、</p>
 
 <pre class = 'prettyprint lang-r'>issues$tracker[[n]]$name</pre>
 
-<p>　<br/>という参照を行っているのと等価の処理が行われています（n = 1, 2, &#8230;）。<br/>　<br/>参考までに参照に使われる<code>[</code>や<code>[[</code>、<code>$</code>は演算子の一種（要素アクセス演算子とでもいうか）です。</p>
+<p>という参照を行っているのと等価の処理が行われています（n = 1, 2, &#8230;）。<br/>　<br/>参考までにベクトルやリストなどの参照に使われる<code>[</code>や<code>[[</code>、<code>$</code>は演算子の一種（要素アクセス演算子とでもいうか）です。</p>
 
 </article></slide><slide class=""><hgroup><h2>でもリストのままじゃ嫌だ</h2></hgroup><article >
 
-<p><code>purrr::map</code>関数は前述のように返り値がリストですので、<strong>ベクトルの返り値</strong>が欲しい場合は<code>purrr::map_</code>関数を用います。&quot;name&quot;は文字列なので、ここでは<code>purrr::map_chr</code>関数を用います。</p>
+<p><code>purrr::map</code>関数は前述のように返り値がリストです。<strong>ベクトルの返り値</strong>が欲しい場合には<code>purrr::map_</code>関数を用います。&quot;name&quot;は文字列なので、ここでは<code>purrr::map_chr</code>関数を用います。</p>
 
 <pre class = 'prettyprint lang-r'>issues %&gt;% head(5) %&gt;% dplyr::select(id, tracker) %&gt;% 
   dplyr::mutate(tracker_name = purrr::map_chr(tracker, &#39;name&#39;))</pre>
@@ -236,9 +239,9 @@
 
 </article></slide><slide class=""><hgroup><h2>例外処理</h2></hgroup><article >
 
-<p>チケットデータには以下のように欠損値（<code>NA</code>）が含まれています。</p>
+<p>ただ、チケットデータには以下のように欠損値（<code>NA</code>）が含まれています。</p>
 
-<pre class = 'prettyprint lang-r'>issues %&gt;% dplyr::select(id, assigned_to, category) %&gt;% head(5) %&gt;% knitr::kable()</pre>
+<pre class = 'prettyprint lang-r'>issues %&gt;% dplyr::select(id, assigned_to, category) %&gt;% head(4) %&gt;% knitr::kable()</pre>
 
 <table class = 'rmdtable'>
 <tr class="header">
@@ -266,22 +269,9 @@
 <td align="left">NA</td>
 <td align="left">NA</td>
 </tr>
-<tr class="odd">
-<td align="right">29757</td>
-<td align="left">NA</td>
-<td align="left">list(id = 7, name = &quot;Accounts / authentication&quot;)</td>
-</tr>
-<tr class="even">
-<td align="right">　</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="right">（つづく</td>
-<td align="left">）</td>
-<td align="left"></td>
-</tr>
 </table>
+
+<p>　<br/>（つづく）</p>
 
 </article></slide><slide class=""><hgroup><h2>例外処理（つづき）</h2></hgroup><article >
 
@@ -293,9 +283,9 @@
 
 <pre >## Error in mutate_impl(.data, dots): Evaluation error: Result 2 is not a length 1 atomic vector.</pre>
 
-<p>　<br/>欠損値を対象から外して処理するためには<code>purrr::map_if</code>関数を用います。<code>purrr::map_if</code>関数は第二引数<code>.p</code>で条件式を指定します。</p>
+<p>　<br/>欠損値を除外して処理するためには<code>purrr::map_if</code>関数を用います。<code>purrr::map_if</code>関数は第二引数<code>.p</code>で条件式を指定します。</p>
 
-<pre class = 'prettyprint lang-r'>purrr::map_if(.x, .p, .f)</pre>
+<pre class = 'prettyprint lang-r'>purrr::map_if(.x, .p, .f, ...)</pre>
 
 <p>　<br/>（つづく）</p>
 
@@ -336,7 +326,288 @@
 {"columns":[{"label":["id"],"name":[1],"type":["int"],"align":["right"]},{"label":["project"],"name":[2],"type":["chr"],"align":["left"]},{"label":["tracker"],"name":[3],"type":["chr"],"align":["left"]},{"label":["status"],"name":[4],"type":["chr"],"align":["left"]},{"label":["priority"],"name":[5],"type":["chr"],"align":["left"]},{"label":["author"],"name":[6],"type":["chr"],"align":["left"]},{"label":["assigned_to"],"name":[7],"type":["chr"],"align":["left"]},{"label":["category"],"name":[8],"type":["chr"],"align":["left"]}],"data":[{"1":"29767","2":"Redmine","3":"Patch","4":"New","5":"Normal","6":"ChunChang Lo","7":"Go MAEDA","8":"Translations"},{"1":"29764","2":"Redmine","3":"Feature","4":"New","5":"Normal","6":"Bharat Shah","7":"NA","8":"Issues"},{"1":"29763","2":"Redmine","3":"Feature","4":"Closed","5":"Normal","6":"luca malatesta","7":"NA","8":"Administration"},{"1":"29758","2":"Redmine","3":"Feature","4":"New","5":"Normal","6":"crypto gopher","7":"NA","8":"NA"},{"1":"29757","2":"Redmine","3":"Feature","4":"New","5":"Normal","6":"crypto gopher","7":"NA","8":"Accounts / authentication"},{"1":"29756","2":"Redmine","3":"Defect","4":"New","5":"Normal","6":"Hide MATSUTANI","7":"NA","8":"Text formatting"},{"1":"29753","2":"Redmine","3":"Defect","4":"Closed","5":"Normal","6":"Pavel Potcheptsov","7":"NA","8":"Issues permissions"},{"1":"29752","2":"Redmine","3":"Feature","4":"New","5":"Normal","6":"Go MAEDA","7":"NA","8":"Attachments"},{"1":"29750","2":"Redmine","3":"Feature","4":"New","5":"Normal","6":"Max Johansson","7":"NA","8":"NA"},{"1":"29746","2":"Redmine","3":"Defect","4":"New","5":"Normal","6":"Holger Just","7":"NA","8":"Text formatting"},{"1":"29742","2":"Redmine","3":"Defect","4":"Closed","5":"Normal","6":"Andrey Lobanov (RedSoft)","7":"NA","8":"Permissions and roles"},{"1":"29739","2":"Redmine","3":"Patch","4":"Closed","5":"Normal","6":"Go MAEDA","7":"Go MAEDA","8":"Translations"},{"1":"29738","2":"Redmine","3":"Patch","4":"New","5":"Normal","6":"Keita Kariya","7":"NA","8":"REST API"},{"1":"29736","2":"Redmine","3":"Patch","4":"Closed","5":"Normal","6":"Go MAEDA","7":"Go MAEDA","8":"Translations"},{"1":"29735","2":"Redmine","3":"Patch","4":"Closed","5":"Normal","6":"Go MAEDA","7":"Go MAEDA","8":"Translations"},{"1":"29732","2":"Redmine","3":"Feature","4":"New","5":"Normal","6":"Frederico Camara","7":"NA","8":"Performance"},{"1":"29730","2":"Redmine","3":"Defect","4":"New","5":"Normal","6":"Go MAEDA","7":"NA","8":"SCM"},{"1":"29729","2":"Redmine","3":"Defect","4":"Closed","5":"Normal","6":"Mayurkumar Teraiya","7":"NA","8":"Issues"},{"1":"29727","2":"Redmine","3":"Patch","4":"Closed","5":"Normal","6":"Madina Appolonova","7":"Go MAEDA","8":"Translations"},{"1":"29725","2":"Redmine","3":"Feature","4":"New","5":"Normal","6":"Go MAEDA","7":"NA","8":"Documents"},{"1":"29723","2":"Redmine","3":"Feature","4":"New","5":"Normal","6":"Michael Barry","7":"NA","8":"Email notifications"},{"1":"29719","2":"Redmine","3":"Defect","4":"New","5":"Normal","6":"fon1105 Lee","7":"NA","8":"Email receiving"},{"1":"29718","2":"Redmine","3":"Patch","4":"Closed","5":"Normal","6":"Go MAEDA","7":"Go MAEDA","8":"Translations"},{"1":"29715","2":"Redmine","3":"Feature","4":"New","5":"Normal","6":"Ewan Makepeace","7":"NA","8":"Attachments"},{"1":"29712","2":"Redmine","3":"Feature","4":"New","5":"Normal","6":"Go MAEDA","7":"NA","8":"Custom fields"},{"1":"29710","2":"Redmine","3":"Patch","4":"Closed","5":"Normal","6":"Yuichi HARADA","7":"Go MAEDA","8":"Code cleanup/refactoring"},{"1":"29708","2":"Redmine","3":"Defect","4":"Closed","5":"Normal","6":"Felix Schafer","7":"Go MAEDA","8":"Code cleanup/refactoring"},{"1":"29706","2":"Redmine","3":"Defect","4":"Closed","5":"Normal","6":"mark f","7":"NA","8":"Issues filter"},{"1":"29703","2":"Redmine","3":"Patch","4":"Closed","5":"Normal","6":"Go MAEDA","7":"Go MAEDA","8":"Translations"},{"1":"29702","2":"Redmine","3":"Patch","4":"Closed","5":"Normal","6":"Go MAEDA","7":"Go MAEDA","8":"Translations"},{"1":"29701","2":"Redmine","3":"Defect","4":"Closed","5":"Normal","6":"Go MAEDA","7":"Go MAEDA","8":"Issues"},{"1":"29698","2":"Redmine","3":"Patch","4":"Closed","5":"Normal","6":"Patrick Kaminski","7":"Go MAEDA","8":"Translations"},{"1":"29697","2":"Redmine","3":"Patch","4":"Closed","5":"Normal","6":"Go MAEDA","7":"Go MAEDA","8":"Translations"},{"1":"29696","2":"Redmine","3":"Patch","4":"Closed","5":"Normal","6":"Go MAEDA","7":"Go MAEDA","8":"Translations"},{"1":"29695","2":"Redmine","3":"Defect","4":"New","5":"Normal","6":"Marius BALTEANU","7":"NA","8":"UI"},{"1":"29694","2":"Redmine","3":"Defect","4":"New","5":"Normal","6":"Go MAEDA","7":"NA","8":"UI - Responsive"},{"1":"29692","2":"Redmine","3":"Patch","4":"New","5":"Normal","6":"Kenan Dervisevic","7":"NA","8":"Translations"},{"1":"29690","2":"Redmine","3":"Feature","4":"New","5":"Normal","6":"Darwin Pou","7":"NA","8":"Issues list"},{"1":"29687","2":"Redmine","3":"Feature","4":"Closed","5":"Normal","6":"Peter Volkov","7":"NA","8":"NA"},{"1":"29686","2":"Redmine","3":"Defect","4":"Closed","5":"Normal","6":"Dario Quesada","7":"NA","8":"NA"},{"1":"29685","2":"Redmine","3":"Feature","4":"New","5":"Normal","6":"Hans Meier","7":"NA","8":"Issues"},{"1":"29684","2":"Redmine","3":"Defect","4":"New","5":"Normal","6":"Benoit Loof","7":"NA","8":"Files"},{"1":"29683","2":"Redmine","3":"Feature","4":"New","5":"Normal","6":"Matej Le<U+0161>ko","7":"NA","8":"Time tracking"},{"1":"29681","2":"Redmine","3":"Defect","4":"New","5":"Normal","6":"Go MAEDA","7":"NA","8":"Text formatting"},{"1":"29674","2":"Redmine","3":"Patch","4":"New","5":"Normal","6":"Alexander Achenbach","7":"NA","8":"Custom fields"},{"1":"29673","2":"Redmine","3":"Patch","4":"Closed","5":"Normal","6":"Madina Appolonova","7":"Go MAEDA","8":"Translations"},{"1":"29670","2":"Redmine","3":"Patch","4":"Closed","5":"Normal","6":"Ivan Cenov","7":"Go MAEDA","8":"Translations"},{"1":"29669","2":"Redmine","3":"Patch","4":"Closed","5":"Normal","6":"Yuichi HARADA","7":"Go MAEDA","8":"Email receiving"},{"1":"29667","2":"Redmine","3":"Feature","4":"Closed","5":"Normal","6":"Go MAEDA","7":"Go MAEDA","8":"Rails support"},{"1":"29664","2":"Redmine","3":"Feature","4":"New","5":"Normal","6":"Max Johansson","7":"NA","8":"NA"},{"1":"29663","2":"Redmine","3":"Feature","4":"New","5":"Normal","6":"Marius BALTEANU","7":"Jean-Philippe Lang","8":"Third-party libraries"},{"1":"29661","2":"Redmine","3":"Defect","4":"Closed","5":"Normal","6":"crypto gopher","7":"NA","8":"Website (redmine.org)"},{"1":"29660","2":"Redmine","3":"Feature","4":"New","5":"Normal","6":"Ebrahim Mohammadi","7":"Jean-Philippe Lang","8":"Security"},{"1":"29654","2":"Redmine","3":"Feature","4":"New","5":"Normal","6":"mahesh m","7":"NA","8":"Project settings"},{"1":"29649","2":"Redmine","3":"Patch","4":"New","5":"Normal","6":"Lorenz Schori","7":"NA","8":"Wiki"},{"1":"29644","2":"Redmine","3":"Patch","4":"Closed","5":"Normal","6":"Go MAEDA","7":"Go MAEDA","8":"UI"},{"1":"29643","2":"Redmine","3":"Defect","4":"New","5":"Normal","6":"Sebastian Paluch","7":"NA","8":"Issues filter"},{"1":"29632","2":"Redmine","3":"Patch","4":"Closed","5":"Normal","6":"Mizuki ISHIKAWA","7":"Go MAEDA","8":"Code cleanup/refactoring"},{"1":"29631","2":"Redmine","3":"Feature","4":"New","5":"Normal","6":"crypto gopher","7":"NA","8":"Wiki"},{"1":"29625","2":"Redmine","3":"Defect","4":"New","5":"Normal","6":"T Goeg","7":"NA","8":"Themes"},{"1":"29624","2":"Redmine","3":"Feature","4":"Closed","5":"Normal","6":"Max Johansson","7":"NA","8":"Administration"},{"1":"29622","2":"Redmine","3":"Defect","4":"New","5":"Normal","6":"Ercan Demirel","7":"NA","8":"Time tracking"},{"1":"29621","2":"Redmine","3":"Defect","4":"Closed","5":"Normal","6":"Ayami Yasuoka","7":"NA","8":"Issues"},{"1":"29617","2":"Redmine","3":"Feature","4":"New","5":"Normal","6":"Max Johansson","7":"NA","8":"Text formatting"},{"1":"29615","2":"Redmine","3":"Feature","4":"Closed","5":"Normal","6":"Peter Berkman","7":"NA","8":"Issues filter"},{"1":"29614","2":"Redmine","3":"Patch","4":"Closed","5":"Normal","6":"Go MAEDA","7":"Jean-Philippe Lang","8":"Email receiving"},{"1":"29611","2":"Redmine","3":"Defect","4":"Closed","5":"Normal","6":"shahul hameed","7":"NA","8":"Issues"},{"1":"29608","2":"Redmine","3":"Defect","4":"Closed","5":"Normal","6":"suportebyte byte","7":"NA","8":"NA"},{"1":"29607","2":"Redmine","3":"Defect","4":"Closed","5":"Normal","6":"Felix Gliesche","7":"Go MAEDA","8":"UI"},{"1":"29606","2":"Redmine","3":"Patch","4":"Closed","5":"Normal","6":"Gregor Schmidt","7":"Jean-Philippe Lang","8":"LDAP"},{"1":"29605","2":"Redmine","3":"Defect","4":"New","5":"Normal","6":"Serghei Zagorinyak","7":"NA","8":"Database"},{"1":"29602","2":"Redmine","3":"Defect","4":"Closed","5":"Normal","6":"Go MAEDA","7":"Go MAEDA","8":"UI"},{"1":"29601","2":"Redmine","3":"Defect","4":"New","5":"Normal","6":"Yuichi HARADA","7":"NA","8":"Administration"},{"1":"29598","2":"Redmine","3":"Defect","4":"Closed","5":"Normal","6":"Christophe Portier","7":"NA","8":"Wiki"},{"1":"29596","2":"Redmine","3":"Defect","4":"Needs feedback","5":"Normal","6":"Victor Isabel Bueno","7":"NA","8":"Issues filter"},{"1":"29595","2":"Redmine","3":"Feature","4":"New","5":"Normal","6":"M F","7":"NA","8":"Text formatting"},{"1":"29594","2":"Redmine","3":"Patch","4":"New","5":"Normal","6":"Tim Fischbach","7":"NA","8":"Hook requests"},{"1":"29589","2":"Redmine","3":"Patch","4":"New","5":"Normal","6":"Yuichi HARADA","7":"NA","8":"Administration"},{"1":"29588","2":"Redmine","3":"Feature","4":"New","5":"Normal","6":"Senya Senya","7":"NA","8":"NA"},{"1":"29581","2":"Redmine","3":"Defect","4":"New","5":"Normal","6":"Mizuki ISHIKAWA","7":"NA","8":"Issues list"},{"1":"29521","2":"Redmine","3":"Defect","4":"Closed","5":"Normal","6":"James Ferguson","7":"NA","8":"Documentation"},{"1":"29520","2":"Redmine","3":"Feature","4":"New","5":"High","6":"Bharat Shah","7":"NA","8":"Issues list"},{"1":"29519","2":"Redmine","3":"Feature","4":"Closed","5":"Normal","6":"Bharat Shah","7":"NA","8":"Issues list"},{"1":"29515","2":"Redmine","3":"Defect","4":"Closed","5":"Normal","6":"Nitish Hombal","7":"NA","8":"Wiki"},{"1":"29514","2":"Redmine","3":"Defect","4":"Closed","5":"Normal","6":"Yuri Weinstein","7":"NA","8":"Administration"},{"1":"29513","2":"Redmine","3":"Feature","4":"New","5":"Normal","6":"Richard Pijnenburg","7":"NA","8":"Database"},{"1":"29512","2":"Redmine","3":"Defect","4":"New","5":"Normal","6":"Liane Hampe","7":"NA","8":"NA"},{"1":"29511","2":"Redmine","3":"Defect","4":"New","5":"Normal","6":"Aleksandr Zagoskin","7":"NA","8":"NA"},{"1":"29503","2":"Redmine","3":"Feature","4":"New","5":"Normal","6":"Rechnerpool Architektur","7":"NA","8":"SEO"},{"1":"29501","2":"Redmine","3":"Feature","4":"New","5":"Normal","6":"Sugapriya TR","7":"NA","8":"Issues"},{"1":"29496","2":"Redmine","3":"Defect","4":"New","5":"Normal","6":"Go MAEDA","7":"NA","8":"Text formatting"},{"1":"29492","2":"Redmine","3":"Feature","4":"New","5":"Normal","6":"Juan de Dios Galan","7":"NA","8":"Custom fields"},{"1":"29491","2":"Redmine","3":"Feature","4":"New","5":"Normal","6":"Juan de Dios Galan","7":"NA","8":"Custom fields"},{"1":"29490","2":"Redmine","3":"Feature","4":"New","5":"Normal","6":"Mandar W","7":"NA","8":"Time tracking"},{"1":"29489","2":"Redmine","3":"Patch","4":"New","5":"Normal","6":"Jens Kramer","7":"Jean-Philippe Lang","8":"Wiki"},{"1":"29488","2":"Redmine","3":"Patch","4":"Closed","5":"Normal","6":"Jens Kramer","7":"Go MAEDA","8":"Text formatting"},{"1":"29482","2":"Redmine","3":"Patch","4":"New","5":"Normal","6":"Marius BALTEANU","7":"Marius BALTEANU","8":"Projects"},{"1":"29478","2":"Redmine","3":"Defect","4":"Closed","5":"Normal","6":"Kamil .","7":"NA","8":"Text formatting"},{"1":"29476","2":"Redmine","3":"Defect","4":"New","5":"Normal","6":"Yuuki NARA","7":"NA","8":"Gems support"},{"1":"29474","2":"Redmine","3":"Feature","4":"Closed","5":"Normal","6":"Kamil .","7":"NA","8":"Text formatting"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script></div>
 
-</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>カスタムフィールドの展開</h2></hgroup><article ></article></slide>
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>カスタムフィールドの展開</h2></hgroup><article >
+
+</article></slide><slide class=""><hgroup><h2>カスタムフィールドとは？</h2></hgroup><article >
+
+<p>Redmineではカスタムフィールドと呼ばれるユーザが自由に定義できる項目（フィールド）があります。カスタムフィールドは<strong>プロジェクト毎、トラッカー毎に異なる設定ができる</strong>ため、<code>redmineR</code>パッケージで取得できる情報では<code>custom_fields</code>という項目にリスト型変数がネストされた形で格納されます。</p>
+
+<p>カスタムフィールドをRのコードで表現すると下記のようなイメージになります。</p>
+
+<pre class = 'prettyprint lang-r'>c(
+  list(list(id = n, name = &quot;character&quot;, value = c(&quot;character&quot;, ...)),
+       list(id = n, name = &quot;character&quot;, value = c(m, ...)),
+       ...),
+  list(list(id = n, name = &quot;character&quot;, value = c(&quot;character&quot;, ...)),
+       list(id = n, name = &quot;character&quot;, value = c(m, ...)),
+       ...), ...
+)</pre>
+
+</article></slide><slide class=""><hgroup><h2>リストの中身</h2></hgroup><article >
+
+<p>ネストされているリスト型変数内の要素は以下のような意味を持っています。<br/>　</p>
+
+<table class = 'rmdtable'>
+<tr class="header">
+<th align="left">要素</th>
+<th align="left">内容</th>
+</tr>
+<tr class="odd">
+<td align="left">id</td>
+<td align="left">カスタムフィールドの識別子（設定時にシステム側で自動付与）</td>
+</tr>
+<tr class="even">
+<td align="left">name</td>
+<td align="left">カスタムフィールド名称（「名称」欄に設定した値）</td>
+</tr>
+<tr class="odd">
+<td align="left">value</td>
+<td align="left">カスタムフィールドの値（単一とは限らない）</td>
+</tr>
+</table>
+
+<p>　<br/><code>value</code>はカスタムフィールドの表示形式により取れる値が変わります。</p>
+
+</article></slide><slide class=""><hgroup><h2>実際のカスタムフィールド</h2></hgroup><article >
+
+<pre class = 'prettyprint lang-r'>issues %&gt;% head() %&gt;% dplyr::select(id, custom_fields) %&gt;% knitr::kable()</pre>
+
+<table class = 'rmdtable'>
+<tr class="header">
+<th align="right">id</th>
+<th align="left">custom_fields</th>
+</tr>
+<tr class="odd">
+<td align="right">29767</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">29764</td>
+<td align="left">list(list(id = 2, name = &quot;Resolution&quot;, value = &quot;&quot;))</td>
+</tr>
+<tr class="odd">
+<td align="right">29763</td>
+<td align="left">list(list(id = 2, name = &quot;Resolution&quot;, value = &quot;Invalid&quot;))</td>
+</tr>
+<tr class="even">
+<td align="right">29758</td>
+<td align="left">list(list(id = 2, name = &quot;Resolution&quot;, value = &quot;&quot;))</td>
+</tr>
+<tr class="odd">
+<td align="right">29757</td>
+<td align="left">list(list(id = 2, name = &quot;Resolution&quot;, value = &quot;&quot;))</td>
+</tr>
+<tr class="even">
+<td align="right">29756</td>
+<td align="left">list(list(id = 2, name = &quot;Resolution&quot;, value = &quot;&quot;), list(id = 4, name = &quot;Affected version&quot;, value = &quot;134&quot;))</td>
+</tr>
+</table>
+
+</article></slide><slide class=""><hgroup><h2>ネスト構造を解消する</h2></hgroup><article >
+
+<p>手始めに他のリスト型変数と同様の形にするために<code>tidyr::unnest</code>関数を用いてネスト構造を解消します。この時に識別ができるよう識別番号（チケット番号）と共に処理してください。</p>
+
+<pre class = 'prettyprint lang-r'>issues %&gt;% head(4) %&gt;% dplyr::select(id, custom_fields) %&gt;% 
+  tidyr::unnest() %&gt;% knitr::kable()</pre>
+
+<table class = 'rmdtable'>
+<tr class="header">
+<th align="right">id</th>
+<th align="left">custom_fields</th>
+</tr>
+<tr class="odd">
+<td align="right">29767</td>
+<td align="left">NULL</td>
+</tr>
+<tr class="even">
+<td align="right">29764</td>
+<td align="left">list(id = 2, name = &quot;Resolution&quot;, value = &quot;&quot;)</td>
+</tr>
+<tr class="odd">
+<td align="right">29763</td>
+<td align="left">list(id = 2, name = &quot;Resolution&quot;, value = &quot;Invalid&quot;)</td>
+</tr>
+<tr class="even">
+<td align="right">29758</td>
+<td align="left">list(id = 2, name = &quot;Resolution&quot;, value = &quot;&quot;)</td>
+</tr>
+</table>
+
+</article></slide><slide class=""><hgroup><h2>欠損値を削除する</h2></hgroup><article >
+
+<p>次の展開に際して欠損値（<code>NA</code>）は不要ですので、これらを削除しておきます。</p>
+
+<pre class = 'prettyprint lang-r'>issues %&gt;% head(5) %&gt;% dplyr::select(id, custom_fields) %&gt;% 
+  tidyr::unnest() %&gt;% tidyr::drop_na() %&gt;% knitr::kable()</pre>
+
+<table class = 'rmdtable'>
+<tr class="header">
+<th align="left"></th>
+<th align="right">id</th>
+<th align="left">custom_fields</th>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="right">29764</td>
+<td align="left">list(id = 2, name = &quot;Resolution&quot;, value = &quot;&quot;)</td>
+</tr>
+<tr class="even">
+<td align="left">3</td>
+<td align="right">29763</td>
+<td align="left">list(id = 2, name = &quot;Resolution&quot;, value = &quot;Invalid&quot;)</td>
+</tr>
+<tr class="odd">
+<td align="left">4</td>
+<td align="right">29758</td>
+<td align="left">list(id = 2, name = &quot;Resolution&quot;, value = &quot;&quot;)</td>
+</tr>
+<tr class="even">
+<td align="left">5</td>
+<td align="right">29757</td>
+<td align="left">list(id = 2, name = &quot;Resolution&quot;, value = &quot;&quot;)</td>
+</tr>
+</table>
+
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>イレギュラーデータへの対応</h2></hgroup><article >
+
+</article></slide><slide class=""><hgroup><h2>カスタムフィールドには罠がある</h2></hgroup><article >
+
+<table class = 'rmdtable'>
+<tr class="header">
+<th align="right">id</th>
+<th align="left">custom_fields</th>
+</tr>
+<tr class="odd">
+<td align="right">16451</td>
+<td align="left">list(id = 2, name = &quot;Resolution&quot;, value = &quot;Invalid&quot;)</td>
+</tr>
+<tr class="even">
+<td align="right">16451</td>
+<td align="left">list(id = 4, name = &quot;Affected version&quot;)</td>
+</tr>
+<tr class="odd">
+<td align="right">16450</td>
+<td align="left">list(id = 2, name = &quot;Resolution&quot;, value = &quot;&quot;)</td>
+</tr>
+<tr class="even">
+<td align="right">16449</td>
+<td align="left">list(id = 2, name = &quot;Resolution&quot;, value = &quot;&quot;)</td>
+</tr>
+<tr class="odd">
+<td align="right">16449</td>
+<td align="left">list(id = 4, name = &quot;Affected version&quot;, value = &quot;75&quot;)</td>
+</tr>
+<tr class="even">
+<td align="right">16447</td>
+<td align="left">list(id = 2, name = &quot;Resolution&quot;, value = &quot;Invalid&quot;)</td>
+</tr>
+<tr class="odd">
+<td align="right">16447</td>
+<td align="left">list(id = 4, name = &quot;Affected version&quot;)</td>
+</tr>
+</table>
+
+</article></slide><slide class=""><hgroup><h2>カスタムフィールドには罠がある（つづき）</h2></hgroup><article >
+
+<p><strong>16451</strong>と<strong>16447</strong>の<code>Affected version</code>に<code>value</code>要素がない。</p>
+
+<table class = 'rmdtable'>
+<tr class="header">
+<th align="right">id</th>
+<th align="left">custom_fields</th>
+</tr>
+<tr class="odd">
+<td align="right">16451</td>
+<td align="left">list(id = 2, name = &quot;Resolution&quot;, value = &quot;Invalid&quot;)</td>
+</tr>
+<tr class="even">
+<td align="right">16451</td>
+<td align="left">list(id = 4, name = &quot;Affected version&quot;)</td>
+</tr>
+<tr class="odd">
+<td align="right">16447</td>
+<td align="left">list(id = 2, name = &quot;Resolution&quot;, value = &quot;Invalid&quot;)</td>
+</tr>
+<tr class="even">
+<td align="right">16447</td>
+<td align="left">list(id = 4, name = &quot;Affected version&quot;)</td>
+</tr>
+</table>
+
+<p>　<br/>このデータに他の項目と同様に<code>purrr::map</code>関数を適用すると&#8230;<br/>　<br/>（つづく）</p>
+
+</article></slide><slide class=""><hgroup><h2>カスタムフィールドには罠がある（つづき）</h2></hgroup><article  id="-1">
+
+<pre class = 'prettyprint lang-r'>issues %&gt;% 
+  dplyr::filter(id == 16451 | id == 16447) %&gt;% 
+  dplyr::select(id, custom_fields) %&gt;% tidyr::unnest() %&gt;% 
+  dplyr::mutate(value = purrr::map_if(custom_fields, !is.na(custom_fields), &#39;value&#39;) %&gt;% 
+                  purrr::map_chr(1L))</pre>
+
+<pre >## Error in mutate_impl(.data, dots): Evaluation error: Result 2 is not a length 1 atomic vector.</pre>
+
+<p>　<br/>STOPエラーとなり処理できません。さて、困った&#8230;<br/>　<br/>リストが展開できないならデータフレーム（等長ベクトル）に変換できないか？<br/>　<br/>（つづく）</p>
+
+</article></slide><slide class=""><hgroup><h2>カスタムフィールドには罠がある（つづき）</h2></hgroup><article  id="-2">
+
+<pre class = 'prettyprint lang-r'>sample_issues &lt;- issues %&gt;% 
+  dplyr::filter(id == 16451 | id == 16447) %&gt;% 
+  dplyr::select(id, custom_fields) %&gt;% tidyr::unnest()
+
+purrr::map_df(sample_issues$custom_fields, c)</pre>
+
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["id"],"name":[1],"type":["int"],"align":["right"]},{"label":["name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["value"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"2","2":"Resolution","3":"Invalid"},{"1":"4","2":"Affected version","3":"NA"},{"1":"2","2":"Resolution","3":"Invalid"},{"1":"4","2":"Affected version","3":"NA"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script></div>
+
+<p>　<br/>これを二変数に拡張できればインデックスとなるチケット番号とカスタムフィールドの関係表が作れるはず。</p>
+
+</article></slide><slide class=""><hgroup><h2>カスタムフィールドには罠がある（つづき）</h2></hgroup><article  id="-3">
+
+<p>二変数を扱う<code>purrr::map2</code>関数群があるじゃないか！</p>
+
+<pre class = 'prettyprint lang-r'>sample_issues &lt;- issues %&gt;% 
+  dplyr::filter(id == 16451 | id == 16447) %&gt;% 
+  dplyr::select(id, custom_fields) %&gt;% tidyr::unnest()
+
+purrr::map2_df(.x = sample_issues$id, .y = sample_issues$custom_fields,
+               .f = function(.x, .y) {c(issue_id = .x, .y)})</pre>
+
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["issue_id"],"name":[1],"type":["int"],"align":["right"]},{"label":["id"],"name":[2],"type":["int"],"align":["right"]},{"label":["name"],"name":[3],"type":["chr"],"align":["left"]},{"label":["value"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"16451","2":"2","3":"Resolution","4":"Invalid"},{"1":"16451","2":"4","3":"Affected version","4":"NA"},{"1":"16447","2":"2","3":"Resolution","4":"Invalid"},{"1":"16447","2":"4","3":"Affected version","4":"NA"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script></div>
+
+<p>（つづく）</p>
+
+</article></slide><slide class=""><hgroup><h2>カスタムフィールドには罠がある（つづき）</h2></hgroup><article  id="-4">
+
+ワイド型に変換してカスタムフィールドを除いて展開したチケットデータと結合（<code>dplyr::*_join</code>）すれば完成。<br/>
+
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["id"],"name":[1],"type":["int"],"align":["right"]},{"label":["subject"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Affected version"],"name":[3],"type":["chr"],"align":["left"]},{"label":["Resolution"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"29767","2":"Traditional Chinese translation (to r17594)","3":"NA","4":"NA","_rn_":"1"},{"1":"29764","2":"new filed 'Related Issues Notes' for pair of related issues","3":"NA","4":"","_rn_":"2"},{"1":"29763","2":"Better linux distribution to install redmine","3":"NA","4":"Invalid","_rn_":"3"},{"1":"29758","2":"Introduce optional pay per feature model of Redmine development","3":"NA","4":"","_rn_":"4"},{"1":"29757","2":"Make \"First name\" and \"Last name\" optional (not required) in user's settings","3":"NA","4":"","_rn_":"5"},{"1":"29756","2":"\\\\f and \\\\v characters in Textile markup may cause RegexpError exception","3":"134","4":"","_rn_":"6"},{"1":"29753","2":"View estimated hours doen't work for root issue","3":"133","4":"Invalid","_rn_":"7"},{"1":"29752","2":"Render Textile and Markdown attachments as HTML on the preview page","3":"NA","4":"","_rn_":"8"},{"1":"29750","2":"Per project intergated IDE module with live collaboration support","3":"NA","4":"","_rn_":"9"},{"1":"29746","2":"Unexpected results with enumeration formatting in Textile","3":"","4":"","_rn_":"10"},{"1":"29742","2":"Conflict with rights and roles.","3":"141","4":"Wont fix","_rn_":"11"},{"1":"29739","2":"Change English name for zh and zh-TW to \"Chinese/Simplified\" and \"Chinese/Traditional\"","3":"NA","4":"NA","_rn_":"12"},{"1":"29738","2":"Add last_updated_by feature in issues index api","3":"NA","4":"NA","_rn_":"13"},{"1":"29736","2":"Galician translation update for 3.4-stable","3":"NA","4":"NA","_rn_":"14"},{"1":"29735","2":"Galician translation fix for the words empty, blank, and key","3":"NA","4":"NA","_rn_":"15"},{"1":"29732","2":"Populate items in drop down lists from internal/external source","3":"NA","4":"","_rn_":"16"},{"1":"29730","2":"Previous/Next link on repository page disappear when switching to \"View differences\" tab","3":"","4":"","_rn_":"17"},{"1":"29729","2":"Upload File","3":"","4":"Invalid","_rn_":"18"},{"1":"29727","2":"Update Russian translation (to r17530, r17526)","3":"NA","4":"NA","_rn_":"19"},{"1":"29725","2":"Show recent documents first","3":"NA","4":"","_rn_":"20"},{"1":"29723","2":"Add a \"Save & Notify\" option, when editing a Note","3":"NA","4":"","_rn_":"21"},{"1":"29719","2":"[Receiving emails] Mail keep staying in my mail box and keep generating issues after re-fetching mail.","3":"","4":"","_rn_":"22"},{"1":"29718","2":"Brazilian translation update for 3.4-stable","3":"NA","4":"NA","_rn_":"23"},{"1":"29715","2":"Allow me to not copy attachments when copying issues","3":"NA","4":"","_rn_":"24"},{"1":"29712","2":"Preview and wiki toolbar for full width custom fields","3":"NA","4":"","_rn_":"25"},{"1":"29710","2":"Remove unused variable 'filter_options' from Query#add_filter","3":"NA","4":"NA","_rn_":"26"},{"1":"29708","2":"Wrong use of refute_includes in tests","3":"","4":"Fixed","_rn_":"27"},{"1":"29706","2":"Unable to setup filter for query","3":"141","4":"Invalid","_rn_":"28"},{"1":"29703","2":"Brazilian translation (jstoolbar-pt-br.js) update","3":"NA","4":"NA","_rn_":"29"},{"1":"29702","2":"Brazilian wiki help translation update","3":"NA","4":"NA","_rn_":"30"},{"1":"29701","2":"Custom queries are broken by updating with nil parameter values","3":"","4":"Fixed","_rn_":"31"},{"1":"29698","2":"Brazilian translation update","3":"NA","4":"NA","_rn_":"32"},{"1":"29697","2":"Czech translation fixes","3":"NA","4":"NA","_rn_":"33"},{"1":"29696","2":"Japanese translation update (r17530)","3":"NA","4":"NA","_rn_":"34"},{"1":"29695","2":"Duplicated assignee option when selecting a category with default assignee","3":"","4":"","_rn_":"35"},{"1":"29694","2":"Some buttons in wiki toolbar are hidden in responsive layout","3":"","4":"","_rn_":"36"},{"1":"29692","2":"Bosnian localization update","3":"NA","4":"NA","_rn_":"37"},{"1":"29690","2":"Restrict Issues Access by status in workflow to respective roles.","3":"NA","4":"","_rn_":"38"},{"1":"29687","2":"Keep history for comment editions","3":"NA","4":"Duplicate","_rn_":"39"},{"1":"29686","2":"Date format in issues pages","3":"","4":"Wont fix","_rn_":"40"},{"1":"29685","2":"Check for modifications on an issue before letting somebody else edit it","3":"NA","4":"","_rn_":"41"},{"1":"29684","2":"when using export issues to csv format, notes fields contain html flags, making text quite hard to read / use","3":"130","4":"","_rn_":"42"},{"1":"29683","2":"New filter TIME in report \"Spen time\"","3":"NA","4":"","_rn_":"43"},{"1":"29681","2":"\"x%x%\" is rendered as \"&\" in Textile formatter","3":"","4":"","_rn_":"44"},{"1":"29674","2":"missing validation for formats based on RecordList","3":"NA","4":"NA","_rn_":"45"},{"1":"29673","2":"Update Russian translations","3":"NA","4":"NA","_rn_":"46"},{"1":"29670","2":"Bulgarian translation","3":"NA","4":"NA","_rn_":"47"},{"1":"29669","2":"\"no_notification\" option is not listed in the description of email.rake","3":"NA","4":"NA","_rn_":"48"},{"1":"29667","2":"Update Rails to 4.2.10","3":"NA","4":"Fixed","_rn_":"49"},{"1":"29664","2":"Webhook triggers in Redmine","3":"NA","4":"","_rn_":"50"},{"1":"29663","2":"Select a JavaScript library to handle tags","3":"NA","4":"","_rn_":"51"},{"1":"29661","2":"Internal server error when trying to reply to forum topic","3":"","4":"Invalid","_rn_":"52"},{"1":"29660","2":"Add Referrer-Policy header to prevent browsers from sending private data to external sites","3":"NA","4":"","_rn_":"53"},{"1":"29654","2":"Adding a text box in the settings page to take recursive data","3":"NA","4":"","_rn_":"54"},{"1":"29649","2":"Rake task to export wiki to HTML/PDF","3":"NA","4":"NA","_rn_":"55"},{"1":"29644","2":"Add a link to issues summary to issue tracking box on overview page","3":"NA","4":"NA","_rn_":"56"},{"1":"29643","2":"Issue filter broken for custom fields that are 'remote'","3":"134","4":"","_rn_":"57"},{"1":"29632","2":"Redmine::SortCriteria#normalize! does not limit properly the number of elements","3":"NA","4":"NA","_rn_":"58"},{"1":"29631","2":"Add support to include repository file content in Wiki","3":"NA","4":"","_rn_":"59"},{"1":"29625","2":"application.css imported by themes not covered by cache control versioning","3":"141","4":"","_rn_":"60"},{"1":"29624","2":"Possibility of auto updates to the latest stable version?","3":"NA","4":"Duplicate","_rn_":"61"},{"1":"29622","2":"Adding a 'Custom Field' to 'Activities (time tracking)' prevents time entry on project change","3":"139","4":"","_rn_":"62"},{"1":"29621","2":"I can not attach a file to a ticket (there is no button)","3":"","4":"Duplicate","_rn_":"63"},{"1":"29617","2":"Page link embeds/Open graph","3":"NA","4":"","_rn_":"64"},{"1":"29615","2":"Add has source revisions/check-ins to issue filters","3":"NA","4":"Duplicate","_rn_":"65"},{"1":"29614","2":"redmine:email:read and rdm-mailhandler.rb should use safe_receive instead of receive","3":"NA","4":"NA","_rn_":"66"},{"1":"29611","2":"search result not working","3":"","4":"Invalid","_rn_":"67"},{"1":"29608","2":"Error in project settings","3":"","4":"Invalid","_rn_":"68"},{"1":"29607","2":"Allow project column to break into new line in time entry table","3":"","4":"Fixed","_rn_":"69"},{"1":"29606","2":"Support self-signed LDAPS connections","3":"NA","4":"NA","_rn_":"70"},{"1":"29605","2":"Redmine doesn't recover from DB timeouts with TinyTds and MS SQL","3":"134","4":"","_rn_":"71"},{"1":"29602","2":"Broken icons in context menu on  spent time page","3":"","4":"Fixed","_rn_":"72"},{"1":"29601","2":"When using 'svn checkout' to acquire Redmine, Redmine::VERSION::revision should be 'Last Changed Rev'","3":"","4":"","_rn_":"73"},{"1":"29598","2":"Footnotes are not working as explained in RedmineTextFormattingMarkdown","3":"134","4":"","_rn_":"74"},{"1":"29596","2":"Filter by subproject not working","3":"141","4":"","_rn_":"75"},{"1":"29595","2":"Hyperlinks with dash  | m-files://","3":"NA","4":"","_rn_":"76"},{"1":"29594","2":"Add view hook to insert content between issue details associated changeset section","3":"NA","4":"NA","_rn_":"77"},{"1":"29589","2":"\"Default status\" of \"New tracker\" page needs to set initial value.","3":"NA","4":"NA","_rn_":"78"},{"1":"29588","2":"There should be a way to avoid adding paragraph to a Textile block","3":"NA","4":"","_rn_":"79"},{"1":"29581","2":"Issues in paginated views may be lost because sorting criteria are not unique","3":"","4":"","_rn_":"80"},{"1":"29521","2":"REST API: Filtering issues by issue_id does not work as the documentation suggests","3":"","4":"Fixed","_rn_":"81"},{"1":"29520","2":"Issues Section/Tab -Allow user to select 'Subtasks' column to see on issues list very similar the way currently 'Related Issues' column is available.","3":"NA","4":"","_rn_":"82"},{"1":"29519","2":"Issues Section/Tab -Allow issues to be grouped by Parent","3":"NA","4":"Duplicate","_rn_":"83"},{"1":"29515","2":"Unable to load graphs and images in wiki","3":"139","4":"Invalid","_rn_":"84"},{"1":"29514","2":"Anti spam feature - manual new user creation option","3":"","4":"Invalid","_rn_":"85"},{"1":"29513","2":"Redmine usability on Percona XtraDB cluster","3":"NA","4":"","_rn_":"86"},{"1":"29512","2":"Test failures with redmine-3.4.6.zip in development mode","3":"141","4":"","_rn_":"87"},{"1":"29511","2":"cpu 100%","3":"","4":"","_rn_":"88"},{"1":"29503","2":"How can I hide wiki versions from Search Engines","3":"NA","4":"","_rn_":"89"},{"1":"29501","2":"Allow addition of watcher group via bulk edit context menu","3":"NA","4":"","_rn_":"90"},{"1":"29496","2":"Email addresses which includes slashes are wrongly linked","3":"","4":"","_rn_":"91"},{"1":"29492","2":"Information custom field","3":"NA","4":"","_rn_":"92"},{"1":"29491","2":"Alias in \"custom fields\" and in \"category\"","3":"NA","4":"","_rn_":"93"},{"1":"29490","2":"Ability to restrict time logging on certain tracker types","3":"NA","4":"","_rn_":"94"},{"1":"29489","2":"Issue macro for flexible linking to issues","3":"NA","4":"NA","_rn_":"95"},{"1":"29488","2":"##123 syntax for linking to issues with tracker name and subject","3":"NA","4":"NA","_rn_":"96"},{"1":"29482","2":"Query system for Projects page","3":"NA","4":"NA","_rn_":"97"},{"1":"29478","2":"Triple backtick does not work properly","3":"141","4":"Invalid","_rn_":"98"},{"1":"29476","2":"Update net-ldap to 0.16.0","3":"141","4":"","_rn_":"99"},{"1":"29474","2":"Support single ` and triple ``` backquote/backtick syntax","3":"NA","4":"Invalid","_rn_":"100"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script></div>
+
+</article></slide><slide class=""><hgroup><h2>復習のためのリソース</h2></hgroup><article >
+
+<ul>
+<li><a href='https://k-metrics.netlify.com/tags/purrr/' title=''>Project Cabinet Blog <i class="fa fa-external-link-square"></i></a></li>
+</ul>
+
+<p>　</p>
+
+<ul>
+<li><a href='https://heavywatal.github.io/rstats/purrr.html' title=''>purrr - ループ処理やapply系関数の決定版 <i class="fa fa-external-link"></i></a></li>
+<li><a href='https://speakerdeck.com/s_uryu/nekosky' title=''>そろそろ手を出すpurrr <i class="fa fa-external-link"></i></a></li>
+<li><a href='https://suryu.me/post/r_advent_calendar_day3/' title=''>tidyverse脳になって階層構造のあるデータフレームを使いこなそう <i class="fa fa-external-link"></i></a></li>
+<li><a href='http://delta0726.web.fc2.com/packages/data/00_purrr.html' title=''>purrrの使い方 <i class="fa fa-external-link"></i></a></li>
+<li><a href='https://qiita.com/yutannihilation/items/356be6e104b6c3a93a87' title=''>purrrでdoせず楽をする <i class="fa fa-external-link"></i></a></li>
+<li><a href='https://rstudio-pubs-static.s3.amazonaws.com/366653_1b0210fe55564183b553b25ee4ccb71b.html' title=''>purrr <i class="fa fa-external-link"></i></a></li>
+</ul>
+
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>ENJOY!</h2></hgroup><article  id="enjoy"></article></slide>
 
 
   <slide class="backdrop"></slide>
