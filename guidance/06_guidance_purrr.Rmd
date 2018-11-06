@@ -1,0 +1,332 @@
+---
+title: "第６回データ分析勉強会"
+author: "【午前の部】実践チケット分析 - purrrで効率的にリストを展開する"
+date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
+output:
+  ioslides_presentation:
+    css: style_img.css
+    df_print: paged
+    highlight: pygments
+    logo: fig/hex-purrr.png
+    smaller: false
+    widescreen: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+
+require(redmineR)
+require(tidyverse)    # tidyverseは最後に呼び出す方がコンフリクトの影響小
+
+load("../data/_redmine_issues_all.RData_")
+```
+
+# はじめに
+
+## purrrパッケージ
+* 「関数型プログラミングを実現するためのパッケージ」とよく言われる
+* `tidyverse`ファミリーでtidyなアーキテクチャに基づいた設計
+* `apply`関数群や`plyr`パッケージを再設計したようなパッケージ
+    * 層別的な処理や**反復処理に威力**を発揮する
+* 指定しするデータ（`.x`や`.y`）に対して指定する処理（`.f`）を適用する
+    * 指定できるデータは**ベクトル**型、または、**リスト**型
+    * 指定できる処理は関数に限らず演算子でも可能
+* はっきり言って慣れないと**難しい**
+    * 無名関数やラムダ式といった聞きなれない言葉が出てくる
+* 使うと**すごく便利**
+    * 特にリスト型変数の処理はめちゃくちゃ楽になる
+
+
+# リスト型データの展開
+
+## 対象データ（Redmineチケット）
+既に学んだように`redmineR`パッケージで取得したデータはリスト型変数ばかりで処理が面倒。  
+```{r}
+issues %>% head()
+```
+
+　  
+それでもCSVファイルに出力して処理するよりは楽。
+
+
+## リスト型データの中身
+リスト型データからは`id`か`name`が取得できれば可視化・分析につかえる。
+```{r}
+issues %>% head(5) %>% dplyr::select(id, project, tracker) %>% knitr::kable()
+```
+
+
+## そこで、purrr::map
+```{r}
+issues %>% head() %>% dplyr::select(id, tracker) %>% 
+  dplyr::mutate(tracker_name = purrr::map(tracker, 'name'))
+```
+
+　  
+`list[2]`が`chr[1]`になってる！なんか期待できるかも？
+
+
+## なにをやってるの？
+`purrr::map`関数は以下のような引数を取る関数で**返り値はリスト型**です。
+
+```{r, eval=FALSE}
+purrr::map(.x, .f, ...)
+```
+
+第一引数（`.x`）に対して第二引数（`.f`）で指定した処理（関数や演算子など）を適用する関数です。前ページの処理では、`.f`に名前（"name"というリスト内の要素名）を指定していますのでインデックス参照が行われています。  
+　  
+すなわち、
+```{r, eval=FALSE}
+issues$tracker[[n]]$name
+```
+という参照を行っているのと等価の処理が行われています（n = 1, 2, ...）。  
+　  
+参考までにベクトルやリストなどの参照に使われる`[`や`[[`、`$`は演算子の一種（要素アクセス演算子とでもいうか）です。
+
+
+## でもリストのままじゃ嫌だ
+`purrr::map`関数は前述のように返り値がリストです。**ベクトルの返り値**が欲しい場合には`purrr::map_`関数を用います。"name"は文字列なので、ここでは`purrr::map_chr`関数を用います。
+```{r}
+issues %>% head(5) %>% dplyr::select(id, tracker) %>% 
+  dplyr::mutate(tracker_name = purrr::map_chr(tracker, 'name'))
+```
+
+
+
+## 例外処理
+ただ、チケットデータには以下のように欠損値（`NA`）が含まれています。
+```{r}
+issues %>% dplyr::select(id, assigned_to, category) %>% head(4) %>% knitr::kable()
+```
+
+　  
+（つづく）
+
+
+## 例外処理（つづき）
+これを`purrr::map_`関数群で処理するとSTOPエラーとなり処理が完了できません。
+```{r, error=TRUE}
+issues %>% dplyr::select(id, assigned_to, category) %>% head(4) %>% 
+  dplyr::mutate(assignee = purrr::map_chr(assigned_to, 'name'),
+                cat_name = purrr::map_chr(category, 'name')) %>% knitr::kable()
+```
+　  
+欠損値を除外して処理するためには`purrr::map_if`関数を用います。`purrr::map_if`関数は第二引数`.p`で条件式を指定します。
+```{r, eval=FALSE}
+purrr::map_if(.x, .p, .f, ...)
+```
+　  
+（つづく）
+
+
+## 例外処理（つづき）
+```{r}
+issues %>% dplyr::select(id, assigned_to, category) %>% head(4) %>% 
+  dplyr::mutate(assignee = purrr::map_if(assigned_to, !is.na(assigned_to), 'name'),
+                cat_name = purrr::map_if(category, !is.na(category), 'name'))
+```
+　  
+`purrr::map_if`関数も**返り値はリスト**なのベクトルの返り値が欲しい場合は、もう一段、処理をする必要があります。どうしたらよいでしょうか？  
+　  
+（つづく）
+
+
+## 例外処理（つづき）
+```{r}
+issues %>% dplyr::select(id, assigned_to, category) %>% head(4) %>% 
+  dplyr::mutate(assignee = purrr::map_if(assigned_to, !is.na(assigned_to), 'name') %>%
+                  purrr::map_chr(1L),
+                cat_name = purrr::map_if(category, !is.na(category), 'name') %>%
+                  purrr::map_chr(1L))
+```
+　  
+このような処理は、変換したいベクトルの型に合わせて関数化しておくと便利です。
+
+
+## 展開結果の例
+今までの処理を適用すると下記のようなチケットデータを得ることができます。  
+　  
+```{r, echo=FALSE}
+map_if_chr <- function(.x, .f) {
+  purrr::map_if(.x, !is.na(.x), .f) %>% 
+    purrr::map_chr(1L) %>% return()
+}
+
+issues %>% head(100) %>% 
+  dplyr::select(id, project, tracker, status, priority, author, 
+                assigned_to, category) %>% 
+  dplyr::mutate_if(is.list, map_if_chr, 'name')
+```
+
+
+
+# カスタムフィールドの展開
+
+## カスタムフィールドとは？
+Redmineではカスタムフィールドと呼ばれるユーザが自由に定義できる項目（フィールド）があります。カスタムフィールドは**プロジェクト毎、トラッカー毎に異なる設定ができる**ため、`redmineR`パッケージで取得できる情報では`custom_fields`という項目にリスト型変数がネストされた形で格納されます。  
+
+カスタムフィールドをRのコードで表現すると下記のようなイメージになります。  
+```{r, eval=FALSE}
+custom_fields <- c(
+  list(list(id = n, name = "character", value = c("character", ...)),
+       list(id = n, name = "character", value = c(m, ...)),
+       ...),
+  list(list(id = n, name = "character", value = c("character", ...)),
+       list(id = n, name = "character", value = c(m, ...)),
+       ...), ...
+)
+```
+
+
+## リストの中身
+ネストされているリスト型変数内の要素は以下のような意味を持っています。  
+　  
+
+要素  | 内容
+------|------
+id    |カスタムフィールドの識別子（設定時にシステム側で自動付与）
+name  |カスタムフィールド名称（「名称」欄に設定した値）
+value |カスタムフィールドの値（単一とは限らない）
+
+　  
+`value`はカスタムフィールドの設定により取れる値が変わります。
+
+
+## 実際のカスタムフィールド
+```{r}
+issues %>% head() %>% dplyr::select(id, custom_fields) %>% knitr::kable()
+```
+
+
+## ネスト構造を解消する
+手始めに他のリスト型変数と同様の形にするために`tidyr::unnest`関数を用いてネスト構造を解消します。この時に識別ができるよう識別番号（チケット番号）と共に処理してください。
+```{r}
+issues %>% head(4) %>% dplyr::select(id, custom_fields) %>% 
+  tidyr::unnest() %>% knitr::kable()
+```
+
+
+## 欠損値を削除する
+次の展開に際して欠損値（`NA`）は不要ですので、これらを削除しておきます。
+```{r}
+issues %>% head(5) %>% dplyr::select(id, custom_fields) %>% 
+  tidyr::unnest() %>% tidyr::drop_na() %>% knitr::kable()
+```
+
+
+# イレギュラーデータへの対応
+
+
+## カスタムフィールドには罠がある
+```{r, echo=FALSE}
+issues %>% 
+  dplyr::filter(id <= 16451 & id >= 16447) %>% 
+  dplyr::select(id, custom_fields) %>% tidyr::unnest() %>% knitr::kable()
+```
+
+
+## カスタムフィールドには罠がある（つづき）
+**16451**と**16447**の`Affected version`に`value`要素がない。
+```{r, echo=FALSE}
+issues %>% 
+  dplyr::filter(id == 16451 | id == 16447) %>% 
+  dplyr::select(id, custom_fields) %>% tidyr::unnest() %>% knitr::kable()
+```
+
+　  
+このデータに他の項目と同様に`purrr::map`関数を適用すると...  
+　  
+（つづく）
+
+
+## カスタムフィールドには罠がある（つづき）
+```{r, error=TRUE}
+issues %>% 
+  dplyr::filter(id == 16451 | id == 16447) %>% 
+  dplyr::select(id, custom_fields) %>% tidyr::unnest() %>% 
+  dplyr::mutate(value = purrr::map_if(custom_fields, !is.na(custom_fields), 'value') %>% 
+                  purrr::map_chr(1L))
+```
+
+　  
+STOPエラーとなり処理できません。さて、困った...  
+　  
+リストが展開できないならデータフレーム（等長ベクトル）に変換できないか？  
+　  
+（つづく）
+
+
+## カスタムフィールドには罠がある（つづき）
+```{r}
+sample_issues <- issues %>% 
+  dplyr::filter(id == 16451 | id == 16447) %>% 
+  dplyr::select(id, custom_fields) %>% tidyr::unnest()
+
+purrr::map_df(sample_issues$custom_fields, c)
+```
+
+　  
+これを二変数に拡張できればインデックスとなるチケット番号とカスタムフィールドの関係表が作れるはず。
+
+
+
+## カスタムフィールドには罠がある（つづき）
+二変数を扱う`purrr::map2`関数群があるじゃないか！  
+```{r}
+sample_issues <- issues %>% 
+  dplyr::filter(id == 16451 | id == 16447) %>% 
+  dplyr::select(id, custom_fields) %>% tidyr::unnest()
+
+purrr::map2_df(.x = sample_issues$id, .y = sample_issues$custom_fields,
+               .f = function(.x, .y) {c(issue_id = .x, .y)})
+```
+
+（つづく）
+
+
+## カスタムフィールドには罠がある（つづき）
+ワイド型に変換してカスタムフィールドを除いて展開したチケットデータと結合（`dplyr::*_join`）すれば完成。  
+```{r, echo=FALSE}
+cf_list <- issues %>%
+  dplyr::select(id, custom_fields) %>%
+  tidyr::unnest() %>%
+  tidyr::drop_na()
+
+df_cf <- purrr::map2_df(cf_list$id, cf_list$custom_fields,
+                        .f = function(.x, .y) {c(iid = .x, .y)}) %>%
+  dplyr::select(-id) %>%
+  tidyr::spread(key = name, value = value) %>%
+  dplyr::rename(id = iid) %>%
+  dplyr::arrange(dplyr::desc(id))
+
+issues %>%
+  dplyr::select(id) %>%
+  dplyr::left_join(df_cf, by = "id") %>% 
+  head(100)
+```
+
+
+## 「""」をNAに変換する
+気が付いた方もいらっしゃるとは思いますが、`value`要素が「""」になっていた部分はNULL扱いになっていますので`dplyr::na_if`関数を用いて`NA`に統一します。  
+```{r, echo=FALSE}
+issues %>%
+  dplyr::select(id) %>%
+  dplyr::left_join(df_cf, by = "id") %>% 
+  dplyr::mutate_if(is.character, dplyr::na_if, "") %>% head(100)
+```
+
+
+## 復習のためのリソース
+* [ Project Cabinet Blog <i class="fa fa-external-link-square"></i>](https://k-metrics.netlify.com/tags/purrr/){target="_blank" title="tag/purrr"}
+
+　  
+
+* [ purrr - ループ処理やapply系関数の決定版  <i class="fa fa-external-link"></i>](https://heavywatal.github.io/rstats/purrr.html){target="_blank" title="Heavy Watal"}
+* [ そろそろ手を出すpurrr <i class="fa fa-external-link"></i>](https://speakerdeck.com/s_uryu/nekosky){target="_blank" title="Speaker Deck"}
+* [ tidyverse脳になって階層構造のあるデータフレームを使いこなそう <i class="fa fa-external-link"></i>](https://suryu.me/post/r_advent_calendar_day3/){target="_blank" title="Sincere Pumpkin Patch"}
+* [ purrrの使い方 <i class="fa fa-external-link"></i>](http://delta0726.web.fc2.com/packages/data/00_purrr.html){target="_blank" title="FC2 Web"}
+* [ purrrでdoせず楽をする <i class="fa fa-external-link"></i>](https://qiita.com/yutannihilation/items/356be6e104b6c3a93a87){target="_blank" title="Qiita"}
+* [ purrr <i class="fa fa-external-link"></i>](https://rstudio-pubs-static.s3.amazonaws.com/366653_1b0210fe55564183b553b25ee4ccb71b.html){target="_blank" title="Amazon AWS"}
+
+
+# ENJOY!
