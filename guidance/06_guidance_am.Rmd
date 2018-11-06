@@ -21,6 +21,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 
 require(rlist)
 require(redmineR)
+require(psych)
 require(tidyverse)    # tidyverseは最後に呼び出す方がコンフリクトの影響小
 ```
 
@@ -65,8 +66,8 @@ tidyverse::tidyverse_conflicts()
 
 ## Redmineの情報を入力する
 
-URLとAPIアクセストークンを環境変数に指定する。  
-APIアクセストークンはRedmineにログインして、個人設定ページから入手する。  
+URLとAPIアクセストークンを環境変数に指定します。  
+APIアクセストークンはRedmineにログインして、個人設定ページから入手してください。  
 
 ```{r, eval=FALSE}
 Sys.setenv("REDMINE_URL" = "http://xxx.xxx.xxx/xxx")
@@ -82,7 +83,7 @@ Sys.setenv("REDMINE_TOKEN" = "APIACCESSTOKEN")
 ## 動作確認
 プロジェクトの一覧取得とかが軽めのAPIでおすすめ。
 <!-- `redminer_df`クラスは何故かpaged表示をしてくれないので、表示の際はデータフレームに変換しておくと見やすい-->
-```{r context="data"}
+```{r context="data", eval=FALSE}
 redmineR::redmine_projects() %>% as.data.frame()
 ```
 
@@ -90,9 +91,9 @@ redmineR::redmine_projects() %>% as.data.frame()
 
 ## チケット一覧を取得する
 
-`redmine_issues`でチケット一覧を取得する。  
-デフォルトだとクローズしたチケットを取得して来れない。  
-全てのステータスのチケットを取得するためには`status_id = "*"`を指定する。
+`redmine_issues`でチケット一覧を取得します。  
+デフォルトの引数だとクローズしたチケットを取得して来れません。  
+全てのステータスのチケットを取得するためには`status_id = "*"`を指定します。
 
 ```{r, eval=FALSE}
 issues <- redmineR::redmine_issues(status_id = "*")
@@ -117,78 +118,40 @@ load("../data/_redmine_issues_all.RData_")
 
 ### まずは全体を俯瞰
 ```{r}
-issues %>% head(100) %>% as.data.frame()
+issues %>% head(20) %>% as.data.frame()
 ```
-`<list [2]>`やら、`NA`やら、結構汚いデータなので、きれいにするところから始める。
+`<list [2]>`やら、`NA`やら、結構汚いデータなので、きれいにするところから始めます。
 
 ### 型（クラス）の確認
 
 ```{r}
-issues %>% 
+issues %>% head(100) %>% 
   purrr::map_df(class)
 ```
 
-projectやtrackerなど、リストから選ぶ系のフィールドが`list`型になってしまっている。`list(id="ID", name="NAME")`から`NAME`を取り出したい。
+projectやtrackerなど、リストから選ぶ系のフィールドが`list`型になってしまっています。
+`list(id="ID", name="NAME")`から`name="NAME"`を取り出したい。
 ```{r}
-issues$project[[1]]
+issues %>% head() %>% dplyr::as_data_frame() %>% 
+  dplyr::select(id, project, status) %>% knitr::kable()
 ```
 
-日付、日時が文字列型になってしまっている。日付は`date`に、日時は`POSIXct`型に変換したい。
+日付、日時も文字列型になってしまっています。日付は`date`に、日時は`POSIXct`型に変換したい。
 ```{r}
-issues %>% head(100) %>%
+issues %>% head(20) %>%
   dplyr::select(id, created_on, closed_on, updated_on, start_date, due_date) %>% 
   as_data_frame()
 ```
 
 ### `NA`有無の確認
-厄介なのは、リスト型のカラムの中にある`NA`。
+厄介なのは、リスト型のカラムの中にある`NA`です。(`category`とか`assigned_to`とか)
 ```{r}
 # NAの有無確認
-issues %>% 
+issues %>% head(100) %>% 
   purrr::map_df(anyNA)
-# 型の確認
-issues %>% 
-  purrr::map_df(class)
 ```
 
-# データを整形する
-<!-- 変換はmutate_atあたりでまとめた方がいいかも。list型でもparentだけは他の
-リスト型とはデータの入り方が異なるので、mutate_ifで一括処理ができない-->
-```{r}
-# リスト型変数にNAが含まれていても展開するための関数（）
-map_if_chr <- function(.x, .f) {
-  purrr::map_if(.x, !is.na(.x), .f) %>% 
-    purrr::map_chr(1L) %>% 
-    return()
-}
-
-df <- issues %>% 
-  # dplyr::sample_n(100) %>%   # テスト用に１００件に絞る
-  # custom_fieldsが上手く展開できない...
-  dplyr::select(-custom_fields) %>% 
-  dplyr::mutate(
-    pjid = purrr::map_int(project, 'id'),     # 一種のキーなのでNAはありえない
-    project = map_if_chr(project, 'name'),
-    tracker = map_if_chr(tracker, 'name'),
-    status = map_if_chr(status, 'name'),
-    priority = map_if_chr(priority, 'name'),
-    author = map_if_chr(author, 'name'),
-    assigned_to = map_if_chr(assigned_to, 'name'),
-    category = map_if_chr(category, 'name'),
-    created_on = lubridate::ymd_hms(created_on, tz = "UTC"),
-    updated_on = lubridate::ymd_hms(updated_on, tz = "UTC"),
-    closed_on = lubridate::ymd_hms(closed_on, tz = "UTC"),
-    # custom_fields = map_if_chr(custom_fields, 'name'),
-    fixed_version = map_if_chr(fixed_version, 'name'),
-    start_date = lubridate::as_date(start_date),
-    due_date = lubridate::as_date(due_date),
-    parent = map_if_chr(parent, 'id')
-  )
-# データ数が多すぎてレンダリングに時間がかかりすぎるので先頭100行のみとする
-head(df, 100)
-# %>% readr::write_excel_csv(., path = "../data/_redmine_issues_all.csv")
-```
-以下、説明
+# 各型の処理
 
 ## リスト型
 リスト型変数は任意の型で任意の数のデータを任意な数だけ持てる柔軟性のあるデータ構造です。リスト型の中にリスト型をネストさせることも可能です。    
@@ -196,139 +159,84 @@ head(df, 100)
 list(list(id = c(1, 2)), list(name = c("Defects")))
 ```
 
+`project`の場合、こんな感じ。ここから`name="Redmine"`を取り出します。
+```{r}
+issues[1, "project"]
+```
+
 ## リスト型の処理
-このようなリスト型変数を扱うには`purrr`パッケージ（part of tidyverse）が便利です。例えばチケットの`project`データは以下のような構成になっています。    
+後で、`purrr`を使った処理も説明しますが、割と難しいので、
+今は構造を理解するために、とりあえずBase Rで説明します。
+
+`NA`を考慮しなければ、これでOKです。
 ```{r}
-issues %>% head(1) %>% dplyr::select(project) %>% purrr::flatten()
+issues[1, "project"][[1]]$name
 ```
-この中から`name`だけを取り出すには`purrr::map`関数群を用います。
+
+たとえば、`category`とかだとデータに`NA`が入っていることがあります。
+その場合、for文の途中で以下のようなエラーになってしまいます。
+```{r, error=TRUE}
+tmp_list <- NA
+tmp_list[[1]]$name
+```
+
+`NA`じゃないときだけリストの要素(`name`)にアクセスするように、`ifelse`を使って分岐させます。
+```{r, eval=FALSE}
+ifelse(条件, TRUEだったときの値, FALSEだったときの値)
+```
+
+具体的には、こんな感じです。
 ```{r}
-issues %>% head() %>% dplyr::select(project) %>% 
-  dplyr::mutate(pjname_l = purrr::map(project, 'name'),
-                pjname_v = purrr::map_chr(project, 'name'))
+ifelse(is.na(issues[1, "category"]), NA, issues[1, "category"][[1]]$name)
 ```
-関数によって返り値が異なるので注意してください。
 
-## `NA`の処理
-`NA`が含まれる場合は`purrr::map_if`関数を用います。
+## 文字列から日時型へ変換
+このように、`created_on`が文字列型になってしまっています。
 ```{r}
-issues %>% dplyr::sample_n(100) %>% dplyr::select(assigned_to) %>% 
-  dplyr::mutate(name_l = purrr::map_if(assigned_to, !is.na(assigned_to), 'name'),
-                name_v = purrr::map_chr(purrr::map_if(assigned_to,
-                                                      !is.na(assigned_to), 'name'),
-                                        1L))
+issues[1,"created_on"]
+class(issues[1,"created_on"])
 ```
 
-`NA`が入っているカラムは`ifelse`で`NA`じゃなかった場合のみ、
-`list`の要素にアクセスするようにしないと、エラーになってしまう。
+Redmineのフィールドで日付型は以下の5つ
 
-```{r error=TRUE}
-  df[i, "category"] <- 
-    ifelse(is.na(issues[i, "category"]), NA, issues[i, "category"][[1]]$name)
-```
+|フィールド|フィールドの情報|例|
+|---|---|---|
+|created_on|日時|2018-11-17T10:00:00|
+|closed_on|日時|2018-11-17T12:00:00|
+|updated_on|日時|2018-11-17T15:00:00|
+|start_date|日付|2018-11-17|
+|due_date|日付|2018-11-17|
 
-## created_onなどをDate型に修正
-文字列を日付型に変換するには`lubridate`パッケージを使うと分かりやすい。
-<!-- `as.Date.POSIXct`で日付型に変換する。 -->
-日付の場合は、`as_date`
+文字列 -> 日時型、日付型への変換には`lubridate`を使うと便利です。
+
+|型|変換関数|変換後の型|
+|---|---|---|
+|日付|`lubridate::ymd`|`Date`|
+|時間|`lubridate::hms`|`Period`|
+|日時|`lubridate::ymd_hms`|`POSIXct`|
+
+日時
 ```{r}
-lubridate::as_date("2018/10/05")
+date <- lubridate::ymd("2018/11/17")
+class(date)
+date
 ```
-
-日時の場合は、`ymd_hms`
+時間
 ```{r}
-lubridate::ymd_hms("2018-10-15T01:43:12Z", tz = "UTC")
+time <- lubridate::hms("01:43:12")
+class(time)
+time
 ```
-
-
-# 可視化する。
-<!-- ggplot2でフォントを指定しないと日本語が正しく表示されないのはMacOSのみ 
-　　 なので、日本語フォントを指定する場合は、IPAフォントやNotoフォントの
-　　 ようにOSに依存することなくフリーで使えるフォントを指定した方がベター
-　　 IPAフォント： https://ipafont.ipa.go.jp/　（明朝, ゴシック）
-　　 Notoフォント： https://www.google.com/get/noto/　（Serif, SansSerif, Mono）
-　　 -->
-
-## 棒グラフ
-
+日付
 ```{r}
-#windowsFonts("MEI"=windowsFont("Meiryo"))
-df %>% ggplot(aes(x = status)) +
-  geom_bar() + theme_bw(base_family = "HiraKakuProN-W3")
+datetime <- lubridate::ymd_hms("2018-10-15T01:43:12Z")
+class(datetime)
+datetime
 ```
 
-## 円グラフ
-```{r pie-chart-chunk}
-df %>% ggplot(aes(x="", fill=tracker)) +
-  geom_bar(width = 1) + coord_polar("y") + theme_bw(base_family = "HiraKakuProN-W3")
-```
+# カスタムフィールド
 
-
-# Open/Closeチャートを描く
-
-## Openチャートを作る
-
-```{r}
-open <- df %>% 
-  mutate(
-    created_on = lubridate::as_date(created_on)
-  ) %>% 
-  dplyr::group_by(created_on) %>% 
-  dplyr::count() %>% 
-  dplyr::rename(date = created_on,
-                open = n)
-open %>% head(100)
-```
-
-## Closeチャートを作る
-
-```{r}
-close <- df %>% 
-  dplyr::filter(status=="Closed") %>% 
-  dplyr::mutate(closed_on = lubridate::as_date(closed_on)) %>% 
-  dplyr::group_by(closed_on) %>% 
-  dplyr::count() %>% 
-  dplyr::rename(
-    date = closed_on,
-    close = n
-  )
-close %>% head(100)
-```
-
-
-## openとcloseを結合
-
-```{r}
-max_date <- max(open$date, close$date)
-min_date <- min(open$date, close$date)
-openclose <- data.frame(date=seq(min_date, max_date, by = "day")) %>% 
-  dplyr::left_join(open, by = "date") %>%
-  dplyr::left_join(close, by = "date") %>% 
-  replace_na(list(open=0, close=0))
-
-openclose
-```
-
-## Open/Closeチャートを描く
-
-```{r}
-openclose$cumsum_open <- cumsum(openclose$open)
-openclose$cumsum_close <- cumsum(openclose$close)
-openclose %>% head(100)
-```
-
-## Open/Closeチャートを描く
-
-```{r}
-openclose %>% 
-  ggplot(aes(x = date)) +
-  geom_line(aes(y = cumsum_close, color = "cumsum_close")) +
-  geom_line(aes(y = cumsum_open, color = "cumsum_open"))
-```
-
-# カスタムフィールドの扱い（未完成）
-
-## custom_fieldsの中身
+## カスタムフィールドの構造
 ```{r, echo=FALSE}
 # 複数のcustom_fieldを持っている行を探しているだけ
 for(i in 1:nrow(issues)){
@@ -345,9 +253,7 @@ for(i in 1:nrow(issues)){
     }
   }
 }
-```
 
-```{r}
 tmp_custom_fields
 ```
 
@@ -362,33 +268,75 @@ list(
 )
 ```
 
-|フィールド|フィールドの説明|
-|---|---|
-|id    |カスタムフィールドID|
-|name  |カスタムフィールド名|
-|value |カスタムフィールドの値(※)|
+リスト内の各フィールドの説明
 
-※ プルダウンで選ぶ形式のカスタムフィールドの場合、
-valueは各選択肢へのIDになっている。
-実際の値を得るためには、バージョンやカスタムフィールドの情報を別途APIを叩いて入手するしかない。
+|フィールド|フィールドの説明          |
+|----------|--------------------------|
+|id        |カスタムフィールドID      |
+|name      |カスタムフィールド名      |
+|value     |カスタムフィールドの値    |
 
-以下が、カスタムフィールドの値取得に必要なAPIだが、
-残念ながらredmineRでは取れない。
-そのため、REST Client（`RCurl` or `httr`がメジャーらしい）を使って、
-直接REST APIを叩くことになる。  
-jsonの中身を分析するだけなので、頑張ればできる。
+## カスタムフィールドの処理
+例えば、Resolutionならこのように取得します。
+```{r}
+tmp_custom_fields[[1]][[1]]$value
+```
+
+Affected versionなら、このように取得します。
+```{r}
+tmp_custom_fields[[1]][[2]]$value
+```
+Affected versionのvalueは実際のバージョン名ではなく、各選択肢へのIDになっている。
+
+## リスト型カスタムフィールドの値を取得するためには
+プルダウンやチェックボックスで選ぶ形式のカスタムフィールドの場合、
+valueは各選択肢へのIDになっています。
+実際の値を得るためには、バージョンやカスタムフィールドの情報を
+別途APIを叩いて入手するしかありません。
+
+以下が、カスタムフィールドの値取得に必要なAPIですが、
+残念ながら`redmineR`では取れません。
+そのため、`value`に相当する値を取得するためには、
+REST Client（`RCurl` or `httr`がメジャーらしい）を使って、
+直接REST APIを叩くことになります。  
+jsonの中身を分析するだけなので、頑張ればできるとは思います。  
+今回は割愛します。
 
 |フィールドの種類|API|必要な権限|
-|---|---|---|
-|version|[/projects/<project_id>/versions](http://www.redmine.org/projects/redmine/wiki/Rest_Versions)|普通でOK|
-|list|[/custom_fields](http://www.redmine.org/projects/redmine/wiki/Rest_CustomFields)|管理者権限|
+|----------------|---|---|
+|version型       |[/projects/<project_id>/versions](http://www.redmine.org/projects/redmine/wiki/Rest_Versions)|普通でOK|
+|list型          |[/custom_fields](http://www.redmine.org/projects/redmine/wiki/Rest_CustomFields)|管理者権限|
 
-## カスタムフィールドをdata.frameに格納
-mutateやpurrr使っても上手くいかなかった。  
-そのため、for文でぶん回す。
-
+# 実際のデータ加工
+dplyr使ってできるとことはdplyrで処理します。
 ```{r}
-for(i in 1:nrow(df)){
+df <- issues %>% 
+  dplyr::mutate(
+    created_on = lubridate::ymd_hms(created_on),
+    closed_on = lubridate::ymd_hms(closed_on),
+    updated_on = lubridate::ymd_hms(updated_on),
+    due_date = lubridate::ymd(due_date),
+    start_date = lubridate::ymd(start_date)
+  ) %>% 
+  dplyr::select(id, created_on, closed_on, updated_on, due_date, start_date)
+
+df
+```
+
+リスト型はfor文で処理します。(あとで`purrr`を使った処理も説明します。)
+```{r}
+for (i in 1:nrow(df)){
+  # リストの処理
+  df[i, "project"] <- issues[i, "project"][[1]]$name
+  df[i, "tracker"] <- issues[i, "tracker"][[1]]$name
+  df[i, "status"] <- issues[i, "status"][[1]]$name
+  df[i, "priority"] <- issues[i, "priority"][[1]]$name
+  df[i, "author"] <- issues[i, "author"][[1]]$name
+  # NAがあるリストの処理
+  df[i, "category"] <- ifelse(is.na(issues[i, "category"]), NA, issues[i, "category"][[1]]$name)
+  df[i, "fixed_version"] <- ifelse(is.na(issues[i, "fixed_version"]), NA, issues[i, "fixed_version"][[1]]$name)
+  df[i, "assigned_to"] <- ifelse(is.na(issues[i, "assigned_to"]), NA, issues[i, "assigned_to"][[1]]$name)
+  # カスタムフィールドの処理
   if(!is.na(issues[i,"custom_fields"])){
     for(custom_field in issues[i,"custom_fields"][[1]]){
       if(!is.null(custom_field$value)){
@@ -397,188 +345,114 @@ for(i in 1:nrow(df)){
     }
   }
 }
+
+df
 ```
 
-ResolutionとAffected versionが取れた。
-```{r}
-df %>% 
-  dplyr::select("id", "Resolution", "Affected version")
-```
+# 可視化する。
+<!-- ggplot2でフォントを指定しないと日本語が正しく表示されないのはMacOSのみ 
+　　 なので、日本語フォントを指定する場合は、IPAフォントやNotoフォントの
+　　 ようにOSに依存することなくフリーで使えるフォントを指定した方がベター
+　　 IPAフォント： https://ipafont.ipa.go.jp/　（明朝, ゴシック）
+　　 Notoフォント： https://www.google.com/get/noto/　（Serif, SansSerif, Mono）
+　　 -->
 
-Affected versionの値はversionのID。
-実際にどのバージョンかを知るためには、version取得APIを叩いて、値を検索する。
-
-
-# 効率的なカスタムフィールルドの展開
-カスタムフィールドは前述のようにリスト型変数がネストしている構造（入れ子構造）で、処理が厄介です。ネストを効率的に反復的に処理するには`purrr`パッケージを用います。
-
-## カスタムフィールドの確認
-カスタムフィールドの中身を再確認しておきます。（このような場合は`knitr::kable`関数を用いると分かりやすい）
-```{r}
-issues %>% 
-  head() %>% 
-  dplyr::select(id, custom_fields) %>% 
-  knitr::kable()
-```
-
-このようにカスタムフィールドはチケットによりフィールドがあったり、なかったり、数が異なっていたりしています。  
-　  
-
-## カスタムフィールドの展開
-カスタムフィールドを処理するには、最初にネスト構造を展開して単一のリスト型変数にすることから始めます。リスト構造を展開するには`tidyr::unnest`関数を用います。  
-　  
+## 棒グラフ
 
 ```{r}
-issues %>% 
-  head() %>% 
-  dplyr::select(id, custom_fields) %>% as.data.frame() %>% 
-  tidyr::unnest() %>% knitr::kable()
+#windowsFonts("MEI"=windowsFont("Meiryo"))
+df %>% dplyr::select(id, status) %>% ggplot(aes(x = status)) + geom_bar() 
+#+ theme_bw(base_family = "HiraKakuProN-W3")
 ```
 
-`tidyr::unnest`関数を用いると複数のリスト型変数がネストされている部分に対しては複数行に展開してくれますので、識別子（この場合はチケット番号である`id`）と共に適用する必要があります。また、`NA`の場合には`NULL`になりますので、この次の展開のために`NULL`データを削除しておきます。  
-　  
+## 円グラフ
+```{r pie-chart-chunk}
+df %>% ggplot(aes(x="", fill=tracker)) +
+  geom_bar(width = 1) + coord_polar("y") + theme_bw(base_family = "HiraKakuProN-W3")
+```
+
+
+# Open/Closeチャートを描く
+
+## 日付ごとのオープンチケット数を数える
 
 ```{r}
-issues %>% 
-  head() %>% 
-  dplyr::select(id, custom_fields) %>% as.data.frame() %>% 
-  tidyr::unnest() %>% 
-  tidyr::drop_na() %>% knitr::kable()
+open <- df %>% 
+  # created_on(日時)を日付になおす。
+  mutate(
+    date = lubridate::as_date(created_on)
+  ) %>% 
+  # dateでグループ化して、dateごとにチケット数を数える。
+  dplyr::group_by(date) %>% 
+  dplyr::summarise(open = n())
+
+#open %>% head(100)
+open %>% dplyr::filter(is.na(date))
 ```
 
-以降の処理は、前出の`purrr::map`関数群を適用することが出来るようになります。
+## 日付ごとのクローズチケット数を数える
+`closed_on`が入っているチケットは一度クローズされています。
+しかし、チケットを再オープンすると`closed_on`が入っているのに、クローズされてない状態になります。
+そのため、`dplyr::filter`を使ってクローズチケットのみに絞る必要があります。
 ```{r}
-map_if_chr <- function(.x, .f) {
-  purrr::map_if(.x, !is.na(.x), .f) %>% 
-    purrr::map_chr(1L) %>% 
-    return()
-}
+close <- df %>% 
+  # クローズチケットだけをカウントする。
+  dplyr::filter(status=="Closed") %>% 
+  dplyr::mutate(date = lubridate::as_date(closed_on)) %>% 
+  dplyr::group_by(date) %>% 
+  dplyr::summarise(close = n())
 
-issues %>%
-  head(100) %>%
-  dplyr::select(id, custom_fields) %>% as.data.frame() %>%
-  tidyr::unnest() %>% 
-  tidyr::drop_na() %>% 
-  dplyr::mutate(name = map_if_chr(custom_fields, 'name'),
-                value = map_if_chr(custom_fields, 'value')) %>% 
-  dplyr::select(-custom_fields) %>% 
-  tidyr::spread(key = name, value = value) %>% 
-  dplyr::left_join(issues, ., by = "id") %>% 
-  dplyr::select(id, 'Affected version', 'Resolution') %>%
-  dplyr::arrange(dplyr::desc(id))
+#close %>% head(100)
+close %>% dplyr::filter(is.na(date))
 ```
-
-
-## イレギュラー処理
-カスタムフィールドは上記のように展開できますが、実際には以下のように`Affected version`に`value`が存在しないというようなイレギュラーなデータが存在しています。  
-　  
 
 ```{r}
-issues %>% 
-  dplyr::filter(id <= 16455 & id >= 16446) %>% 
-  dplyr::select(id, custom_fields) %>% 
-  tidyr::unnest() %>% knitr::kable()
+data.frame(id=seq(1,100)) %>% psych::headTail()
 ```
 
-このようなイレギュラーデータに対して`purrr::map`関数群を適用するとSTOPエラーを起こしてしまい処理が完了できません。  
-　  
 
-```{r, error=TRUE}
-issues %>% 
-  dplyr::filter(id <= 16455 & id >= 16446) %>% 
-  dplyr::select(id, custom_fields) %>% 
-  tidyr::unnest() %>% 
-  dplyr::mutate(name = map_if_chr(custom_fields, 'name'),
-                value = map_if_chr(custom_fields, 'value')) 
+## openとcloseを結合
+最初に起票された日から、
+バグが最後に起票された日 or クローズされた日まで、
+一日おきの日付を持ったデータフレームを作成します。
+```{r}
+min_date <- min(open$date, close$date)
+max_date <- max(open$date, close$date)
+data.frame(date=seq(min_date, max_date, by = "day")) %>% psych::headTail()
 ```
 
-そこで、このようなイレギュラーデータを処理するには、一度、リスト型変数をデータフレーム型変数に展開しておく必要があります。  
-　  
-### イレギュラーデータの展開処理
-イレギュラーデータを再度確認しておきます。  
-　  
+先作った、`date`だけを持ったデータフレームに`open`と`close`を結合します。
+`r min_date`〜`r max_date`の日付情報をすべて残しながら、結合するので`left_join`を使います。
+(このデータなら`full_join`でも同じです。)
+```{r}
+openclose <- data.frame(date=seq(min_date, max_date, by = "day")) %>% 
+  dplyr::left_join(open, by = "date") %>%
+  dplyr::left_join(close, by = "date")
+
+openclose
+```
+
+`NA`が入っているので、`0`に置き換えます。
+```{r}
+openclose <- openclose %>% 
+  replace_na(list(open=0, close=0))
+
+openclose
+```
+
+## Open/Closeチャートを描く
+累積和を求めるためには`cumsum`を使います。
+```{r}
+openclose$cumsum_open <- cumsum(openclose$open)
+openclose$cumsum_close <- cumsum(openclose$close)
+openclose %>% head(100)
+```
+
+## Open/Closeチャートを描く
 
 ```{r}
-sample_issues <- issues %>% 
-  dplyr::filter(id <= 16455 & id >= 16446) %>% 
-  dplyr::select(id, custom_fields) %>% 
-  tidyr::unnest() %>% 
-  tidyr::drop_na() %>% 
-  dplyr::rename(issue_id = id)
-
-sample_issues %>% knitr::kable()
+openclose %>% 
+  ggplot(aes(x = date)) +
+  geom_line(aes(y = cumsum_close, color = "cumsum_close")) +
+  geom_line(aes(y = cumsum_open, color = "cumsum_open"))
 ```
-
-このようにリスト型変数内にはチケット番号を識別するための識別子を持っていません。最初の`id`は、カスタムフィールドの識別子です。そこで、リスト型変数内にチケット番号の識別子（ここでは`issue_id`と名前を変えてあります）を入れ込みます。リスト型変数は`c`関数を用いて単純に結合するだけでリスト内の変数を追加できます。  
-　  
-
-```{r}
-c(issue_id = sample_issues$issue_id[1], sample_issues$custom_fields[[1]])
-```
-
-この結合処理を各データに対して反復して適用しますので、反復処理を得意とする`purrr`パッケージを利用します。  
-　  
-
-```{r}
-purrr::map2_df(sample_issues$issue_id, sample_issues$custom_fields,
-            .f = function(.x, .y) {c(issue_id = .x, .y)})
-```
-
-`purrr::map2`関数群は、`purrr::map`関数群の拡張てきな関数群であり、二つの引数（`.x`, `.y`）に対して`.f`で指定した処理（関数や演算子など）を適用する関数です。ここでは出力を見やすくするためにデータフレーム型の出力にしていますが、実際の処理ではリスト型に出力するタイプの関数を用います。  
-　  
-<!-- 次にこのチケット番号識別子を持つリスト型変数を`rlist`パッケージを用いて展開します。`rlist`パッケージは『Rプログラミング本格入門』原著の著者であるKun Ren氏が開発したリスト型変数を扱うためのパッケージで`tidyverse`な思想に合わせて作られています。   -->
-<!-- 　   -->
-
-<!-- ```{r} -->
-<!-- purrr::map2(sample_issues$issue_id, sample_issues$custom_fields, -->
-<!--             .f = function(.x, .y) {c(issue_id = .x, .y)}) %>%  -->
-<!--   rlist::list.unzip("union") -->
-<!-- ``` -->
-
-<!-- `rlist::unzip`関数の利点はリスト型変数に含まれていない変数（今回の場合は`value`）があってもNAとして出力してくれる点です。これにより、リスト型変数内の各変数は等長のベクトルとして出力されますので、晴れてデータフレーム型変数として扱うことが可能になります。   -->
-<!-- 　   -->
-
-```{r}
-purrr::map2_df(sample_issues$issue_id, sample_issues$custom_fields,
-               .f = function(.x, .y) {c(issue_id = .x, .y)}) %>% 
-  as.data.frame()
-```
-
-これでチケット番号（Redmine上では`id`）に紐付いたカスタムフィールド情報を取得することができました。あとは、以前に学んだ`tidyr::spread`関数を用いてカスタムフィールド（`name`）が変数になるように展開します。  
-　  
-
-```{r}
-purrr::map2_df(sample_issues$issue_id, sample_issues$custom_fields,
-               .f = function(.x, .y) {c(issue_id = .x, .y)}) %>% 
-  dplyr::select(-id) %>% 
-  tidyr::spread(key = name, value = value) %>% 
-  dplyr::rename(id = issue_id)
-```
-
-　  
-
-## カスタムフィールドの結合
-カスタムフィールドが展開できましたので、あとは、チケットデータに対して識別子であるチケット番号（`id`）を元に結合処理を行います「。  
-　  
-
-```{r}
-cf_list <- issues %>% 
-  dplyr::select(id, custom_fields) %>% 
-  tidyr::unnest() %>% 
-  tidyr::drop_na()
-
-df_cf <- purrr::map2_df(cf_list$id, cf_list$custom_fields,
-                        .f = function(.x, .y) {c(iid = .x, .y)}) %>% 
-  dplyr::select(-id) %>% 
-  tidyr::spread(key = name, value = value) %>% 
-  dplyr::rename(id = iid) %>% 
-  dplyr::arrange(dplyr::desc(id))
-
-issues %>% 
-  dplyr::select(id, subject) %>% 
-  dplyr::left_join(df_cf, by = "id")
-```
-
-ここでは表示の都合上、チケット番号、タイトル、カスタムフィールドのみに絞ってありますが、結合処理により全てのリスト型変数に対する展開処理が終わったことになります。以降は各変数を用いた分析や可視化を行ってください。  
-　  
-
