@@ -2,7 +2,6 @@
 title: "第６回データ分析勉強会【午前】"
 output: 
   html_document:
-    # css: style.css
     code_folding: show
     df_print: paged
     highlight: "default"
@@ -19,9 +18,9 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 
-require(rlist)
 require(redmineR)
 require(psych)
+require(lubridate)
 require(tidyverse)    # tidyverseは最後に呼び出す方がコンフリクトの影響小
 ```
 
@@ -31,7 +30,6 @@ require(tidyverse)    # tidyverseは最後に呼び出す方がコンフリク�
 
 `redmineR`パッケージはGitHubからインストールするために`devtools`や`remotes`というパッケージを事前にインストールしておく必要があります。第1回勉強会にて環境構築した方は`devtools`パッケージがインストールされているハズですので、これを使います。  
 
-<!-- チャンクはRにしておくとコードハイライトが有効になる -->
 ```{r, eval=FALSE}
 devtools::install_github("openanalytics/redmineR")
 ```
@@ -53,7 +51,8 @@ library(redmineR)
 `lubridate`パッケージは`tidyverse`ファミリーですが`tidyverse`パッケージを読み込んだだけでは読み込まれないないので、別途、明示的に読み込んでください。  
 
 ```{r, eval=FALSE}
-library(lubridate)
+require(psych)
+require(lubridate)
 library(tidyverse)    # tidyverseは最後に呼び出す方がコンフリクトの影響小
 ```
 
@@ -74,7 +73,6 @@ Sys.setenv("REDMINE_URL" = "http://xxx.xxx.xxx/xxx")
 Sys.setenv("REDMINE_TOKEN" = "APIACCESSTOKEN")
 ```
 
-<!-- こうすると実行はされるけどコードは表示されない -->
 ```{r, include=FALSE}
 Sys.setenv("REDMINE_URL" = "https://www.redmine.org/")
 Sys.setenv("REDMINE_TOKEN" = "APIACCESSTOKEN")
@@ -82,7 +80,6 @@ Sys.setenv("REDMINE_TOKEN" = "APIACCESSTOKEN")
 
 ## 動作確認
 プロジェクトの一覧取得とかが軽めのAPIでおすすめ。
-<!-- `redminer_df`クラスは何故かpaged表示をしてくれないので、表示の際はデータフレームに変換しておくと見やすい-->
 ```{r context="data", eval=FALSE}
 redmineR::redmine_projects() %>% as.data.frame()
 ```
@@ -361,8 +358,8 @@ df
 
 ```{r}
 #windowsFonts("MEI"=windowsFont("Meiryo"))
-df %>% dplyr::select(id, status) %>% ggplot(aes(x = status)) + geom_bar() 
-#+ theme_bw(base_family = "HiraKakuProN-W3")
+df %>% dplyr::select(id, status) %>%
+  ggplot(aes(x = status)) + geom_bar() 
 ```
 
 ## 円グラフ
