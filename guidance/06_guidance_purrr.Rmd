@@ -1,6 +1,6 @@
 ---
 title: "第６回データ分析勉強会"
-author: "【午前の部】実践チケット分析 - purrrで効率的にリストを展開する"
+author: "【午前の部】実践チケット分析 - purrrによる効率的な反復処理"
 date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
 output:
   ioslides_presentation:
@@ -24,7 +24,8 @@ load("../data/_redmine_issues_all.RData_")
 # はじめに
 
 ## purrrパッケージ
-* 「関数型プログラミングを実現するためのパッケージ」とよく言われる
+* `purrr` = **[purr](https://ejje.weblio.jp/content/purr){target="_blank" title="Webilo"}** + R らしい
+    * 関数型プログラミングを実現するためのパッケージ
 * `tidyverse`ファミリーでtidyなアーキテクチャに基づいた設計
 * `apply`関数群や`plyr`パッケージを再設計したようなパッケージ
     * 層別的な処理や**反復処理に威力**を発揮する
@@ -111,7 +112,7 @@ issues %>% dplyr::select(id, assigned_to, category) %>% head(4) %>%
                 cat_name = purrr::map_chr(category, 'name')) %>% knitr::kable()
 ```
 　  
-欠損値を除外して処理するためには`purrr::map_if`関数を用います。`purrr::map_if`関数は第二引数`.p`で条件式を指定します。
+欠損値を除外して処理するためには`purrr::map_if`関数を用います。`purrr::map_if`関数は第二引数（`.p`）で条件式を指定します。
 ```{r, eval=FALSE}
 purrr::map_if(.x, .p, .f, ...)
 ```
@@ -258,11 +259,10 @@ STOPエラーとなり処理できません。さて、困った...
 
 ## カスタムフィールドには罠がある（つづき）
 ```{r}
-sample_issues <- issues %>% 
+issues %>% 
   dplyr::filter(id == 16451 | id == 16447) %>% 
-  dplyr::select(id, custom_fields) %>% tidyr::unnest()
-
-purrr::map_df(sample_issues$custom_fields, c)
+  dplyr::select(id, custom_fields) %>% tidyr::unnest() %>% 
+  with(., purrr::map_df(custom_fields, c))
 ```
 
 　  
@@ -273,12 +273,11 @@ purrr::map_df(sample_issues$custom_fields, c)
 ## カスタムフィールドには罠がある（つづき）
 二変数を扱う`purrr::map2`関数群があるじゃないか！  
 ```{r}
-sample_issues <- issues %>% 
+issues %>% 
   dplyr::filter(id == 16451 | id == 16447) %>% 
-  dplyr::select(id, custom_fields) %>% tidyr::unnest()
-
-purrr::map2_df(.x = sample_issues$id, .y = sample_issues$custom_fields,
-               .f = function(.x, .y) {c(issue_id = .x, .y)})
+  dplyr::select(id, custom_fields) %>% tidyr::unnest() %>% 
+  with(., purrr::map2_df(.x = id, .y = custom_fields,
+                         .f = function(.x, .y) {c(issue_id = .x, .y)}))
 ```
 
 （つづく）
@@ -329,4 +328,4 @@ issues %>%
 * [ purrr <i class="fa fa-external-link"></i>](https://rstudio-pubs-static.s3.amazonaws.com/366653_1b0210fe55564183b553b25ee4ccb71b.html){target="_blank" title="Amazon AWS"}
 
 
-# ENJOY!
+# Enjoy!
