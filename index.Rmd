@@ -44,15 +44,7 @@ output:
 　  
 
 * [ガイダンス <i class="fa fa-external-link-square"></i>](./guidance/01_guidance_am.html){target="_blank" title="ioslide"}
-    * ガイダンス資料だけでは手順が分からない場合は以下を参照してください。
-
-手順 | 実施内容                        | 備考
------|---------------------------------|----------------------------------------
-1    | [Rのインストール <i class="fa fa-external-link-square"></i>][PE1]          | R本体のインストール
-2    | [Rtoolsのインストール <i class="fa fa-external-link-square"></i>][PE2]     | Winodws環境のみ
-3    | [Gitのインストール <i class="fa fa-external-link-square"></i>][PE8]        | Git本体のみ（GUIクライアントは不要）
-4    | [RStudioのインストール <i class="fa fa-external-link-square"></i>][PE4]    | Desktop版
-5    | [パッケージのインストール <i class="fa fa-external-link-square"></i>][PE5] | **`packrat`**ならびに**`devtools`**
+    * ガイダンス資料だけでは手順が分からない場合は [こちら <i class="fa fa-external-link"></i>](https://k-metrics.github.io/cabinet/env_overall.html){target="_blank" title="Project Cabinet"} を参照してください。
 
 
 * [R/RStudio入門 <i class="fa fa-external-link"></i>](https://kazutan.github.io/JSSP2018_spring/intro_rstudio.html){target="_blank" title="【参考資料】日本社会心理学会 第5回春の方法論セミナー資料"}
@@ -205,7 +197,7 @@ output:
 　  
 
 ## 第6回 実践チケット分析 {#S06}
-[ Redmine <i class="fa fa-external-link"></i> ](http://www.redmine.org/){target="_blank" title="a flexible project management web application"}から [ REST API <i class="fa fa-external-link"></i> ](http://www.redmine.org/projects/redmine/wiki/Rest_api){target="_blank" title="Redmine API"}経由で自動的にチケットデータを取得し、ダッシュボードを作る流れをハンズオンで体験いただきます。  
+[Redmine <i class="fa fa-external-link"></i>](http://www.redmine.org/){target="_blank" title="a flexible project management web application"} から [REST API <i class="fa fa-external-link"></i>](http://www.redmine.org/projects/redmine/wiki/Rest_api){target="_blank" title="Redmine API"} 経由で自動的にチケットデータを取得し、ダッシュボードを作る流れをハンズオンで体験いただきます。  
 　  
 
 ### 午前の部
@@ -249,11 +241,3 @@ Redmineからチケットデータを取得して可視化する。
 [CC]: http://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja {target="_blank" title="CC BY-NC-SA 4.0"}
 [CCI]: https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png {target="_blank" title="CC BY-NC-SA 4.0 icon"}
 
-[PE1]: https://k-metrics.github.io/cabinet/program/env_install.html {target="_blank" title="Install R"}
-[PE2]: https://k-metrics.github.io/cabinet/program/env_install_tls.html {target="_blank" title="Install Rtools"}
-[PE3]: https://k-metrics.github.io/cabinet/program/env_install_rcmdr.html {target="_blank" title="Install Rcmdr"}
-[PE4]: https://k-metrics.github.io/cabinet/program/env_install_dtp.html {target="_blank" title="Install RStudio"}
-[PE5]: https://k-metrics.github.io/cabinet/program/env_install_pkg.html {target="_blank" title="Install Packages"}
-[PE6]: https://k-metrics.github.io/cabinet/program/env_update_r.html {target="_blank" title="Update R"}
-[PE7]: https://k-metrics.github.io/cabinet/program/env_install_tex.html {target="_blank" title="Install TinyTeX"}
-[PE8]: https://k-metrics.github.io/cabinet/program/env_install_git.html {target="_blank" title="Install Git"}
