@@ -197,14 +197,14 @@ output:
 　  
 
 ## 第6回 実践チケット分析 {#S06}
-[Redmine <i class="fa fa-external-link"></i>](http://www.redmine.org/){target="_blank" title="a flexible project management web application"}　から [REST API <i class="fa fa-external-link"></i>](http://www.redmine.org/projects/redmine/wiki/Rest_api){target="_blank" title="Redmine API"}経由で自動的にチケットデータを取得し、ダッシュボードを作る流れをハンズオンで体験いただきます。  
+[Redmine <i class="fa fa-external-link"></i>](http://www.redmine.org/){target="_blank" title="a flexible project management web application"} から [REST API <i class="fa fa-external-link"></i>](http://www.redmine.org/projects/redmine/wiki/Rest_api){target="_blank" title="Redmine API"} 経由で自動的にチケットデータを取得し、ダッシュボードを作る流れをハンズオンで体験いただきます。  
 　  
 
 ### 午前の部
-Redmineからチケットデータを取得して可視化する。  
+RedmineからREST API経由でチケットデータを取得して可視化する。  
 
 * なぜ自動取得するのか？
-* 前提パッケージのインストール
+* 前提パッケージのインストール（GitHubリポジトリ環境は使いません）
 * チケットデータの取得
 * データの整形
 * 簡単な可視化
