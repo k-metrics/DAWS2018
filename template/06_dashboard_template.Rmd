@@ -49,7 +49,6 @@ df <- issues %>%
     created_on = lubridate::ymd_hms(created_on, tz = "UTC"),
     updated_on = lubridate::ymd_hms(updated_on, tz = "UTC"),
     closed_on = lubridate::ymd_hms(closed_on, tz = "UTC"),
-    # custom_fields = map_if_chr(custom_fields, 'name'),
     fixed_version = map_if_chr(fixed_version, 'name'),
     start_date = lubridate::as_date(start_date),
     due_date = lubridate::as_date(due_date),
