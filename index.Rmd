@@ -201,24 +201,29 @@ output:
 　  
 
 ### 午前の部
-RedmineからREST API経由でチケットデータを取得して可視化する。  
+Redmineからチケットデータを取得して可視化する。  
+[イントロダクション <i class="fa fa-external-link-square"></i>](./guidance/06_guidance_introduction.html){target="_blank" title="ioslide"}  
+[Redmineからデータ取得する。 <i class="fa fa-external-link-square"></i>](./guidance/06_guidance_am.html){target="_blank" title="ioslide"}
 
-* なぜ自動取得するのか？
-* 前提パッケージのインストール（GitHubリポジトリ環境は使いません）
-* チケットデータの取得
-* データの整形
-* 簡単な可視化
-* オープン・クローズチャート
-* `purrr`による効率的な反復処理
-
+- はじめに
+- RedmineからAPI経由でチケットデータを取得する。
+- チケットデータを整形する。
+- データを可視化する。
+- OpenCloseチャートを描く。
+- purrrによる効率的な反復処理
 　  
 
 ### 午後の部
-ダッシュボードを作る。  
+[ダッシュボードを作る。 <i class="fa fa-external-link-square"></i>](guidance/06_guidance_pm.html){target="_blank" title="ioslide"}  
+ダッシュボードの[サンプル <i class="fa fa-external-link-square"></i>](guidance/06_dashboard.html) {target="_blank" title="ioslide"}  
 
-* [flexdashboard <i class="fa fa-external-link"></i> ](https://rmarkdown.rstudio.com/flexdashboard/){target="_blank" title="Easy interactive dashboards for R"} の説明
-* 実際にダッシュボードを作ってみる。
+* [ flexdashboard <i class="fa fa-external-link"></i> ](https://rmarkdown.rstudio.com/flexdashboard/){target="_blank" title="Easy interactive dashboards for R"}の説明
+* 実際にダッシュボードを作ってみる。  
 
+　  
+[演習用テンプレート <i class="fa fa-file-code-o"></i> （右クリックでダウンロード）](./template/06_guidance_template.Rmd)
+
+[演習用データ <i class="fa fa-file-code-o"></i> （右クリックでダウンロード）](./data/_redmine_issues_all.RData_)
 　  
 
 ## 第7回 データインポート演習 {#S07}

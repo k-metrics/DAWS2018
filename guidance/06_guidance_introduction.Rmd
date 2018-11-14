@@ -1,0 +1,62 @@
+---
+title: "第６回データ分析勉強会"
+author: "【イントロダクション】Redmineから自動的にチケットデータを取得しよう"
+date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
+output:
+  ioslides_presentation:
+    css: style_img.css
+    df_print: paged
+    highlight: pygments
+    smaller: false
+    widescreen: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+```
+
+
+## 本日の内容
+1. はじめに
+1. RedmineからAPI経由でチケットデータを取得する。
+1. チケットデータを整形する。
+1. データを可視化する。
+1. OpenCloseチャートを描く。
+1. Dashboardを作ってみる。（時間があれば）
+
+# はじめに
+
+## CSV出力 -> ローカルで可視化じゃだめなの？
+
+**みんな**が**リアルタイム**で見れない。
+
+## 目指す場所
+
+メトリクスだけ見てても、開発の実態を知らないと気づけないことが多い。
+
+**開発者自身が**メトリクスを見て、**改善**を図るようにできることを目指したい。
+
+そのため、**だれでも** **最新の**データが見れるようにしておくことが大切。
+
+自動的にRedmineからチケットデータを取得して、(なるべく)リアルタイムに表示する。
+
+## データ取得の方法
+今回はRedmineのREST API経由でチケットデータを取得する方法を教えます。
+
+RedmineのバックエンドにいるDB(MySQL,PostgreSQL,SQLite)に直接アクセスできるなら、
+DB直アクセスが一番おすすめです。
+
+* 取れないデータがない（REST APIからだと、Plug-inの拡張フィールドが取れなかったりする。）
+* 更新分だけを取得できる（updated_onでフィルタ）
+
+でも、大体はRedmineとDBは同じサーバ上に構築するので、
+DB側の設定でlocahostから以外のアクセスができない（デフォルト）ようになっている。
+
+ということで、今回はとりあえずアカウントさえあればデータが取れるREST APIを使います。
+
+## 演習向けの想定
+RedmineにREST APIでアクセスする方法は説明しますが、
+今回は公式RedmineやDemo用Redmineに向かってAPI発行するのは**禁止**でお願いします。  
+基本はGitにあるサンプル用データ`data/_redmine_issues_all.RData`を使ってください。  
+ご自身の責任でアクセス可能なRedmineがある場合は、
+説明する方法でアクセスいただいて構いません。

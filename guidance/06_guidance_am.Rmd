@@ -1,0 +1,471 @@
+---
+title: "第６回データ分析勉強会【午前】"
+output: 
+  html_document:
+    code_folding: show
+    df_print: paged
+    highlight: "default"
+    md_extensions: -ascii_identifiers
+    number_section: yes
+    theme: "default"
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: yes
+      smooth_scroll: no
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+
+require(redmineR)
+require(psych)
+require(lubridate)
+require(tidyverse)    # tidyverseは最後に呼び出す方がコンフリクトの影響小
+```
+
+# Redmineへアクセスしてみる
+
+## redmineRをインストールする
+
+`redmineR`パッケージはGitHubからインストールするために`devtools`や`remotes`というパッケージを事前にインストールしておく必要があります。第1回勉強会にて環境構築した方は`devtools`パッケージがインストールされているハズですので、これを使います。  
+
+```{r, eval=FALSE}
+devtools::install_github("openanalytics/redmineR")
+```
+
+`redmineR`を読み込めればOK
+```{r, eval=FALSE}
+library(redmineR)
+```
+
+あとは`tidyverse`を読み込む。`tidyverse`のうち使うのはこの3つ。
+
+|パッケージ  |  説明              |
+|------------|--------------------|
+|`dplyr`     |データフレーム操作  |
+|`lubridate` |日付操作            |
+|`ggplot2`   |可視化              |
+
+　  
+`lubridate`パッケージは`tidyverse`ファミリーですが`tidyverse`パッケージを読み込んだだけでは読み込まれないないので、別途、明示的に読み込んでください。  
+
+```{r, eval=FALSE}
+require(psych)
+require(lubridate)
+library(tidyverse)    # tidyverseは最後に呼び出す方がコンフリクトの影響小
+```
+
+なお、追加パッケージを読み込んだ場合は、`tidyverse::tidyverse_conflicts`関数でコンフリクト状態を把握しておくと意図しない動きの場合の原因追及に使えるので便利です。  
+```{r}
+tidyverse::tidyverse_conflicts()
+```
+
+　  
+
+## Redmineの情報を入力する
+
+URLとAPIアクセストークンを環境変数に指定します。  
+APIアクセストークンはRedmineにログインして、個人設定ページから入手してください。  
+
+```{r, eval=FALSE}
+Sys.setenv("REDMINE_URL" = "http://xxx.xxx.xxx/xxx")
+Sys.setenv("REDMINE_TOKEN" = "APIACCESSTOKEN")
+```
+
+```{r, include=FALSE}
+Sys.setenv("REDMINE_URL" = "https://www.redmine.org/")
+Sys.setenv("REDMINE_TOKEN" = "APIACCESSTOKEN")
+```
+
+## 動作確認
+プロジェクトの一覧取得とかが軽めのAPIでおすすめ。
+```{r context="data", eval=FALSE}
+redmineR::redmine_projects() %>% as.data.frame()
+```
+
+# チケットデータを取得する
+
+## チケット一覧を取得する
+
+`redmine_issues`でチケット一覧を取得します。  
+デフォルトの引数だとクローズしたチケットを取得して来れません。  
+全てのステータスのチケットを取得するためには`status_id = "*"`を指定します。
+
+```{r, eval=FALSE}
+issues <- redmineR::redmine_issues(status_id = "*")
+# save(issues, file = "../data/_redmine_issues_all.RData")
+```
+皆様はこちらをお使いください。サンプル用データロードします。
+```{r}
+# .RDataはGitHubのデフォルトではignore対象なので、".RData_"に変えてあります
+load("../data/_redmine_issues_all.RData_")
+# save(issues, file = "../data/_redmine_issues_all.RData")
+```
+
+## redmineRで取ってきたチケットを見てみる
+[各フィールドの説明](https://k-metrics.netlify.com/post/2018-10/redminer/)
+
+<!-- ここの説明はもう少し整理した方がよさそうです。例えば
+　1.全体の俯瞰
+　2.型（クラス）の確認
+　3.NA有無の確認
+　4.イレギュラーデータの確認
+　5.型の変換やNAの処理-->
+
+### まずは全体を俯瞰
+```{r}
+issues %>% head(20) %>% as.data.frame()
+```
+`<list [2]>`やら、`NA`やら、結構汚いデータなので、きれいにするところから始めます。
+
+### 型（クラス）の確認
+
+```{r}
+issues %>% head(100) %>% 
+  purrr::map_df(class)
+```
+
+projectやtrackerなど、リストから選ぶ系のフィールドが`list`型になってしまっています。
+`list(id="ID", name="NAME")`から`name="NAME"`を取り出したい。
+```{r}
+issues %>% head() %>% dplyr::as_data_frame() %>% 
+  dplyr::select(id, project, status) %>% knitr::kable()
+```
+
+日付、日時も文字列型になってしまっています。日付は`date`に、日時は`POSIXct`型に変換したい。
+```{r}
+issues %>% head(20) %>%
+  dplyr::select(id, created_on, closed_on, updated_on, start_date, due_date) %>% 
+  as_data_frame()
+```
+
+### `NA`有無の確認
+厄介なのは、リスト型のカラムの中にある`NA`です。(`category`とか`assigned_to`とか)
+```{r}
+# NAの有無確認
+issues %>% head(100) %>% 
+  purrr::map_df(anyNA)
+```
+
+# 各型の処理
+
+## リスト型
+リスト型変数は任意の型で任意の数のデータを任意な数だけ持てる柔軟性のあるデータ構造です。リスト型の中にリスト型をネストさせることも可能です。    
+```{r}
+list(list(id = c(1, 2)), list(name = c("Defects")))
+```
+
+`project`の場合、こんな感じ。ここから`name="Redmine"`を取り出します。
+```{r}
+issues[[1, "project"]]
+```
+
+## リスト型の処理
+後で、`purrr`を使った処理も説明しますが、割と難しいので、
+今は構造を理解するために、とりあえずBase Rで説明します。
+
+`NA`を考慮しなければ、これでOKです。
+```{r}
+issues[[1, "project"]]$name
+```
+
+たとえば、`category`とかだとデータに`NA`が入っていることがあります。
+その場合、for文の途中で以下のようなエラーになってしまいます。
+```{r, error=TRUE}
+tmp_list <- NA
+tmp_list$name
+```
+
+`NA`じゃないときだけリストの要素(`name`)にアクセスするように、
+`ifelse`を使って分岐させます。
+```{r, eval=FALSE}
+ifelse(条件, TRUEだったときの値, FALSEだったときの値)
+```
+
+条件には長さが1より大きいかどうかを入れます。
+
+| リスト型のパターン | 長さ                                           |
+|--------------------|------------------------------------------------|
+| `NA`じゃないとき   | `length(list(id=12, name="Translations")) = 2` |
+| `NA`のとき         | `lenght(NA) = 1`                               |
+
+
+具体的には、こんな感じです。
+```{r}
+category <- list(id=12, name="Translations")
+ifelse(length(category) < 2, NA, issues[1, "category"][[1]]$name)
+```
+
+```{r}
+category <- NA
+ifelse(length(category) < 2, NA, issues[1, "category"][[1]]$name)
+```
+
+ちなみに、`is.na`を使うと、データフレームがreturnされてしまいます。
+```{r}
+is.na(issues[[1, "category"]])
+```
+
+## 文字列から日時型へ変換
+このように、`created_on`が文字列型になってしまっています。
+```{r}
+issues[1,"created_on"]
+class(issues[1,"created_on"])
+```
+
+Redmineのフィールドで日付型は以下の5つ
+
+|フィールド|フィールドの情報|例|
+|---|---|---|
+|created_on|日時|2018-11-17T10:00:00|
+|closed_on|日時|2018-11-17T12:00:00|
+|updated_on|日時|2018-11-17T15:00:00|
+|start_date|日付|2018-11-17|
+|due_date|日付|2018-11-17|
+
+文字列 -> 日時型、日付型への変換には`lubridate`を使うと便利です。
+
+|型|変換関数|変換後の型|
+|---|---|---|
+|日付|`lubridate::ymd`|`Date`|
+|時間|`lubridate::hms`|`Period`|
+|日時|`lubridate::ymd_hms`|`POSIXct`|
+
+日時
+```{r}
+date <- lubridate::ymd("2018/11/17")
+class(date)
+date
+```
+時間
+```{r}
+time <- lubridate::hms("01:43:12")
+class(time)
+time
+```
+日付
+```{r}
+datetime <- lubridate::ymd_hms("2018-10-15T01:43:12Z")
+class(datetime)
+datetime
+```
+
+# カスタムフィールド
+
+## カスタムフィールドの構造
+
+```{r}
+tmp_custom_fields <- issues %>% 
+  dplyr::filter(id == 29753) %>% .[[1, "custom_fields"]]
+
+tmp_custom_fields
+```
+
+とっても複雑な構造。。。  
+要するにこういうこと
+```{r, eval=FALSE}
+list(
+  list(
+    list(id=2, name="Resolution", value="Invalid"),
+    list(id=4, name="Affected version", value=133)
+  )
+)
+```
+
+リスト内の各フィールドの説明
+
+|フィールド|フィールドの説明          |
+|----------|--------------------------|
+|id        |カスタムフィールドID      |
+|name      |カスタムフィールド名      |
+|value     |カスタムフィールドの値    |
+
+## カスタムフィールドの処理
+例えば、Resolutionならこのように取得します。
+```{r}
+tmp_custom_fields[[1]]$value
+```
+
+Affected versionなら、このように取得します。
+```{r}
+tmp_custom_fields[[2]]$value
+```
+Affected versionのvalueは実際のバージョン名ではなく、各選択肢へのIDになっている。
+
+## リスト型カスタムフィールドの値を取得するためには
+プルダウンやチェックボックスで選ぶ形式のカスタムフィールドの場合、
+valueは各選択肢へのIDになっています。
+実際の値を得るためには、バージョンやカスタムフィールドの情報を
+別途APIを叩いて入手するしかありません。
+
+以下が、カスタムフィールドの値取得に必要なAPIですが、
+残念ながら`redmineR`では取れません。
+そのため、`value`に相当する値を取得するためには、
+REST Client（`RCurl` or `httr`がメジャーらしい）を使って、
+直接REST APIを叩くことになります。  
+jsonの中身を分析するだけなので、頑張ればできるとは思います。  
+今回は割愛します。
+
+|フィールドの種類|API|必要な権限|
+|----------------|---|---|
+|version型       |[/projects/<project_id>/versions](http://www.redmine.org/projects/redmine/wiki/Rest_Versions)|普通でOK|
+|list型          |[/custom_fields](http://www.redmine.org/projects/redmine/wiki/Rest_CustomFields)|管理者権限|
+
+# 実際のデータ加工
+dplyr使ってできるとことはdplyrで処理します。
+```{r}
+df <- issues %>% 
+  dplyr::mutate(
+    created_on = lubridate::ymd_hms(created_on),
+    closed_on = lubridate::ymd_hms(closed_on),
+    updated_on = lubridate::ymd_hms(updated_on),
+    due_date = lubridate::ymd(due_date),
+    start_date = lubridate::ymd(start_date)
+  ) %>% 
+  dplyr::select(id, created_on, closed_on, updated_on, due_date, start_date)
+
+df
+```
+
+リスト型はfor文で処理します。(あとで`purrr`を使った処理も説明します。)
+```{r}
+is_na <- function(.x){
+  return(length(.x) < 2)
+}
+
+for (i in 1:nrow(df)){
+  # リストの処理
+  df[i, "project"] <- issues[[i, "project"]]$name
+  df[i, "tracker"] <- issues[[i, "tracker"]]$name
+  df[i, "status"] <- issues[[i, "status"]]$name
+  df[i, "priority"] <- issues[[i, "priority"]]$name
+  df[i, "author"] <- issues[[i, "author"]]$name
+  # NAがあるリストの処理
+  df[i, "category"] <- ifelse(is_na(issues[[i, "category"]]), NA, issues[[i, "category"]]$name)
+  df[i, "fixed_version"] <- ifelse(is_na(issues[i, "fixed_version"]), NA, issues[i, "fixed_version"][[1]]$name)
+  df[i, "assigned_to"] <- ifelse(is_na(issues[[i, "assigned_to"]]), NA, issues[[i, "assigned_to"]]$name)
+  # カスタムフィールドの処理
+  if(!is_na(issues[[i,"custom_fields"]])){
+    for(custom_field in issues[[i,"custom_fields"]]){
+      if(!is.null(custom_field$value)){
+        df[i, custom_field$name] <- custom_field$value
+      }
+    }
+  }
+}
+
+df
+```
+
+```{r}
+for(i in 1:100){
+  if(is.na(issues[i, "category"])){
+    if(is.na(issues[[i, "category"]])){
+      print(i)
+    }
+  }
+}
+```
+
+
+# 可視化する。
+<!-- ggplot2でフォントを指定しないと日本語が正しく表示されないのはMacOSのみ 
+　　 なので、日本語フォントを指定する場合は、IPAフォントやNotoフォントの
+　　 ようにOSに依存することなくフリーで使えるフォントを指定した方がベター
+　　 IPAフォント： https://ipafont.ipa.go.jp/　（明朝, ゴシック）
+　　 Notoフォント： https://www.google.com/get/noto/　（Serif, SansSerif, Mono）
+　　 -->
+
+## 棒グラフ
+
+```{r}
+#windowsFonts("MEI"=windowsFont("Meiryo"))
+df %>% dplyr::select(id, status) %>%
+  ggplot(aes(x = status)) + geom_bar() 
+```
+
+## 円グラフ
+```{r pie-chart-chunk}
+df %>% ggplot(aes(x="", fill=tracker)) +
+  geom_bar(width = 1) + coord_polar("y") + theme_bw(base_family = "HiraKakuProN-W3")
+```
+
+
+# Open/Closeチャートを描く
+
+## 日付ごとのオープンチケット数を数える
+
+```{r}
+open <- df %>% 
+  # created_on(日時)を日付になおす。
+  mutate(
+    date = lubridate::as_date(created_on)
+  ) %>% 
+  # dateでグループ化して、dateごとにチケット数を数える。
+  dplyr::group_by(date) %>% 
+  dplyr::summarise(open = n())
+
+open %>% psych::headTail()
+```
+
+## 日付ごとのクローズチケット数を数える
+`closed_on`が入っているチケットは一度クローズされています。
+しかし、チケットを再オープンすると`closed_on`が入っているのに、クローズされてない状態になります。
+そのため、`dplyr::filter`を使ってクローズチケットのみに絞る必要があります。
+```{r}
+close <- df %>% 
+  # クローズチケットだけをカウントする。
+  dplyr::filter(status=="Closed") %>% 
+  dplyr::mutate(date = lubridate::as_date(closed_on)) %>% 
+  dplyr::group_by(date) %>% 
+  dplyr::summarise(close = n())
+
+close %>% psych::headTail()
+```
+
+## openとcloseを結合
+最初に起票された日から、
+バグが最後に起票された日 or クローズされた日まで、
+一日おきの日付を持ったデータフレームを作成します。
+```{r}
+min_date <- min(open$date, close$date)
+max_date <- max(open$date, close$date)
+data.frame(date=seq(min_date, max_date, by = "day")) %>% psych::headTail()
+```
+
+先作った、`date`だけを持ったデータフレームに`open`と`close`を結合します。
+`r min_date`〜`r max_date`の日付情報をすべて残しながら、結合するので`left_join`を使います。
+(このデータなら`full_join`でも同じです。)
+```{r}
+openclose <- data.frame(date=seq(min_date, max_date, by = "day")) %>% 
+  dplyr::left_join(open, by = "date") %>%
+  dplyr::left_join(close, by = "date")
+
+openclose
+```
+
+`NA`が入っているので、`0`に置き換えます。
+```{r}
+openclose <- openclose %>% 
+  replace_na(list(open=0, close=0))
+
+openclose
+```
+
+## Open/Closeチャートを描く
+累積和を求めるためには`cumsum`を使います。
+```{r}
+openclose$cumsum_open <- cumsum(openclose$open)
+openclose$cumsum_close <- cumsum(openclose$close)
+openclose %>% head(100)
+```
+
+## Open/Closeチャートを描く
+
+```{r}
+openclose %>% 
+  ggplot(aes(x = date)) +
+  geom_line(aes(y = cumsum_close, color = "cumsum_close")) +
+  geom_line(aes(y = cumsum_open, color = "cumsum_open"))
+```
