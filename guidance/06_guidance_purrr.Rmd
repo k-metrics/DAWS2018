@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 require(redmineR)
 require(tidyverse)    # tidyverseは最後に呼び出す方がコンフリクトの影響小
 
-load("../data/_redmine_issues_all.RData_")
+load("../data/redmine_issues_all.RData")
 ```
 
 # はじめに

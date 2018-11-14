@@ -11,7 +11,7 @@ require(flexdashboard)
 require(redmineR)
 require(tidyverse)    # tidyverseは最後に呼び出す方がコンフリクトの影響小
 
-load("../data/_redmine_issues_all.RData_")
+load("../data/redmine_issues_all.RData")
 
 # Local Function
 map_if_chr <- function(.x, .f) {

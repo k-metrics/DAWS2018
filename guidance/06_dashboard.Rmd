@@ -19,8 +19,7 @@ issues <- redmineR::redmine_issues(status_id = "*")
 ```
 
 ```{r}
-# .RDataはGitHubのデフォルトではignore対象なので、".RData_"に変えてあります
-load("../data/_redmine_issues_all.RData_")
+load("../data/redmine_issues_all.RData")
 ```
 
 
