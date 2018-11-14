@@ -1,0 +1,92 @@
+---
+title: "気温"
+author: "Akira Fukuda"
+date: "2018年10月13日"
+output: 
+  html_document:
+    df_print: paged
+    toc: TRUE
+    toc_depth: 3
+    toc_float:
+      collapsed: yes
+---
+
+setup chunk は、他のchunkだけを実行しても、最初に必ず実行される
+libraryなどは、ここに集約しておくのが良い
+include = FALSE コードは隠れるが、実行される
+opts_chunk$set() の中のオプションは、全チャンクで有効
+MicrosoftのVisual Studio Code でLive Previewできる
+r-wakalang
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+#summary(cars)
+```
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+#plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+# 拠点別最高気温
+```{r Chapter-1, echo = FALSE, message = FALSE}
+
+library(tidyverse)
+
+tmp <- read.csv("./temp.csv", skip = 6, header = FALSE)
+tmp <- dplyr::mutate( tmp, V1 = as.POSIXct(V1))
+
+tyo <- dplyr::select( tmp, V1, V6 )
+htk <- dplyr::select( tmp, V1, V3 )
+nah <- dplyr::select( tmp, V1, V9 )
+
+tmp[1:10]
+
+#tyo
+#htk
+#nah
+
+#objT <- ggplot(tyo, mapping = aes(V1, y = V3) )
+#objT <- objT + geom_line()
+#objT
+
+#objH <- ggplot(htk, mapping = aes(V1, y = V6) )
+#objH <- objH + geom_line()
+#objH
+
+```
+
+## 東京
+```{r}
+objT <- ggplot(tyo, mapping = aes(V1, y = V6) )
+objT <- objT + geom_line()
+objT
+
+```
+
+## 穂高
+```{r}
+objH <- ggplot(htk, mapping = aes(V1, y = V3) )
+objH <- objH + geom_line()
+objH
+
+```
+
+## 那覇
+```{r}
+objN <- ggplot(nah, mapping = aes(V1, y = V9) )
+objN <- objN + geom_line()
+objN
+
+```
+
