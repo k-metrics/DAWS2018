@@ -1,0 +1,59 @@
+---
+title: "Redmine"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+require(flexdashboard)
+require(redmineR)
+require(tidyverse)    # tidyverseは最後に呼び出す方がコンフリクトの影響小
+
+load("../data/_redmine_issues_all.RData_")
+
+# Local Function
+map_if_chr <- function(.x, .f) {
+  purrr::map_if(.x, !is.na(.x), .f) %>% 
+    purrr::map_chr(1L) %>% return()
+}
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### **New** Bug Tickets
+
+```{r, echo=FALSE}
+issues %>% head(100) %>% 
+  dplyr::select(id, created_on, tracker, status, priority, author, 
+                assigned_to, category) %>% 
+  dplyr::mutate_if(is.list, map_if_chr, 'name') %>% 
+  dplyr::mutate(open = lubridate::as_date(created_on)) %>% 
+  dplyr::filter(tracker == "Defect" & status == "New") %>% 
+  DT::datatable()
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Stays in **OPEN**
+
+```{r, message = FALSE, warning=FALSE}
+issues %>% 
+  dplyr::select(id, created_on, tracker, status, priority) %>% 
+  dplyr::mutate_if(is.list, map_if_chr, 'name') %>% 
+  dplyr::mutate(open = lubridate::as_date(created_on)) %>% 
+  dplyr::filter(open >= "2018-1-1" & tracker == "Defect" & status != "Closed") %>% 
+  dplyr::mutate(days = lubridate::today() - open + 1) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = days, fill = priority)) + 
+    ggplot2::geom_histogram(alpha = 0.5, position = "identity")
+```
+
+### Chart C
+
+```{r}
+
+```
+

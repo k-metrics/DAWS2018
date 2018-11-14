@@ -438,46 +438,8 @@ div.tocify {
 <ul>
 <li><a href="./guidance/01_guidance_am.html" target="_blank" title="ioslide">ガイダンス <i class="fa fa-external-link-square"></i></a>
 <ul>
-<li>ガイダンス資料だけでは手順が分からない場合は以下を参照してください。</li>
+<li>ガイダンス資料だけでは手順が分からない場合は <a href="https://k-metrics.github.io/cabinet/env_overall.html" target="_blank" title="Project Cabinet">こちら <i class="fa fa-external-link"></i></a> を参照してください。</li>
 </ul></li>
-</ul>
-<table>
-<thead>
-<tr class="header">
-<th>手順</th>
-<th>実施内容</th>
-<th>備考</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td><a href="https://k-metrics.github.io/cabinet/program/env_install.html" target="_blank" title="Install R">Rのインストール <i class="fa fa-external-link-square"></i></a></td>
-<td>R本体のインストール</td>
-</tr>
-<tr class="even">
-<td>2</td>
-<td><a href="https://k-metrics.github.io/cabinet/program/env_install_tls.html" target="_blank" title="Install Rtools">Rtoolsのインストール <i class="fa fa-external-link-square"></i></a></td>
-<td>Winodws環境のみ</td>
-</tr>
-<tr class="odd">
-<td>3</td>
-<td><a href="https://k-metrics.github.io/cabinet/program/env_install_git.html" target="_blank" title="Install Git">Gitのインストール <i class="fa fa-external-link-square"></i></a></td>
-<td>Git本体のみ（GUIクライアントは不要）</td>
-</tr>
-<tr class="even">
-<td>4</td>
-<td><a href="https://k-metrics.github.io/cabinet/program/env_install_dtp.html" target="_blank" title="Install RStudio">RStudioのインストール <i class="fa fa-external-link-square"></i></a></td>
-<td>Desktop版</td>
-</tr>
-<tr class="odd">
-<td>5</td>
-<td><a href="https://k-metrics.github.io/cabinet/program/env_install_pkg.html" target="_blank" title="Install Packages">パッケージのインストール <i class="fa fa-external-link-square"></i></a></td>
-<td><strong><code>packrat</code></strong>ならびに<strong><code>devtools</code></strong></td>
-</tr>
-</tbody>
-</table>
-<ul>
 <li><a href="https://kazutan.github.io/JSSP2018_spring/intro_rstudio.html" target="_blank" title="【参考資料】日本社会心理学会 第5回春の方法論セミナー資料">R/RStudio入門 <i class="fa fa-external-link"></i></a></li>
 </ul>
 <p>　</p>
@@ -691,32 +653,59 @@ div.tocify {
 </ul>
 <p>　</p>
 </div>
+<div id="ハンズオン成果集" class="section level3">
+<h3>ハンズオン成果集</h3>
+<p>（準備中）<br />
+　</p>
+</div>
 </div>
 <div id="S06" class="section level2">
 <h2>第6回 実践チケット分析</h2>
-<p><a href="http://www.redmine.org/" target="_blank" title="a flexible project management web application">Redmine <i class="fa fa-external-link"></i></a>から <a href="http://www.redmine.org/projects/redmine/wiki/Rest_api" target="_blank" title="Redmine API">REST API <i class="fa fa-external-link"></i></a>経由で自動的にチケットデータを取得し、ダッシュボードを作る流れをハンズオンで体験いただきます。<br />
+<p><a href="http://www.redmine.org/" target="_blank" title="a flexible project management web application">Redmine <i class="fa fa-external-link"></i></a> から <a href="http://www.redmine.org/projects/redmine/wiki/Rest_api" target="_blank" title="Redmine API">REST API <i class="fa fa-external-link"></i></a> 経由で自動的にチケットデータを取得し、ダッシュボードを作る流れをハンズオンで体験いただきます。<br />
 　</p>
 <div id="午前の部-3" class="section level3">
 <h3>午前の部</h3>
-<p>Redmineからチケットデータを取得して可視化する。</p>
+<p>Redmineからチケットデータを取得して可視化する。<br />
+　</p>
 <ul>
-<li>なぜ自動取得するのか？</li>
-<li>前提パッケージのインストール</li>
-<li>チケットデータの取得</li>
-<li>データの整形</li>
-<li>簡単な可視化</li>
-<li>オープン・クローズチャート</li>
+<li><a href="./guidance/06_guidance_introduction.html" target="_blank" title="ioslide">イントロダクション <i class="fa fa-external-link-square"></i></a><br />
+</li>
+<li><p><a href="./guidance/06_guidance_am.html" target="_blank" title="ioslide">Redmineからデータ取得する。 <i class="fa fa-external-link-square"></i></a></p>
+<ul>
+<li>はじめに</li>
+<li>RedmineからAPI経由でチケットデータを取得する。</li>
+<li>チケットデータを整形する。</li>
+<li>データを可視化する。</li>
+<li>OpenCloseチャートを描く。</li>
+<li><a href="./guidance/06_guidance_purrr.html" target="_blank" title="purrR">purrrによる効率的な反復処理 <i class="fa fa-external-link-square"></i></a></li>
+</ul></li>
 </ul>
 <p>　</p>
 </div>
 <div id="午後の部-3" class="section level3">
 <h3>午後の部</h3>
-<p>ダッシュボードを作る。</p>
+<p>Redmineのチケットデータを用いてダッシュボードを作る。<br />
+　</p>
+<ul>
+<li><a href="guidance/06_guidance_pm.html" target="_blank" title="ioslide">ダッシュボードを作る。 <i class="fa fa-external-link-square"></i></a><br />
+</li>
+<li><p>ダッシュボードの <a href="guidance/06_dashboard.html" target="_blank" title="ioslide">サンプル <i class="fa fa-external-link-square"></i></a></p>
 <ul>
 <li><a href="https://rmarkdown.rstudio.com/flexdashboard/" target="_blank" title="Easy interactive dashboards for R">flexdashboard <i class="fa fa-external-link"></i></a>の説明</li>
 <li>実際にダッシュボードを作ってみる。</li>
+</ul></li>
 </ul>
 <p>　</p>
+<ul>
+<li><p><a href="./template/06_dashboard_template.Rmd">演習用テンプレート <i class="fa fa-file-code-o"></i> （右クリックでダウンロード）</a></p></li>
+<li><p><a href="./data/_redmine_issues_all.RData_">演習用データ <i class="fa fa-file-code-o"></i> （右クリックでダウンロード）</a><br />
+　</p></li>
+</ul>
+</div>
+<div id="ハンズオン成果集-1" class="section level3">
+<h3>ハンズオン成果集</h3>
+<p>（終了後掲載予定）<br />
+　</p>
 </div>
 </div>
 <div id="S07" class="section level2">
@@ -729,7 +718,7 @@ div.tocify {
 <p>（Ｏ島さんネタ）<br />
 　</p>
 <hr />
-<p><img src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" alt="Sampo Suzuki" target="_blank" title="CC BY-NC-SA 4.0 icon" /> <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" target="_blank" title="CC BY-NC-SA 4.0">CC BY-NC-SA 4.0 <i class="fa fa-external-link"></i></a>, Sampo Suzuki [2018-10-17 11:18(JST)]</p>
+<p><img src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" alt="Sampo Suzuki" target="_blank" title="CC BY-NC-SA 4.0 icon" /> <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" target="_blank" title="CC BY-NC-SA 4.0">CC BY-NC-SA 4.0 <i class="fa fa-external-link"></i></a>, Sampo Suzuki [2018-11-14 10:38(JST)]</p>
 </div>
 
 

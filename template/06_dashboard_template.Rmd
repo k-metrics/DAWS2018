@@ -1,0 +1,108 @@
+---
+title: "Redmine"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+require(tidyverse)
+require(redmineR)
+```
+
+```{r, eval=FALSE}
+# Redminから取得する場合
+Sys.setenv("REDMINE_URL" = "http://xxx.xxx.xxx/xxx")
+Sys.setenv("REDMINE_TOKEN" = "APIACCESSTOKEN")
+issues <- redmineR::redmine_issues(status_id = "*")
+```
+
+```{r}
+# 演習用
+load("./_redmine_issues_all.RData_")
+```
+
+
+```{r load-data, context="data"}
+# リスト型変数にNAが含まれていても展開するための関数（）
+map_if_chr <- function(.x, .f) {
+  purrr::map_if(.x, !is.na(.x), .f) %>% 
+    purrr::map_chr(1L) %>% 
+    return()
+}
+
+df <- issues %>% 
+  # dplyr::sample_n(100) %>%   # テスト用に１００件に絞る
+  # custom_fieldsが上手く展開できない...
+  dplyr::select(-custom_fields) %>% 
+  dplyr::mutate(
+    pjid = purrr::map_int(project, 'id'),     # 一種のキーなのでNAはありえない
+    project = map_if_chr(project, 'name'),
+    tracker = map_if_chr(tracker, 'name'),
+    status = map_if_chr(status, 'name'),
+    priority = map_if_chr(priority, 'name'),
+    author = map_if_chr(author, 'name'),
+    assigned_to = map_if_chr(assigned_to, 'name'),
+    category = map_if_chr(category, 'name'),
+    created_on = lubridate::ymd_hms(created_on, tz = "UTC"),
+    updated_on = lubridate::ymd_hms(updated_on, tz = "UTC"),
+    closed_on = lubridate::ymd_hms(closed_on, tz = "UTC"),
+    fixed_version = map_if_chr(fixed_version, 'name'),
+    start_date = lubridate::as_date(start_date),
+    due_date = lubridate::as_date(due_date),
+    parent = map_if_chr(parent, 'id')
+  )
+```
+
+```{r create-openclose, context="data"}
+open <- df %>% 
+  dplyr::mutate(created_on=lubridate::as_date(created_on)) %>% 
+  dplyr::group_by(created_on) %>% 
+  dplyr::count() %>% 
+  dplyr::rename(date = created_on,
+                open = n)
+close <- df %>% 
+  dplyr::filter(status=="Closed") %>%
+  dplyr::mutate(closed_on=lubridate::as_date(closed_on)) %>% 
+  dplyr::group_by(closed_on) %>% 
+  dplyr::count() %>% 
+  dplyr::rename(
+    date = closed_on,
+    close = n
+  )
+max_date <- max(open$date, close$date)
+min_date <- min(open$date, close$date)
+openclose <- data.frame(date=seq(min_date, max_date, by = "day")) %>% 
+  dplyr::left_join(open, by = "date") %>%
+  dplyr::left_join(close, by = "date") %>% 
+  replace_na(list(open=0, close=0))
+openclose$cumsum_open <- cumsum(openclose$open)
+openclose$cumsum_close <- cumsum(openclose$close)
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart1
+
+```{r}
+
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart2
+
+```{r}
+
+```
+
+### Chart3
+
+```{r}
+
+```
+
