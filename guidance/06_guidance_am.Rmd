@@ -84,23 +84,27 @@ Sys.setenv("REDMINE_TOKEN" = "APIACCESSTOKEN")
 redmineR::redmine_projects() %>% as.data.frame()
 ```
 
+　  
+
 # チケットデータを取得する
 
 ## チケット一覧を取得する
-
 `redmine_issues`でチケット一覧を取得します。  
 デフォルトの引数だとクローズしたチケットを取得して来れません。  
 全てのステータスのチケットを取得するためには`status_id = "*"`を指定します。
 
 ```{r, eval=FALSE}
 issues <- redmineR::redmine_issues(status_id = "*")
+```
+
+```{r, include=FALSE}
 # save(issues, file = "../data/_redmine_issues_all.RData")
 ```
-皆様はこちらをお使いください。サンプル用データロードします。
+
+　  
+皆様はサンプルデータをダウンロードして、読込んでお使いください。
 ```{r}
-# .RDataはGitHubのデフォルトではignore対象なので、".RData_"に変えてあります
-load("../data/_redmine_issues_all.RData_")
-# save(issues, file = "../data/_redmine_issues_all.RData")
+load("../data/redmine_issues_all.RData")
 ```
 
 ## redmineRで取ってきたチケットを見てみる
