@@ -196,34 +196,49 @@ output:
 
 　  
 
+### ハンズオン成果集
+（準備中）  
+　  
+
 ## 第6回 実践チケット分析 {#S06}
 [Redmine <i class="fa fa-external-link"></i>](http://www.redmine.org/){target="_blank" title="a flexible project management web application"} から [REST API <i class="fa fa-external-link"></i>](http://www.redmine.org/projects/redmine/wiki/Rest_api){target="_blank" title="Redmine API"} 経由で自動的にチケットデータを取得し、ダッシュボードを作る流れをハンズオンで体験いただきます。  
 　  
 
 ### 午前の部
 Redmineからチケットデータを取得して可視化する。  
-[イントロダクション <i class="fa fa-external-link-square"></i>](./guidance/06_guidance_introduction.html){target="_blank" title="ioslide"}  
-[Redmineからデータ取得する。 <i class="fa fa-external-link-square"></i>](./guidance/06_guidance_am.html){target="_blank" title="ioslide"}
+　  
 
-- はじめに
-- RedmineからAPI経由でチケットデータを取得する。
-- チケットデータを整形する。
-- データを可視化する。
-- OpenCloseチャートを描く。
-- purrrによる効率的な反復処理
+* [イントロダクション <i class="fa fa-external-link-square"></i>](./guidance/06_guidance_introduction.html){target="_blank" title="ioslide"}  
+* [Redmineからデータ取得する。 <i class="fa fa-external-link-square"></i>](./guidance/06_guidance_am.html){target="_blank" title="HTML"}
+
+    - はじめに
+    - RedmineからAPI経由でチケットデータを取得する。
+    - チケットデータを整形する。
+    - データを可視化する。
+    - OpenCloseチャートを描く。
+    - [purrrによる効率的な反復処理 <i class="fa fa-external-link-square"></i>](./guidance/06_guidance_purrr.html){target="_blank" title="purrR"}
+
 　  
 
 ### 午後の部
-[ダッシュボードを作る。 <i class="fa fa-external-link-square"></i>](guidance/06_guidance_pm.html){target="_blank" title="ioslide"}  
-ダッシュボードの[サンプル <i class="fa fa-external-link-square"></i>](guidance/06_dashboard.html) {target="_blank" title="ioslide"}  
+Redmineのチケットデータを用いてダッシュボードを作る。  
+　  
 
-* [ flexdashboard <i class="fa fa-external-link"></i> ](https://rmarkdown.rstudio.com/flexdashboard/){target="_blank" title="Easy interactive dashboards for R"}の説明
-* 実際にダッシュボードを作ってみる。  
+* [ダッシュボードを作る。 <i class="fa fa-external-link-square"></i>](guidance/06_guidance_pm.html){target="_blank" title="ioslide"}  
+* ダッシュボードの [サンプル <i class="fa fa-external-link-square"></i>](guidance/06_dashboard.html){target="_blank" title="HTML"}  
+
+    * [flexdashboard <i class="fa fa-external-link"></i> ](https://rmarkdown.rstudio.com/flexdashboard/){target="_blank" title="Easy interactive dashboards for R"}の説明
+    * 実際にダッシュボードを作ってみる。  
 
 　  
-[演習用テンプレート <i class="fa fa-file-code-o"></i> （右クリックでダウンロード）](./template/06_guidance_template.Rmd)
 
-[演習用データ <i class="fa fa-file-code-o"></i> （右クリックでダウンロード）](./data/_redmine_issues_all.RData_)
+* [演習用テンプレート <i class="fa fa-file-code-o"></i> （右クリックでダウンロード）](./template/06_dashboard_template.Rmd)
+
+* [演習用データ <i class="fa fa-file-code-o"></i> （右クリックでダウンロード）](./data/_redmine_issues_all.RData_)  
+　  
+
+### ハンズオン成果集
+（終了後掲載予定）  
 　  
 
 ## 第7回 データインポート演習 {#S07}
