@@ -97,8 +97,8 @@ redmineR::redmine_projects() %>% as.data.frame()
 issues <- redmineR::redmine_issues(status_id = "*")
 ```
 
-```{r, include=FALSE}
-# save(issues, file = "../data/_redmine_issues_all.RData")
+```{r, include=FALSE, eval=FALSE}
+save(issues, file = "../data/redmine_issues_all_1114.RData")
 ```
 
 　  
