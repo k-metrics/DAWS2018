@@ -58,6 +58,6 @@ DB側の設定でlocahostから以外のアクセスができない（デフォ�
 ## 演習向けの想定
 RedmineにREST APIでアクセスする方法は説明しますが、
 今回は公式RedmineやDemo用Redmineに向かってAPI発行するのは**禁止**でお願いします。  
-基本はGitにあるサンプル用データ`data/_redmine_issues_all.RData`を使ってください。  
+基本はGitにあるサンプル用データ`data/redmine_issues_all.RData`を使ってください。  
 ご自身の責任でアクセス可能なRedmineがある場合は、
 説明する方法でアクセスいただいて構いません。
