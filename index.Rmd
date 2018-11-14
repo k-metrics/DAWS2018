@@ -234,7 +234,7 @@ Redmineのチケットデータを用いてダッシュボードを作る。
 
 * [演習用テンプレート <i class="fa fa-file-code-o"></i> （右クリックでダウンロード）](./template/06_dashboard_template.Rmd)
 
-* [演習用データ <i class="fa fa-file-code-o"></i> （右クリックでダウンロード）](./data/_redmine_issues_all.RData_)  
+* [演習用データ <i class="fa fa-file-code-o"></i> （右クリックでダウンロード）](./data/redmine_issues_all.rdf)  
 　  
 
 ### ハンズオン成果集
