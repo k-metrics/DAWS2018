@@ -196,8 +196,9 @@ output:
 
 　  
 
-### ハンズオン成果集
-（準備中）  
+### ハンズオン・アウトプット集
+[こちら <i class="fa fa-external-link-square"></i>](./hands-on/index.html){target="_blank" title="Hands-on"}
+ からどうぞ。  
 　  
 
 ## 第6回 実践チケット分析 {#S06}
@@ -237,7 +238,7 @@ Redmineのチケットデータを用いてダッシュボードを作る。
 * [演習用データ <i class="fa fa-file-code-o"></i> （右クリックでダウンロード）](./data/redmine_issues_all.RData)  
 　  
 
-### ハンズオン成果集
+### ハンズオン・アウトプット集
 （終了後掲載予定）  
 　  
 
