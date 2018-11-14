@@ -1,0 +1,33 @@
+---
+title: "データ分析勉強会 ハンズオン・アウトプット集"
+author-meta: "k-metrics"
+pagetitle: "データ分析勉強会 - 2018年度"
+output:
+  html_document:
+    df_print: paged
+---
+
+[2018年度勉強会  <i class="fa fa-external-link"></i>](https://sites.google.com/site/kantometrics/2018){target="_blank" title="ソフトウェア品質技術者のためのデータ分析勉強会"}で実施したハンズオンのアウトプット集です。JavaScriptを有効にしてご覧ください。 
+なお、各アプトプットの著作権は各著作者にあります。  
+　  
+
+# 第5回 R Markdownを使ってみる
+
+* [チームB 全国人口データから相関を導く <i class="fa fa-external-link-square"></i>](./20181013_main.html){target="_blank" title=""}
+* [チーム? 最高気温の変動比較 <i class="fa fa-external-link-square"></i>](./Rmkdw.2.html){target="_blank" title=""}
+* [チーム? デート本より「工数推移の把握」 <i class="fa fa-external-link-square"></i>](./changing_man_hour_chart.html){target="_blank" title=""}
+
+　  
+
+# 第6回 Redmineデータの可視化
+（準備中）  
+　  
+
+---
+
+![Sampo Suzuki][CCI]
+[CC BY-NC-SA 4.0 <i class="fa fa-external-link"></i>][CC], Sampo Suzuki [`r format(Sys.time(), format = '%F %H:%M(%Z)')`]
+
+[CC]: http://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja {target="_blank" title="CC BY-NC-SA 4.0"}
+[CCI]: https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png {target="_blank" title="CC BY-NC-SA 4.0 icon"}
+

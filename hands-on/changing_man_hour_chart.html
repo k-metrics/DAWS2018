@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title></title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">データ分析勉強会</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="./about.html">about</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-github"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="https://k-metrics.github.io/cabinet/index.html">Cabinet</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="../cabinet/import/index.html">Import</a>
+    </li>
+    <li>
+      <a href="../cabinet/tidy/index.html">Tidy/Transform</a>
+    </li>
+    <li>
+      <a href="../cabinet/model/index.html">Model/Infer</a>
+    </li>
+    <li>
+      <a href="../cabinet/visualize/index.html">Visualize</a>
+    </li>
+    <li>
+      <a href="../cabinet/communicate/index.html">Communicate/Automate</a>
+    </li>
+    <li>
+      <a href="../cabinet/program/index.html">Program</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="https://github.com/k-metrics/2018">
+        <span class="fa fa-github"></span>
+         
+        GitHub Repository
+      </a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="https://sites.google.com/site/kantometrics/home">
+        <span class="fa fa-google"></span>
+         
+        データ分析勉強会
+      </a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+
+</div>
+
+
+<div id="工数推移の把握" class="section level1">
+<h1>工数推移の把握</h1>
+<div id="目的" class="section level2">
+<h2>目的</h2>
+<ul>
+<li>プロジェクトの健全性（危険な兆候）を把握する</li>
+</ul>
+</div>
+<div id="利用する手法" class="section level2">
+<h2>利用する手法</h2>
+<ul>
+<li>工数推移グラフ</li>
+</ul>
+</div>
+<div id="手法利用時の前提制約" class="section level2">
+<h2>手法利用時の前提・制約</h2>
+<ul>
+<li>開発工数を定期的に収集する</li>
+</ul>
+</div>
+<div id="プロジェクトの健全性危険な兆候" class="section level2">
+<h2>プロジェクトの健全性（危険な兆候）</h2>
+<ul>
+<li>予定通りに進まない</li>
+<li>必要なプロセスを省く</li>
+<li>無理な残業で作業をこなす</li>
+<li>上記の状況が把握できていない</li>
+</ul>
+<p>※プロジェクトリーダーの主観的な判断にマネジメントが委ねられることが要因となり、このような状況に陥ることがある。</p>
+</div>
+<div id="工数推移グラフ" class="section level2">
+<h2>工数推移グラフ</h2>
+<ul>
+<li>工数実績の積み上げ棒グラフと計画工数の折れ線グラフの２つで構成される。</li>
+<li>積み上げ棒グラフ
+<ul>
+<li>横軸：週単位の日付</li>
+<li>縦軸：工数実績の合計値</li>
+<li>工数実績：工程単位で集計し、積み上げ棒グラフで表現</li>
+</ul></li>
+<li>折れ線グラフ
+<ul>
+<li>縦軸：週単位の計画工数</li>
+</ul></li>
+</ul>
+</div>
+<div id="工数推移グラフで把握すること" class="section level2">
+<h2>工数推移グラフで把握すること</h2>
+<ul>
+<li>工程の移行状況
+<ul>
+<li>工程毎の工数消化状況が表現されるため、工程の移行状況を視覚的に把握できる。</li>
+<li>自組織の工程移行のパターンと照らし合わせて見ることで、異常に気づくことができる。また、今後の予測をすることができる。</li>
+</ul></li>
+<li>工数配分
+<ul>
+<li>工程毎の実績工数が面積で表現されるため、工程毎の工数配分が把握できる。</li>
+<li>自組織の標準的な工数配分と比較することで、異常に気づくことができる。また、今後の予測をすることができる。</li>
+</ul></li>
+<li>工数の予実差
+<ul>
+<li>折れ線グラフと棒グラフを比較することで、工数の予実差を用意に比較できる。</li>
+<li>現時点での工数の超過、不足に気づくことができる。また、今後必要となる工数を予測することができる。</li>
+</ul></li>
+</ul>
+</div>
+<div id="工数推移グラフの工夫点" class="section level2">
+<h2>工数推移グラフの工夫点</h2>
+<ul>
+<li>配色
+<ul>
+<li>同系統の工程は、配色も同系統とする （例）作りこみ工程を<strong>暖色系</strong>、テスト工程を<strong>寒色系</strong>とする</li>
+<li>工程毎の実績工数の割合や推移を一目で把握できる</li>
+</ul></li>
+<li>マイルストーンの表示
+<ul>
+<li>グラフにはマイルストーンも表示する （例）リリース日、各工程の完了予定日</li>
+<li>各工程の遅れを一目で把握できる</li>
+</ul></li>
+</ul>
+<div class="figure">
+<img src="Graph.png" />
+
+</div>
+</div>
+<div id="コード" class="section level2">
+<h2>コード</h2>
+<p>ggplot2 で工数推移グラフを作図する。</p>
+<div id="パッケージのロード" class="section level3">
+<h3>パッケージのロード</h3>
+<p>本サンプルの実行には以下のパッケージが必要。</p>
+<pre class="r"><code>library(tidyverse)
+library(grid)
+library(gridExtra)
+library(lubridate)</code></pre>
+</div>
+<div id="工数推移データの読み込み" class="section level3">
+<h3>工数推移データの読み込み</h3>
+<p>工数推移データは書籍「 <a href="http://www.juse-p.co.jp/cgi-bin/html.pl5?i=ISBN978-4-8171-9447-3">データ指向のソフトウェア品質マネジメント メトリクス分析による「事実にもとづく管理」の実践</a> 」付属の <a href="http://www.juse-p.co.jp/dl_index.html">事例データ</a> （要パスワード）を使用。</p>
+<p>R 3.5.1 では日本語ファイル名のファイルの読み込みができないため、ファイル名の変更が必要。</p>
+<pre class="r"><code>sheet &lt;- &quot;2.1.5&quot;
+# sheet &lt;- &quot;2.1.6&quot;
+readxl::read_xls(path = &quot;2.1Web公開データ20120908.xls&quot;, sheet = sheet) %&gt;%
+  dplyr::select(&quot;日付&quot;, &quot;日付（文字列変換）&quot;, &quot;要件定義&quot;,
+                &quot;設計&quot;, &quot;コーディング&quot;, &quot;単体テスト&quot;, &quot;統合テスト&quot;,
+                &quot;システムテスト&quot;, &quot;管理&quot;, &quot;計画&quot;, &quot;マイルストーン名&quot;,
+                &quot;マイルストーンデータ&quot;) -&gt; man_hour
+rm(sheet)
+# 3行目まで表示。
+head(man_hour, n = 3)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["日付"],"name":[1],"type":["S3: POSIXct"],"align":["right"]},{"label":["日付（文字列変換）"],"name":[2],"type":["chr"],"align":["left"]},{"label":["要件定義"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["設計"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["コーディング"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["単体テスト"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["統合テスト"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["システムテスト"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["管理"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["計画"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["マイルストーン名"],"name":[11],"type":["chr"],"align":["left"]},{"label":["マイルストーンデータ"],"name":[12],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-03-30","2":"3/30","3":"18","4":"11","5":"2","6":"0","7":"0","8":"0","9":"9","10":"0","11":"NA","12":"NA"},{"1":"2009-04-06","2":"4/6","3":"21","4":"6","5":"10","6":"0","7":"0","8":"0","9":"13","10":"49","11":"NA","12":"NA"},{"1":"2009-04-13","2":"4/13","3":"33","4":"7","5":"5","6":"1","7":"0","8":"0","9":"9","10":"49","11":"NA","12":"NA"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="データの整形" class="section level3">
+<h3>データの整形</h3>
+<p>工数推移データから、ggplot2 で作図するためのデータを作成。</p>
+<div id="予定工数実績工数" class="section level4">
+<h4>予定工数／実績工数</h4>
+<p>工数推移のデータを tidy data に変換。日付は週に変換する。</p>
+<pre class="r"><code>man_hour %&gt;%
+  # 列の絞り込み。
+  dplyr::select(-&quot;日付（文字列変換）&quot;,
+                -マイルストーン名,
+                -マイルストーンデータ) %&gt;%
+  # 日付を Date 型に変換。
+  dplyr::mutate(日付 = as.Date(日付)) %&gt;%
+  # wide data から narrow data に変換。
+  tidyr::gather(key=&quot;工程&quot;, value=&quot;工数&quot;, -&quot;日付&quot;) %&gt;%
+  # 工数が na の行を削除
+  dplyr::filter(! is.na(工数)) %&gt;%
+  # 演習データでは特に必要ないが、日付を週（その週の日曜日）に変換、週、および工程で工数を集計。
+  # lubridate::wday() は日付を曜日に変換する関数。デフォルトでは日曜～土曜をそれぞれ1～7で返す。
+  dplyr::mutate(週 = 日付 - lubridate::days(lubridate::wday(日付) - 1)) %&gt;%
+  dplyr::select(-日付) %&gt;%
+  dplyr::group_by(週, 工程) %&gt;%
+  dplyr::summarise(工数 = sum(工数)) %&gt;%
+  # 週、工程でソート。
+  dplyr::arrange(週, 工程) -&gt; tidy_weekly_man_hour
+# 最初の3週分のデータのみ表示。
+head(tidy_weekly_man_hour, n = 24)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["週"],"name":[1],"type":["date"],"align":["right"]},{"label":["工程"],"name":[2],"type":["chr"],"align":["left"]},{"label":["工数"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-03-29","2":"コーディング","3":"2"},{"1":"2009-03-29","2":"システムテスト","3":"0"},{"1":"2009-03-29","2":"管理","3":"9"},{"1":"2009-03-29","2":"計画","3":"0"},{"1":"2009-03-29","2":"設計","3":"11"},{"1":"2009-03-29","2":"単体テスト","3":"0"},{"1":"2009-03-29","2":"統合テスト","3":"0"},{"1":"2009-03-29","2":"要件定義","3":"18"},{"1":"2009-04-05","2":"コーディング","3":"10"},{"1":"2009-04-05","2":"システムテスト","3":"0"},{"1":"2009-04-05","2":"管理","3":"13"},{"1":"2009-04-05","2":"計画","3":"49"},{"1":"2009-04-05","2":"設計","3":"6"},{"1":"2009-04-05","2":"単体テスト","3":"0"},{"1":"2009-04-05","2":"統合テスト","3":"0"},{"1":"2009-04-05","2":"要件定義","3":"21"},{"1":"2009-04-12","2":"コーディング","3":"5"},{"1":"2009-04-12","2":"システムテスト","3":"0"},{"1":"2009-04-12","2":"管理","3":"9"},{"1":"2009-04-12","2":"計画","3":"49"},{"1":"2009-04-12","2":"設計","3":"7"},{"1":"2009-04-12","2":"単体テスト","3":"1"},{"1":"2009-04-12","2":"統合テスト","3":"0"},{"1":"2009-04-12","2":"要件定義","3":"33"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>変換後データから実績工数をフィルタリング。実績工数のデータを作成。</p>
+<pre class="r"><code>process_step &lt;- c(&quot;要件定義&quot;, &quot;設計&quot;, &quot;コーディング&quot;,
+                  &quot;単体テスト&quot;, &quot;統合テスト&quot;, &quot;システムテスト&quot;, &quot;管理&quot;) 
+
+tidy_weekly_man_hour %&gt;%
+  # 工程が実績工数の行のみ抜き出す。
+  dplyr::filter(工程 %in% process_step) %&gt;%
+  # 工程の順番を定義するため、因子型に変換。
+  dplyr::mutate(工程 = factor(工程, levels = process_step)) %&gt;%
+  # 週、および工程でソート。
+  dplyr::arrange(週, 工程) -&gt; tidy_weekly_actual_man_hour
+# 最初の3週分のデータのみ表示。
+head(tidy_weekly_actual_man_hour, n = 21)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["週"],"name":[1],"type":["date"],"align":["right"]},{"label":["工程"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["工数"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-03-29","2":"要件定義","3":"18"},{"1":"2009-03-29","2":"設計","3":"11"},{"1":"2009-03-29","2":"コーディング","3":"2"},{"1":"2009-03-29","2":"単体テスト","3":"0"},{"1":"2009-03-29","2":"統合テスト","3":"0"},{"1":"2009-03-29","2":"システムテスト","3":"0"},{"1":"2009-03-29","2":"管理","3":"9"},{"1":"2009-04-05","2":"要件定義","3":"21"},{"1":"2009-04-05","2":"設計","3":"6"},{"1":"2009-04-05","2":"コーディング","3":"10"},{"1":"2009-04-05","2":"単体テスト","3":"0"},{"1":"2009-04-05","2":"統合テスト","3":"0"},{"1":"2009-04-05","2":"システムテスト","3":"0"},{"1":"2009-04-05","2":"管理","3":"13"},{"1":"2009-04-12","2":"要件定義","3":"33"},{"1":"2009-04-12","2":"設計","3":"7"},{"1":"2009-04-12","2":"コーディング","3":"5"},{"1":"2009-04-12","2":"単体テスト","3":"1"},{"1":"2009-04-12","2":"統合テスト","3":"0"},{"1":"2009-04-12","2":"システムテスト","3":"0"},{"1":"2009-04-12","2":"管理","3":"9"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>同様に予定工数のデータを作成。</p>
+<pre class="r"><code>tidy_weekly_man_hour %&gt;%
+  dplyr::filter(工程 == &quot;計画&quot;) %&gt;%
+  dplyr::arrange(週) -&gt; tidy_weekly_estimate_man_hour
+# 最初の3週分のデータのみ表示。
+head(tidy_weekly_estimate_man_hour, n = 3)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["週"],"name":[1],"type":["date"],"align":["right"]},{"label":["工程"],"name":[2],"type":["chr"],"align":["left"]},{"label":["工数"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-03-29","2":"計画","3":"0"},{"1":"2009-04-05","2":"計画","3":"49"},{"1":"2009-04-12","2":"計画","3":"49"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="マイルストーン" class="section level4">
+<h4>マイルストーン</h4>
+<p>マイルストーンのデータを作成。</p>
+<pre class="r"><code>man_hour %&gt;%
+  dplyr::select(日付, マイルストーン名) %&gt;%
+  dplyr::filter(! is.na(マイルストーン名)) %&gt;%
+  dplyr::mutate(日付 = as.Date(日付)) %&gt;%
+  dplyr::arrange(日付) %&gt;%
+  # マイルストーンデータは演習データのを使用しない。
+  dplyr::mutate(マイルストーンデータ = nrow(.):1) -&gt; milestone
+# 最初の2つのみ表示。
+head(milestone, n = 2)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["日付"],"name":[1],"type":["date"],"align":["right"]},{"label":["マイルストーン名"],"name":[2],"type":["chr"],"align":["left"]},{"label":["マイルストーンデータ"],"name":[3],"type":["int"],"align":["right"]}],"data":[{"1":"2009-05-11","2":"5/13:企画承認会議","3":"6"},{"1":"2009-07-13","2":"7/15:開発承認会議","3":"5"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<div id="作図" class="section level3">
+<h3>作図</h3>
+<div id="工数推移グラフ-1" class="section level4">
+<h4>工数推移グラフ</h4>
+<p>予定工数、および実績工数のデータから工数推移グラフを作成。</p>
+<pre class="r"><code># x軸のスケールの設定はマイルストーンのグラフと共用するため、予めオブジェクト化しておく。
+start_date &lt;-
+  min(min(tidy_weekly_man_hour$週) - lubridate::days(7), milestone$日付)
+end_date &lt;-
+  max(max(tidy_weekly_man_hour$週) + lubridate::days(7), milestone$日付)
+scale_x &lt;-
+  ggplot2::scale_x_date(limits = c(start_date, end_date),
+                        date_breaks = &quot;2 months&quot;,
+                        date_minor_breaks = &quot;1 month&quot;,
+                        date_labels = &quot;%Y-%m&quot;)
+
+process_step_color &lt;- c(&quot;peachpuff1&quot;, &quot;tan2&quot;, &quot;red1&quot;,
+                        &quot;lightskyblue1&quot;, &quot;skyblue3&quot;, &quot;blue2&quot;, &quot;gray60&quot;)
+
+g_man_hour &lt;-
+  ggplot2::ggplot() +
+  scale_x +
+  # 実績工数の積み上げ棒グラフを追加。
+  # 順番の若い工程を下に積むため、 forcats::fct_rev() で因子の水準を逆順にしている。
+  # 積み上げ棒グラフの幅（引数 width）は絶対値で指定しているため、データが変わったら調整が必要。
+  ggplot2::geom_bar(data = tidy_weekly_actual_man_hour,
+                    mapping = ggplot2::aes(x = 週, y = 工数,
+                                           fill = forcats::fct_rev(工程)),
+                    stat = &quot;identity&quot;,
+                    position = &quot;stack&quot;,
+                    colour = &quot;grey30&quot;,
+                    width = 7) +
+  # 積み上げ棒グラフの色を設定。
+  ggplot2::scale_fill_manual(values = rev(process_step_color),
+                             name = &quot;工程&quot;) +
+  # 予定工数の折れ線グラフを追加。
+  ggplot2::geom_line(data = tidy_weekly_estimate_man_hour,
+                     mapping = ggplot2::aes(x = 週, y = 工数, colour = 工程),
+                     size = 1.2) +
+  # 折れ線の色を設定。
+  ggplot2::scale_colour_manual(values = c(&quot;gray24&quot;),
+                               name = NULL) +
+  #
+  ggplot2::xlab(NULL) +
+  ggplot2::ylab(&quot;工数 [h]&quot;) +
+  ggplot2::ggtitle(label = NULL) +
+  ggplot2::theme(axis.text = element_text(size=10),
+                 axis.title = element_text(size=10),
+                 legend.text = element_text(size=10),
+                 legend.title = element_text(size=10),
+                 legend.key.height = unit(16, &quot;pt&quot;))
+plot(g_man_hour)</code></pre>
+<p><img src="changing_man_hour_chart_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="マイルストーングラフ" class="section level4">
+<h4>マイルストーングラフ</h4>
+<p>マイルストーンのデータからグラフを作成。</p>
+<pre class="r"><code>g_milestone &lt;-
+  ggplot2::ggplot(
+    data = milestone,
+    mapping = ggplot2::aes(x = 日付, y = マイルストーンデータ,
+                           label = マイルストーン名)
+  ) +
+  scale_x +
+  ggplot2::scale_y_continuous(
+    limits = 
+      c(min(milestone$マイルストーンデータ),
+        max(milestone$マイルストーンデータ) + 1)
+  ) +
+  # マイルストーンを散布図で表示。
+  ggplot2::geom_point(size = 2) +
+  # マイルストーンの点から下に伸びる直線を描画。
+  ggplot2::geom_segment(
+    data = milestone,
+    mapping = ggplot2::aes(x = 日付, y = -Inf,
+                           xend = 日付, yend = マイルストーンデータ)
+  ) +
+  # ラベルの表示。直線の上に表示するため、 ggplot2::geom_segment() より後に追加。
+  ggplot2::geom_label(vjust = 0, nudge_y = 0.15, size = 3.5) +
+  # 
+  ggplot2::xlab(NULL) +
+  ggplot2::ylab(NULL) +
+  ggplot2::ggtitle(label = NULL) +
+  ggplot2::theme(axis.text.y = element_blank(),
+                 axis.ticks.y = element_blank(),
+                 axis.text = element_text(size=10))
+
+plot(g_milestone)</code></pre>
+<p><img src="changing_man_hour_chart_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="工数推移グラフマイルストーングラフ" class="section level4">
+<h4>工数推移グラフ／マイルストーングラフ</h4>
+<p>2枚のグラフを上下に並べ1枚のグラフに纏める。</p>
+<pre class="r"><code># ggplot2 plot を glob として扱えるようにする。
+g1 &lt;- ggplot2::ggplotGrob(g_milestone)
+g2 &lt;- ggplot2::ggplotGrob(g_man_hour)
+# グラフの横幅を揃える。
+# grid::unit.pmax() により、幅が大きいほうに揃える。
+max_width &lt;- grid::unit.pmax(g1$widths, g2$widths)
+g1$widths &lt;- max_width
+g2$widths &lt;- max_width
+
+# 2つの glob を縦に並べて表示。
+gridExtra::grid.arrange(g1, g2, nrow = 2, heights = c(0.45, 0.55))</code></pre>
+<p><img src="changing_man_hour_chart_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+</div>
+</div>
+</div>
+<div id="まとめ" class="section level2">
+<h2>まとめ</h2>
+<ul>
+<li>プロジェクトの工程移行状況、工数配分、工数予実差などを把握することで、プロジェクトの危険な兆候を察知できる。</li>
+<li>留意点
+<ul>
+<li>一目で把握できる工夫をすること</li>
+<li>人の助けになるアクションに結びつけること</li>
+<li>工数入力を定着させること</li>
+</ul></li>
+</ul>
+</div>
+<div id="環境" class="section level2">
+<h2>環境</h2>
+<pre class="r"><code>R.version</code></pre>
+<pre><code>##                _                           
+## platform       x86_64-w64-mingw32          
+## arch           x86_64                      
+## os             mingw32                     
+## system         x86_64, mingw32             
+## status                                     
+## major          3                           
+## minor          4.4                         
+## year           2018                        
+## month          03                          
+## day            15                          
+## svn rev        74408                       
+## language       R                           
+## version.string R version 3.4.4 (2018-03-15)
+## nickname       Someone to Lean On</code></pre>
+</div>
+<div id="参考文献" class="section level2">
+<h2>参考文献</h2>
+<p><a href="http://www.juse-p.co.jp/cgi-bin/html.pl5?i=ISBN978-4-8171-9447-3">野中 誠，小池 利和，小室 睦「データ指向のソフトウェア品質マネジメント メトリクス分析による「事実にもとづく管理」の実践」（2012年）日科技連出版社</a><br />
+<a href="https://gihyo.jp/book/2018/978-4-7741-9853-8">松村 優哉，湯谷 啓明，紀ノ定 保礼，前田 和寛「RユーザのためのRStudio［実践］入門 tidyverseによるモダンな分析フローの世界」（2018年）技術評論社</a></p>
+<hr />
+<p>The MIT License</p>
+<p>Copyright (c) 2018 データ分析勉強会事務局</p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
