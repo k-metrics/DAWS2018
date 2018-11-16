@@ -31,7 +31,7 @@
       // Author information
       presenters: [
             {
-        name:  '【午前の部】実践チケット分析 - purrrによる効率的な反復処理' ,
+        name:  '【午前の部】実践チケット分析 - purrrによる効率的な反復処理 [鈴木さんぽう, CC BY-NC-SA 4.0]' ,
         company: '',
         gplus: '',
         twitter: '',
@@ -113,7 +113,7 @@
       <h1 data-config-title><!-- populated from slide_config.json --></h1>
       <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
       <p data-config-presenter><!-- populated from slide_config.json --></p>
-            <p style="margin-top: 6px; margin-left: -2px;">2018年11月15日</p>
+            <p style="margin-top: 6px; margin-left: -2px;">2018年11月16日</p>
           </hgroup>
   </slide>
 
@@ -304,7 +304,7 @@
 {"columns":[{"label":["id"],"name":[1],"type":["int"],"align":["right"]},{"label":["assigned_to"],"name":[2],"type":["list"],"align":["right"]},{"label":["category"],"name":[3],"type":["list"],"align":["right"]},{"label":["assignee"],"name":[4],"type":["list"],"align":["right"]},{"label":["cat_name"],"name":[5],"type":["list"],"align":["right"]}],"data":[{"1":"29767","2":"<list [2]>","3":"<list [2]>","4":"<chr [1]>","5":"<chr [1]>"},{"1":"29764","2":"<lgl [1]>","3":"<list [2]>","4":"<lgl [1]>","5":"<chr [1]>"},{"1":"29763","2":"<lgl [1]>","3":"<list [2]>","4":"<lgl [1]>","5":"<chr [1]>"},{"1":"29758","2":"<lgl [1]>","3":"<lgl [1]>","4":"<lgl [1]>","5":"<lgl [1]>"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script></div>
 
-<p>　<br/><code>purrr::map_if</code>関数も<strong>返り値はリスト</strong>なのベクトルの返り値が欲しい場合は、もう一段、処理をする必要があります。どうしたらよいでしょうか？<br/>　<br/>（つづく）</p>
+<p>　<br/><code>purrr::map_if</code>関数も<strong>返り値はリスト</strong>なのでベクトルの返り値が欲しい場合は、もう一段、処理をする必要があります。どうしたらよいでしょうか？<br/>　<br/>（つづく）</p>
 
 </article></slide><slide class=""><hgroup><h2>例外処理（つづき）</h2></hgroup><article  id="-2">
 
@@ -334,7 +334,7 @@
 
 </article></slide><slide class=""><hgroup><h2>カスタムフィールドとは？</h2></hgroup><article >
 
-<p>Redmineではカスタムフィールドと呼ばれるユーザが自由に定義できる項目（フィールド）があります。カスタムフィールドは<strong>プロジェクト毎、トラッカー毎に異なる設定ができる</strong>ため、<code>redmineR</code>パッケージで取得できる情報では<code>custom_fields</code>という項目にリスト型変数がネストされた形で格納されます。</p>
+<p>Redmineにはカスタムフィールドと呼ばれるユーザが自由に定義できる項目（フィールド）があります。カスタムフィールドは<strong>プロジェクト毎、トラッカー毎に異なる設定ができる</strong>ため、<code>redmineR</code>パッケージで取得できる情報では<code>custom_fields</code>という項目にリスト型変数がネストされた形で格納されます。</p>
 
 <p>カスタムフィールドをRのコードで表現すると下記のようなイメージになります。</p>
 
@@ -550,7 +550,7 @@
 
 <pre >## Error in mutate_impl(.data, dots): Evaluation error: Result 2 is not a length 1 atomic vector.</pre>
 
-<p>　<br/>STOPエラーとなり処理できません。さて、困った&#8230;<br/>　<br/>リストが展開できないならデータフレーム（等長ベクトル）に変換できないか？<br/>　<br/>（つづく）</p>
+<p>　<br/>STOPエラーとなり処理できません。さて、困った&#8230;<br/>　<br/><strong>考え方を変えてみる。</strong><br/>リストを展開できないならデータフレーム（等長ベクトル）に変換してしまえ！<br/>　<br/>（つづく）</p>
 
 </article></slide><slide class=""><hgroup><h2>カスタムフィールドには罠がある（つづき）</h2></hgroup><article  id="-2">
 
@@ -618,7 +618,9 @@
 <li><a href='https://rstudio-pubs-static.s3.amazonaws.com/366653_1b0210fe55564183b553b25ee4ccb71b.html' title=''>purrr <i class="fa fa-external-link"></i></a></li>
 </ul>
 
-</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Enjoy!</h2></hgroup><article  id="enjoy"></article></slide>
+</article></slide><slide class=""><hgroup><h2>Enjoy!</h2></hgroup><article  id="enjoy">
+
+<p>CC BY-NC-SA 4.0, Sampo Suzuki</p></article></slide>
 
 
   <slide class="backdrop"></slide>
