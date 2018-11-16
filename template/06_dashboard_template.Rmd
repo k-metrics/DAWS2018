@@ -21,7 +21,7 @@ issues <- redmineR::redmine_issues(status_id = "*")
 
 ```{r}
 # 演習用
-load("./_redmine_issues_all.RData_")
+load("./redmine_issues_all.RData")
 ```
 
 
