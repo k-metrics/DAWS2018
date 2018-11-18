@@ -24,13 +24,42 @@ require(tidyverse)
     * RStuido and R Markdonw
         * chunkの実行方法など便利なショートカット
     * tidyr（特に gather and spread）
-1. 落穂拾い
     * ggplot2（aes関数に入れるもの入れないもの）
+1. 落穂拾い
+    * ggplot2（表示順を変える、色を変える、大きさを変える）
     * purrrの使い方
         * どういう使い方ができるのか（ファイルの結合、層別計算など）
         * map2_dfの補足説明（c(vector, list) -> list -> data.frame(list, list)）
     * flexdashborad補足
         * 画面構成方法
+    * htmlwidgets（plotly）
+
+
+# 振り返り
+
+# 落穂拾い
+
+## ggplot2
+
+## purrr
+
+## flexdashboard
+
+## htmlwidgets
+`htmlwidgets`はHTMLドキュメントにおいてインタラクティブな表示を提供するためのベースとなるパッケージです。`htmlwidgets`を用いた様々なパッケージが公開されています。代表的なパッケージには以下のようなものがあります。  
+
+package  | description
+---------|------------
+DT       | DataTablesライブラリを用いたテーブル（表）表示
+plotly   | ggplot2オブジェクトを簡単にインタラクティブ化
+dygraphs | 時系列グラフに特化したパッケージ
+
+
+## Package DT
+```{r}
+DT::datatable(iris)
+```
+
 
 
 ## 復習のためのリソース
