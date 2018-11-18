@@ -1,0 +1,44 @@
+---
+title: "第８回データ分析勉強会"
+author: "【午前の部/午後の部】振り返り＆落穂拾い [鈴木さんぽう, CC BY-NC-SA 4.0]"
+date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
+output:
+  ioslides_presentation:
+    css: style.css
+    df_print: paged
+    logo: fig/hex-rmarkdown.png
+    smaller: false
+    widescreen: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+
+require(tidyverse)
+```
+
+
+## 本日の内容（案）
+1. 振り返り
+    * なぜRか（tidy data, reproducible research）
+    * RStuido and R Markdonw
+        * chunkの実行方法など便利なショートカット
+    * tidyr（特に gather and spread）
+1. 落穂拾い
+    * ggplot2（aes関数に入れるもの入れないもの）
+    * purrrの使い方
+        * どういう使い方ができるのか（ファイルの結合、層別計算など）
+        * map2_dfの補足説明（c(vector, list) -> list -> data.frame(list, list)）
+    * flexdashborad補足
+        * 画面構成方法
+
+
+## 復習のためのリソース
+
+* Project Cabinet
+* Project Cabinet Blog
+
+
+## Enjoy!
+
+CC BY-NC-SA 4.0, Sampo Suzuki
