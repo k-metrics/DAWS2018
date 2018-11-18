@@ -24,6 +24,31 @@ require(lubridate)
 require(tidyverse)    # tidyverseは最後に呼び出す方がコンフリクトの影響小
 ```
 
+# まず、前提パッケージを入れます
+
+## インストール
+
+|packages      |説明                                               |
+|--------------|---------------------------------------------------|
+|tidyverse     |tidyr,dplyr,ggplot2,lubridateとか                  |
+|flexdashboard |ダッシュボード作成用パッケージ                     |
+|devtools      |githubからパッケージをインストールするためのツール |
+|psych         |表をうまく表示するときに使う                       |
+|knitr         |Rmarkdownコンパイルに使う                          |
+|rmarkdown     |Rmarkdownコンパイルに使う                          |
+
+```{r, eval=FALSE}
+install.packages(c("tidyverse", "flexdashboard","devtools","psych","knitr","rmarkdown"))
+```
+
+## ライブラリの読み込み
+
+```{r, eval=FALSE}
+require(psych)
+require(lubridate)
+require(tidyverse)    # tidyverseは最後に呼び出す方がコンフリクトの影響小
+```
+
 # Redmineへアクセスしてみる
 
 ## redmineRをインストールする

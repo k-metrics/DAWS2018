@@ -20,13 +20,15 @@ output:
 　  
 
 # 第6回 Redmineデータの可視化
-（準備中）  
+
+* [flexdashboard <i class="fa fa-external-link-square"></i>](./redmine_flexdb.html){target="_blank" title="with htmlwidgets"} （HTML 約5.7MB）
+
 　  
 
 ---
 
 ![Sampo Suzuki][CCI]
-[CC BY-NC-SA 4.0 <i class="fa fa-external-link"></i>][CC], Sampo Suzuki [`r format(Sys.time(), format = '%F %H:%M(%Z)')`]
+[CC BY-NC-SA 4.0 <i class="fa fa-external-link"></i>][CC], Sampo Suzuki [`r format(Sys.time(), format = '%F (%Z)')`]
 
 [CC]: http://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja {target="_blank" title="CC BY-NC-SA 4.0"}
 [CCI]: https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png {target="_blank" title="CC BY-NC-SA 4.0 icon"}
