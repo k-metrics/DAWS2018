@@ -21,7 +21,7 @@ output:
 
 # 第6回 Redmineデータの可視化
 
-* [flexdashboard <i class="fa fa-external-link-square"></i>](./redmine_flexdb.html){target="_blank" title="with htmlwidgets"} （HTML 約5.7MB）
+* [flexdashboard + htmlwidgets <i class="fa fa-external-link-square"></i>](./redmine_flexdb.html){target="_blank" title="with htmlwidgets"} （HTML 約5.7MB）
 
 　  
 
