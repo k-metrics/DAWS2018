@@ -7,6 +7,7 @@ output:
     css: style.css
     df_print: paged
     logo: fig/rlogo.png
+    self_contain: true
     smaller: false
     widescreen: true
 ---
@@ -19,20 +20,21 @@ require(tidyverse)
 ```
 
 
-## 文字列操作
+## コンテンツ
 * なぜ文字列操作が必要なのか？
-* 基本的な文字列操作
+* 基本的な文字列操作（`tidyr::separete`）
 * 文字列操作パッケージ`stringr`
 * 文字列を別の型に変換する
 * より高度に処理するための正規表現
-* 正規表現を用いた操作
+* 正規表現を用いた操作（`tidyr::extract`）
+* 文字コードを調べる（サイトのエンコーディングを知る）
+* 実は結構重要なスクレイピング
 
 
 
 ## なぜ文字列操作が必要なのか？
-スクレイピングで取得できるデータは表示を優先していることが多いため、読み込んだだけでは処理に不適当な。例えば [MLBの試合結果 <i class="fa fa-external-link"></i>](https://baseball.yahoo.co.jp/mlb/schedule/){target="_blank" title="Sportsnavi"} の場合、得点欄が複数行になっています。
+スクレイピングで取得できるデータは表示を優先していることが多いため、読み込んだだけでは処理に不適当なケースが多々あります。例えば [MLBの試合結果 <i class="fa fa-external-link"></i>](https://baseball.yahoo.co.jp/mlb/schedule/){target="_blank" title="Sportsnavi"} の場合、得点欄が複数行になっており
 <center> ![](./fig/table_sample.png) </center>
-　  
 これをスクレイピングすると以下のようになり、得点欄をこのまま処理することはできません。  
 ```{r, echo=FALSE}
 site_url <- "https://baseball.yahoo.co.jp/mlb/schedule/"
@@ -69,7 +71,7 @@ function | description
 
 
 ## 文字列を別の型に変換する
-Rでは数字区切りがある数字や単位がついた数字は文字列データとして扱われます。このような場合、`readr`パッケージを用いると文字列を数値型（`intger`型や`double`型など）や論理型（`logical`型）に簡単に変換できます。  
+Rでは数字区切りや単位がある数字は文字列データとして扱われます。このような場合、`readr`パッケージを用いると文字列を数値型（`intger`型や`double`型など）に簡単に変換できます。  
 
 function | description
 ---------|------------
@@ -82,10 +84,10 @@ function | description
 
 
 ## より高度に処理するための正規表現（１／２）
-文字列を高度に処理する場合に欠かせないのが正規表現です。Rでは拡張正規表現（POSIX 1003.2）が使えます。正規表現は、大雑把にいうとメタ文字と文字クラスを組み合わせてマッチする文字列を表現します。  
+文字列を高度に処理する場合に欠かせないのが正規表現です。Rでは拡張正規表現（POSIX 1003.2）が使えます。正規表現は、大雑把にいうとメタ文字と文字クラスを組み合わせてマッチさせる文字列を表現するための決まりです。  
 
 ### メタ文字
-メタ文字は特殊な意味を持つ文字で、その前にバックスラッシュを配置して利用します。メタ文字を利用することで様々な表現（どちらか、繰り返し、除く、など）が可能になります。  
+メタ文字は特殊な意味を持つ文字で、様々な表現（どちらか、繰り返し、除く、など）が可能になります。メタ文字自体を表現したい場合はバックスラッシュを直前に配置します。  
 
 ### 文字クラス
 文字クラスは`[`と`]`で挟まれた文字のリストで、リスト内のいずれの文字ともマッチするパターンを表現できます。  
@@ -93,7 +95,7 @@ function | description
 
 
 ## より高度に処理するための正規表現（２／２）
-頻繁に使われるパターンは名前付き文字クラスと予め定義されています。代表的な名前付き文字クラスには以下のようなものがあります。  
+頻繁に使われるパターンは名前付き文字クラスとして予め定義されています。代表的な名前付き文字クラスには以下のようなものがあります。  
 
 regexp   | description
 ---------|------------
@@ -106,7 +108,7 @@ regexp   | description
 
 
 ## 正規表現を用いた操作
-前述の正規表現を用いると`tidyr::extract`関数のような関数を用いてセパレータの代わりに正規表現を用いてより細かい操作が可能になります。  
+前述の正規表現を用いると`tidyr::extract`関数のようにセパレータの代わりに正規表現を用いてより細かい文字列操作が可能になります。  
 
 ```{r, eval=FALSE}
 tidyr::extract(data, col, into, regex = "([[:alnum:]]+)", ...)
@@ -116,6 +118,63 @@ tidyr::extract(data, col, into, regex = "([[:alnum:]]+)", ...)
 このような関数は  [大相撲の取組表 <i class="fa fa-external-link"></i>](https://sports.yahoo.co.jp/sumo/torikumi/stats/?bashoId=201811){target="_blank" title="Sportsnavi"} のようなデータを処理するのに適しています。  
 
 <center> ![](./fig/table_sample_2.png) </center>
+
+
+
+## 文字コードを調べる（１／３）
+最近ではあまりないようですが、サイトによっては文字コードに`Shift JIS`などを使っていて、`rvest`パッケージで取得した情報が文字化けする場合があります。このような時にはヘッダーから文字コードの情報を取得してエンコードを変換します。  
+
+まず、ヘッダ（`<head></head>`で囲まれた部分）にある文字コードのメタ情報（`<meta`で始まり`charset=`が記載されいる部分）を`rvest::html_attrs`関数を用いて取得します。  
+
+<center> ![](./fig/header_meta.png) </center>
+```{r, echo=FALSE}
+site_url <- "http://www.jma.go.jp/jp/amedas_h/today-44132.html"
+
+(meta <- site_url %>% 
+  xml2::read_html() %>% 
+  rvest::html_nodes(css = "head > meta:nth-child(1)") %>% 
+  rvest::html_attrs())
+```
+
+
+##  文字コードを調べる（２／３）
+次に"charset="の後ろにある文字列の開始位置と終了位置を`stringr`パッケージを用いて取得して、切り出します。  
+```{r}
+meta %>% stringr::str_sub(start = str_locate(., pattern = "charset=")[2] + 1,
+                          end =  stringr::str_locate(., pattern = '\\)')[1] - 2)
+```
+
+終了位置を「`\)`」で判定しているのは、`rvest::html_attrs`関数の返り値が属性値を持ったリスト型であるため実際の文字列部分が下記のように格納されているためです。  
+```{r}
+meta %>% as.character()
+```
+
+
+##  文字コードを調べる（３／３）
+もしくは、単純に属性名で参照して以下のように取り出すことも可能です。  
+```{r}
+meta[[1]]["content"]
+
+meta[[1]]["content"] %>% 
+  stringr::str_sub(start = stringr::str_locate(., pattern = "charset=")[2] + 1,
+                   end = stringr::str_length(.))
+```
+
+文字コードを決め打ちせずにメタ情報から取得することで、サイトのエンコーディングが変更されてもRのコードを変更することなくスクレイピングが可能になります。  
+
+
+
+## 実は結構重要なスクレイピング
+スクレイピングを実体験すると分かりますがテスト自動化にも使えます。この時に重要なポイントが**CSSセレクタをどのように設計・実装するか**です。テスト自動化を考慮しないで設計・実装すると画面構成の修正が発生するたびにセレクタ情報が変化してしまい、実装したスクレイピング・コードに手直が発生しテスト自動化が本末転倒な状態になってしまいます。  
+
+例えば [Yahoo!スポーツの大相撲 <i class="fa fa-external-link"></i>](https://sports.yahoo.co.jp/sumo/torikumi/stats/?bashoId=201811){target="_blank" title="Sportsnavi"} では以下のように`ID`情報を用いることで画面構成に変化が出てもテーブル・セレクタの変更なしに取得できるようになっています。  
+
+```{r, eval=FALSE}
+"//*[@id=\"makuuchi\"]/table"   # 幕内取組一覧（テーブル）のCSSセレクタ
+"//*[@id=\"juryo\"]/table"      # 十両取組一覧（テーブル）のCSSセレクタ
+```
+
+サイトの情報を見るとその会社がどの程度テスト自動化を考えているかが見えてきます。  
 
 
 
