@@ -1,6 +1,6 @@
 ---
 title: "第６回データ分析勉強会"
-author: "【午前の部】実践チケット分析 - purrrによる効率的な反復処理"
+author: "【午前の部】実践チケット分析 - purrrによる効率的な反復処理  [鈴木さんぽう, CC BY-NC-SA 4.0]"
 date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
 output:
   ioslides_presentation:
@@ -127,7 +127,7 @@ issues %>% dplyr::select(id, assigned_to, category) %>% head(4) %>%
                 cat_name = purrr::map_if(category, !is.na(category), 'name'))
 ```
 　  
-`purrr::map_if`関数も**返り値はリスト**なのベクトルの返り値が欲しい場合は、もう一段、処理をする必要があります。どうしたらよいでしょうか？  
+`purrr::map_if`関数も**返り値はリスト**なのでベクトルの返り値が欲しい場合は、もう一段、処理をする必要があります。どうしたらよいでしょうか？  
 　  
 （つづく）
 
@@ -164,7 +164,7 @@ issues %>% head(100) %>%
 # カスタムフィールドの展開
 
 ## カスタムフィールドとは？
-Redmineではカスタムフィールドと呼ばれるユーザが自由に定義できる項目（フィールド）があります。カスタムフィールドは**プロジェクト毎、トラッカー毎に異なる設定ができる**ため、`redmineR`パッケージで取得できる情報では`custom_fields`という項目にリスト型変数がネストされた形で格納されます。  
+Redmineにはカスタムフィールドと呼ばれるユーザが自由に定義できる項目（フィールド）があります。カスタムフィールドは**プロジェクト毎、トラッカー毎に異なる設定ができる**ため、`redmineR`パッケージで取得できる情報では`custom_fields`という項目にリスト型変数がネストされた形で格納されます。  
 
 カスタムフィールドをRのコードで表現すると下記のようなイメージになります。  
 ```{r, eval=FALSE}
@@ -252,7 +252,8 @@ issues %>%
 　  
 STOPエラーとなり処理できません。さて、困った...  
 　  
-リストが展開できないならデータフレーム（等長ベクトル）に変換できないか？  
+**考え方を変えてみる。**  
+リストを展開できないならデータフレーム（等長ベクトル）に変換してしまえ！  
 　  
 （つづく）
 
@@ -317,16 +318,18 @@ issues %>%
 
 
 ## 復習のためのリソース
-* [ Project Cabinet Blog <i class="fa fa-external-link-square"></i>](https://k-metrics.netlify.com/tags/purrr/){target="_blank" title="tag/purrr"}
+* [Project Cabinet Blog <i class="fa fa-external-link-square"></i>](https://k-metrics.netlify.com/tags/purrr/){target="_blank" title="tag/purrr"}
 
 　  
 
-* [ purrr - ループ処理やapply系関数の決定版  <i class="fa fa-external-link"></i>](https://heavywatal.github.io/rstats/purrr.html){target="_blank" title="Heavy Watal"}
-* [ そろそろ手を出すpurrr <i class="fa fa-external-link"></i>](https://speakerdeck.com/s_uryu/nekosky){target="_blank" title="Speaker Deck"}
-* [ tidyverse脳になって階層構造のあるデータフレームを使いこなそう <i class="fa fa-external-link"></i>](https://suryu.me/post/r_advent_calendar_day3/){target="_blank" title="Sincere Pumpkin Patch"}
-* [ purrrの使い方 <i class="fa fa-external-link"></i>](http://delta0726.web.fc2.com/packages/data/00_purrr.html){target="_blank" title="FC2 Web"}
-* [ purrrでdoせず楽をする <i class="fa fa-external-link"></i>](https://qiita.com/yutannihilation/items/356be6e104b6c3a93a87){target="_blank" title="Qiita"}
-* [ purrr <i class="fa fa-external-link"></i>](https://rstudio-pubs-static.s3.amazonaws.com/366653_1b0210fe55564183b553b25ee4ccb71b.html){target="_blank" title="Amazon AWS"}
+* [purrr - ループ処理やapply系関数の決定版  <i class="fa fa-external-link"></i>](https://heavywatal.github.io/rstats/purrr.html){target="_blank" title="Heavy Watal"}
+* [そろそろ手を出すpurrr <i class="fa fa-external-link"></i>](https://speakerdeck.com/s_uryu/nekosky){target="_blank" title="Speaker Deck"}
+* [tidyverse脳になって階層構造のあるデータフレームを使いこなそう <i class="fa fa-external-link"></i>](https://suryu.me/post/r_advent_calendar_day3/){target="_blank" title="Sincere Pumpkin Patch"}
+* [purrrの使い方 <i class="fa fa-external-link"></i>](http://delta0726.web.fc2.com/packages/data/00_purrr.html){target="_blank" title="FC2 Web"}
+* [purrrでdoせず楽をする <i class="fa fa-external-link"></i>](https://qiita.com/yutannihilation/items/356be6e104b6c3a93a87){target="_blank" title="Qiita"}
+* [purrr <i class="fa fa-external-link"></i>](https://rstudio-pubs-static.s3.amazonaws.com/366653_1b0210fe55564183b553b25ee4ccb71b.html){target="_blank" title="Amazon AWS"}
 
 
-# Enjoy!
+## Enjoy!
+
+CC BY-NC-SA 4.0, Sampo Suzuki

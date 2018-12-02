@@ -61,3 +61,8 @@ RedmineにREST APIでアクセスする方法は説明しますが、
 基本はGitにあるサンプル用データ`data/redmine_issues_all.RData`を使ってください。  
 ご自身の責任でアクセス可能なRedmineがある場合は、
 説明する方法でアクセスいただいて構いません。
+
+* [演習用テンプレート <i class="fa fa-file-code-o"></i> （右クリックでダウンロード）](../template/06_dashboard_template.zip)
+
+* [演習用データ <i class="fa fa-file-code-o"></i> （右クリックでダウンロード）](../data/redmine_issues_all.RData)  
+

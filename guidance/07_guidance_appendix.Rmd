@@ -1,0 +1,190 @@
+---
+title: "第７回データ分析勉強会"
+author: "【補足】文字列操作 [鈴木さんぽう, CC BY-NC-SA 4.0]"
+date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
+output:
+  ioslides_presentation:
+    css: style.css
+    df_print: paged
+    logo: fig/rlogo.png
+    self_contain: true
+    smaller: false
+    widescreen: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+require(DT)
+require(tidyverse)
+```
+
+
+## コンテンツ
+* なぜ文字列操作が必要なのか？
+* 基本的な文字列操作（`tidyr::separete`）
+* 文字列操作パッケージ`stringr`
+* 文字列を別の型に変換する
+* より高度に処理するための正規表現
+* 正規表現を用いた操作（`tidyr::extract`）
+* 文字コードを調べる（サイトのエンコーディングを知る）
+* 実は結構重要なスクレイピング
+
+
+
+## なぜ文字列操作が必要なのか？
+スクレイピングで取得できるデータは表示を優先していることが多いため、読み込んだだけでは処理に不適当なケースが多々あります。例えば [MLBの試合結果 <i class="fa fa-external-link"></i>](https://baseball.yahoo.co.jp/mlb/schedule/){target="_blank" title="Sportsnavi"} の場合、得点欄が複数行になっており
+<center> ![](./fig/table_sample.png) </center>
+これをスクレイピングすると以下のようになり、得点欄をこのまま処理することはできません。  
+```{r, echo=FALSE}
+site_url <- "https://baseball.yahoo.co.jp/mlb/schedule/"
+css_sel <- ".allstar > table:nth-child(1)"
+
+(result <- site_url %>% 
+  xml2::read_html() %>% 
+  rvest::html_nodes(css = css_sel) %>% 
+  rvest::html_table() %>% as.data.frame())
+```
+
+
+
+## 基本的な文字列操作
+文字列を複数の列に分割するには`tidyr`パッケージが便利です。`tidry::separete`関数は`sep`パラメータに指定されているセパレータで文字列を分割する関数です。これを用いると先ほどのデータは以下のように分割できます。ただし、分割数はコーディング側で指定する必要があります。  
+```{r}
+result %>% 
+  tidyr::separate(col = X2, into = c("X2_1", "X2_2", "X2_3"))
+```
+
+
+
+## 文字列操作パッケージ`stringr`
+`tidyr::separete`関数で分割できない場合には文字列操作に特化した`stringr`パッケージが便利です。より細かな操作が可能になります。主な関数には以下のようなものがあります。  
+
+function | description
+---------|------------
+`stringr::str_sub`  | 文字列を部分的に参照・変更する
+`stringr::str_c`    | 複数の文字列を結合する
+`stringr::str_split` | 文字列を分割する（返り値はリスト型）
+`stringr::str_extract` | 指定したパターンにマッチした部分の文字列を取り出す
+`stringr::str_replace` | 指定したパターンにマッチした部分のみ置換する
+
+
+
+## 文字列を別の型に変換する
+Rでは数字区切りや単位がある数字は文字列データとして扱われます。このような場合、`readr`パッケージを用いると文字列を数値型（`intger`型や`double`型など）に簡単に変換できます。  
+
+function | description
+---------|------------
+`readr::parse_logical` | 「TRUE, FALSE」などを論理型に変換する
+`readr::parse_integer` | 数字文字列を整数型に変換する
+`readr::parse_double`  | 数字文字列を実数型に変換する
+`readr::parse_number`  | 数字文字列を数値に変換する
+`readr::parse_date`    | 数字文字列を日付型に変換する（`lubridate::as_date`と同様）
+
+
+
+## より高度に処理するための正規表現（１／２）
+文字列を高度に処理する場合に欠かせないのが正規表現です。Rでは拡張正規表現（POSIX 1003.2）が使えます。正規表現は、大雑把にいうとメタ文字と文字クラスを組み合わせてマッチさせる文字列を表現するための決まりです。  
+
+### メタ文字
+メタ文字は特殊な意味を持つ文字で、様々な表現（どちらか、繰り返し、除く、など）が可能になります。メタ文字自体を表現したい場合はバックスラッシュを直前に配置します。  
+
+### 文字クラス
+文字クラスは`[`と`]`で挟まれた文字のリストで、リスト内のいずれの文字ともマッチするパターンを表現できます。  
+
+
+
+## より高度に処理するための正規表現（２／２）
+頻繁に使われるパターンは名前付き文字クラスとして予め定義されています。代表的な名前付き文字クラスには以下のようなものがあります。  
+
+regexp   | description
+---------|------------
+`[:alnum:]` | アルファベットと数値、[:alpha:] + [:digit:]
+`[:alpha:]` | 大小文字アルファベット、 [:lower:] + [:upper:]
+`[:digit:]` | 数値
+`[:punct:]` | パンクチュエーション文字 ! " # $ % & ' ( ) * + , - . /
+`[:space:]` | 空白文字、タブ、改行、水平タブ、給紙、キャリッジリターン、空白
+
+
+
+## 正規表現を用いた操作
+前述の正規表現を用いると`tidyr::extract`関数のようにセパレータの代わりに正規表現を用いてより細かい文字列操作が可能になります。  
+
+```{r, eval=FALSE}
+tidyr::extract(data, col, into, regex = "([[:alnum:]]+)", ...)
+```
+
+　  
+このような関数は  [大相撲の取組表 <i class="fa fa-external-link"></i>](https://sports.yahoo.co.jp/sumo/torikumi/stats/?bashoId=201811){target="_blank" title="Sportsnavi"} のようなデータを処理するのに適しています。  
+
+<center> ![](./fig/table_sample_2.png) </center>
+
+
+
+## 文字コードを調べる（１／３）
+最近ではあまりないようですが、サイトによっては文字コードに`Shift JIS`などを使っていて、`rvest`パッケージで取得した情報が文字化けする場合があります。このような時にはヘッダーから文字コードの情報を取得してエンコードを変換します。  
+
+まず、ヘッダ（`<head></head>`で囲まれた部分）にある文字コードのメタ情報（`<meta`で始まり`charset=`が記載されいる部分）を`rvest::html_attrs`関数を用いて取得します。  
+
+<center> ![](./fig/header_meta.png) </center>
+```{r, echo=FALSE}
+site_url <- "http://www.jma.go.jp/jp/amedas_h/today-44132.html"
+
+(meta <- site_url %>% 
+  xml2::read_html() %>% 
+  rvest::html_nodes(css = "head > meta:nth-child(1)") %>% 
+  rvest::html_attrs())
+```
+
+
+##  文字コードを調べる（２／３）
+次に"charset="の後ろにある文字列の開始位置と終了位置を`stringr`パッケージを用いて取得して、切り出します。  
+```{r}
+meta %>% stringr::str_sub(start = str_locate(., pattern = "charset=")[2] + 1,
+                          end =  stringr::str_locate(., pattern = '\\)')[1] - 2)
+```
+
+終了位置を「`\)`」で判定しているのは、`rvest::html_attrs`関数の返り値が属性値を持ったリスト型であるため実際の文字列部分が下記のように格納されているためです。  
+```{r}
+meta %>% as.character()
+```
+
+
+##  文字コードを調べる（３／３）
+もしくは、単純に属性名で参照して以下のように取り出すことも可能です。  
+```{r}
+meta[[1]]["content"]
+
+meta[[1]]["content"] %>% 
+  stringr::str_sub(start = stringr::str_locate(., pattern = "charset=")[2] + 1,
+                   end = stringr::str_length(.))
+```
+
+文字コードを決め打ちせずにメタ情報から取得することで、サイトのエンコーディングが変更されてもRのコードを変更することなくスクレイピングが可能になります。  
+
+
+
+## 実は結構重要なスクレイピング
+スクレイピングを実体験すると分かりますがテスト自動化にも使えます。この時に重要なポイントが**CSSセレクタをどのように設計・実装するか**です。テスト自動化を考慮しないで設計・実装すると画面構成の修正が発生するたびにセレクタ情報が変化してしまい、実装したスクレイピング・コードに手直が発生しテスト自動化が本末転倒な状態になってしまいます。  
+
+例えば [Yahoo!スポーツの大相撲 <i class="fa fa-external-link"></i>](https://sports.yahoo.co.jp/sumo/torikumi/stats/?bashoId=201811){target="_blank" title="Sportsnavi"} では以下のように`ID`情報を用いることで画面構成に変化が出てもテーブル・セレクタの変更なしに取得できるようになっています。  
+
+```{r, eval=FALSE}
+"//*[@id=\"makuuchi\"]/table"   # 幕内取組一覧（テーブル）のCSSセレクタ
+"//*[@id=\"juryo\"]/table"      # 十両取組一覧（テーブル）のCSSセレクタ
+```
+
+サイトの情報を見るとその会社がどの程度テスト自動化を考えているかが見えてきます。  
+
+
+
+## 参照情報
+* [tidyr <i class="fa fa-external-link"></i>](https://heavywatal.github.io/rstats/tidyr.html){target="_blank" title="Heavy Watal"}
+* [readr <i class="fa fa-external-link"></i>](https://heavywatal.github.io/rstats/readr.html){target="_blank" title="Heavy Watal"}
+* [stringr <i class="fa fa-external-link"></i>](https://heavywatal.github.io/rstats/stringr.html){target="_blank" title="Heavy Watal"}
+* [Rにおける正規表現 <i class="fa fa-external-link"></i>](http://www.okadajp.org/RWiki/?R%20%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E6%AD%A3%E8%A6%8F%E8%A1%A8%E7%8F%BE){target="_blank" title="RjpWiki"}
+
+
+## Enjoy!
+
+CC BY-NC-SA 4.0, Sampo Suzuki

@@ -8,6 +8,15 @@ external.packages:
     redmineR
     rlist
     flexdashboard
+    ggbiplot
+    skimr
+    gghighlight
+    dygraphs
+    DT
+    plotly
+    xts
+    zoo
+    ggrepel
 local.repos: 
 load.external.packages.on.startup: TRUE
 ignored.packages: 
