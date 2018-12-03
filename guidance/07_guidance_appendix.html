@@ -25,7 +25,7 @@
         usePrettify: true,
         enableSlideAreas: true,
         enableTouch: true,
-                        favIcon: 'fig/rlogo.png',
+                        favIcon: 'fig\rlogo.png',
               },
 
       // Author information
@@ -87,7 +87,7 @@
       position: absolute;
       bottom: 20px;
       left: 60px;
-      background: url(fig/rlogo.png) no-repeat 0 50%;
+      background: url(fig\rlogo.png) no-repeat 0 50%;
       -webkit-background-size: 30px 30px;
       -moz-background-size: 30px 30px;
       -o-background-size: 30px 30px;
@@ -98,7 +98,7 @@
     }
   </style>
 
-  <link href="data:text/css;charset=utf-8,%0Ah1%20%7B%0Aborder%2Dbottom%3A%20solid%202%2E5px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%20solid%202%2E0px%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%20solid%201%2E5px%3B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%20solid%201%2E0px%3B%20%7D%0A%0Astrong%20%7B%0Abackground%3A%20linear%2Dgradient%28transparent%2070%25%2C%20%23a7d6ff%2060%25%29%0A%7D%0A%0A%2Ecaption%20%7B%0Afont%2Dsize%3A%2075%25%3B%0A%7D%0A" rel="stylesheet" type="text/css" />
+  <link href="data:text/css;charset=utf-8,%0Ah1%20%7B%0Aborder%2Dbottom%3A%20solid%202%2E5px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%20solid%202%2E0px%3B%0A%7D%0Ah3%20%7B%0A%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%20solid%201%2E0px%3B%20%7D%0A%0Astrong%20%7B%0Abackground%3A%20linear%2Dgradient%28transparent%2070%25%2C%20%23a7d6ff%2060%25%29%0A%7D%0A%0A%2Ecaption%20%7B%0Afont%2Dsize%3A%2075%25%3B%0A%7D%0A" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -113,9 +113,13 @@
       <h1 data-config-title><!-- populated from slide_config.json --></h1>
       <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
       <p data-config-presenter><!-- populated from slide_config.json --></p>
-            <p style="margin-top: 6px; margin-left: -2px;">2018年12月02日</p>
+            <p style="margin-top: 6px; margin-left: -2px;">2018年12月03日</p>
           </hgroup>
   </slide>
+
+<!-- 注意 ---------------------------------------------------------------------
+本ドキュメントをknitrするには`rvest`パッケージが動作する環境が必要です。
+--------------------------------------------------------------------------- -->
 
 <slide class=""><hgroup><h2>コンテンツ</h2></hgroup><article >
 
@@ -131,6 +135,7 @@
 
 <ul>
 <li>実は結構重要なスクレイピング</li>
+<li>DOMとは？</li>
 </ul></li>
 </ul>
 
@@ -148,7 +153,7 @@
 
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["X1"],"name":[1],"type":["chr"],"align":["left"]},{"label":["X2"],"name":[2],"type":["chr"],"align":["left"]},{"label":["X3"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"ロサンゼルス・ドジャース","2":"1 - 5\\n[ 結果 ]","3":"ボストン・レッドソックス"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["X1"],"name":[1],"type":["chr"],"align":["left"]},{"label":["X2"],"name":[2],"type":["chr"],"align":["left"]},{"label":["X3"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"ロサンゼルス・ドジャース","2":"1 - 5\\n[ 結果 ]","3":"ボストン・レッドソ\ックス"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script></div>
 
 </article></slide><slide class=""><hgroup><h2>基本的な文字列操作</h2></hgroup><article >
@@ -160,7 +165,7 @@
 
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["X1"],"name":[1],"type":["chr"],"align":["left"]},{"label":["X2_1"],"name":[2],"type":["chr"],"align":["left"]},{"label":["X2_2"],"name":[3],"type":["chr"],"align":["left"]},{"label":["X2_3"],"name":[4],"type":["chr"],"align":["left"]},{"label":["X3"],"name":[5],"type":["chr"],"align":["left"]}],"data":[{"1":"ロサンゼルス・ドジャース","2":"1","3":"5","4":"結果","5":"ボストン・レッドソックス"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["X1"],"name":[1],"type":["chr"],"align":["left"]},{"label":["X2_1"],"name":[2],"type":["chr"],"align":["left"]},{"label":["X2_2"],"name":[3],"type":["chr"],"align":["left"]},{"label":["X2_3"],"name":[4],"type":["chr"],"align":["left"]},{"label":["X3"],"name":[5],"type":["chr"],"align":["left"]}],"data":[{"1":"ロサンゼルス・ドジャース","2":"1","3":"5","4":"結果","5":"ボストン・レッドソ\ックス"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script></div>
 
 </article></slide><slide class=""><hgroup><h2>文字列操作パッケージ<code>stringr</code></h2></hgroup><article  id="stringr">
@@ -284,9 +289,7 @@
 
 </article></slide><slide class=""><hgroup><h2>文字コードを調べる（１／３）</h2></hgroup><article >
 
-<p>最近ではあまりないようですが、サイトによっては文字コードに<code>Shift JIS</code>などを使っていて、<code>rvest</code>パッケージで取得した情報が文字化けする場合があります。このような時にはヘッダーから文字コードの情報を取得してエンコードを変換します。</p>
-
-<p>まず、ヘッダ（<code>&lt;head&gt;&lt;/head&gt;</code>で囲まれた部分）にある文字コードのメタ情報（<code>&lt;meta</code>で始まり<code>charset=</code>が記載されいる部分）を<code>rvest::html_attrs</code>関数を用いて取得します。</p>
+<p>最近ではあまりないようですが、サイトによっては文字コードに<code>Shift JIS</code>などを使っていて、<code>rvest</code>パッケージで取得した情報が文字化けする場合があります。このような時にはヘッダーから文字コードの情報を取得してエンコードを変換します（<code>rvest::guess_encoding</code>はあまり役立たない印象）。<br/>まず、ヘッダ（<code>&lt;head&gt;&lt;/head&gt;</code>で囲まれた部分）にある文字コードのメタ情報（<code>&lt;meta</code>で始まり<code>charset=</code>が記載されいる部分）を<code>rvest::html_attrs</code>関数を用いて取得します。</p>
 
 <center>
 
@@ -343,6 +346,18 @@
 
 <p>サイトの情報を見るとその会社がどの程度テスト自動化を考えているかが見えてきます。</p>
 
+</article></slide><slide class=""><hgroup><h2>DOMとは</h2></hgroup><article  id="dom">
+
+<p>Document Object Modelの略でHTMLドキュメントやXMLドキュメントをプログラムから利用するための仕組みで、 <a href='https://whatwg.org/' title=''>Web Hypertext Application Technology Working Group (WHATWG) <i class="fa fa-external-link"></i></a> が仕様を定義しています。</p>
+
+<h3>DOMの特徴</h3>
+
+<ul>
+<li>対象をツリー構造（階層構造）として扱う</li>
+<li>ツリー構造の分岐点（結節点）はノードと呼ばれる</li>
+<li>実装はベンダー任せ（多くは標準から拡張している）</li>
+</ul>
+
 </article></slide><slide class=""><hgroup><h2>参照情報</h2></hgroup><article >
 
 <ul>
@@ -352,7 +367,7 @@
 <li><a href='http://www.okadajp.org/RWiki/?R%20%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E6%AD%A3%E8%A6%8F%E8%A1%A8%E7%8F%BE' title=''>Rにおける正規表現 <i class="fa fa-external-link"></i></a></li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>Enjoy!</h2></hgroup><article  id="enjoy">
+</article></slide><slide class=""><hgroup><h2>Enjoy !</h2></hgroup><article  id="enjoy">
 
 <p>CC BY-NC-SA 4.0, Sampo Suzuki</p></article></slide>
 

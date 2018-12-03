@@ -15,10 +15,12 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
-require(DT)
 require(tidyverse)
 ```
 
+<!-- 注意 ---------------------------------------------------------------------
+本ドキュメントをknitrするには`rvest`パッケージが動作する環境が必要です。
+--------------------------------------------------------------------------- -->
 
 ## コンテンツ
 * なぜ文字列操作が必要なのか？
@@ -30,6 +32,7 @@ require(tidyverse)
 * 文字コードを調べる（サイトのエンコーディングを知る）
 * おまけ
     * 実は結構重要なスクレイピング
+    * DOMとは？
 
 
 
@@ -123,8 +126,7 @@ tidyr::extract(data, col, into, regex = "([[:alnum:]]+)", ...)
 
 
 ## 文字コードを調べる（１／３）
-最近ではあまりないようですが、サイトによっては文字コードに`Shift JIS`などを使っていて、`rvest`パッケージで取得した情報が文字化けする場合があります。このような時にはヘッダーから文字コードの情報を取得してエンコードを変換します。  
-
+最近ではあまりないようですが、サイトによっては文字コードに`Shift JIS`などを使っていて、`rvest`パッケージで取得した情報が文字化けする場合があります。このような時にはヘッダーから文字コードの情報を取得してエンコードを変換します（`rvest::guess_encoding`はあまり役立たない印象）。  
 まず、ヘッダ（`<head></head>`で囲まれた部分）にある文字コードのメタ情報（`<meta`で始まり`charset=`が記載されいる部分）を`rvest::html_attrs`関数を用いて取得します。  
 
 <center> ![](./fig/header_meta.png) </center>
@@ -181,6 +183,16 @@ meta[[1]]["content"] %>%
 
 
 
+## DOMとは
+Document Object Modelの略でHTMLドキュメントやXMLドキュメントをプログラムから利用するための仕組みで、 [Web Hypertext Application Technology Working Group (WHATWG) <i class="fa fa-external-link"></i>](https://whatwg.org/){target="_blank" title="Maintaining and evolving HTML since 2004"} が仕様を定義しています。
+
+### DOMの特徴
+* 対象をツリー構造（階層構造）として扱う
+* ツリー構造の分岐点（結節点）はノードと呼ばれる
+* 実装はベンダー任せ（多くは標準から拡張している）
+
+
+
 ## 参照情報
 * [tidyr <i class="fa fa-external-link"></i>](https://heavywatal.github.io/rstats/tidyr.html){target="_blank" title="Heavy Watal"}
 * [readr <i class="fa fa-external-link"></i>](https://heavywatal.github.io/rstats/readr.html){target="_blank" title="Heavy Watal"}
@@ -189,6 +201,6 @@ meta[[1]]["content"] %>%
 
 
 
-## Enjoy!
+## Enjoy !
 
 CC BY-NC-SA 4.0, Sampo Suzuki
