@@ -289,7 +289,7 @@
 
 </article></slide><slide class=""><hgroup><h2>文字コードを調べる（１／３）</h2></hgroup><article >
 
-<p>最近ではあまりないようですが、サイトによっては文字コードに<code>Shift JIS</code>などを使っていて、<code>rvest</code>パッケージで取得した情報が文字化けする場合があります。このような時にはヘッダーから文字コードの情報を取得してエンコードを変換します（<code>rvest::guess_encoding</code>はあまり役立たない印象）。<br/>まず、ヘッダ（<code>&lt;head&gt;&lt;/head&gt;</code>で囲まれた部分）にある文字コードのメタ情報（<code>&lt;meta</code>で始まり<code>charset=</code>が記載されいる部分）を<code>rvest::html_attrs</code>関数を用いて取得します。</p>
+<p>最近ではあまりないようですが、サイトによっては文字コードに<code>Shift JIS</code>などを使っていて、<code>rvest</code>パッケージで取得した情報が文字化けする場合があります。このような時にはヘッダーから文字コードの情報を取得（<code>rvest::guess_encoding</code>はあまり役立たない印象）してエンコードを変換します（<code>iconv</code>）。<br/>まず、ヘッダ（<code>&lt;head&gt;&lt;/head&gt;</code>で囲まれた部分）にある文字コードのメタ情報（<code>&lt;meta</code>で始まり<code>charset=</code>が記載されいる部分）を<code>rvest::html_attrs</code>関数を用いて取得します。</p>
 
 <center>
 
@@ -348,7 +348,7 @@
 
 </article></slide><slide class=""><hgroup><h2>DOMとは</h2></hgroup><article  id="dom">
 
-<p>Document Object Modelの略でHTMLドキュメントやXMLドキュメントをプログラムから利用するための仕組みで、 <a href='https://whatwg.org/' title=''>Web Hypertext Application Technology Working Group (WHATWG) <i class="fa fa-external-link"></i></a> が仕様を定義しています。</p>
+<p>Document Object Modelの略でHTMLドキュメントやXMLドキュメントをプログラムから利用するための仕組みです。 <a href='https://whatwg.org/' title=''>Web Hypertext Application Technology Working Group (WHATWG) <i class="fa fa-external-link"></i></a> が仕様を定義しています。</p>
 
 <h3>DOMの特徴</h3>
 
