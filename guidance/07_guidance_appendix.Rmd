@@ -184,7 +184,7 @@ meta[[1]]["content"] %>%
 
 
 ## DOMとは
-Document Object Modelの略でHTMLドキュメントやXMLドキュメントをプログラムから利用するための仕組みで、 [Web Hypertext Application Technology Working Group (WHATWG) <i class="fa fa-external-link"></i>](https://whatwg.org/){target="_blank" title="Maintaining and evolving HTML since 2004"} が仕様を定義しています。
+Document Object Modelの略でHTMLドキュメントやXMLドキュメントをプログラムから利用するための仕組みです。 [Web Hypertext Application Technology Working Group (WHATWG) <i class="fa fa-external-link"></i>](https://whatwg.org/){target="_blank" title="Maintaining and evolving HTML since 2004"} が仕様を定義しています。
 
 ### DOMの特徴
 * 対象をツリー構造（階層構造）として扱う
