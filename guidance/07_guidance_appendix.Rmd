@@ -263,7 +263,11 @@ Webサイトに対するスクレイピングを行っていると取得した�
 ![](./fig/chofu_n.png)
 
 
-## 参照情報
+## 参考資料
+* [エンコーディング推定 <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-12/charset/){target="_blank" title="Project Cabinet Blog"}
+
+　  
+
 * [tidyr <i class="fa fa-external-link"></i>](https://heavywatal.github.io/rstats/tidyr.html){target="_blank" title="Heavy Watal"}
 * [readr <i class="fa fa-external-link"></i>](https://heavywatal.github.io/rstats/readr.html){target="_blank" title="Heavy Watal"}
 * [stringr <i class="fa fa-external-link"></i>](https://heavywatal.github.io/rstats/stringr.html){target="_blank" title="Heavy Watal"}
