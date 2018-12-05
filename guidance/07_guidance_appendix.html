@@ -25,7 +25,7 @@
         usePrettify: true,
         enableSlideAreas: true,
         enableTouch: true,
-                        favIcon: 'fig/rlogo.png',
+                        favIcon: 'fig\rlogo.png',
               },
 
       // Author information
@@ -87,7 +87,7 @@
       position: absolute;
       bottom: 20px;
       left: 60px;
-      background: url(fig/rlogo.png) no-repeat 0 50%;
+      background: url(fig\rlogo.png) no-repeat 0 50%;
       -webkit-background-size: 30px 30px;
       -moz-background-size: 30px 30px;
       -o-background-size: 30px 30px;
@@ -113,7 +113,7 @@
       <h1 data-config-title><!-- populated from slide_config.json --></h1>
       <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
       <p data-config-presenter><!-- populated from slide_config.json --></p>
-            <p style="margin-top: 6px; margin-left: -2px;">2018年12月04日</p>
+            <p style="margin-top: 6px; margin-left: -2px;">2018年12月05日</p>
           </hgroup>
   </slide>
 
@@ -154,7 +154,7 @@
 
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["X1"],"name":[1],"type":["chr"],"align":["left"]},{"label":["X2"],"name":[2],"type":["chr"],"align":["left"]},{"label":["X3"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"ロサンゼルス・ドジャース","2":"1 - 5\\n[ 結果 ]","3":"ボストン・レッドソックス"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["X1"],"name":[1],"type":["chr"],"align":["left"]},{"label":["X2"],"name":[2],"type":["chr"],"align":["left"]},{"label":["X3"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"ロサンゼルス・ドジャース","2":"1 - 5\\n[ 結果 ]","3":"ボストン・レッドソ\ックス"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script></div>
 
 </article></slide><slide class=""><hgroup><h2>基本的な文字列操作</h2></hgroup><article >
@@ -166,7 +166,7 @@
 
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["X1"],"name":[1],"type":["chr"],"align":["left"]},{"label":["X2_1"],"name":[2],"type":["chr"],"align":["left"]},{"label":["X2_2"],"name":[3],"type":["chr"],"align":["left"]},{"label":["X2_3"],"name":[4],"type":["chr"],"align":["left"]},{"label":["X3"],"name":[5],"type":["chr"],"align":["left"]}],"data":[{"1":"ロサンゼルス・ドジャース","2":"1","3":"5","4":"結果","5":"ボストン・レッドソックス"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["X1"],"name":[1],"type":["chr"],"align":["left"]},{"label":["X2_1"],"name":[2],"type":["chr"],"align":["left"]},{"label":["X2_2"],"name":[3],"type":["chr"],"align":["left"]},{"label":["X2_3"],"name":[4],"type":["chr"],"align":["left"]},{"label":["X3"],"name":[5],"type":["chr"],"align":["left"]}],"data":[{"1":"ロサンゼルス・ドジャース","2":"1","3":"5","4":"結果","5":"ボストン・レッドソ\ックス"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script></div>
 
 </article></slide><slide class=""><hgroup><h2>文字列操作パッケージ<code>stringr</code></h2></hgroup><article  id="stringr">
@@ -231,19 +231,112 @@
 </tr>
 </table>
 
-</article></slide><slide class=""><hgroup><h2>より高度に処理するための正規表現（１／２）</h2></hgroup><article >
+</article></slide><slide class=""><hgroup><h2>より高度に処理するための正規表現（１／５）</h2></hgroup><article >
 
-<p>文字列を高度に処理する場合に欠かせないのが正規表現です。Rでは拡張正規表現（POSIX 1003.2）が使えます。正規表現は、大雑把にいうとメタ文字と文字クラスを組み合わせてマッチさせる文字列を表現するための決まりです。</p>
+<p>文字列を高度に処理する場合に欠かせないのが正規表現です。Rでは拡張正規表現（POSIX 1003.2）が使えます。正規表現は、大雑把にいうとメタ文字とリテラルを組み合わせてマッチさせる文字列を表現するための決まりです。</p>
 
 <h3>メタ文字</h3>
 
-<p>メタ文字は特殊な意味を持つ文字で、様々な表現（どちらか、繰り返し、除く、など）が可能になります。メタ文字自体を表現したい場合はバックスラッシュを直前に配置します。</p>
+<p>メタ文字は特殊な意味を持つ文字で、様々な表現（どちらか、繰り返し、除く、など）が可能になります。メタ文字自体を表現したい場合（リテラルとして扱う場合）はバックスラッシュ（<code>\</code>）を直前に配置します。</p>
 
-<h3>文字クラス</h3>
+<h3>リテラル</h3>
 
-<p>文字クラスは<code>[</code>と<code>]</code>で挟まれた文字のリストで、リスト内のいずれの文字ともマッチするパターンを表現できます。</p>
+<p>リテラルとはメタ文字でない単なる文字列のことです。メタ文字と組み合わせることで多様な表現（パターン）を可能にします。</p>
 
-</article></slide><slide class=""><hgroup><h2>より高度に処理するための正規表現（２／２）</h2></hgroup><article  id="-1">
+</article></slide><slide class=""><hgroup><h2>より高度に処理するための正規表現（２／５）</h2></hgroup><article  id="-1">
+
+<table class = 'rmdtable'>
+<tr class="header">
+<th align="left">Operator</th>
+<th align="left">Description</th>
+</tr>
+<tr class="odd">
+<td align="left"><code>|</code></td>
+<td align="left">どちらか（<code>A|B</code>で<code>A</code>か<code>B</code>のどちらかに一致する）</td>
+</tr>
+<tr class="even">
+<td align="left"><code>*</code></td>
+<td align="left">0回以上の一致（最長一致）</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>*?</code></td>
+<td align="left">0回以上の一致（最短一致）</td>
+</tr>
+<tr class="even">
+<td align="left"><code>+</code></td>
+<td align="left">1回以上の一致（最長一致）</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>+?</code></td>
+<td align="left">1回以上の一致（最短一致）</td>
+</tr>
+<tr class="even">
+<td align="left"><code>?</code></td>
+<td align="left">0回または1回の一致（1回が優先）</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>??</code></td>
+<td align="left">0回または1回の一致（0回が優先）</td>
+</tr>
+</table>
+
+</article></slide><slide class=""><hgroup><h2>より高度に処理するための正規表現（３／５）</h2></hgroup><article  id="-2">
+
+<table class = 'rmdtable'>
+<tr class="header">
+<th align="left">Operator</th>
+<th align="left">Description</th>
+</tr>
+<tr class="odd">
+<td align="left"><code>.</code></td>
+<td align="left">任意の一文字</td>
+</tr>
+<tr class="even">
+<td align="left"><code>()</code></td>
+<td align="left">括弧内を一文字として扱う</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>{n}</code></td>
+<td align="left">n回の繰り返し（n = 0, 1, 2, &#8230;）</td>
+</tr>
+<tr class="even">
+<td align="left"><code>{n, m}</code></td>
+<td align="left">n回以上、m回未満の繰り返し（n &lt; m, n = 0, 1, 2, &#8230;）</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>\</code></td>
+<td align="left">エスケープシーケンス</td>
+</tr>
+</table>
+
+</article></slide><slide class=""><hgroup><h2>より高度に処理するための正規表現（４／５）</h2></hgroup><article  id="-3">
+
+<table class = 'rmdtable'>
+<tr class="header">
+<th align="left">Set Expression</th>
+<th align="left">Description</th>
+</tr>
+<tr class="odd">
+<td align="left"><code>[...]</code></td>
+<td align="left"><code>[]</code>内に含まれる一文字に一致（<code>[abc]</code>は<code>a</code>, <code>b</code>, <code>c</code>の一文字に一致）</td>
+</tr>
+<tr class="even">
+<td align="left"><code>[...-...]</code></td>
+<td align="left"><code>[]</code>内に含まれる<code>-</code>範囲内の一文字に一致（<code>[a-z]</code>は英小文字の一文字に一致）</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>[^...]</code></td>
+<td align="left"><code>[]</code>内に含まれる一文字とは異なる一文字に一致（<code>[^abc]</code>は<code>!a or !b or !c</code>）</td>
+</tr>
+</table>
+
+<p>　<br/><code>[]</code>は<code>|</code>を簡易に表記するイメージです。例えば<code>[abc]</code>と<code>a|b|c</code>は正規表現としては等価の扱いになります。ただし、他の演算子と組み合わせる場合には注意してください。</p>
+
+<pre class = 'prettyprint lang-r'>grep(&quot;[^abc]&quot;, c(&quot;abc&quot;, &quot;def&quot;, &quot;xyz&quot;, &quot;0ab&quot;))</pre>
+
+<pre >## [1] 2 3 4</pre>
+
+</article></slide><slide class=""><hgroup><h2>より高度に処理するための正規表現（５／５）</h2></hgroup><article  id="-4">
 
 <p>頻繁に使われるパターンは名前付き文字クラスとして予め定義されています。代表的な名前付き文字クラスには以下のようなものがあります。</p>
 
@@ -487,14 +580,14 @@
 <td align="right">1.00</td>
 </tr>
 <tr class="even">
-<td align="left">Shift_JIS</td>
-<td align="left">ja</td>
-<td align="right">0.71</td>
+<td align="left">Big5</td>
+<td align="left">zh</td>
+<td align="right">0.41</td>
 </tr>
 <tr class="odd">
 <td align="left">windows-1252</td>
 <td align="left">en</td>
-<td align="right">0.28</td>
+<td align="right">0.27</td>
 </tr>
 </table>
 
@@ -567,6 +660,7 @@
 <li><a href='https://heavywatal.github.io/rstats/readr.html' title=''>readr <i class="fa fa-external-link"></i></a></li>
 <li><a href='https://heavywatal.github.io/rstats/stringr.html' title=''>stringr <i class="fa fa-external-link"></i></a></li>
 <li><a href='http://www.okadajp.org/RWiki/?R%20%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E6%AD%A3%E8%A6%8F%E8%A1%A8%E7%8F%BE' title=''>Rにおける正規表現 <i class="fa fa-external-link"></i></a></li>
+<li><a href='http://userguide.icu-project.org/strings/regexp' title=''>ICU Regular Expressions <i class="fa fa-external-link"></i></a></li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>Enjoy !</h2></hgroup><article  id="enjoy">
