@@ -1,0 +1,320 @@
+---
+title: "第７回データ分析勉強会"
+author: "【補足】文字列操作 [鈴木さんぽう, CC BY-NC-SA 4.0]"
+date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
+output:
+  ioslides_presentation:
+    css: style.css
+    df_print: paged
+    logo: fig/rlogo.png
+    self_contain: true
+    smaller: false
+    widescreen: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+require(tidyverse)
+```
+
+<!-- 注意 ---------------------------------------------------------------------
+本ドキュメントをknitrするには`rvest`パッケージが動作する環境が必要です。
+--------------------------------------------------------------------------- -->
+
+## コンテンツ
+* なぜ文字列操作が必要なのか？
+* 基本的な文字列操作（`tidyr::separete`）
+* 文字列操作パッケージ`stringr`
+* 文字列を別の型に変換する
+* より高度に処理するための正規表現
+* 正規表現を用いた操作（`tidyr::extract`）
+* 文字コードを調べる（サイトのエンコーディングを知る）
+* おまけ（スクレイピングあれこれ）
+    * 実は結構重要なスクレイピング
+    * DOMとは？
+    * エンコーディングを推定する
+
+
+
+## なぜ文字列操作が必要なのか？
+スクレイピングで取得できるデータは表示を優先していることが多いため、読み込んだだけでは処理に不適当なケースが多々あります。例えば [MLBの試合結果 <i class="fa fa-external-link"></i>](https://baseball.yahoo.co.jp/mlb/schedule/){target="_blank" title="Sportsnavi"} の場合、得点欄が複数行になっており
+<center> ![](./fig/table_sample.png) </center>
+これをスクレイピングすると以下のようになり、得点欄をこのまま処理することはできません。  
+```{r, echo=FALSE}
+site_url <- "https://baseball.yahoo.co.jp/mlb/schedule/"
+css_sel <- ".allstar > table:nth-child(1)"
+
+(result <- site_url %>% 
+  xml2::read_html() %>% 
+  rvest::html_nodes(css = css_sel) %>% 
+  rvest::html_table() %>% as.data.frame())
+```
+
+
+
+## 基本的な文字列操作
+文字列を複数の列に分割するには`tidyr`パッケージが便利です。`tidry::separete`関数は`sep`パラメータに指定されているセパレータで文字列を分割する関数です。これを用いると先ほどのデータは以下のように分割できます。ただし、分割数はコーディング側で指定する必要があります。  
+```{r}
+result %>% 
+  tidyr::separate(col = X2, into = c("X2_1", "X2_2", "X2_3"))
+```
+
+
+
+## 文字列操作パッケージ`stringr`
+`tidyr::separete`関数で分割できない場合には文字列操作に特化した`stringr`パッケージが便利です。より細かな操作が可能になります。主な関数には以下のようなものがあります。  
+
+function | description
+---------|------------
+`stringr::str_sub`  | 文字列を部分的に参照・変更する
+`stringr::str_c`    | 複数の文字列を結合する
+`stringr::str_split` | 文字列を分割する（返り値はリスト型）
+`stringr::str_extract` | 指定したパターンにマッチした部分の文字列を取り出す
+`stringr::str_replace` | 指定したパターンにマッチした部分のみ置換する
+
+
+
+## 文字型を別の型に変換する
+Rでは数字区切りや単位がある数字は文字型データとして扱われます。このような場合、`readr`パッケージを用いると文字型を数値型（`intger`型や`double`型など）に簡単に変換できます。  
+
+function | description
+---------|------------
+`readr::parse_logical` | 「TRUE, FALSE」などを論理型に変換する
+`readr::parse_integer` | 数字文字列を整数型に変換する
+`readr::parse_double`  | 数字文字列を実数型に変換する
+`readr::parse_number`  | 数字文字列を数値に変換する
+`readr::parse_date`    | 数字文字列を日付型に変換する（`lubridate::as_date`と同様）
+
+
+
+## より高度に処理するための正規表現（１／５）
+文字列を高度に処理する場合に欠かせないのが正規表現です。Rでは拡張正規表現（POSIX 1003.2）が使えます。正規表現は、大雑把にいうとメタ文字とリテラルを組み合わせてマッチさせる文字列を表現するための決まりです。  
+
+### メタ文字
+メタ文字は特殊な意味を持つ文字で、様々な表現（どちらか、繰り返し、除く、など）が可能になります。メタ文字自体を表現したい場合（リテラルとして扱う場合）はバックスラッシュ（`\`）を直前に配置します。  
+
+### リテラル
+リテラルとはメタ文字でない単なる文字列のことです。メタ文字と組み合わせることで多様な表現（パターン）を可能にします。  
+
+
+
+## より高度に処理するための正規表現（２／５）
+Operator | Description
+---------|------------
+`|`      | どちらか（`A|B`で`A`か`B`のどちらかに一致する）
+`*`      | 0回以上の一致（最長一致）
+`*?`     | 0回以上の一致（最短一致）
+`+`      | 1回以上の一致（最長一致）
+`+?`     | 1回以上の一致（最短一致）
+`?`      | 0回または1回の一致（1回が優先）
+`??`     | 0回または1回の一致（0回が優先）
+
+
+
+## より高度に処理するための正規表現（３／５）
+Operator | Description
+---------|------------
+`.`      | 任意の一文字
+`()`     | 括弧内を一文字として扱う
+`{n}`    | n回の繰り返し（n = 0, 1, 2, ...）
+`{n, m}` | n回以上、m回未満の繰り返し（n < m, n = 0, 1, 2, ...）
+`\`      | エスケープシーケンス
+
+
+
+## より高度に処理するための正規表現（４／５）
+Set Expression | Description
+---------|------------
+`[...]`  | `[]`内に含まれる一文字に一致（`[abc]`は`a`, `b`, `c`の一文字に一致）
+`[...-...]` | `[]`内に含まれる`-`範囲内の一文字に一致（`[a-z]`は英小文字の一文字に一致）
+`[^...]` | `[]`内に含まれる一文字とは異なる一文字に一致（`[^abc]`は`!a or !b or !c`）
+
+　  
+`[]`は`|`を簡易に表記するイメージです。例えば`[abc]`と`a|b|c`は正規表現としては等価の扱いになります。ただし、他の演算子と組み合わせる場合には注意してください。  
+
+```{r}
+grep("[^abc]", c("abc", "def", "xyz", "0ab"))
+```
+
+
+
+## より高度に処理するための正規表現（５／５）
+頻繁に使われるパターンは名前付き文字クラスとして予め定義されています。代表的な名前付き文字クラスには以下のようなものがあります。  
+
+regexp   | description
+---------|------------
+`[:alnum:]` | アルファベットと数値、[:alpha:] + [:digit:]
+`[:alpha:]` | 大小文字アルファベット、 [:lower:] + [:upper:]
+`[:digit:]` | 数値
+`[:punct:]` | パンクチュエーション文字 ! " # $ % & ' ( ) * + , - . /
+`[:space:]` | 空白文字、タブ、改行、水平タブ、給紙、キャリッジリターン、空白
+
+
+
+## 正規表現を用いた操作
+前述の正規表現を用いると`tidyr::extract`関数のようにセパレータの代わりに正規表現を用いてより細かい文字列操作が可能になります。  
+
+```{r, eval=FALSE}
+tidyr::extract(data, col, into, regex = "([[:alnum:]]+)", ...)
+```
+
+　  
+このような関数は  [大相撲の取組表 <i class="fa fa-external-link"></i>](https://sports.yahoo.co.jp/sumo/torikumi/stats/?bashoId=201811){target="_blank" title="Sportsnavi"} のようなデータを処理するのに適しています。  
+
+<center> ![](./fig/table_sample_2.png) </center>
+
+
+
+## 文字コードを調べる（１／３）
+最近ではあまりないようですが、サイトによっては文字コードに`Shift JIS`などを使っていて、`rvest`パッケージで取得した情報が文字化けする場合があります。このような時にはヘッダーから文字コードの情報を取得（`rvest::guess_encording`を使うより確実）してエンコードを変換します。  
+まず、ヘッダ（`<head></head>`で囲まれた部分）にある文字コードのメタ情報（`<meta`で始まり`charset=`が記載されいる部分）を`rvest::html_attrs`関数を用いて取得します。  
+
+<center> ![](./fig/header_meta.png) </center>
+```{r, echo=FALSE}
+site_url <- "http://www.jma.go.jp/jp/amedas_h/today-44132.html"
+
+(meta <- site_url %>% 
+  xml2::read_html() %>% 
+  rvest::html_nodes(css = "head > meta:nth-child(1)") %>% 
+  rvest::html_attrs())
+```
+
+
+##  文字コードを調べる（２／３）
+次に"charset="の後ろにある文字列の開始位置と終了位置を`stringr`パッケージを用いて取得して、切り出します。  
+```{r}
+meta %>% stringr::str_sub(start = str_locate(., pattern = "charset=")[2] + 1,
+                          end =  stringr::str_locate(., pattern = '\\)')[1] - 2)
+```
+
+終了位置を「`\)`」で判定しているのは、`rvest::html_attrs`関数の返り値が属性値を持ったリスト型であるため実際の文字列部分が下記のように格納されているためです。  
+```{r}
+meta %>% as.character()
+```
+
+
+##  文字コードを調べる（３／３）
+もしくは、単純に属性名で参照して以下のように取り出すことも可能です。  
+```{r}
+meta[[1]]["content"]
+
+meta[[1]]["content"] %>% 
+  stringr::str_sub(start = stringr::str_locate(., pattern = "charset=")[2] + 1,
+                   end = stringr::str_length(.))
+```
+
+文字コードを決め打ちせずにメタ情報から取得することで、サイトのエンコーディングが変更されてもRのコードを変更することなくスクレイピングが可能になります。  
+
+
+
+# おまけ
+
+## 実は結構重要なスクレイピング
+スクレイピングを実体験すると分かりますがテスト自動化にも使えます。この時に重要なポイントが**CSSセレクタをどのように設計・実装するか**です。テスト自動化を考慮しないで設計・実装すると画面構成の修正が発生するたびにセレクタ情報が変化してしまい、実装したスクレイピング・コードに手直が発生しテスト自動化が本末転倒な状態になってしまいます。  
+
+例えば [Yahoo!スポーツの大相撲 <i class="fa fa-external-link"></i>](https://sports.yahoo.co.jp/sumo/torikumi/stats/?bashoId=201811){target="_blank" title="Sportsnavi"} では以下のように`ID`情報を用いることで画面構成に変化が出てもテーブル・セレクタの変更なしに取得できるようになっています。  
+
+```{r, eval=FALSE}
+"//*[@id=\"makuuchi\"]/table"   # 幕内取組一覧（テーブル）のCSSセレクタ
+"//*[@id=\"juryo\"]/table"      # 十両取組一覧（テーブル）のCSSセレクタ
+```
+
+サイトの情報を見るとその会社がどの程度テスト自動化を考えているかが見えてきます。  
+
+
+
+## DOMとは
+Document Object Modelの略でHTMLドキュメントやXMLドキュメントをプログラムから利用するための仕組みです。 [Web Hypertext Application Technology Working Group (WHATWG) <i class="fa fa-external-link"></i>](https://whatwg.org/){target="_blank" title="Maintaining and evolving HTML since 2004"} が仕様を定義しています。
+
+### DOMの特徴
+* 対象をツリー構造（階層構造）として扱う
+* ツリー構造の分岐点（結節点）はノードと呼ばれる
+* 実装はベンダー任せ（多くは標準から拡張している）
+
+
+
+## エンコーディングを推定する
+Webサイトに対するスクレイピングを行っていると取得したデータが文字化けを起こしている場合があります。多くは`UTF-8`とは異なるエンコーディング（文字セット）が使用されている場合であり正しくエンコード指定をすれば文字化けは解消します。`rvest`パッケージにはエンコードを推定する`rvest::guess_encoding`関数が用意されており、この関数がどの程度正確にエンコードを推定するかを確認してみます（最大七候補出力されますが画面の都合上、上位三候補のみ表示）。  
+
+![](./fig/jma_n.png)
+
+
+## 気象庁
+```{r, echo=FALSE}
+"http://www.jma.go.jp/jma/index.html" %>% 
+  xml2::read_html() %>% rvest::guess_encoding() %>% head(3) %>% knitr::kable()
+```
+
+![](./fig/jma_n.png)
+
+
+## 日清オイリオ
+```{r, echo=FALSE}
+"http://www.nisshin-oillio.com/" %>% 
+  xml2::read_html() %>% rvest::guess_encoding() %>% head(3) %>% knitr::kable()
+```
+
+![](./fig/nisshin_oilio_n.png)
+
+
+## いすゞ自動車
+```{r, echo=FALSE}
+"http://www.isuzu.co.jp/" %>% 
+  xml2::read_html() %>% rvest::guess_encoding() %>% head(3) %>% knitr::kable()
+```
+
+![](./fig/isuzu_n.png)
+
+
+## 価格コム
+```{r, echo=FALSE}
+"http://kakaku.com/" %>% 
+  xml2::read_html() %>% rvest::guess_encoding() %>% head(3) %>% knitr::kable()
+```
+
+![](./fig/kakaku_com_n.png)
+
+
+## やまや
+```{r, echo=FALSE}
+"https://www.yamaya.jp/" %>% 
+  xml2::read_html() %>% rvest::guess_encoding() %>% head(3) %>% knitr::kable()
+```
+
+![](./fig/yamaya_n.png)
+
+
+## 楽天
+```{r, echo=FALSE}
+"https://www.rakuten.co.jp/" %>% 
+  xml2::read_html() %>% rvest::guess_encoding() %>% head(3) %>% knitr::kable()
+```
+
+![](./fig/rakuten_n.png)
+
+
+## 長府製作所
+```{r, echo=FALSE}
+"https://www.chofu.co.jp/" %>% 
+  xml2::read_html() %>% rvest::guess_encoding() %>% head(3) %>% knitr::kable()
+```
+
+![](./fig/chofu_n.png)
+
+
+## 参考資料
+* [エンコーディング推定 <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-12/charset/){target="_blank" title="Project Cabinet Blog"}
+
+　  
+
+* [tidyr <i class="fa fa-external-link"></i>](https://heavywatal.github.io/rstats/tidyr.html){target="_blank" title="Heavy Watal"}
+* [readr <i class="fa fa-external-link"></i>](https://heavywatal.github.io/rstats/readr.html){target="_blank" title="Heavy Watal"}
+* [stringr <i class="fa fa-external-link"></i>](https://heavywatal.github.io/rstats/stringr.html){target="_blank" title="Heavy Watal"}
+* [Rにおける正規表現 <i class="fa fa-external-link"></i>](http://www.okadajp.org/RWiki/?R%20%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E6%AD%A3%E8%A6%8F%E8%A1%A8%E7%8F%BE){target="_blank" title="RjpWiki"}
+* [ICU Regular Expressions <i class="fa fa-external-link"></i>](http://userguide.icu-project.org/strings/regexp){target="_blank" title="ICU User Guide"}
+
+
+## Enjoy !
+
+CC BY-NC-SA 4.0, Sampo Suzuki
