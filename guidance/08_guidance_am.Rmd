@@ -1,0 +1,284 @@
+---
+title: "第８回データ分析勉強会"
+author: "【午前の部】振り返り＆落穂拾い [鈴木さんぽう, CC BY-NC-SA 4.0]"
+date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
+output:
+  ioslides_presentation:
+    css: style.css
+    df_print: paged
+    logo: fig/rlogo.png
+    smaller: false
+    widescreen: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+require(DT)
+require(tidyverse)
+```
+
+
+## 本日の内容（案）
+1. 振り返り
+    * なぜPythonでなくRを使うのか？
+    * Reproducible Research
+    * Tidy Data
+1. 落穂拾い
+    * RStuido Tips
+    * tidyr
+    * ggplot2
+    * purrr
+    * flexdashborad
+    * htmlwidgets
+
+
+
+# 振り返り
+
+## なぜPythonでなくRを使うのか
+[Six Reasons To Learn R For Business, R Blogger](https://www.r-bloggers.com/six-reasons-to-learn-r-for-business/){target="_blank"}
+
+1. R Has The **Best Overall Qualities**
+1. R Is Data Science **For Non-Computer Scientists**
+1. **Learning R Is Easy** With The Tidyverse
+1. R Has **Brains, Muscle, And Heart**
+    * Cutting-edge algorithms and Powerful tools (packages)
+1. R Is Built **For Business**
+    * R Markdown
+1. R Community Support
+
+
+## Reproducible Research
+* **データから分析結果が再現できる**こと
+    * 再現可能性（Reproducibility）ともいわれる
+    * 再現可能性は[CRAN Taskの一つ（Reproducible Research）<i class="fa fa-external-link"></i>](https://cran.r-project.org/web/views/ReproducibleResearch.html){target="_blank" title="Reproducible Research"}
+
+* 同じデータから同じ結果が得られることは科学的知見の蓄積において重要
+    * 出典： [統計解析の再現可能性を高める取り組み<i class="fa fa-external-link"></i>](https://www.slideshare.net/YoshihikoKunisato/ss-77835559){target="_blank" title="P7 なぜ再生可能性を高めるか？"}
+* 過去の分析を見直した時に何をやっているか理解できることも重要
+    * その場限りの分析では知見の蓄積にならない
+* 文書化（記録）されない**手作業（データ整形、コピペなど）が再現性を阻害**する
+    * 人の記憶は絶対じゃない、手作業では間違いが混入しやすい
+
+
+## Tidy Data
+乱暴に言うと「Coddの第三正規形」を満たすデータ（対義語はMessy Data）。
+
+* Each variable forms a column.
+* Each observation forms a row.
+* Each type of observational unit forms a table.
+* Each value is a cell.
+
+日本語では以下となり、構造と意味が一致しているデータをTidy Dataと呼びます。
+
+* 個々の変数が1つの列をなす
+* 個々の観測が1つの行をなす
+* 個々の観測の構成単位の類型が1つの表をなす
+* 個々の値が1つのセルをなす
+
+
+
+# 落穂拾い
+
+## RStuido Tips
+RStudioを利用する場合はR MarkdownのR [Notebook機能](https://bookdown.org/yihui/rmarkdown/notebook.html)を活用すると実結果を確認するためにknitする必要がなく分析が早く分かりやすくなります。
+
+* R Notebook機能 - chunkの下に実行結果を表示する機能
+
+R Notebook機能を上手に活用するには［Ctrl + Enter］と［Ctrl + Shift + Enter］のショートカットキーを利用します。
+
+* ［Ctrl + Enter］ - カーソルがある部分、または、選択部分を実行する
+* ［Ctrl + Shift + Enter］ - カーソルがあるchunk全体を実行する
+
+コードがパイプでつながっている場合は、［Ctrl + Enter］でも一連のコードを実行してくれます。
+
+
+
+# Package tidy
+
+## Dataset
+```{r}
+iris
+```
+
+
+## tidyr::gather
+```{r}
+iris %>% tidyr::gather(key = "Part", value = "Value", -Species)
+```
+
+
+## tidyr::spread
+```{r}
+iris %>% tibble::rowid_to_column("id") %>% 
+  tidyr::gather(key = "Part", value = "Value", -id, -Species) %>% 
+  tidyr::spread(key = Part, value = Value) %>% dplyr::select(-id)
+```
+
+
+
+# Package ggplot2
+
+## ggplot2::aesの中か外か？
+```{r}
+iris %>% ggplot2::ggplot(ggplot2::aes(x = Species, fill = Species)) + 
+  ggplot2::geom_boxplot(ggplot2::aes(y = Sepal.Length), alpha = 0.5)
+```
+
+
+## ggplot2::aesの中か外か？
+```{r}
+iris %>% ggplot2::ggplot(ggplot2::aes(x = Species, fill = Species)) + 
+  ggplot2::geom_boxplot(ggplot2::aes(y = Sepal.Length, alpha = 0.5))
+```
+
+
+## サイズやシンボル（シェイプ）を変える
+```{r}
+iris %>% ggplot2::ggplot(ggplot2::aes(x = Petal.Width, y = Petal.Length)) + 
+  ggplot2::geom_point(ggplot2::aes(colour = Species, size = Sepal.Length, shape = Species))
+```
+
+
+
+# Package forcats
+
+## 表示順を変えたい
+```{r}
+iris %>% ggplot2::ggplot(ggplot2::aes(x = Species, y = Sepal.Width)) +
+    ggplot2::geom_boxplot(ggplot2::aes(colour = Species))
+```
+
+
+## 中央値順に並べ替える
+```{r}
+iris %>% dplyr::mutate(Species = forcats::fct_reorder(Species, Sepal.Width)) %>%
+  ggplot2::ggplot(ggplot2::aes(x = Species, y = Sepal.Width)) +
+    ggplot2::geom_boxplot(ggplot2::aes(colour = Species))
+```
+
+
+
+# Package purrr
+
+## purrrは何ができるのか？
+`purrr::map`関数は指定した引数に対して指定した処理（関数、演算子など）を適用する関数ですので、繰り返し処理に威力を発揮します。例えば、  
+
+* 多数のファイルを読込んで結合する
+
+```{r, eval=FALSE}
+file_path %>% list.files(path = ., pattern = "(issues_)", full.names = TRUE) %>% 
+  purrr::map_df(.x = ., .f = readr::read_csv, locale = readr::locale(encoding = "cp932"))
+```
+
+* 因子水準ごとに処理を適用する
+
+```{r, eval=FALSE}
+iris %>% split(.$Species) %>% 
+  purrr::map_df(~ lm(Sepal.Length ~ Sepal.Width, data = .x) %>% broom::tidy(),
+                .id = "Species")
+```
+
+* データフレーム内のリストを処理する（第６回で実施）
+
+
+## リスト処理の前に
+`c`関数はベクトル型変数やリスト型変数を`combine`（結合）する関数。
+```{r}
+c(issue_id = 16451L, list(id = 2L, name = "Resolution", value = "Invalid"))
+```
+
+
+## purrr::map
+第６回で説明した`purrr::map_df`関数を使った [カスタムフィールドの展開](./06_guidance_purrr.html#25) は
+```{r, eval=FALSE}
+with(issues, purrr::map_df(.x = custom_fields, .f = function(.x) {c(.x)}))
+```
+以下の処理と等価です（なお、c関数がなくても結果は同じです）。
+```{r}
+dplyr::bind_rows(
+  c(list(id = 2L, name = "Resolution", value = "Invalid")),
+  c(list(id = 4L, name = "Affected version")) )
+```
+
+
+## purrr::map2
+第６回で説明した`purrr::map2_df`関数を使った [カスタムフィールドの展開](./06_guidance_purrr.html#26) は
+```{r, eval=FALSE}
+with(issues, purrr::map2_df(.x = id, .y = custom_fields,
+                            .f = function(.x, .y) {c(issue_id = .x, .y)}))
+```
+以下の処理と等価です。
+```{r}
+dplyr::bind_rows(
+  c(issue_id = 16451L, list(id = 2L, name = "Resolution", value = "Invalid")),
+  c(issue_id = 16451L, list(id = 4L, name = "Affected version")) )
+```
+
+
+
+# Package flexdashboard
+
+## 画面構成方法
+`flexdashborad`の区切りはMarkdownのHeader記述（`#`や`##`）で代用できます。幅は**合計が1,000**になるようにするといい塩梅です。メニューは`#`レベルを記述すれば自動的にメニューとなり、タブはカラムやローレベル（`##`）で明示的に指定する必要があります。 [テンプレート例](../template/08_dashboard_template.Rmd)
+```{r, eval=FALSE}
+
+# Menu (Tab)
+
+## Coloumn Left {data-width=650}
+
+### Component
+
+## Coloumn Rigth {data-width=350} {.tabset}
+
+### Tab 1
+
+### Tab 2
+```
+
+
+
+# Package htmlwidgets
+
+## htmlwidgetsとは
+[`htmlwidgets`](https://www.htmlwidgets.org/){target="_blank" title="Bring the best of JavaScript data visualization to R"} はHTMLドキュメントでJavaScriptを用いてインタラクティブな表示を提供するためのベースとなるパッケージです。`htmlwidgets`パッケージを利用した様々なパッケージが公開されています。代表的なパッケージには以下のようなものがあります。  
+
+package  | description
+---------|------------
+[DT](https://rstudio.github.io/DT/){target="_blank" title="An R interface to the DataTables library"}  | DataTablesライブラリを用いたテーブル（表）表示
+[plotly](https://plot.ly/r/){target="_blank" title="Plotly R Open Source Graphing Library"}  | ggplot2オブジェクトを簡単にインタラクティブ化
+[dygraphs](https://rstudio.github.io/dygraphs/){target="_blank" title="dygraphs for R"}  | dygraphsライブライを用いた時系列グラフに特化したパッケージ
+
+
+## Package DT
+```{r}
+mtcars %>% DT::datatable(options = list(pageLength = 5))
+```
+　  
+
+## Package plotly
+```{r}
+(iris %>% ggplot2::ggplot(ggplot2::aes(x = Petal.Width, y = Petal.Length)) +
+           ggplot2::geom_point(ggplot2::aes(colour = Species))) %>% plotly::ggplotly()
+```
+
+## Packages dygraphs
+```{r}
+xts::as.xts(nhtemp) %>% dygraphs::dygraph(main = "New Haven Temperatures") %>% 
+  dygraphs::dyRangeSelector()
+```
+
+
+
+# おわりに
+
+## 復習のためのリソース
+
+* Project Cabinet
+* Project Cabinet Blog
+
+
+## Enjoy!
+
+CC BY-NC-SA 4.0, Sampo Suzuki
