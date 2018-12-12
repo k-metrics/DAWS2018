@@ -1,0 +1,114 @@
+---
+title: "Selenium"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## RSelenium デモ
+
+うまく動いたら、拍手をお願いします。
+
+```{r}
+library(RSelenium)
+
+# Chromeオプションを追加
+eCaps <- list(
+  chromeOptions = 
+    list(prefs = list(
+      # ポップアップを表示しない
+      "profile.default_content_settings.popups" = 0L,
+      # ダウンロードプロンプトを表示しない
+      "download.prompt_for_download" = FALSE,
+      # ダウンロードディレクトリを設定
+      # 自分のディレクトリに書き換える必要がある
+      "download.default_directory" = "/Users/takumi/R/worldcup"
+    )
+  )
+)
+
+# chromeブラウザを立ち上げる ※事前にJDKのインストールが必要
+#rD <- rsDriver(verbose = FALSE)
+rD <- rsDriver(extraCapabilities = eCaps, check = FALSE, port = 4568L)
+# remoteDriverクラスの作成
+remDr <- rD[["client"]]
+
+# URLにアクセス
+remDr$navigate("http://e-stat.go.jp/")
+
+Sys.sleep(3)
+
+# CSSセレクタで要素を特定
+# ここでは「GIS」
+webElem <- remDr$findElement("css selector", "#block-detuyatubiaotejianru2 > div > div > a:nth-child(1)")
+# 選択した要素をクリック
+webElem$clickElement()
+
+Sys.sleep(3)
+
+# 「境界データダウンロード」をクリック
+webElem <- remDr$findElement("css selector", "body > div.dialog-off-canvas-main-canvas > div > main > div.row.l-estatRow > section > div.region.region-content > article > div > div > section > a:nth-child(6)")
+webElem$clickElement()
+
+Sys.sleep(3)
+
+# 「境界データ」をクリック
+webElem <- remDr$findElement("css selector", "#main > nav:nth-child(3) > nav > div.stat-datatype.js-nw-search1.__open > div.stat-datatype-list.js-nw-search2 > a:nth-child(2)")
+webElem$clickElement()
+
+Sys.sleep(3)
+
+# 「小地域」をクリック
+webElem <- remDr$findElement("css selector", "#main > section > div.js-search-detail > ul > li:nth-child(1)")
+webElem$clickElement()
+
+Sys.sleep(3)
+
+# 「国勢調査」をクリック
+webElem <- remDr$findElement("css selector", "#main > section > div.js-search-detail > ul > li:nth-child(1)")
+webElem$clickElement()
+
+Sys.sleep(3)
+
+# 「2015年」をクリック
+webElem <- remDr$findElement("css selector", "#main > section > div.js-search-detail > div.stat-search_result-list.js-items > ul:nth-child(1) > li")
+webElem$clickElement()
+
+Sys.sleep(3)
+
+# 「小地域（町丁・字等別）」をクリック
+webElem <- remDr$findElement("css selector", "#main > section > div.js-search-detail > div.stat-search_result-list.js-items > ul:nth-child(1) > li > div.stat-search_result-item2-sub.js-child-items.js-row > ul > li:nth-child(1) > div > span.stat-title-has-child > span > a")
+webElem$clickElement()
+
+Sys.sleep(3)
+
+# 「世界測地系緯度経度・Shape形式」をクリック
+webElem <- remDr$findElement("css selector", "#main > section > div.js-search-detail > div.stat-search_result-list.js-items > ul:nth-child(1)")
+webElem$clickElement()
+
+Sys.sleep(3)
+
+# 「神奈川県」をクリック
+webElem <- remDr$findElement("css selector", "#main > section > div.js-search-detail > div > div > article:nth-child(14) > div > ul")
+webElem$clickElement()
+
+Sys.sleep(3)
+
+# 神奈川県全域の「世界測地系緯度経度・Shape形式」をクリック
+webElem <- remDr$findElement("css selector", "#main > section > div.js-search-detail > div > div > article:nth-child(1) > div > ul > li:nth-child(3) > a > span")
+webElem$clickElement()
+
+Sys.sleep(3)
+
+# ブラウザを閉じる
+remDr$close()
+# Seleniumサーバを閉じる
+rD[["server"]]$stop()
+
+
+
+```
+
+
