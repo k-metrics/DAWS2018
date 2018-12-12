@@ -247,14 +247,15 @@ Redmineのチケットデータを用いてダッシュボードを作る。
 前半、Webスクレイピングを体験して頂きます。再現可能性を高めるために、データインポート力を強化しましょう。後半、前半で学んだデータインポートを含む総合演習に挑戦して頂きます。今年度学んできたモダンなRの世界をおさらいしましょう。  
 　  
 
-* データインポートハンズオン（事前説明 60分程度予定）
+* [データインポートハンズオン <i class="fa fa-external-link-square"></i>](./guidance/07_guidance.html){target="_blank" title="事前説明"}（60分程度予定）
     * スクレイピングとは？
     * メリットと注意事項
-    * [スクレイピングに必要な文字列処理 <i class="fa fa-external-link-square"></i>](./guidance/07_guidance_appendix.html){target="_blank" title="文字列処理プラスアルファ}
+    * [RSelenium Demo <i class="fa fa-external-link-square"></i>](./guidance/07_guidance_appendixB.Rmd){target="_blank" title="RMD File"}
+    * [スクレイピングに必要な文字列処理 <i class="fa fa-external-link-square"></i>](./guidance/07_guidance_appendixA.html){target="_blank" title="文字列処理プラスアルファ"}
 
     
 
-* ハンズオン（～14時目安）
+* [ハンズオン <i class="fa fa-external-link-square"></i>](./guidance/07_guidance.html#28){target="_blank" title=""}（～14時目安）
     * 班ごとにハンズオンのテーマ設定
     * 結果発表
 
