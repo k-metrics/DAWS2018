@@ -251,7 +251,7 @@ Redmineのチケットデータを用いてダッシュボードを作る。
     * スクレイピングとは？
     * メリットと注意事項
     * [RSelenium Demo <i class="fa fa-external-link-square"></i>](./guidance/07_guidance_appendixB.Rmd){target="_blank" title="RMD File"}
-    * [スクレイピングに必要な文字列処理 <i class="fa fa-external-link-square"></i>](./guidance/07_guidance_appendix.html){target="_blank" title="文字列処理プラスアルファ"}
+    * [スクレイピングに必要な文字列処理 <i class="fa fa-external-link-square"></i>](./guidance/07_guidance_appendixA.html){target="_blank" title="文字列処理プラスアルファ"}
 
     
 
