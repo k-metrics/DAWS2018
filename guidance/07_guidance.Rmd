@@ -14,12 +14,11 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 
-require(rvest)
-require(xml2)
 require(tidyverse)
+require(rvest)
 
 # [RStudio で日本語が使えなくなっていた](https://blog.goo.ne.jp/r-de-r/e/084639aec24beb8a6d08b8241545ef1a)
-# Sys.setlocale("LC_ALL", "ja_JP.UTF-8")
+Sys.setlocale("LC_ALL", "ja_JP.UTF-8")
 ```
 
 ## 今日のゴール
@@ -62,7 +61,8 @@ require(tidyverse)
 ## 推奨図書
 通称『宇宙本』。RStudioを使ってスクレイピングからレポーティングまでを網羅した一冊。今年度勉強会での[基本的な内容をほぼ網羅 <i class="fa fa-external-link"></i>](https://pbs.twimg.com/media/DhZF9pFW0AMjUME.jpg:large){target="_blank" title="Twitter"}している。（[技術評論社 <i class="fa fa-external-link"></i>](http://gihyo.jp/book/2018/978-4-7741-9853-8){target="_blank" title="RユーザのためのRStudio［実践］入門"}）
 
-![](./fig/rstudio_getting_started.jpg)
+![](./fig/rstudio_getting_started.jpg) <img src="./fig/RScraping.jpg" width="280">
+
 
 
 ## Data Science Workflow での位置付け
@@ -146,7 +146,7 @@ HTML内のスタイル（文字の色や大きさなど）を定義する。
 
 ## HTML
 
-* タグ、<開始タグ>、</終了タグ>、要素、入れ子構造
+* タグ、<開始タグ>、</ 終了タグ>、要素、入れ子構造
 * 代表的なタグ、head,div,a,p
 * 属性, href, id, class
 
@@ -235,11 +235,13 @@ library(rvest)
 * HTMLをガサーっと読み込む。
 * URLを指定するだけ。
 * 実際には、DOM形式に変換して保存する。
+* 実はrvestではなく、xml2パッケージの関数。
 
 ```{r}
 "https://www.asahi.com/worldcup/schedule/" %>% 
   read_html()
 ```
+
 ```{r include=FALSE}
 content <- "https://www.asahi.com/worldcup/schedule/" %>% 
   read_html() %>% 
@@ -305,7 +307,7 @@ charset
 * 2つ目のURLだけ必要なら、magrittr::extract(2)が便利
 
 ```{r eval=FALSE}
-zip_url = page %>%
+zip_url <- page %>%
   html_nodes("a") %>%   ## find all links
   html_attr("href") %>% ## pull out url
   str_subset("\\.zip")  ## pull out zip links
@@ -390,6 +392,7 @@ session %>%
 ## テーマ選定
 
 チーム毎にテーマを選定してください。
+以下、ご参考。
 
 * W杯の順位変動
 
@@ -430,9 +433,7 @@ E      | Na   |
 
 * リーダー以外の方が発表してください
 * 各班5～10分
-* 苦労した点、それをどう乗り越えたか、が聞けると良いです
-* 「こんな点がよく分からなかった」、「ここが躓いた」などでもOK
-* 結果は勉強会サイトに掲載（予定）
+* 苦労した点、それをどう乗り越えたか、を含めるようにして下さい
 
 チーム | 発表者 | テーマ
 -------|--------|-------------
