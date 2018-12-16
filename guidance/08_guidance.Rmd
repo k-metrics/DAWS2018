@@ -287,7 +287,7 @@ iris %>% ggplot2::ggplot(ggplot2::aes(x = Petal.Width, y = Petal.Length)) +
 
 
 ## flexdashborad
-`flexdashborad`の区切りはMarkdownのHeader記述（`#`や`##`）で代用できます。幅は**合計が1,000**になるようにするといい塩梅です。メニューは`#`レベルを記述すれば自動的にメニューとなり、タブはカラムやローレベル（`##`）で明示的に指定する必要があります。 [テンプレート例](../template/08_dashboard_template.Rmd)
+`flexdashborad`の区切りはMarkdownのHeader記述（`#`や`##`）で代用できます。幅は**合計が1,000**になるようにするといい塩梅です。メニューは`#`レベルを記述すれば自動的にメニューとなり、タブはカラムやローのレベル（`##`）で明示的に指定する必要があります。 [テンプレート例](../template/08_dashboard_template.Rmd)
 ```{r, eval=FALSE}
 
 # Menu (Tab)
