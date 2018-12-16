@@ -334,7 +334,7 @@ t(result$sdev ^ 2) %>%
 # 演習
 
 ## 対象データ
-以下のデータは[セリーグの個人投手成績（10/3時点）](http://npb.jp/bis/2018/stats/pit_c.html)です。主成分分析を用いて成績上位の投手がどのような特徴を持っているか分析してください。  
+以下のデータは[セリーグの個人投手成績（10/3時点）](http://npb.jp/bis/2018/stats/pit_c.html)です。次ページ以降の主成分分析結果を見て成績上位の投手がどのような特徴を持っているか分析してください。  
 
 ```{r, echo=FALSE}
 readr::read_csv("./data/pitc.csv", locale = locale(encoding = "CP932")) %>% 
