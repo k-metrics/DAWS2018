@@ -334,10 +334,35 @@ t(result$sdev ^ 2) %>%
 # 演習
 
 ## 対象データ
-以下のデータは[セリーグの個人投手成績（10/3時点）](http://npb.jp/bis/2018/stats/pit_c.html)です。次ページ以降の主成分分析結果を見て成績上位の投手がどのような特徴を持っているか分析してください。  
+以下のデータは[セリーグの個人投手成績（最終結果）](http://npb.jp/bis/2018/stats/pit_c.html)です。次ページ以降の主成分分析結果を見て成績上位の投手がどのような特徴を持っているか分析してください。  
+
+```{r, include=FALSE, eval=FALSE}
+df <- "http://npb.jp/bis/2018/stats/pit_c.html" %>% 
+  xml2::read_html() %>% 
+  # rvest::html_node(xpath = "/html/body/div/div/div/div[3]/table[1]") %>% 
+  # rvest::html_node(xpath = "/html/body/div/div/div/div[3]/table[2]") %>% 
+  rvest::html_node(xpath = "/html/body/div/div/div/div[3]/table[3]") %>%
+  rvest::html_table() # %>% 
+  # dplyr::slice(-1:-2)
+
+# names(df) <- "http://npb.jp/bis/2018/stats/pit_c.html" %>% 
+#   xml2::read_html() %>% 
+#   rvest::html_node(xpath = "/html/body/div/div/div/div[3]/table[1]") %>% 
+#   rvest::html_table() %>% 
+#   dplyr::slice(2)
+
+df %>% 
+  # readr::write_excel_csv("./data/cpitch_2018.csv")
+  # readr::write_excel_csv("./data/cpitch_2018_s.csv")
+  readr::write_excel_csv("./data/cpitch_2018_hp.csv")
+```
+
+
 
 ```{r, echo=FALSE}
-readr::read_csv("./data/pitc.csv", locale = locale(encoding = "CP932")) %>% 
+"./data/cpitch_2018.csv" %>% 
+  # readr::read_csv(locale = locale(encoding = "CP932")) %>% 
+  readr::read_csv(locale = locale(encoding = "UTF-8")) %>% 
   dplyr::select(-`ホール`)
 ```
 
@@ -345,11 +370,13 @@ readr::read_csv("./data/pitc.csv", locale = locale(encoding = "CP932")) %>%
 ## 主成分分析結果（回転済）
 ```{r, echo=FALSE}
 
-header <- readr::read_csv("./data/pitc.csv", locale = locale(encoding = "CP932")) %>% 
-  dplyr::select(row = `順位`, `投手名`, `チーム`)
+header <- "./data/cpitch_2018.csv" %>% 
+  readr::read_csv(locale = locale(encoding = "UTF-8")) %>% 
+  dplyr::select(row = `順位`, `投手名`, `チーム`, `カテゴリ`)
 
-readr::read_csv("./data/pitc.csv", locale = locale(encoding = "CP932")) %>% 
-  dplyr::select(-`順位`, -`投手名`, -`チーム`, -`ホール`) %>% 
+"./data/cpitch_2018.csv" %>% 
+  readr::read_csv(locale = locale(encoding = "UTF-8")) %>% 
+  dplyr::select(-`順位`, -`投手名`, -`チーム`, -`カテゴリ`, -`ホール`) %>% 
   prcomp(., scale. = TRUE) %>% 
   broom::tidy() %>% 
   tidyr::spread(key = PC, value = value) %>% 
@@ -360,12 +387,15 @@ readr::read_csv("./data/pitc.csv", locale = locale(encoding = "CP932")) %>%
 
 ## 主成分分析結果（可視化）
 ```{r, echo=FALSE}
-header <- readr::read_csv("./data/pitc.csv", locale = locale(encoding = "CP932")) %>% 
-  dplyr::select(row = `順位`, `投手名`, `チーム`) %>% 
+
+header <- "./data/cpitch_2018.csv" %>% 
+  readr::read_csv(locale = locale(encoding = "UTF-8")) %>% 
+  dplyr::select(row = `順位`, `投手名`, `チーム`, `カテゴリ`) %>% 
   dplyr::mutate(`投手名` = paste(row, `投手名`, sep = "_"))
 
-readr::read_csv("./data/pitc.csv", locale = locale(encoding = "CP932")) %>% 
-  dplyr::select(-`順位`, -`投手名`, -`チーム`, -`ホール`) %>% 
+"./data/cpitch_2018.csv" %>% 
+  readr::read_csv(locale = locale(encoding = "UTF-8")) %>% 
+  dplyr::select(-`順位`, -`投手名`, -`チーム`, -`カテゴリ`, -`ホール`) %>% 
   prcomp(., scale. = TRUE) %>% 
   ggbiplot::ggbiplot(obs.scale = 1, var.scale = 1, ellipse = TRUE, circle = TRUE,
                      labels = header$投手名)
@@ -374,12 +404,14 @@ readr::read_csv("./data/pitc.csv", locale = locale(encoding = "CP932")) %>%
 
 ## 主成分プロット
 ```{r, echo=FALSE}
-header <- readr::read_csv("./data/pitc.csv", locale = locale(encoding = "CP932")) %>% 
-  dplyr::select(row = `順位`, `投手名`, `チーム`) %>% 
+header <- "./data/cpitch_2018.csv" %>% 
+  readr::read_csv(locale = locale(encoding = "UTF-8")) %>% 
+  dplyr::select(row = `順位`, `投手名`, `チーム`, `カテゴリ`) %>% 
   dplyr::mutate(`投手名` = paste(row, `投手名`, sep = "_"))
 
-readr::read_csv("./data/pitc.csv", locale = locale(encoding = "CP932")) %>% 
-  dplyr::select(-`順位`, -`投手名`, -`チーム`, -`ホール`) %>% 
+"./data/cpitch_2018.csv" %>% 
+  readr::read_csv(locale = locale(encoding = "UTF-8")) %>% 
+  dplyr::select(-`順位`, -`投手名`, -`チーム`, -`カテゴリ`, -`ホール`) %>% 
   prcomp(., scale. = TRUE) %>% 
   broom::tidy() %>% 
   tidyr::spread(key = PC, value = value) %>% 
