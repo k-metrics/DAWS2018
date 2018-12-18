@@ -22,9 +22,10 @@ require(tidyverse)
 1. 多変量解析入門
     * 重回帰分析
     * 主成分分析
+    * 因子分析
 1. 演習
-    * 演習＆レポート作成
-    * 発表
+    * 演習I ＆ 演習II
+    * レポート作成＆発表
 
 
 
@@ -62,13 +63,13 @@ require(tidyverse)
 # 予測や制御を行う
 
 ## 変量（変数）間の関係
-予測や制御を行う前には変量間の関係を把握しておくことが大切です。変量間の関係は以下のように分類できます。 [出典 <i class="fa fa-external-link"></i>](){target="_blank" title=""}  
+予測や制御を行う前には変量間の関係を把握しておくことが大切です。変量間の関係は以下のように分類できます。[出典：統計的因果推論 岩﨑学 朝倉書店]  
 
 * **相関**関係（Correlation）
     * 関係性があることしか言えない（双方向の関係）
     * ゆえに予測や制御には使えない
 * **回帰**関係（Regression）
-    * 因果関係と同様な一方的な関係（ただし、因果関係はない）
+    * 因果関係と同様な一方的な関係（必ずしも因果関係ではない）
     * 予測に用いることができる
 * **因果**関係（Causality）
     * 原因から結果へ一方的な関係（回帰関係を因果関係としているものもある）
@@ -83,7 +84,7 @@ $$y = b_{0} + b_{1}x_{1} + b_{2}x_{2} + ... + b_{n}x_{n}$$
 この回帰式を用いると以下のようなことができるようになります。  
 
 * 説明変数（与えられた値）から目的変数を**予測**する
-* 目的変数の値を大きく（または小さく）するには説明変数（これから与える値）をどうかする（**制御**）【因果関係がある場合】
+* 目的変数の値を大きく（または小さく）するには説明変数（これから与える値）をどうかするか（**制御**）【因果関係がある場合】
 
 線形モデル以外にも、交互作用モデル、2次式モデル、共分散分析モデル、一般線形化モデルなど様々なモデルを作ることができます。
 
@@ -139,21 +140,21 @@ result %>% dplyr::mutate_if(is.double, round, digit = 3)
 
 # 集約や探索を行う
 
+## 主成分分析とは
+主成分分析は次元縮約を使って任意数の変量（変数）から「共通因子」を探索し「可視化」できる分析方法です。乱暴にいえばｎ次元空間の変量（変数）の関係を２次元空間の主成分の関係へ写像する方法です。  
+
+![　『主成分分析について具体的な過程抜きでざっくり』より引用](./fig/PCA_image.png)
+
+
 ## 次元縮約とは
 主成分分析や因子分析の目的である次元縮約とは多数ある変量をより少数の次元に要約することで変量の関係を把握しやすくするための手法です。次元縮約することで下表のようなことができるようになります。  
 
 　 | 主成分分析     | 因子分析 
-:-:|----------------|---
+:-:|----------------|----------------
 1  | 共通因子の探索 | 共通因子の探索
 2  |　              | 独自要因の推定
 3  | 重みつき合計   | 
 4  | 可視化         | 
-
-
-## 主成分分析とは
-主成分分析は前述の次元縮約を使って任意数の変量（変数）から「共通因子」を探索し「可視化」できる分析方法です。乱暴にいえばｎ次元空間の変量（変数）の関係を２次元空間の主成分の関係へ写像する方法です。  
-
-![　『主成分分析について具体的な過程抜きでざっくり』より引用](./fig/PCA_image.png)
 
 
 ## 主成分分析の分析手順
@@ -335,7 +336,20 @@ t(t(result$rotation) * result$sdev) %>% as.data.frame()
 ```
 
 
-# 演習
+## 因子分析とは
+因子分析とは主成分分析と同様に変量を次元縮約することで共通要員を探索し独自要員を推定するための分析方法です。主成分分析と異なるのは、誤差は各変量に固有のもの（各変量に独自の要因）として考える点です。なお、因子分析における共通因子とは主成分分析における成分に同じです。  
+
+![因子分析モデルのイメージ（同志社大学データサイエンス研究室のサイトより）](https://www1.doshisha.ac.jp/~mjin/R/Chap_25/image1.jpg)
+
+
+## 主成分分析と因子分析
+
+![gacco 統計学III 第5回テキストより](./fig/difference.png)
+
+
+
+
+# 演習 I
 
 ## 対象データ
 対象となるデータは[セリーグの投手成績（最終結果）](http://npb.jp/bis/2018/stats/pit_c.html)です。成績には、総合、セーブ、ホールドポイントの三種類があります。次ページ以降の主成分分析結果を見て各投手がどのような特徴を持っているか分析してください。    
@@ -556,17 +570,61 @@ df %>%
 ```
 
 
+
+# 演習II
+
+## 因子分析
+[厚生労働省編一般職業適性検査 <i class="fa fa-external-link"></i>](https://www.jil.go.jp/institute/seika/tools/GATB.html){target="_blank" title="General Aptitude Test Battery: GATB"} の筆記試験結果を因子分析したグラフが次ページにあります。各独自因子がどのような適性（能力）なのか分析してください。
+
+　  | 内容 | 　 | 内容
+------|------|------|------
+A | 円打点（円の中に点を打つ）　| G | 計算（加減乗除の計算を行う）
+B | 記号記入（記号 を記入する） | H | 語意（同意語かまたは反意語を見つけだす）
+C | 形態照合（形と大きさの同じ図形をさがしだす） | I | 立体図判断（展開図で表された立体形をさがしだす）
+D | 名詞比較（文字・数字の違いを見つける） | J | 文章完成（文章を完成する）
+E | 図柄照合（同じ図形を見つけだす） | K | 算数応用（応用問題を解く）
+F | 平面図判断（置き方をかえた図形を見つけだす） | 
+
+
+## 因子分析結果
+```{r, echo=FALSE, fig.width=10}
+GATB50_fa <- "./data/CATB50.csv" %>% 
+  readr::read_csv(locale = readr::locale(encoding = "CP932")) %>% 
+  dplyr::select(-X1) %>% 
+  factanal(factors = 4, scores = "Bartlett")
+  
+GATB50_fa$loadings %>% as.data.frame.array() %>% 
+  tibble::rownames_to_column("factor") %>% 
+  tidyr::gather(key = "key", value = "value", -factor) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = factor, y = value, fill = factor)) + 
+    ggplot2::facet_grid(. ~ key) + 
+    ggplot2::geom_bar(stat = "identity") +
+    ggplot2::labs(title = "GATB",
+                  x = "変量（独立因子）", y = "因子負荷量") + 
+    ggplot2::scale_fill_discrete(name = "",
+      labels = c(A = "A 円打点検査", B = "B 記号記入", C = "C 形態照合",
+                 D = "D 名詞比較", E = "E 図柄照合", F = "F 平面図判断",
+                 G = "G 計算", H = "H 語意", I = "I 立体図判断",
+                 J = "J 文章完成", K = "K 算数応用"))
+```
+
+[データなど出典 <i class="fa fa-external-link"></i>](https://www1.doshisha.ac.jp/~mjin/R/Chap_25/25.html){target="_blank" title="フリーソフトによるデータ解析・マイニング　第25回"}
+
+
+
+# 最後に
+
 ## 復習のためのリソース
 
 * [gacco 統計学III]()
 * [Rで主成分分析](https://www.casleyconsulting.co.jp/blog/engineer/119/)
-
 * [主成分分析とは <i class="fa fa-external-link"></i>](https://www.intage.co.jp/glossary/401/){target="_blank" title=""}
+* [主成分分析 (PDF) <i class="fa fa-external-link"></i>](https://statistics.co.jp/reference/software_R/statR_9_principal.pdf){target="_blank" title=""}
 
-* [ <i class="fa fa-external-link"></i>](https://www.statsbeginner.net/entry/2014/07/27/121214){target="_blank" title=""}
-* [ <i class="fa fa-external-link"></i>](https://statistics.co.jp/reference/software_R/statR_9_principal.pdf){target="_blank" title=""}
+* [Rと主成分分析 <i class="fa fa-external-link"></i>](https://www1.doshisha.ac.jp/~mjin/R/Chap_24/24.html){target="_blank" title="フリーソフトによるデータ解析・マイニング　第24回"}
+* [Rと因子分析 <i class="fa fa-external-link"></i>](https://www1.doshisha.ac.jp/~mjin/R/Chap_25/25.html){target="_blank" title="フリーソフトによるデータ解析・マイニング　第25回"}
 
 
-## enjoy!
+## Enjoy !
 
 CC BY-NC-SA 4.0, Sampo Suzuki
