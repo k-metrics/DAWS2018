@@ -285,6 +285,19 @@ Redmineのチケットデータを用いてダッシュボードを作る。
 
 　  
 
+### ダウンロード
+当日、モバイル通信環境を利用できない方は**事前に**以下より資料をダウンロードしておいてください。
+
+[右クリックで保存（zip形式） <i class="fa fa-external-link-square"></i>](){target="_blank" title="zip形式"}
+
+zipファイルには以下のファイルが入っています。
+
+* Rで始める多変量解析（鈴木版）
+    * HTML形式（Google ioslides）
+    * PDF形式（chunk出力が表示されません） + Rmd形式（当該ソース部分のみ）
+* Rで始める多変量解析（綿田版）
+　  * 形式
+
 ---
 
 ![Sampo Suzuki][CCI]
