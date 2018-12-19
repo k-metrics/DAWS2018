@@ -616,13 +616,13 @@ GATB50_fa$loadings %>% as.data.frame.array() %>%
 
 ## 復習のためのリソース
 
-* [gacco 統計学III]()
-* [Rで主成分分析](https://www.casleyconsulting.co.jp/blog/engineer/119/)
-* [主成分分析とは <i class="fa fa-external-link"></i>](https://www.intage.co.jp/glossary/401/){target="_blank" title=""}
-* [主成分分析 (PDF) <i class="fa fa-external-link"></i>](https://statistics.co.jp/reference/software_R/statR_9_principal.pdf){target="_blank" title=""}
+* [gacco （統計学IIIの開講予定は未定） <i class="fa fa-external-link"></i>](http://gacco.org/){target="_blank" title="無料で学べるオンライン大学講座"}
+* [Rで主成分分析](https://www.casleyconsulting.co.jp/blog/engineer/119/){target="_blank" title="キャスレーコンサルティング"}
+* [主成分分析とは <i class="fa fa-external-link"></i>](https://www.intage.co.jp/glossary/401/){target="_blank" title="株式会社インテージ"}
+* [（Rを用いた）主成分分析 (PDF) <i class="fa fa-external-link"></i>](https://statistics.co.jp/reference/software_R/statR_9_principal.pdf){target="_blank" title="統計科学研究所"}
 
-* [Rと主成分分析 <i class="fa fa-external-link"></i>](https://www1.doshisha.ac.jp/~mjin/R/Chap_24/24.html){target="_blank" title="フリーソフトによるデータ解析・マイニング　第24回"}
-* [Rと因子分析 <i class="fa fa-external-link"></i>](https://www1.doshisha.ac.jp/~mjin/R/Chap_25/25.html){target="_blank" title="フリーソフトによるデータ解析・マイニング　第25回"}
+* [Rと主成分分析（同志社大学） <i class="fa fa-external-link"></i>](https://www1.doshisha.ac.jp/~mjin/R/Chap_24/24.html){target="_blank" title="フリーソフトによるデータ解析・マイニング　第24回"}
+* [Rと因子分析 （同志社大学）<i class="fa fa-external-link"></i>](https://www1.doshisha.ac.jp/~mjin/R/Chap_25/25.html){target="_blank" title="フリーソフトによるデータ解析・マイニング　第25回"}
 
 
 ## Enjoy !
