@@ -1,6 +1,6 @@
 ---
 title: "第８回データ分析勉強会"
-author: "【午前の部】振り返り＆落穂拾い [鈴木さんぽう, CC BY-NC-SA 4.0]"
+author: "振り返り＆落穂拾い [鈴木さんぽう, CC BY-NC-SA 4.0]"
 date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
 output:
   ioslides_presentation:
@@ -42,7 +42,7 @@ require(tidyverse)
 
 　  
 
-# 振り返り
+# 振り返り・落穂拾い
 
 ## なぜPythonでなくRを使うのか？
 [Six Reasons To Learn R For Business, R Blogger](https://www.r-bloggers.com/six-reasons-to-learn-r-for-business/){target="_blank"}
@@ -91,6 +91,13 @@ require(tidyverse)
 
 # Data Science Workflow
 
+## RStartHere
+> Each data science project is different, but each follows the same general steps.  
+
+![Data Science Workflow, CC BY 4.0 RStudio](https://raw.githubusercontent.com/rstudio/RStartHere/master/data-science.png)
+
+
+
 # Program
 ## 開発環境
 * Rを使うのであればIDEとして**RStudio**を使うのがベスト
@@ -99,7 +106,7 @@ require(tidyverse)
     * 充実したヘルプやトレース機能
     * Git/SVNなどのVCSとの連携によるソース管理
 
-* 日本語環境を快適に使うにはWinodwsは非推奨
+* 日本語環境を快適に使うにはWinodwsは個人的には非推奨
     * OS自体がいまだにSJIS（CP932）を利用しているので日本語処理に難がある
         * 日本語があると正しく処理できないケースが増えている
         * Windows環境ならDockerでRStudio Serverを動かす方がベターだが...
@@ -179,12 +186,12 @@ Rに限らず分析を行う場合にはVSCなどの**オープンソース関�
     * データの中身を整えてデータの品質を上げる
         * 揺れやゴミ、重複データを取り除く、データを補完する
         * 任意の型に変換するなど
-            * **正規表現**が役に立ちます
+        * **正規表現**が役に立ちます
 1. 整形処理
     * データの形を整えてコンピュータで処理できるようにする
         * 雑然データを整然データに変形する
         * 整然データを処理する（削除・抽出・要約・計算・集計など）
-            * **tidyverse**の出番です
+        * **tidyverse**の出番です
 
 
 ## tidyrを振り返る
@@ -445,4 +452,5 @@ tibble  | `tibble`クラスを用いた簡易なテキスト表形式
 　  
 以上を持ちまして「モダンなRの世界」は終了となります。長い期間ありがとうございました。引き続き関連講義となります。次回（2月）もあるよ！  
 　  
-Enjoy ! - CC BY-NC-SA 4.0, Sampo Suzuki
+
+# Enjoy ! 　 CC BY-NC-SA 4.0, Sampo
