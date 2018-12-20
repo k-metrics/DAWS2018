@@ -161,6 +161,10 @@ Rに限らず分析を行う場合にはVSCなどのオープンソース関連�
         * こちらはなれないと難しいが、データを追加していく際に便利
 
 
+## Importあれこれ
+* [大量のファイルを一気に処理したい <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-09/fileimport/){target="_blank" title="複数のファイルをインポートする"}
+
+
 # Tidy/Transform
 
 ## データハンドリング
@@ -263,6 +267,21 @@ dplyr::bind_rows(
 ```
 
 
+## Tidy/Transformあれこれ
+* dplyr
+    * [データフレームを行方向で計算したい <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-12/nest_unnnest/){target="_blank" title="行方向に計算する"}
+
+　  
+
+* purrr
+    * [カスタムフィールドを展開する <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-10/custom_fields/){target="_blank" title="redmine"}
+    * [イレギュラーデータへの対処 <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-10/irregular_data/){target="_blank" title="redmine"}
+
+　  
+
+* forcats
+    * [因子変数を操作したい <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-11/forcats/){target="_blank" title="カテゴリカルデータを操作する"}
+
 
 # Visualize
 ## ggplot2::aesの中か外か？
@@ -332,6 +351,23 @@ mtcars %>% DT::datatable(options = list(pageLength = 5))
 xts::as.xts(nhtemp) %>% dygraphs::dygraph(main = "New Haven Temperatures") %>% 
   dygraphs::dyRangeSelector()
 ```
+
+
+## ggplot2あれこれ
+* 逆引き集
+    * [ggplot2逆引き <i class="fa fa-external-link"></i>](https://yutannihilation.github.io/ggplot2-gyakubiki/){target="_blank" title="Qiita"}
+    * [ggplot2逆引き集 <i class="fa fa-external-link"></i>](https://kazutan.github.io/ggplot2-gyakubiki-book/){target="_blank" title="ぞうさん"}
+
+　  
+
+* Project Cabinet Blog
+    * [二軸のグラフを描くには <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-11/pareto/){target="_blank" title="パレート図を描く"}
+    * [オープン・クローズチャートを描くには <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-11/open_close/){target="_blank" title="オープン・クローズチャートを描く"}
+    * [散布図をかっこよくラベリングしたい <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-09/ggrepel/){target="_blank" title="ラベルが重ならないように描画する"}
+    * [散布図行列あれこれ <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-09/modern_pairplot/){target="_blank" title="モダンな散布図行列"}
+    * [欠損を可視化する <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-09/missing_value/){target="_blank" title="欠損の可視化"}
+    * [可視化の基本、ヒストグラム <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-09/histogram/){target="_blank" title="ヒストグラム"}
+
 
 
 
