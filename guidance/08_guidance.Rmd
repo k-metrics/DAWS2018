@@ -1,6 +1,6 @@
 ---
 title: "第８回データ分析勉強会"
-author: "【午前の部】振り返り＆落穂拾い [鈴木さんぽう, CC BY-NC-SA 4.0]"
+author: "振り返り＆落穂拾い [鈴木さんぽう, CC BY-NC-SA 4.0]"
 date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
 output:
   ioslides_presentation:
@@ -27,21 +27,22 @@ require(tidyverse)
 ```
 
 
-## 本日の内容（案）
+## 本日の内容
+昨年までの学びを振り返ってみましょう。
+
 1. なぜPythonでなくRを使うのか？
-1. Reproducible Research
-1. Tidy Data
-1. Data Science Workflow
+1. Reproducible Research （再現可能性）
+1. Tidy Data （整然データ）
+1. Data Science Workflow を元に振り返る
     * Program
     * Import
     * Tidy/Transform
     * Visualize
     * Communicate
-1. おまけ
 
 　  
 
-# 振り返り
+# 振り返り・落穂拾い
 
 ## なぜPythonでなくRを使うのか？
 [Six Reasons To Learn R For Business, R Blogger](https://www.r-bloggers.com/six-reasons-to-learn-r-for-business/){target="_blank"}
@@ -53,7 +54,7 @@ require(tidyverse)
     * Cutting-edge algorithms and Powerful tools (packages)
 1. R Is Built **For Business**
     * R Markdown
-1. R **Community Suppor**t
+1. R **Community Support**
 
 
 ## Reproducible Research
@@ -66,7 +67,9 @@ require(tidyverse)
 * 過去の分析を見直した時に何をやっているか理解できることも重要
     * その場限りの分析では知見の蓄積にならない
 * 文書化（記録）されない**手作業（データ整形、コピペなど）が再現性を阻害**する
-    * 人の記憶は絶対じゃない、手作業では間違いが混入しやすい
+    * 手作業は、まず文書化（記録）されない
+    * 人の記憶は忘却曲線と共に
+    * 手作業では間違いが混入しやすい
 
 
 ## Tidy Data
@@ -77,7 +80,7 @@ require(tidyverse)
 * Each type of observational unit forms a table.
 * Each value is a cell.
 
-日本語では以下となり、構造と意味が一致しているデータをTidy Dataと呼びます。
+日本語では以下で、**構造と意味が一致しているデータ**をTidy Dataと呼びます。
 
 * 個々の変数が1つの列をなす
 * 個々の観測が1つの行をなす
@@ -88,15 +91,22 @@ require(tidyverse)
 
 # Data Science Workflow
 
+## RStartHere
+> Each data science project is different, but each follows the same general steps.  
+
+![Data Science Workflow, CC BY 4.0 RStudio](https://raw.githubusercontent.com/rstudio/RStartHere/master/data-science.png)
+
+
+
 # Program
 ## 開発環境
-* Rを使うのであればIDEとしてRStudioを使うのがベスト
+* Rを使うのであればIDEとして**RStudio**を使うのがベスト
     * RやR Markdownのコーディングに最適化
     * プロジェクト単位でのファイル・パッケージ管理が可能
     * 充実したヘルプやトレース機能
     * Git/SVNなどのVCSとの連携によるソース管理
 
-* 日本語環境を快適に使うにはWinodwsは非推奨
+* 日本語環境を快適に使うにはWinodwsは個人的には非推奨
     * OS自体がいまだにSJIS（CP932）を利用しているので日本語処理に難がある
         * 日本語があると正しく処理できないケースが増えている
         * Windows環境ならDockerでRStudio Serverを動かす方がベターだが...
@@ -108,7 +118,7 @@ require(tidyverse)
 ## RStuido Tips
 RStudioを利用する場合はR MarkdownのR [Notebook機能](https://bookdown.org/yihui/rmarkdown/notebook.html)を活用すると実行結果を確認するためにknitする必要がなく分析が早く分かりやすくなります。
 
-* R Notebook機能 - chunkの下に実行結果を表示する機能
+* R Notebook機能 - R Markdownの**chunkの下に実行結果を表示**する機能
 
 R Notebook機能を上手に活用するには［Ctrl + Enter］と［Ctrl + Shift + Enter］のショートカットキーを利用します。
 
@@ -130,17 +140,17 @@ require(tidyverse)    # tidyverseは最後に読み込むとコンフリクト�
 \```
 ```
 
-　  
-実際に記述する際は先頭の`\`は記述しないでください。
+
+R Markdownので最初に任意のchunkを実行した場合、**自動的に`setup`のチャンクが実行**され、初期処理をしてくれる便利な機能。なお、実際に記述する際は先頭の`\`は記述しないでください。
 
 
 ## オープンソース
-Rに限らず分析を行う場合にはVSCなどのオープンソース関連の知識も必要になってきています。
+Rに限らず分析を行う場合にはVSCなどの**オープンソース関連の知識も必要**になってきています。
 
-* SVN関連は必須
+* VCS(Version Control System)関連は**必須**
     * GitHub, GitLab, BitBucketなどのクラウドサービス
     * Git自体 or Git Client
-* SNS以外で情報発信をしたい場合
+* SNS以外で情報発信したい場合
     * ホスティングサービス
         * 静的ホスティングサービス（GitHub Pages、Netlifyなど）
         * AWSなども使えるようになればベター
@@ -155,39 +165,45 @@ Rに限らず分析を行う場合にはVSCなどのオープンソース関連�
     * APIアクセスが利用できない場合はスクレイピング
     * スクレイピングが利用できない場合はファイル入力
 
-* データストアにファイルを使う必要があるならバージョン管理ができる形式がベター
+　  
+
+* データストアにファイルを使うなら**バージョン管理ができる形式で**
     * 必ずソースと共にVCSで管理する（再現可能性を低下させない）
     * ファイルから読み込んだデータをSQLiteのようなサーバレスDBMSで管理する手もある
         * こちらはなれないと難しいが、データを追加していく際に便利
 
 
+## Importあれこれ
+* [大量のファイルを一気に処理したい <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-09/fileimport/){target="_blank" title="複数のファイルをインポートする"}
+
+
 # Tidy/Transform
 
 ## データハンドリング
-データハンドリングは**「記録」を分析できるデータにするため**に必要な前処理で大きく以下に分類できます。  
+データハンドリングは**「記録」を分析できるデータにするため**に必要な前処理。   
 
 1. データクレンジング
     * データの中身を整えてデータの品質を上げる
         * 揺れやゴミ、重複データを取り除く、データを補完する
         * 任意の型に変換するなど
-            * 正規表現が役に立ちます
+        * **正規表現**が役に立ちます
 1. 整形処理
     * データの形を整えてコンピュータで処理できるようにする
         * 雑然データを整然データに変形する
         * 整然データを処理する（削除・抽出・要約・計算・集計など）
-            * tidyverseの出番です
+        * **tidyverse**の出番です
 
 
-## Dataset
+## tidyrを振り返る
 ```{r}
 iris
 ```
 
 
 ## tidyr::gather
-`tidyr::gather`関数は、`key`に変数名を`value`にその値をまとめます。
+`tidyr::gather`関数は、`key`に変数名を`value`に値をまとめます。
 ```{r}
-iris %>% tidyr::gather(key = "Part", value = "Value", -Species) %>% head()
+iris %>% tidyr::gather(key = "key", value = "value", -Species) %>% head()
 ```
 
 
@@ -195,8 +211,8 @@ iris %>% tidyr::gather(key = "Part", value = "Value", -Species) %>% head()
 `tidyr::spread`関数は`key`を変数名に`value`をその値として展開しますが、行識別のためにユニークな値が必要です。
 ```{r}
 iris %>% tibble::rowid_to_column("id") %>% 
-  tidyr::gather(key = "Part", value = "Value", -id, -Species) %>% 
-  tidyr::spread(key = Part, value = Value) %>% dplyr::select(-id) %>% head()
+  tidyr::gather(key = "key", value = "value", -id, -Species) %>% 
+  tidyr::spread(key = key, value = value) %>% dplyr::select(-id) %>% head()
 ```
 
 
@@ -216,7 +232,7 @@ iris %>% dplyr::mutate(Species = forcats::fct_reorder(Species, Sepal.Width)) %>%
 
 
 ## purrrは何ができるのか？
-`purrr::map`関数は指定した引数に対して指定した処理（関数、演算子など）を適用する関数で繰り返し処理に威力を発揮します。例えば、  
+`purrr::map`関数は指定した引数に対して指定した処理（関数、演算子など）を適用する関数で繰り返し処理に威力を発揮します。並列処理ではありません。例えば、  
 
 * 多数のファイルを読込んで結合する
 
@@ -262,6 +278,15 @@ dplyr::bind_rows(
   c(issue_id = 16451L, list(id = 4L, name = "Affected version")) )
 ```
 
+
+## Tidy/Transformあれこれ
+* dplyr
+    * [データフレームを行方向で計算したい <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-12/nest_unnnest/){target="_blank" title="行方向に計算する"}
+* purrr
+    * [カスタムフィールドを展開する <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-10/custom_fields/){target="_blank" title="redmine"}
+    * [イレギュラーデータへの対処 <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-10/irregular_data/){target="_blank" title="redmine"}
+* forcats
+    * [因子変数を操作したい <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-11/forcats/){target="_blank" title="カテゴリカルデータを操作する"}
 
 
 # Visualize
@@ -334,6 +359,20 @@ xts::as.xts(nhtemp) %>% dygraphs::dygraph(main = "New Haven Temperatures") %>%
 ```
 
 
+## Visualizeあれこれ
+* Project Cabinet Blog
+    * [二軸のグラフを描くには <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-11/pareto/){target="_blank" title="パレート図を描く"}
+    * [オープン・クローズチャートを描くには <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-11/open_close/){target="_blank" title="オープン・クローズチャートを描く"}
+    * [散布図をかっこよくラベリングしたい <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-09/ggrepel/){target="_blank" title="ラベルが重ならないように描画する"}
+    * [散布図行列あれこれ <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-09/modern_pairplot/){target="_blank" title="モダンな散布図行列"}
+    * [欠損を可視化する <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-09/missing_value/){target="_blank" title="欠損の可視化"}
+    * [可視化の基本、ヒストグラム <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-09/histogram/){target="_blank" title="ヒストグラム"}
+
+* 逆引き集
+    * [ggplot2逆引き <i class="fa fa-external-link"></i>](https://yutannihilation.github.io/ggplot2-gyakubiki/){target="_blank" title="Qiita"}
+    * [ggplot2逆引き集 <i class="fa fa-external-link"></i>](https://kazutan.github.io/ggplot2-gyakubiki-book/){target="_blank" title="ぞうさん"}
+
+
 
 # Communicate
 
@@ -341,15 +380,15 @@ xts::as.xts(nhtemp) %>% dygraphs::dygraph(main = "New Haven Temperatures") %>%
 * Rのコードや**実行結果を文書に埋め込める**Markdown記法
 * 実行結果を直接レポートにできる仕組みは**他言語には（ほぼ）ない**
     * 例外：Jupyter Notebook（旧 IPython Notebook）
-        * これに触発されたのが**R Notebook**機能と思われる
+        * これに触発されたのがR Notebook機能と思われる
 * Markdownとは？
     * **プレーンテキストで**体裁のある文書を作成するための記法
     * シンプル＆ライトウェイト、テキストなので**VCSで管理可能**
     * 変換ソフト（pandocなど）の利用で**多種多様なフォーマット**に変換可能
 * シンプルな記述
-    * **YAML**（体裁、出力フォーマットを指定する箇所）
-    * (Code) **Chunk**（実行させたいコードを記述する箇所）
-    * Text (**Markdown**)（コード以外の文書を記述する箇所）
+    * YAML（体裁、出力フォーマットを指定する箇所）
+    * (Code) Chunk（実行させたいコードを記述する箇所）
+    * Text (Markdown)（コード以外の文書を記述する箇所）
 
 
 ## R Markdown Website & blogdown
@@ -367,22 +406,51 @@ xts::as.xts(nhtemp) %>% dygraphs::dygraph(main = "New Haven Temperatures") %>%
     * websiteより洗練されたデザインテンプレートが多数
 
 
+## df_printオプション
+```{r, eval=FALSE}
+---
+output: 
+  html_document:
+    df_print: default         # データフレーム出力フォーマットはここで指定
+---
+```
+
+value | output
+------|--------
+default | Rのコンソールでdata.frameを表示した時に使われるテキスト表形式
+kable   | シンプルな表形式（全て表示されるので`head`関数などで制限要）
+paged   | ページ送りのついたインタラクティブな表形式（htmlwidgetsと相性いまいち）
+tibble  | `tibble`クラスを用いた簡易なテキスト表形式
+
+
 
 # おわりに
 
 ## 復習のためのリソース
+身につけるにはアウトプットが大切です。間違っていても構わないので**アウトプットし続ける癖**をつけましょう。  
+
 * [2018年度勉強会 <i class="fa fa-external-link"></i>](https://k-metrics.github.io/2018dasg/){target="_blank" title="R Markdown website + GitHub Pages"}
-    * 今年度の勉強会の資料は全てこちらで公開しています
-    * ソースなどはGitHubからクローン可能です
+    * 今年度の勉強会の資料はソースも含めて全てこちらで公開しています
+    * packratの設定を変えましたので必要なら再クローンを
 * [Project Cabinet <i class="fa fa-external-link"></i>](https://k-metrics.github.io/cabinet/){target="_blank" title="R Markdown website + GitHub Pages"}
-    * 環境構築（除くmac OS）と基本説明はこちらから
+    * 環境構築（除くmac OS）と基本事項の説明はこちらから
 * [Project Cabinet Blog <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/){target="_blank" title="blogdown + GitHub + Netlify"}
-    * 上記以外の関数の使い方やTipsなどを紹介しています
+    * 上記以外で関数の使い方やTipsなどを紹介しています
 * [r-wakalang <i class="fa fa-external-link"></i>](https://qiita.com/uri/items/5583e91bb5301ed5a4ba){target="_blank" title="Slack Community"}
-    * エキスパートの揃ったSlack Community
+    * Rで分からないことは親切なエキスパートが揃ったSlack Communityへ
 
 
+## アウトプットし続けるために
+2019年度も快適なコミュニケーションスペースである [bit & innovation <i class="fa fa-external-link"></i>](http://bit-innovation.tis.co.jp/){target="_blank" title="Communication & Collaboration"} での勉強会を実施できる運びとなりました！  
+　  
+株式会社TISの関係各位に感謝申し上げます。
+　  
 
-## Enjoy !
+* 参加者全員がアウトプットできるように**輪講形式**での実施を考えています
+* 詳細は [データ分析勉強会サイト <i class="fa fa-external-link"></i>](https://sites.google.com/site/kantometrics/){target="_blank" title=""}で公開いたしますので奮ってご参加ください
 
-CC BY-NC-SA 4.0, Sampo Suzuki
+　  
+以上を持ちまして「モダンなRの世界」は終了となります。長い期間ありがとうございました。引き続き関連講義となります。次回（2月）もあるよ！  
+　  
+
+# Enjoy ! 　 CC BY-NC-SA 4.0, Sampo
