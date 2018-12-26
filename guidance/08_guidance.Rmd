@@ -158,7 +158,9 @@ Rに限らず分析を行う場合にはVSCなどの**オープンソース関�
         * hugoなど
 
 
+
 # Import
+
 ## データストア
 * データストアに対してはSQLアクセスが利用できるのがベスト
     * SQLアクセスが利用できない場合はAPIアクセス
@@ -177,7 +179,54 @@ Rに限らず分析を行う場合にはVSCなどの**オープンソース関�
 * [大量のファイルを一気に処理したい <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-09/fileimport/){target="_blank" title="複数のファイルをインポートする"}
 
 
+
 # Tidy/Transform
+
+## NAの扱い
+データをインポートする際にデータに何も情報がない場合にはデフォルトとして欠損値（`NA`）として扱われますが、その後に`NA`を含む変数を条件処理する場合は注意が必要です。Excelのフィルター感覚で使っても`NA`は処理対象外になります。
+```{r}
+data.frame(x = c("a", "b", NA, "a", "c", "b"), y = c(1:6)) %>% 
+  dplyr::filter(x != "a")
+```
+
+
+## NAの扱い（つづき）
+これを解決する方法の一つに`%in%`演算子があります。`%in%`は`match`関数のエイリアスで、左辺の要素が右辺に存在するかを確認するための演算子です。これを応用すると左辺の要素から右辺で指定した要素を抽出することができます（返り値がBooleanベクトルなのでこれを利用します）。
+```{r}
+data.frame(x = c("a", "b", NA, "a", "c", "b"), y = c(1:6)) %>% 
+  dplyr::filter(!(x %in% c("a")))
+```
+
+
+## `.`の使い方
+tidyverseのパイプ処理では`.`を使って明示的に前段の処理結果を関数の任意の引数に渡すことが可能ですが、`dplyr::group_by`を用いる場合には注意が必要です。
+```{r}
+ggplot2::mpg %>%
+  dplyr::filter(manufacturer != "lincoln") %>% 
+  dplyr::group_by(year) %>%
+  summarise(result = oneway.test(cty ~ manufacturer, var = TRUE)$p.value)
+```
+
+
+##  `.`の使い方（つづき）
+明示的に引数にデータを指定しようとして以下のような指定を行うとグルーピングされたデータが渡らずに**グループ数だけ元のデータで計算**されてしまいます（r-wakalangでやらかした...一応、やらかしたことは自分で気がついたけど）。これは**`%>%`演算子の仕様**だそうです。
+```{r}
+ggplot2::mpg %>%
+  dplyr::filter(manufacturer != "lincoln") %>% 
+  dplyr::group_by(year) %>%
+  summarise(result = oneway.test(cty ~ manufacturer, data = ., var = TRUE)$p.value)
+```
+
+
+##  `.`の使い方（つづき）
+`dplyr::group_by`を使わない下記のような使い方では正しくデータを渡せます。一応、言い訳をしておくと、こういう使い方を普段しているのがやらかした原因です。
+```{r}
+ggplot2::mpg %>%
+  dplyr::filter(manufacturer != "lincoln") %>% 
+  oneway.test(cty ~ manufacturer, data = ., var = TRUE) %>% 
+  .$p.value
+```
+
 
 ## データハンドリング
 データハンドリングは**「記録」を分析できるデータにするため**に必要な前処理。   
