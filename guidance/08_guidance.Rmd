@@ -141,11 +141,11 @@ require(tidyverse)    # tidyverseは最後に読み込むとコンフリクト�
 ```
 
 
-R Markdownので最初に任意のchunkを実行した場合、**自動的に`setup`のチャンクが実行**され、初期処理をしてくれる便利な機能。なお、実際に記述する際は先頭の`\`は記述しないでください。
+RStuidoのエディタでR Markdownファイルの最初に任意のchunkを実行した場合、**自動的に`setup`のチャンクが実行**され、初期処理をしてくれる便利な機能。なお、実際に記述する際は先頭の`\`は記述しないでください。
 
 
 ## オープンソース
-Rに限らず分析を行う場合にはVSCなどの**オープンソース関連の知識も必要**になってきています。
+Rに限らず分析を行う場合には**オープンソース関連の知識も必要**になってきています。
 
 * VCS(Version Control System)関連は**必須**
     * GitHub, GitLab, BitBucketなどのクラウドサービス
@@ -158,7 +158,9 @@ Rに限らず分析を行う場合にはVSCなどの**オープンソース関�
         * hugoなど
 
 
+
 # Import
+
 ## データストア
 * データストアに対してはSQLアクセスが利用できるのがベスト
     * SQLアクセスが利用できない場合はAPIアクセス
@@ -177,7 +179,77 @@ Rに限らず分析を行う場合にはVSCなどの**オープンソース関�
 * [大量のファイルを一気に処理したい <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-09/fileimport/){target="_blank" title="複数のファイルをインポートする"}
 
 
+
 # Tidy/Transform
+
+## NAの扱い
+データをインポートする際に情報がない部分はデフォルトで欠損値（`NA`）になりますが、`NA`を含む変数を条件処理する場合は注意が必要です。Excelのフィルター感覚で条件を指定しても`NA`は評価対象外になってしまいます。
+```{r}
+data.frame(x = c("a", "b", NA, "a", "c", "b"), y = c(1:6)) %>% 
+  dplyr::filter(x != "a")
+```
+
+```{r}
+NA != "a"       # NAの評価結果は常にNA
+```
+
+
+## NAの扱い（つづき）
+これを解決する方法の一つに`%in%`演算子があります。`%in%`は`match`関数のラッパー関数で、左辺の要素が右辺に存在するかを確認するための演算子です。これを応用すると左辺の要素から右辺で指定した要素を抽出することができます（返り値がBooleanベクトルなのでこれを利用します）。
+```{r}
+data.frame(x = c("a", "b", NA, "a", "c", "b"), y = c(1:6)) %>% 
+  dplyr::filter(!(x %in% c("a")))
+```
+
+
+## NAの扱い（つづき）
+なぜ`%in%`で`NA`を拾えるかは`%in%`のコードを追うと分かります。
+```{r, eval=FALSE}
+"%in%" <- function(x, table){ match(x, table, nomatch = 0) > 0 }
+```
+
+```{r}
+data.frame(x = c("a", "b", NA, "a", "c", "b"), y = c(1:6)) %>% 
+  with(., !(match(x, c("a"), nomatch = 0) > 0))
+```
+`match`関数の中で`identical`関数（Test Objects for Exact Equality）が呼ばれていますので、`NA`でも一致しているか否かが判定できるのです。
+```{r}
+identical(NA, "a")
+```
+
+
+## `.`の使い方
+tidyverseのパイプ処理では`.`を使って明示的に前段の処理結果を関数の任意の引数に渡すことが可能です。例えば
+```{r}
+ggplot2::mpg %>%
+  dplyr::filter(manufacturer != "lincoln") %>% 
+  oneway.test(cty ~ manufacturer, data = ., var = TRUE) %>% 
+  .$p.value
+```
+
+しかし、`dplyr::group_by`を用いる場合には注意が必要です。
+
+
+##  `.`の使い方（つづき）
+明示的に引数にデータを指定しようとして以下のような指定を行うとグルーピングされたデータが渡らずに**グループ数だけ元のデータで計算**されてしまいます（r-wakalangでやらかした...一応、やらかしたことは自分で気がついたけど）。これは**`%>%`演算子の仕様**だそうです。
+```{r}
+ggplot2::mpg %>%
+  dplyr::filter(manufacturer != "lincoln") %>% 
+  dplyr::group_by(year) %>%
+  summarise(result = oneway.test(cty ~ manufacturer, data = ., var = TRUE)$p.value)
+```
+
+
+##  `.`の使い方（つづき）
+`dplyr::group_by`でグルーピングをする場合は以下のように`.`を使用しないでください。
+```{r}
+ggplot2::mpg %>%
+  dplyr::filter(manufacturer != "lincoln") %>% 
+  dplyr::group_by(year) %>%
+  summarise(result = oneway.test(cty ~ manufacturer, var = TRUE)$p.value)
+```
+もしくは、 [`purrr`パッケージを用いる方法 <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-09/purrr/#/purrrmap%E9%96%A2%E6%95%B0){target="_blank" title="Project Cabinet Blog"} を使ってください。
+
 
 ## データハンドリング
 データハンドリングは**「記録」を分析できるデータにするため**に必要な前処理。   
@@ -185,7 +257,7 @@ Rに限らず分析を行う場合にはVSCなどの**オープンソース関�
 1. データクレンジング
     * データの中身を整えてデータの品質を上げる
         * 揺れやゴミ、重複データを取り除く、データを補完する
-        * 任意の型に変換するなど
+        * 任意の型に変換する（例：文字型を数値型など）
         * **正規表現**が役に立ちます
 1. 整形処理
     * データの形を整えてコンピュータで処理できるようにする
@@ -450,7 +522,9 @@ tibble  | `tibble`クラスを用いた簡易なテキスト表形式
 * 詳細は [データ分析勉強会サイト <i class="fa fa-external-link"></i>](https://sites.google.com/site/kantometrics/){target="_blank" title=""}で公開いたしますので奮ってご参加ください
 
 　  
-以上を持ちまして「モダンなRの世界」は終了となります。長い期間ありがとうございました。引き続き関連講義となります。次回（2月）もあるよ！  
+以上を持ちまして「モダンなRの世界」は終了となります。長い期間ありがとうございました。引き続き関連講義となります。  
+　   
+<center> **次回（2月）もあるよ！** </center>  
 　  
 
 # Enjoy ! 　 CC BY-NC-SA 4.0, Sampo
