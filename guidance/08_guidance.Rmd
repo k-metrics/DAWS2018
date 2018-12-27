@@ -199,13 +199,15 @@ data.frame(x = c("a", "b", NA, "a", "c", "b"), y = c(1:6)) %>%
 
 
 ## `.`の使い方
-tidyverseのパイプ処理では`.`を使って明示的に前段の処理結果を関数の任意の引数に渡すことが可能ですが、`dplyr::group_by`を用いる場合には注意が必要です。
+tidyverseのパイプ処理では`.`を使って明示的に前段の処理結果を関数の任意の引数に渡すことが可能です。例えば
 ```{r}
 ggplot2::mpg %>%
   dplyr::filter(manufacturer != "lincoln") %>% 
-  dplyr::group_by(year) %>%
-  summarise(result = oneway.test(cty ~ manufacturer, var = TRUE)$p.value)
+  oneway.test(cty ~ manufacturer, data = ., var = TRUE) %>% 
+  .$p.value
 ```
+
+しかし、`dplyr::group_by`を用いる場合には注意が必要です。
 
 
 ##  `.`の使い方（つづき）
@@ -219,13 +221,14 @@ ggplot2::mpg %>%
 
 
 ##  `.`の使い方（つづき）
-`dplyr::group_by`を使わない下記のような使い方では正しくデータを渡せます。一応、言い訳をしておくと、こういう使い方を普段しているのがやらかした原因です。
+`dplyr::group_by`でグルーピングをする場合は以下のように`.`を使用しないでください。
 ```{r}
 ggplot2::mpg %>%
   dplyr::filter(manufacturer != "lincoln") %>% 
-  oneway.test(cty ~ manufacturer, data = ., var = TRUE) %>% 
-  .$p.value
+  dplyr::group_by(year) %>%
+  summarise(result = oneway.test(cty ~ manufacturer, var = TRUE)$p.value)
 ```
+もしくは、 [`purrr`パッケージを用いる方法 <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-09/purrr/#/purrrmap%E9%96%A2%E6%95%B0){target="_blank" title="Project Cabinet Blog"} を使ってください。
 
 
 ## データハンドリング
