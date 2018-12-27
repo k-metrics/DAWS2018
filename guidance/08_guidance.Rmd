@@ -141,11 +141,11 @@ require(tidyverse)    # tidyverseは最後に読み込むとコンフリクト�
 ```
 
 
-R Markdownので最初に任意のchunkを実行した場合、**自動的に`setup`のチャンクが実行**され、初期処理をしてくれる便利な機能。なお、実際に記述する際は先頭の`\`は記述しないでください。
+RStuidoのエディタでR Markdownファイルの最初に任意のchunkを実行した場合、**自動的に`setup`のチャンクが実行**され、初期処理をしてくれる便利な機能。なお、実際に記述する際は先頭の`\`は記述しないでください。
 
 
 ## オープンソース
-Rに限らず分析を行う場合にはVSCなどの**オープンソース関連の知識も必要**になってきています。
+Rに限らず分析を行う場合には**オープンソース関連の知識も必要**になってきています。
 
 * VCS(Version Control System)関連は**必須**
     * GitHub, GitLab, BitBucketなどのクラウドサービス
@@ -183,7 +183,7 @@ Rに限らず分析を行う場合にはVSCなどの**オープンソース関�
 # Tidy/Transform
 
 ## NAの扱い
-データをインポートする際に情報がないとことはデフォルトとして欠損値（`NA`）になりますが、`NA`を含む変数を条件処理する場合は注意が必要です。Excelのフィルター感覚で条件指定をしても`NA`は処理対象外になります。
+データをインポートする際に情報がない部分はデフォルトで欠損値（`NA`）になりますが、`NA`を含む変数を条件処理する場合は注意が必要です。Excelのフィルター感覚で条件を指定しても`NA`は評価対象外になってしまいます。
 ```{r}
 data.frame(x = c("a", "b", NA, "a", "c", "b"), y = c(1:6)) %>% 
   dplyr::filter(x != "a")
@@ -203,7 +203,7 @@ data.frame(x = c("a", "b", NA, "a", "c", "b"), y = c(1:6)) %>%
 
 
 ## NAの扱い（つづき）
-なぜ`%in%`で`NA`を拾えるかは`%in%`のコードを追うと分かりますが、
+なぜ`%in%`で`NA`を拾えるかは`%in%`のコードを追うと分かります。
 ```{r, eval=FALSE}
 "%in%" <- function(x, table){ match(x, table, nomatch = 0) > 0 }
 ```
@@ -212,7 +212,7 @@ data.frame(x = c("a", "b", NA, "a", "c", "b"), y = c(1:6)) %>%
 data.frame(x = c("a", "b", NA, "a", "c", "b"), y = c(1:6)) %>% 
   with(., !(match(x, c("a"), nomatch = 0) > 0))
 ```
-`match`関数の中で`identical`関数（Test Objects for Exact Equality）が呼ばれていますので、`NA`でも一致しているか否かを判定できるのです。
+`match`関数の中で`identical`関数（Test Objects for Exact Equality）が呼ばれていますので、`NA`でも一致しているか否かが判定できるのです。
 ```{r}
 identical(NA, "a")
 ```
