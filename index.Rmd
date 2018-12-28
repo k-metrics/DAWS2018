@@ -266,12 +266,17 @@ Redmineのチケットデータを用いてダッシュボードを作る。
 年明けの第8回は昨年学んできましたモダンなRの世界を振り返る回です。振り返ることでモダンなRを自分のものにしましょう。また、ハンズオン・コーナーもあります。なお、都合によりカリキュラムを変更する場合がありますので、ご了承ください。  
 　  
 
-* [振り返り・落穂拾い <i class="fa fa-external-link-square"></i>](./guidance/08_guidance.html){target="_blank" title="第8回 データ分析勉強会"}
-* Try
-    * Seleniumハンズオン
-    * Kibanaハンズオン
+### 午前の部
+* Seleniumハンズオン
 
 　  
+
+### 午後の部
+* [振り返り・落穂拾い <i class="fa fa-external-link-square"></i>](./guidance/08_guidance.html){target="_blank" title="第8回 データ分析勉強会"}
+* Kibanaハンズオン
+
+　  
+
 16時から新年会を予定しています。新年会のみの参加も大歓迎ですので [こくちーずPRO <i class="fa fa-external-link"></i>](https://www.kokuchpro.com/event/377760920464bda94d0f704c77aa3133/){target="_blank" title=""} のお問い合わせからお申し込みください。  
 　  
 
