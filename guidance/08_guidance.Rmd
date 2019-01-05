@@ -18,6 +18,8 @@ output:
 
 
 ```{r setup, include=FALSE}
+sink(file = "foo.log")
+
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 require(DT)
@@ -73,7 +75,7 @@ require(tidyverse)
 
 
 ## Tidy Data
-乱暴に言うと「Coddの第三正規形」を満たすデータ（対義語はMessy Data）。
+乱暴に言うと「Coddの第三正規形」を満たすデータ。対義語はMessy Data。
 
 * Each variable forms a column.
 * Each observation forms a row.
@@ -100,13 +102,13 @@ require(tidyverse)
 
 # Program
 ## 開発環境
-* Rを使うのであればIDEとして**RStudio**を使うのがベスト
+* RのIDEは**RStudio**を使うのが現状ベスト
     * RやR Markdownのコーディングに最適化
     * プロジェクト単位でのファイル・パッケージ管理が可能
     * 充実したヘルプやトレース機能
-    * Git/SVNなどのVCSとの連携によるソース管理
+    * Git/SVNなどのVCSとの連携によるソース管理など
 
-* 日本語環境を快適に使うにはWinodwsは個人的には非推奨
+* 日本語環境を快適に使うのにWinodwsは（個人的には）非推奨
     * OS自体がいまだにSJIS（CP932）を利用しているので日本語処理に難がある
         * 日本語があると正しく処理できないケースが増えている
         * Windows環境ならDockerでRStudio Serverを動かす方がベターだが...
@@ -141,7 +143,23 @@ require(tidyverse)    # tidyverseは最後に読み込むとコンフリクト�
 ```
 
 
-RStuidoのエディタでR Markdownファイルの最初に任意のchunkを実行した場合、**自動的に`setup`のチャンクが実行**され、初期処理をしてくれる便利な機能。なお、実際に記述する際は先頭の`\`は記述しないでください。
+RStuidoエディタでR Markdownファイルの任意のchunkを実行した場合、最初の実行時のみ**自動的に`setup`のチャンクが実行**され初期処理をしてくれる便利な機能。なお、実際に記述する際は先頭の`\`は記述しないでください。
+
+
+## コンソール出力のリダイレクト
+RやRStudioのコンソール出力をファイルへリダイレクトしたい場合は`sink`関数を使ってください。ただし、R Markdownのチャンク内では有効に機能しません。  
+
+```{r, eval=FALSE}
+sink(file = "foo.log")
+
+iris %>% 
+  dplyr::filter(Species == "setosa") %>% 
+  lm(Sepal.Length ~ Sepal.Width, data = .) %>% summary()
+
+sink()
+```
+
+なお、コンソール入力（`>`で入力するコマンド）は出力されませんので、コンソール入力も合わせて出力したい場合は`TeachingDemos`パッケージを利用してください。
 
 
 ## オープンソース
@@ -173,6 +191,10 @@ Rに限らず分析を行う場合には**オープンソース関連の知識�
     * 必ずソースと共にVCSで管理する（再現可能性を低下させない）
     * ファイルから読み込んだデータをSQLiteのようなサーバレスDBMSで管理する手もある
         * こちらはなれないと難しいが、データを追加していく際に便利
+
+
+## XPath
+![相対パス（構成変更に弱い）と絶対パス（実装が面倒？）](./fig/xpath.png)
 
 
 ## Importあれこれ
