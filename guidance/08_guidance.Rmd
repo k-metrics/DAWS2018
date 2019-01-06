@@ -384,14 +384,14 @@ dplyr::bind_rows(
 
 
 # Visualize
-## ggplot2::aesの中か外か？
+## ggplot2::aes、中に書くか外に書くか？
 ```{r}
 iris %>% ggplot2::ggplot(ggplot2::aes(x = Species, fill = Species)) + 
   ggplot2::geom_boxplot(ggplot2::aes(y = Sepal.Length), alpha = 0.5)
 ```
 
 
-## ggplot2::aesの中か外か？
+## ggplot2::aes、中に書くか外に書くか？（その２）
 ```{r}
 iris %>% ggplot2::ggplot(ggplot2::aes(x = Species, fill = Species)) + 
   ggplot2::geom_boxplot(ggplot2::aes(y = Sepal.Length, alpha = 0.5))
