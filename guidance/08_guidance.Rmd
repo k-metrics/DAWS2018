@@ -18,8 +18,6 @@ output:
 
 
 ```{r setup, include=FALSE}
-sink(file = "foo.log")
-
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 require(DT)
@@ -147,7 +145,7 @@ RStuidoエディタでR Markdownファイルの任意のchunkを実行した場�
 
 
 ## コンソール出力のリダイレクト
-RやRStudioのコンソール出力をファイルへリダイレクトしたい場合は`sink`関数を使ってください。ただし、R Markdownのチャンク内では有効に機能しません。  
+RやRStudioのコンソール**出力を**ファイルへリダイレクトしたい場合は`sink`関数を使ってください。ただし、R Markdownのチャンク内では有効に機能しません。  
 
 ```{r, eval=FALSE}
 sink(file = "foo.log")
@@ -159,7 +157,7 @@ iris %>%
 sink()
 ```
 
-なお、コンソール入力（`>`で入力するコマンド）は出力されませんので、コンソール入力も合わせて出力したい場合は`TeachingDemos`パッケージを利用してください。
+なお、コンソール入力（`>`で入力するコマンド）は出力されませんので、コンソール**入力も合わせて出力**したい場合は`TeachingDemos`パッケージを利用してください。
 
 
 ## オープンソース
@@ -179,6 +177,27 @@ Rに限らず分析を行う場合には**オープンソース関連の知識�
 
 # Import
 
+
+## 複数の連続したURLを読み込む
+[Kabutan <i class="fa fa-external-link"></i>](https://kabutan.jp/stock/kabuka?code=0950&ashi=wek&page=1){target="_blank" title="米ドル／円 時系列"} のようにURLを用いてテーブルを切り替えているページ（`https://kabutan.jp/stock/kabuka?code=0950&ashi=wek&page=n`）をスクレイピングする場合には`purrr`パッケージを用いると便利です。
+```{r, eval=FALSE}
+purrr::map2(.x = site_url, .y = c(1:n), ~ paste0(.x, .y)) %>% 
+                                             # URLリストを作成
+  purrr::map_df(.x = ., .f = function(.x) {  # そのリストを元に関数（スクレイピング）を実行
+    Sys.sleep(1)                             # Sleepは最初に入れるのが肝
+    xml2::read_html(.x) %>%                  # ページと読み込み処理
+      rvest::xml_node(xpath = xpath_yd) %>%　# テーブル要素を抽出
+      rvest::html_table()                    # テーブルをデータフレーム化
+  })　　　　　　　　　　　　　　　　　　　　 # データフレームを結合
+```
+
+`purrr`パッケージは並列処理ではありませんので`for`文と同様に`Sys.sleep`関数で読み込み間隔を調整することができ、面倒な処理なしにデータフレームを結合することが可能です。
+
+
+## XPath
+![絶対パス（構成変更に弱い）と一意？パス（設計・実装が面倒？）](./fig/xpath.png)
+
+
 ## データストア
 * データストアに対してはSQLアクセスが利用できるのがベスト
     * SQLアクセスが利用できない場合はAPIアクセス
@@ -193,16 +212,27 @@ Rに限らず分析を行う場合には**オープンソース関連の知識�
         * こちらはなれないと難しいが、データを追加していく際に便利
 
 
-## XPath
-![相対パス（構成変更に弱い）と絶対パス（実装が面倒？）](./fig/xpath.png)
-
-
 ## Importあれこれ
 * [大量のファイルを一気に処理したい <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-09/fileimport/){target="_blank" title="複数のファイルをインポートする"}
 
 
 
 # Tidy/Transform
+
+## データハンドリング
+データハンドリングは**「記録」を分析できるデータにするため**に必要な前処理。   
+
+1. データクレンジング
+    * データの中身を整えてデータの品質を上げる
+        * 揺れやゴミ、重複データを取り除く、データを補完する
+        * 任意の型に変換する（例：文字型を数値型など）
+        * **正規表現**が役に立ちます
+1. 整形処理
+    * データの形を整えてコンピュータで処理できるようにする
+        * 雑然データを整然データに変形する
+        * 整然データを処理する（削除・抽出・要約・計算・集計など）
+        * **tidyverse**の出番です
+
 
 ## NAの扱い
 データをインポートする際に情報がない部分はデフォルトで欠損値（`NA`）になりますが、`NA`を含む変数を条件処理する場合は注意が必要です。Excelのフィルター感覚で条件を指定しても`NA`は評価対象外になってしまいます。
@@ -271,21 +301,6 @@ ggplot2::mpg %>%
   summarise(result = oneway.test(cty ~ manufacturer, var = TRUE)$p.value)
 ```
 もしくは、 [`purrr`パッケージを用いる方法 <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-09/purrr/#/purrrmap%E9%96%A2%E6%95%B0){target="_blank" title="Project Cabinet Blog"} を使ってください。
-
-
-## データハンドリング
-データハンドリングは**「記録」を分析できるデータにするため**に必要な前処理。   
-
-1. データクレンジング
-    * データの中身を整えてデータの品質を上げる
-        * 揺れやゴミ、重複データを取り除く、データを補完する
-        * 任意の型に変換する（例：文字型を数値型など）
-        * **正規表現**が役に立ちます
-1. 整形処理
-    * データの形を整えてコンピュータで処理できるようにする
-        * 雑然データを整然データに変形する
-        * 整然データを処理する（削除・抽出・要約・計算・集計など）
-        * **tidyverse**の出番です
 
 
 ## tidyrを振り返る
@@ -490,14 +505,14 @@ xts::as.xts(nhtemp) %>% dygraphs::dygraph(main = "New Haven Temperatures") %>%
     * R Markdownによる記述
     * knit結果を公開すればWebサイトやblogサイトが簡単に構築できる
 
-　  
-
 * R Markdown website
     * R MarkdownのHTML出力にメニューを付加するイメージ
     * Bootswatchを用いたテーマ設定が可能
+    * 作るのは簡単だけどページ構成管理が手動なのが厄介
 * blogdown
-    * 静的サイトジェネレーター（hugo）のラッパーとR Studio Addins
-    * websiteより洗練されたデザインテンプレートが多数
+    * 静的サイトジェネレーター（hugo）のラッパーとRStudio Addins
+    * websiteより洗練されたデザインテンプレートでページ構成管理は自動
+    * テーマ関連の管理がちょっと厄介（Windowsだと展開できないとか脆弱性管理とか）
 
 
 ## df_printオプション
@@ -541,7 +556,7 @@ tibble  | `tibble`クラスを用いた簡易なテキスト表形式
 　  
 
 * 参加者全員がアウトプットできるように**輪講形式**での実施を考えています
-* 詳細は [データ分析勉強会サイト <i class="fa fa-external-link"></i>](https://sites.google.com/site/kantometrics/){target="_blank" title=""}で公開いたしますので奮ってご参加ください
+* 詳細は [データ分析勉強会サイト <i class="fa fa-external-link"></i>](https://sites.google.com/site/kantometrics/){target="_blank" title="Google Pages"}で公開いたしますので奮ってご参加ください
 
 　  
 以上を持ちまして「モダンなRの世界」は終了となります。長い期間ありがとうございました。引き続き関連講義となります。  
