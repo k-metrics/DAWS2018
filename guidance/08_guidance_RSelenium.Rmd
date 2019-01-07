@@ -1,64 +1,390 @@
 ---
 title: "第８回データ分析勉強会"
-subtitle: "Install Selenium on Windows"
-author: "鈴木さんぽう"
-date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
-# date: "2018.01.12"
+subtitle: "RSelenium"
+author: "かとうたくみ"
+#date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
+date: "2018.01.12"
 output:
   ioslides_presentation:
-    css: style.css
+    css: style_img_07.css
     df_print: paged
     smaller: false
     widescreen: true
 ---
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 
-require(RSelenium)
-require(rvest)
-require(wdman)
 require(tidyverse)
+require(rvest)
+library(RSelenium)
 
 # [RStudio で日本語が使えなくなっていた](https://blog.goo.ne.jp/r-de-r/e/084639aec24beb8a6d08b8241545ef1a)
-# Sys.setlocale("LC_ALL", "ja_JP.UTF-8")
+Sys.setlocale("LC_ALL", "ja_JP.UTF-8")
 ```
 
-## Seleniumのインストール
+## おさらい
 
-* `RSelenium`はSelenium Serverを操作するためSelenium Serverが必要です
-* `wdman`パッケージを使うとSelenium Serverの [インストールと設定 <i class="fa fa-external-link"></i>](https://cran.r-project.org/web/packages/wdman/vignettes/basics.html){target="_blank" title="wdman: Basics"} ができます
-    * `wdman`パッケージは`RSelenium`パッケージをインストールすると一緒にインストールされます
+[第7回データ分析勉強会：スクレイピング](./07_guidance.html)
+
+* Rでスクレイピングするメリット
+* chromeデベロッパーツール
+* CSS SelectorとXPath
+* rvestパッケージ
+
+## やってみよう ・・・その前に
+
+スクレイピングする際には以下に気をつけましょう
+
+* 規約でスクレイピングを禁止していないか？（ツイッター等）
+
+ → API等を利用しよう
+
+* 著作権等に抵触しないか？
+
+ → 対象データ、用途、公開先を適切に
+
+* 相手サーバーから攻撃とみなされないか？
+
+ → 繰り返し処理で取得する場合は、Sleepする
+
+
+**基本的には自己責任です！**
+
+
+## RSelenium
+
+* SeleniumをRから実行する
+* 単純なURLの指定では立ち行かない場合に有効
+    - ダウンロードするのにボタンを押す必要がある
+    - URLは変化せずに画面が遷移していく作りになっている
+    - ログインが必要な場合
+    
+## インストール
+
+* RSeleniumのインストール
 
 ```{r eval=FALSE}
-wdman::selenium(retcommand = TRUE, verbose = TRUE, check = FALSE)
+install.packages("RSelenium")
 ```
 
-* ただし、Selenium Serverのインストールと設定には**Java（JDK or JRE）が必要**です
-* 以降、Windows環境でのJavaのインストール方法を説明します
+* RSeleniumがCRANからインストールできない場合はgithubから
+
+参考：[RSeleniumの始め方](https://clean-copy-of-onenote.hatenablog.com/entry/RSelenium_start)
 
 
-## Javaのインストール
-最近のWindows環境ではJavaが**インストールされていない**ことが多いため、別途、Javaをインストールする必要があります。ただし、2019年1月からOracle Javaは**ビジネス用途では有償（JREも有償）**になりました。業務用PCへのインストールは注意が必要です。  
+## Selenium準備1 wdman
 
-そこで、無償で使える**Oracle's OpenJDK**をインストールしますが、Oracle Java（JDK, JRE）に比べると脆弱性対応のリリースが長めである点に注意してください。また、64bit版のみでインストーラはありません。  
+* RSeleniumはSeleniumを操作するため、Selenium自体の準備が必要
+* Seleniumサーバというローカルサーバを通してブラウザの操作を行う
+* ブラウザ毎にドライバをダウンロードして、パスを通す
+* Seleniumサーバを立ち上げる
+* これを全て実行してくれるのがwdmanパッケージのselenium()
 
-* [Oracle's OpenJDK <i class="fa fa-external-link"></i>](https://jdk.java.net/11/){target="_blank" title="Java SE 11.0.1 Platform under the GNU General Public License, version 2, with the Classpath Exception."}
+```{r eval=FALSE}
+wdman::selenium(retcommand = TRUE, verbose = FALSE, check = FALSE)
+```
+* wdmanパッケージはRSeleniumのインストールで一緒にインストールされる
+* 環境によってはエラーとなるため、手動でこれらを行う（次ページ）
 
+参考：[wdman vignettes](https://cran.r-project.org/web/packages/wdman/vignettes/basics.html)
 
-## Oracle's OpenJDKのインストール
-* [Oracle's OpenJDK(JDK11) <i class="fa fa-external-link"></i>](https://jdk.java.net/11/){target="_blank" title="Java SE 11.0.1 Platform under the GNU General Public License, version 2, with the Classpath Exception."}からWinodws用のzipファイルをダウンロードします
-* ダウンロードしたzipファイルを開き中身を任意のフォルダにコピーします
-    * 「jdk-11.0.1」フォルダを丸ごとコピーしてください（フォルダ名は2019/1/7時点）
-* 「(your folder)\\jdk-11.0.1\\bin」をPATHに追加します
-    * Windows10の場合[コントロールパネル]-[システム]-[システムの詳細設定]-[環境変数]から設定できます
-* RStudioを起動して`wdman`パッケージを用いてSelenium Serverをインストールします
-    * デフォルトでインストールするとサーバのポートは4567になります（Selenium Serverのデフォルトポートは4444）
+## Selenium準備2 手動ケース
 
-```{r, eval=FALSE}
-wdman::selenium(retcommand = TRUE)
+* Webブラウザ（ここではGoogle Chrome）[ドライバ](https://sites.google.com/a/chromium.org/chromedriver/downloads)のダウンロード
+* chromeドライバの格納場所に対してパスを通す
+* Seleniumサーバの[バイナリ](http://www.seleniumhq.org/download/)をダウンロードする
+
+* **ターミナルから** Seleniumサーバをスタンドアローンで起動する
+
+```{r eval=FALSE}
+java -jar /hoge/hoge/selenium-server-standalone-x.xx.x.jar
 ```
 
+## ブラウザの起動1-1 rsDriver()
 
+* RSeleniumパッケージをロードする
+* rsDriver()を用いて、Seleniumサーバとブラウザを起動する
+* rsDriver()が作成するオブジェクトのclient要素を取り出して、
+* Rの参照クラスであるremoteDriverのインスタンスを作成する
+
+```{r eval=FALSE}
+library(RSelenium)
+
+# chromeブラウザを立ち上げる ※事前にJDKのインストールが必要
+rD <- rsDriver(check = FALSE)#, port = 4568L)
+# remoteDriverクラスの作成
+remDr <- rD[["client"]]
+```
+
+## ブラウザの起動1-2 rsDriver()
+
+* extraCapabilities引数でchrome起動時のオプションを指定する
+
+```{r eval=TRUE}
+# Chromeオプションを追加
+eCaps <- list(
+  chromeOptions = list(
+    prefs = list(
+      # ポップアップを表示しない
+      "profile.default_content_settings.popups" = 0L,
+      # ダウンロードプロンプトを表示しない
+      "download.prompt_for_download" = FALSE,
+      # ダウンロードディレクトリを設定
+      "download.default_directory" = "/Users/takumi/R/worldcup"
+    )
+  )
+)
+rD <- rsDriver(extraCapabilities = eCaps, check = FALSE)#, port = 4568L)
+remDr <- rD[["client"]]
+```
+
+## ブラウザの起動2 remoteDriver()
+
+* remoteDriver()を用いて、remoteDriverクラスのインスタンスを作成する
+* remoteDriverクラスは参照クラスのため、メソッドは$でアクセスする
+* open()でブラウザが立ち上がる
+    - ドライバ格納場所へのパスが通っていること
+    - ブラウザとドライバでバージョンが整合していること
+    - ポートが競合していないこと
+
+```{r eval=FALSE}
+library(RSelenium)
+remDr <- remoteDriver(
+ remoteServerAddr = "localhost",
+# port = 4568,
+ browserName = "chrome"
+)
+remDr$open()
+remDr$getStatus()
+```
+
+## 基本操作
+
+* URLを指定して、navigate()で移動する
+* goBack()で前に戻る、goForward()で先に進む
+* getCurrentUrl()で現在のURLを取得する
+* refresh()でページを更新する
+
+```{r eval=FALSE}
+
+remDr$navigate("https://www.google.com/")
+remDr$navigate("https://www.yahoo.co.jp/")
+
+remDr$goBack()
+remDr$getCurrentUrl()
+
+remDr$goForward()
+remDr$getCurrentUrl()
+
+remDr$refresh()
+
+```
+
+## 要素の指定
+
+* findElement()でアクセスしたい要素を指定する
+* CSSセレクタ, XPathで指定する
+* id, class, name属性で指定する
+* getElementAttribute()で属性値を取得する
+
+```{r eval=TRUE}
+
+remDr$navigate("http://www.google.com/")
+webElem <- remDr$findElement(using = "css", "input[name='q']")
+webElem$getElementAttribute("name")
+```
+
+参考：[[翻訳] RSelenium vignette: RSeleniumの基本](https://qiita.com/nakamichi/items/ad186633ae249b26d032)
+
+## アクション
+
+* 指定した入力ボックスに対して、sendKeysToElement()で文字やキーを入力する
+* 指定したボタンに対して、clickElement()でクリック
+* getPageSource()でソース情報を取得する ここからrvestでもよい
+
+```{r eval=TRUE}
+
+webElem$sendKeysToElement(sendKeys = list("データ分析勉強会"))
+Sys.sleep(1)
+webElem <- remDr$findElement(using = 'name', "btnK")
+webElem$clickElement()
+
+# webElem$sendKeysToElement(sendKeys = list("データ分析勉強会", ¥uE007"))
+# webElem$sendKeysToElement(sendKeys = list("データ分析勉強会", key="enter"))
+# selKeys
+
+txt <- remDr$getPageSource()
+
+```
+
+参考：[UTF-8コード表](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementidvalue)
+
+## 分析を行う
+
+* ここではGoogleの検索結果から、見出し部分を抽出してみる
+
+```{r eval=TRUE}
+library(rvest)
+read_html(txt[[1]]) %>% 
+  html_nodes(css = "#rso > div > div > div > div > div > div.r > a > h3") %>% 
+  html_text
+
+```
+
+```{r include=FALSE}
+library(rvest)
+read_html(txt[[1]]) %>% 
+#  html_nodes(css = "#rso > div > div > div > div > div > div.r > a > h3") %>% 
+  html_nodes(xpath = '//*[@id="rso"]/div/div/div/div/div/div[1]/a/h3') %>% 
+  html_text
+
+# 検索結果１、２件目（CSS Selector）
+# #rso > div > div > div:nth-child(1) > div > div > div.r > a > h3
+# #rso > div > div > div:nth-child(2) > div > div > div.r > a > h3
+
+# 検索結果１、２件目（XPath）
+# //*[@id="rso"]/div/div/div[1]/div/div/div[1]/a/h3
+# //*[@id="rso"]/div/div/div[2]/div/div/div[1]/a/h3
+
+```
+
+## 終了
+
+* close()でブラウザを閉じる
+
+```{r eval=TRUE}
+remDr$close()
+```
+
+rsDriver()で開始した場合、
+
+* stop()でSeleniumサーバを閉じる
+* **これをしないとプロセスがkillされず、次回実行時にポートが競合する**
+
+```{r eval=TRUE}
+rD[["server"]]$stop()
+```
+
+## デモ（前回の）
+
+* [e-stat](http://e-stat.go.jp/)のサイトから、神奈川県の緯度経度データをダウンロードする
+
+[第7回 Appendix.B: RSeleniumデモ.Rmd](./07_guidance_appendixB.Rmd)
+
+```{r include=FALSE, eval=FALSE}
+library(RSelenium)
+
+# Chromeオプションを追加
+eCaps <- list(
+  chromeOptions = 
+    list(prefs = list(
+      # ポップアップを表示しない
+      "profile.default_content_settings.popups" = 0L,
+      # ダウンロードプロンプトを表示しない
+      "download.prompt_for_download" = FALSE,
+      # ダウンロードディレクトリを設定
+      # 自分のディレクトリに書き換える必要がある
+      "download.default_directory" = "/Users/takumi/R/worldcup"
+    )
+  )
+)
+
+# chromeブラウザを立ち上げる ※事前にJDKのインストールが必要
+#rD <- rsDriver(verbose = FALSE)
+rD <- rsDriver(extraCapabilities = eCaps, check = FALSE)#, port = 4568L)
+# remoteDriverクラスの作成
+remDr <- rD[["client"]]
+
+# URLにアクセス
+remDr$navigate("http://e-stat.go.jp/")
+
+Sys.sleep(3)
+
+# CSSセレクタで要素を特定
+# ここでは「GIS」
+webElem <- remDr$findElement("css selector", "#block-detuyatubiaotejianru2 > div > div > a:nth-child(1)")
+# 選択した要素をクリック
+webElem$clickElement()
+
+Sys.sleep(3)
+
+# 「境界データダウンロード」をクリック
+webElem <- remDr$findElement("css selector", "body > div.dialog-off-canvas-main-canvas > div > main > div.row.l-estatRow > section > div.region.region-content > article > div > div > section > a:nth-child(6)")
+webElem$clickElement()
+
+Sys.sleep(3)
+
+# 「境界データ」をクリック
+webElem <- remDr$findElement("css selector", "#main > nav:nth-child(3) > nav > div.stat-datatype.js-nw-search1.__open > div.stat-datatype-list.js-nw-search2 > a:nth-child(2)")
+webElem$clickElement()
+
+Sys.sleep(3)
+
+# 「小地域」をクリック
+webElem <- remDr$findElement("css selector", "#main > section > div.js-search-detail > ul > li:nth-child(1)")
+webElem$clickElement()
+
+Sys.sleep(3)
+
+# 「国勢調査」をクリック
+webElem <- remDr$findElement("css selector", "#main > section > div.js-search-detail > ul > li:nth-child(1)")
+webElem$clickElement()
+
+Sys.sleep(3)
+
+# 「2015年」をクリック
+webElem <- remDr$findElement("css selector", "#main > section > div.js-search-detail > div.stat-search_result-list.js-items > ul:nth-child(1) > li")
+webElem$clickElement()
+
+Sys.sleep(3)
+
+# 「小地域（町丁・字等別）」をクリック
+webElem <- remDr$findElement("css selector", "#main > section > div.js-search-detail > div.stat-search_result-list.js-items > ul:nth-child(1) > li > div.stat-search_result-item2-sub.js-child-items.js-row > ul > li:nth-child(1) > div > span.stat-title-has-child > span > a")
+webElem$clickElement()
+
+Sys.sleep(3)
+
+# 「世界測地系緯度経度・Shape形式」をクリック
+webElem <- remDr$findElement("css selector", "#main > section > div.js-search-detail > div.stat-search_result-list.js-items > ul:nth-child(1)")
+webElem$clickElement()
+
+Sys.sleep(3)
+
+# 「神奈川県」をクリック
+webElem <- remDr$findElement("css selector", "#main > section > div.js-search-detail > div > div > article:nth-child(14) > div > ul")
+webElem$clickElement()
+
+Sys.sleep(3)
+
+# 神奈川県全域の「世界測地系緯度経度・Shape形式」をクリック
+webElem <- remDr$findElement("css selector", "#main > section > div.js-search-detail > div > div > article:nth-child(1) > div > ul > li:nth-child(3) > a > span")
+webElem$clickElement()
+
+Sys.sleep(3)
+
+# ブラウザを閉じる
+remDr$close()
+# Seleniumサーバを閉じる
+rD[["server"]]$stop()
+
+```
+
+## まとめ
+
+* すんなり動いちゃえば（特にwdmanの辺り）簡単に利用できる
+* UI操作を再現しているので、応用が効く
+* UI操作がMustでなければ、rvestでいく方がよい
+
+## License
+
+CC BY-NC-SA 4.0, Takumi Kato  
+
+* 本資料中で引用してる画像などの著作権は原著作権者にあります。
+
+## SessionInfo() {.smaller}
+
+```{r echo=FALSE, size=1}
+sessionInfo()
+```
 
 # Enjoy!
