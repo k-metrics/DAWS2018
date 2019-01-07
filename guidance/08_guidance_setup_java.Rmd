@@ -1,6 +1,6 @@
 ---
 title: "第８回データ分析勉強会"
-subtitle: "Install Selenium on Windows"
+subtitle: "Install Selenium for Windows"
 author: "鈴木さんぽう"
 date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
 # date: "2018.01.12"
@@ -8,6 +8,7 @@ output:
   ioslides_presentation:
     css: style.css
     df_print: paged
+    logo: fig/selenium_logo.jpg
     smaller: false
     widescreen: true
 ---
@@ -19,46 +20,88 @@ require(RSelenium)
 require(rvest)
 require(wdman)
 require(tidyverse)
-
-# [RStudio で日本語が使えなくなっていた](https://blog.goo.ne.jp/r-de-r/e/084639aec24beb8a6d08b8241545ef1a)
-# Sys.setlocale("LC_ALL", "ja_JP.UTF-8")
 ```
 
 ## Seleniumのインストール
-
-* `RSelenium`はSelenium Serverを操作するためSelenium Serverが必要です
-* `wdman`パッケージを使うとSelenium Serverの [インストールと設定 <i class="fa fa-external-link"></i>](https://cran.r-project.org/web/packages/wdman/vignettes/basics.html){target="_blank" title="wdman: Basics"} ができます
+* `RSelenium`はSelenium Serverを操作するのでSeleniumが別途必要です
+* `wdman`パッケージを使うとSeleniumのインストールと設定ができます
     * `wdman`パッケージは`RSelenium`パッケージをインストールすると一緒にインストールされます
+    * ただし、**Java（JDK or JRE）が必要**です
 
-```{r eval=FALSE}
-wdman::selenium(retcommand = TRUE, verbose = TRUE, check = FALSE)
-```
-
-* ただし、Selenium Serverのインストールと設定には**Java（JDK or JRE）が必要**です
-* 以降、Windows環境でのJavaのインストール方法を説明します
-
-
-## Javaのインストール
-最近のWindows環境ではJavaが**インストールされていない**ことが多いため、別途、Javaをインストールする必要があります。ただし、2019年1月からOracle Javaは**ビジネス用途では有償（JREも有償）**になりました。業務用PCへのインストールは注意が必要です。  
-
-そこで、無償で使える**Oracle's OpenJDK**をインストールしますが、Oracle Java（JDK, JRE）に比べると脆弱性対応のリリースが長めである点に注意してください。また、64bit版のみでインストーラはありません。  
-
-* [Oracle's OpenJDK <i class="fa fa-external-link"></i>](https://jdk.java.net/11/){target="_blank" title="Java SE 11.0.1 Platform under the GNU General Public License, version 2, with the Classpath Exception."}
+### Javaのインストール
+* 最近のWindows環境ではJavaは**インストールされていません**
+* 2019年1月からOracle Java（旧 Sun Java）は**ビジネス用途では有償（JREも有償）**です
+    * 業務用PCへのインストールは注意が必要
+* 今回は無償で使えるJavaをインストールします
 
 
 ## Oracle's OpenJDKのインストール
+* Windows環境で無償で使えるJavaに**Oracle's OpenJDK**があります
+    * Oracle Java（JDK, JRE）に比べると脆弱性対応のリリースが長めです
+    * 64bit版のみでインストーラはありません
+
+### インストール手順
 * [Oracle's OpenJDK(JDK11) <i class="fa fa-external-link"></i>](https://jdk.java.net/11/){target="_blank" title="Java SE 11.0.1 Platform under the GNU General Public License, version 2, with the Classpath Exception."}からWinodws用のzipファイルをダウンロードします
 * ダウンロードしたzipファイルを開き中身を任意のフォルダにコピーします
-    * 「jdk-11.0.1」フォルダを丸ごとコピーしてください（フォルダ名は2019/1/7時点）
-* 「(your folder)\\jdk-11.0.1\\bin」をPATHに追加します
+    * 「jdk-11.0.1」フォルダを丸ごとコピーしてください
+* 「`(your folder)\jdk-11.0.1\bin`」をPATH（システム、ユーザどちらでも可）に追加します
     * Windows10の場合[コントロールパネル]-[システム]-[システムの詳細設定]-[環境変数]から設定できます
+
+
+## Seleniumのインストール
 * RStudioを起動して`wdman`パッケージを用いてSelenium Serverをインストールします
-    * デフォルトでインストールするとサーバのポートは4567になります（Selenium Serverのデフォルトポートは4444）
+    * Selenium Serverをはじめとしてドライバ類がインストールされます
 
 ```{r, eval=FALSE}
-wdman::selenium(retcommand = TRUE)
+> wdman::selenium(retcommand = TRUE)
+checking Selenium Server versions:
+BEGIN: PREDOWNLOAD
+BEGIN: DOWNLOAD
+...
+... binman_seleniumserver/generic/3.141.59/selenium-server-standalone-3.141.59.jar
+-port 4567"
 ```
 
+* 上記のようなメッセージが表示されればインストールは完了です
+    * 念の為に動作確認をしてみましょう
+
+
+## RSeleniumの動作確認
+以下のコマンドを実行してchromeが起動することを確認してください。
+```{r, eval=FALSE}
+rD <- RSelenium::rsDriver(check = FALSE)
+```
+
+次に以下のコマンドでchromeが終了することを確認してください。
+```{r, eval=FALSE}
+remDr <- rD[["client"]]
+remDr$close()
+```
+
+最後に以下のコマンドでSelenium Serverを終了させます（`TRUE`が返ってくればOKです）。
+```{r, eval=FALSE}
+rD[["server"]]$stop()
+```
+
+
+## こんなときは
+```{r, eval=FALSE}
+Error in java_check() : 
+PATH to JAVA not found. Please check JAVA is installed.
+```
+
+* JavaがインストールされていないかPATHが通っていません
+
+```{r, eval=FALSE}
+Error: C:\Users\login_name\AppData\Local\binman\binman_seleniumserver app directory not found.
+```
+
+* `wdman`パッケージを使ってSeleniumをインストールしてください
+
+* PATHはシステムとユーザどちらに設定すべき？
+    * システムに設定するとすべてのユーザがSeleniumを利用することができるようになります（ご自分の使い方に合わせて設定してください）
+
+* macOSやlinuxではOpenJDKはリポジトリからインストールしてください
 
 
 # Enjoy!

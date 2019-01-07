@@ -21,12 +21,13 @@
       // Slide settings
       settings: {
                 title: '第８回データ分析勉強会',
-                        subtitle: 'Install Selenium on Windows',
+                        subtitle: 'Install Selenium for Windows',
                 useBuilds: true,
         usePrettify: true,
         enableSlideAreas: true,
         enableTouch: true,
-                      },
+                        favIcon: 'fig/selenium_logo.jpg',
+              },
 
       // Author information
       presenters: [
@@ -85,6 +86,21 @@
       opacity: 0;
     }
 
+    slides > slide:not(.nobackground):before {
+      font-size: 12pt;
+      content: "";
+      position: absolute;
+      bottom: 20px;
+      left: 60px;
+      background: url(fig/selenium_logo.jpg) no-repeat 0 50%;
+      -webkit-background-size: 30px 30px;
+      -moz-background-size: 30px 30px;
+      -o-background-size: 30px 30px;
+      background-size: 30px 30px;
+      padding-left: 40px;
+      height: 30px;
+      line-height: 1.9;
+    }
   </style>
 
   <link href="data:text/css;charset=utf-8,%0Ah1%20%7B%0Aborder%2Dbottom%3A%20solid%202%2E5px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%20solid%202%2E0px%3B%0A%7D%0Ah3%20%7B%0A%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%20solid%201%2E0px%3B%20%7D%0A%0Astrong%20%7B%0Abackground%3A%20linear%2Dgradient%28transparent%2070%25%2C%20%23a7d6ff%2060%25%29%0A%7D%0A%0A%2Ecaption%20%7B%0Afont%2Dsize%3A%2075%25%3B%0A%7D%0A" rel="stylesheet" type="text/css" />
@@ -96,6 +112,7 @@
 <slides class="layout-widescreen">
 
   <slide class="title-slide segue nobackground">
+        <aside class="gdbar"><img src="data:image/jpeg;base64,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"></aside>
         <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
     <hgroup class="auto-fadein">
       <h1 data-config-title><!-- populated from slide_config.json --></h1>
@@ -108,53 +125,115 @@
 <slide class=""><hgroup><h2>Seleniumのインストール</h2></hgroup><article  id="selenium">
 
 <ul>
-<li><code>RSelenium</code>はSelenium Serverを操作するためSelenium Serverが必要です</li>
-<li><code>wdman</code>パッケージを使うとSelenium Serverの <a href='https://cran.r-project.org/web/packages/wdman/vignettes/basics.html' title=''>インストールと設定 <i class="fa fa-external-link"></i></a> ができます
+<li><code>RSelenium</code>はSelenium Serverを操作するのでSeleniumが別途必要です</li>
+<li><code>wdman</code>パッケージを使うとSeleniumのインストールと設定ができます
 
 <ul>
 <li><code>wdman</code>パッケージは<code>RSelenium</code>パッケージをインストールすると一緒にインストールされます</li>
+<li>ただし、<strong>Java（JDK or JRE）が必要</strong>です</li>
 </ul></li>
 </ul>
 
-<pre class = 'prettyprint lang-r'>wdman::selenium(retcommand = TRUE, verbose = TRUE, check = FALSE)</pre>
+<h3>Javaのインストール</h3>
 
 <ul>
-<li>ただし、Selenium Serverのインストールと設定には<strong>Java（JDK or JRE）が必要</strong>です</li>
-<li>以降、Windows環境でのJavaのインストール方法を説明します</li>
-</ul>
-
-</article></slide><slide class=""><hgroup><h2>Javaのインストール</h2></hgroup><article  id="java">
-
-<p>最近のWindows環境ではJavaが<strong>インストールされていない</strong>ことが多いため、別途、Javaをインストールする必要があります。ただし、2019年1月からOracle Javaは<strong>ビジネス用途では有償（JREも有償）</strong>になりました。業務用PCへのインストールは注意が必要です。</p>
-
-<p>そこで、無償で使える<strong>Oracle&#39;s OpenJDK</strong>をインストールしますが、Oracle Java（JDK, JRE）に比べると脆弱性対応のリリースが長めである点に注意してください。また、64bit版のみでインストーラはありません。</p>
+<li>最近のWindows環境ではJavaは<strong>インストールされていません</strong></li>
+<li>2019年1月からOracle Java（旧 Sun Java）は<strong>ビジネス用途では有償（JREも有償）</strong>です
 
 <ul>
-<li><a href='https://jdk.java.net/11/' title=''>Oracle&#39;s OpenJDK <i class="fa fa-external-link"></i></a></li>
+<li>業務用PCへのインストールは注意が必要</li>
+</ul></li>
+<li>今回は無償で使えるJavaをインストールします</li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>Oracle&#39;s OpenJDKのインストール</h2></hgroup><article  id="oracles-openjdk">
+
+<ul>
+<li>Windows環境で無償で使えるJavaに<strong>Oracle&#39;s OpenJDK</strong>があります
+
+<ul>
+<li>Oracle Java（JDK, JRE）に比べると脆弱性対応のリリースが長めです</li>
+<li>64bit版のみでインストーラはありません</li>
+</ul></li>
+</ul>
+
+<h3>インストール手順</h3>
 
 <ul>
 <li><a href='https://jdk.java.net/11/' title=''>Oracle&#39;s OpenJDK(JDK11) <i class="fa fa-external-link"></i></a>からWinodws用のzipファイルをダウンロードします</li>
 <li>ダウンロードしたzipファイルを開き中身を任意のフォルダにコピーします
 
 <ul>
-<li>「jdk-11.0.1」フォルダを丸ごとコピーしてください（フォルダ名は2019/1/7時点）</li>
+<li>「jdk-11.0.1」フォルダを丸ごとコピーしてください</li>
 </ul></li>
-<li>「(your folder)\jdk-11.0.1\bin」をPATHに追加します
+<li>「<code>(your folder)\jdk-11.0.1\bin</code>」をPATH（システム、ユーザどちらでも可）に追加します
 
 <ul>
 <li>Windows10の場合[コントロールパネル]-[システム]-[システムの詳細設定]-[環境変数]から設定できます</li>
 </ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Seleniumのインストール</h2></hgroup><article  id="selenium-1">
+
+<ul>
 <li>RStudioを起動して<code>wdman</code>パッケージを用いてSelenium Serverをインストールします
 
 <ul>
-<li>デフォルトでインストールするとサーバのポートは4567になります（Selenium Serverのデフォルトポートは4444）</li>
+<li>Selenium Serverをはじめとしてドライバ類がインストールされます</li>
 </ul></li>
 </ul>
 
-<pre class = 'prettyprint lang-r'>wdman::selenium(retcommand = TRUE)</pre>
+<pre class = 'prettyprint lang-r'>&gt; wdman::selenium(retcommand = TRUE)
+checking Selenium Server versions:
+BEGIN: PREDOWNLOAD
+BEGIN: DOWNLOAD
+...
+... binman_seleniumserver/generic/3.141.59/selenium-server-standalone-3.141.59.jar
+-port 4567&quot;</pre>
+
+<ul>
+<li>上記のようなメッセージが表示されればインストールは完了です
+
+<ul>
+<li>念の為に動作確認をしてみましょう</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>RSeleniumの動作確認</h2></hgroup><article  id="rselenium">
+
+<p>以下のコマンドを実行してchromeが起動することを確認してください。</p>
+
+<pre class = 'prettyprint lang-r'>rD &lt;- RSelenium::rsDriver(check = FALSE)</pre>
+
+<p>次に以下のコマンドでchromeが終了することを確認してください。</p>
+
+<pre class = 'prettyprint lang-r'>remDr &lt;- rD[[&quot;client&quot;]]
+remDr$close()</pre>
+
+<p>最後に以下のコマンドでSelenium Serverを終了させます（<code>TRUE</code>が返ってくればOKです）。</p>
+
+<pre class = 'prettyprint lang-r'>rD[[&quot;server&quot;]]$stop()</pre>
+
+</article></slide><slide class=""><hgroup><h2>こんなときは</h2></hgroup><article >
+
+<pre class = 'prettyprint lang-r'>Error in java_check() : 
+PATH to JAVA not found. Please check JAVA is installed.</pre>
+
+<ul>
+<li>JavaがインストールされていないかPATHが通っていません</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>Error: C:\Users\login_name\AppData\Local\binman\binman_seleniumserver app directory not found.</pre>
+
+<ul>
+<li><p><code>wdman</code>パッケージを使ってSeleniumをインストールしてください</p></li>
+<li>PATHはシステムとユーザどちらに設定すべき？
+
+<ul>
+<li>システムに設定するとすべてのユーザがSeleniumを利用することができるようになります（ご自分の使い方に合わせて設定してください）</li>
+</ul></li>
+<li><p>macOSやlinuxではOpenJDKはリポジトリからインストールしてください</p></li>
+</ul>
 
 </article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Enjoy!</h2></hgroup><article  id="enjoy"></article></slide>
 
