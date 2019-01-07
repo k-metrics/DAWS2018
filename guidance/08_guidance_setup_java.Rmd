@@ -8,7 +8,7 @@ output:
   ioslides_presentation:
     css: style.css
     df_print: paged
-    logo: fig/selenium_logo.jpg
+    logo: fig/selenium-logo.png
     smaller: false
     widescreen: true
 ---
