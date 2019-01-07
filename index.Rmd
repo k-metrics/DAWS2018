@@ -267,13 +267,16 @@ Redmineのチケットデータを用いてダッシュボードを作る。
 　  
 
 ### 午前の部
-* Seleniumハンズオン
+* [Seleniumハンズオン <i class="fa fa-external-link-square"></i>](./guidance/08_guidance_RSelenium.html){target="_blank" title="RSelenium"}
+    * 様々な操作が必要なスクレイピングに役立つSeleniumをRから使ってみましょう
 
 　  
 
 ### 午後の部
 * [振り返り・落穂拾い <i class="fa fa-external-link-square"></i>](./guidance/08_guidance.html){target="_blank" title="第8回 データ分析勉強会"}
+    * 説明できなかったTipsなどを中心にモダンなRの世界を振り返ってみましょう
 * [Kibanaハンズオン(PDF) <i class="fa fa-external-link-square"></i>](./guidance/08_guidance_kibana.pdf){target="_blank" title="PDF"}
+    * リアルタイムで更新できる可視化ツールKibanawo使ってみましょう
 
 　  
 
