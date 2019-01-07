@@ -269,6 +269,7 @@ Redmineのチケットデータを用いてダッシュボードを作る。
 ### 午前の部
 * [Seleniumハンズオン <i class="fa fa-external-link-square"></i>](./guidance/08_guidance_RSelenium.html){target="_blank" title="RSelenium"}
     * 様々な操作が必要なスクレイピングに役立つSeleniumをRから使ってみましょう
+    * [Seleniumのインストール補助資料（Windows環境のみ） <i class="fa fa-external-link-square"></i>](./guidance/08_guidance_setup_java.html){target="_blank" title="ioslids"}
 
 　  
 
