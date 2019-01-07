@@ -1,0 +1,26 @@
+Windows環境の場合
+
+1)wdman::selenium関数でSeleniumをインストールする場合、Java環境が
+  インストールされていないとエラーになる
+
+  Error in java_check() : 
+  PATH to JAVA not found. Please check JAVA is installed.
+
+2)Java環境をインストールする
+　Javaには様々な種類がある
+    JDK - Development Kit
+    Open JDK - Open Development Kit
+    JRE - Runtime Environment
+    32bit/64bit
+
+    Oracleの商用利用は2019/1から「有償」になるので注意が必要
+
+  とりあえず、Oracle JRE(64bit)をインストールする
+
+3)JREインストール後にWindowsを再起動してSeleniumをインストールしようと
+  するとエラーになる
+
+  Error: C:\Users\login_id\AppData\Local\binman\binman_seleniumserver app directory not found.
+
+  そもそも、Windows環境では`binman`というディレクトリが存在しない
+
