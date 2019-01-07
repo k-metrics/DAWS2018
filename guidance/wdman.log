@@ -1,0 +1,75 @@
+R version 3.4.4 (2018-03-15) -- "Someone to Lean On"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R は、自由なソフトウェアであり、「完全に無保証」です。 
+一定の条件に従えば、自由にこれを再配布することができます。 
+配布条件の詳細に関しては、'license()' あるいは 'licence()' と入力してください。 
+
+R は多くの貢献者による共同プロジェクトです。 
+詳しくは 'contributors()' と入力してください。 
+また、R や R のパッケージを出版物で引用する際の形式については 
+'citation()' と入力してください。 
+
+'demo()' と入力すればデモをみることができます。 
+'help()' とすればオンラインヘルプが出ます。 
+'help.start()' で HTML ブラウザによるヘルプがみられます。 
+'q()' と入力すれば R を終了します。 
+
+[Workspace loaded from ~/R/project/.RData]
+
+> wdman::selenium(retcommand = TRUE)
+checking Selenium Server versions:
+BEGIN: PREDOWNLOAD
+BEGIN: DOWNLOAD
+Creating directory: /home/sampo/.local/share/binman_seleniumserver/generic/3.141.0
+Downloading binary: https://www.googleapis.com/download/storage/v1/b/selenium-release/o/3.141%2Fselenium-...
+
+Creating directory: /home/sampo/.local/share/binman_seleniumserver/generic/3.141.5
+Downloading binary: https://www.googleapis.com/download/storage/v1/b/selenium-release/o/3.141%2Fselenium-...
+
+Creating directory: /home/sampo/.local/share/binman_seleniumserver/generic/3.141.59
+Downloading binary: https://www.googleapis.com/download/storage/v1/b/selenium-release/o/3.141%2Fselenium-...
+
+BEGIN: POSTDOWNLOAD
+checking chromedriver versions:
+BEGIN: PREDOWNLOAD
+BEGIN: DOWNLOAD
+Creating directory: /home/sampo/.local/share/binman_chromedriver/linux64/2.45
+Downloading binary: https://www.googleapis.com/download/storage/v1/b/chromedriver/o/2.45%2Fchromedriver_l...
+
+Creating directory: /home/sampo/.local/share/binman_chromedriver/linux64/72.0.3626.7
+Downloading binary: https://www.googleapis.com/download/storage/v1/b/chromedriver/o/72.0.3626.7%2Fchromed...
+
+Creating directory: /home/sampo/.local/share/binman_chromedriver/linux64/71.0.3578.80
+Downloading binary: https://www.googleapis.com/download/storage/v1/b/chromedriver/o/71.0.3578.80%2Fchrome...
+
+BEGIN: POSTDOWNLOAD
+checking geckodriver versions:
+BEGIN: PREDOWNLOAD
+BEGIN: DOWNLOAD
+Creating directory: /home/sampo/.local/share/binman_geckodriver/linux64/0.23.0
+Downloading binary: https://github.com/mozilla/geckodriver/releases/download/v0.23.0/geckodriver-v0.23.0-...
+
+Creating directory: /home/sampo/.local/share/binman_geckodriver/linux64/0.22.0
+Downloading binary: https://github.com/mozilla/geckodriver/releases/download/v0.22.0/geckodriver-v0.22.0-...
+
+Creating directory: /home/sampo/.local/share/binman_geckodriver/linux64/0.21.0
+Downloading binary: https://github.com/mozilla/geckodriver/releases/download/v0.21.0/geckodriver-v0.21.0-...
+
+BEGIN: POSTDOWNLOAD
+checking phantomjs versions:
+BEGIN: PREDOWNLOAD
+BEGIN: DOWNLOAD
+Creating directory: /home/sampo/.local/share/binman_phantomjs/linux64/2.1.1
+Downloading binary: https://api.bitbucket.org/2.0/repositories/ariya/phantomjs/downloads/phantomjs-2.1.1-...
+
+Creating directory: /home/sampo/.local/share/binman_phantomjs/linux64/1.9.8
+Downloading binary: https://api.bitbucket.org/2.0/repositories/ariya/phantomjs/downloads/phantomjs-1.9.8-...
+
+Creating directory: /home/sampo/.local/share/binman_phantomjs/linux64/1.9.7
+Downloading binary: https://api.bitbucket.org/2.0/repositories/ariya/phantomjs/downloads/phantomjs-1.9.7-...
+
+BEGIN: POSTDOWNLOAD
+[1] "/usr/bin/java -Dwebdriver.chrome.driver='/home/sampo/.local/share/binman_chromedriver/linux64/72.0.3626.7/chromedriver' -Dwebdriver.gecko.driver='/home/sampo/.local/share/binman_geckodriver/linux64/0.23.0/geckodriver' -Dphantomjs.binary.path='/home/sampo/.local/share/binman_phantomjs/linux64/2.1.1/phantomjs-2.1.1-linux-x86_64/bin/phantomjs' -jar '/home/sampo/.local/share/binman_seleniumserver/generic/3.141.59/selenium-server-standalone-3.141.59.jar' -port 4567"
+> 
