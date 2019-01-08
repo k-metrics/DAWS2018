@@ -28,7 +28,7 @@ require(tidyverse)
 
 
 ## 本日の内容
-昨年までの学びを振り返ってみましょう。
+昨年までの学びを振り返ってみましょう。注：取り留めないです  
 
 1. なぜPythonでなくRを使うのか？
 1. Reproducible Research （再現可能性）
@@ -40,7 +40,6 @@ require(tidyverse)
     * Visualize
     * Communicate
 
-　  
 
 # 振り返り・落穂拾い
 
@@ -181,7 +180,7 @@ Rに限らず分析を行う場合には**オープンソース関連の知識�
 ## 複数の連続したURLを読み込む
 [Kabutan <i class="fa fa-external-link"></i>](https://kabutan.jp/stock/kabuka?code=0950&ashi=wek&page=1){target="_blank" title="米ドル／円 時系列"} のようにURLを用いてテーブルを切り替えているページ（`https://kabutan.jp/stock/kabuka?code=0950&ashi=wek&page=n`）をスクレイピングする場合には`purrr`パッケージを用いると便利です。
 ```{r, eval=FALSE}
-purrr::map2(.x = site_url, .y = c(1:n), ~ paste0(.x, .y)) %>% 
+purrr::map2(.x = site_url, .y = c(1:n), .f = ~ paste0(.x, .y)) %>% 
                                              # URLリストを作成
   purrr::map_df(.x = ., .f = function(.x) {  # そのリストを元に関数（スクレイピング）を実行
     Sys.sleep(1)                             # Sleepは最初に入れるのが肝
