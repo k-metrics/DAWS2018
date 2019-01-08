@@ -28,12 +28,12 @@ require(tidyverse)
 
 
 ## 本日の内容
-昨年までの学びを振り返ってみましょう。注：取り留めないです  
+昨年までの学びを振り返ってみましょう。  
 
 1. なぜPythonでなくRを使うのか？
 1. Reproducible Research （再現可能性）
 1. Tidy Data （整然データ）
-1. Data Science Workflow を元に振り返る
+1. Data Science Workflow を元に振り返る（注：取り留めないです）
     * Program
     * Import
     * Tidy/Transform
@@ -385,6 +385,22 @@ dplyr::bind_rows(
   c(issue_id = 16451L, list(id = 2L, name = "Resolution", value = "Invalid")),
   c(issue_id = 16451L, list(id = 4L, name = "Affected version")) )
 ```
+
+
+## dplyr, breaking change
+最近はこのように`purrr`パッケージ押しなんですが、`dplyr`パッケージが今月に正式リリースされる予定の次バージョンからグルーピングの扱いが大きく変わり（まだまだ、実験的な実装も含まれているようですが）`purrr`パッケージを用いなくても効率的なグルーピング処理ができるようになりそうです。  
+
+
+* [dplyr 0.8.0を使ってみた（group_by()のbreaking changes編） <i class="fa fa-external-link"></i>](https://notchained.hatenablog.com/entry/2018/12/09/120553){target="_blank" title="Technically, technophobic."}
+
+* [dplyr 0.8.0を使ってみた（新機能編） <i class="fa fa-external-link"></i>](https://notchained.hatenablog.com/entry/2018/12/09/160956){target="_blank" title="Technically, technophobic."}
+
+　  
+これに伴い`dplyr::do`は完全に非推奨となるようです。  
+
+* [dplyr::do と purrr::map の話 <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/2018-09/purrr/){target="_blank" title="Project Cabinet Blog - 反復処理"}
+
+リリースされましたら使い勝手などを [Blog <i class="fa fa-external-link"></i>](https://k-metrics.netlify.com/post/){target="_blank" title="Project Cabinet Blog"} に書くつもりです。
 
 
 ## Tidy/Transformあれこれ
