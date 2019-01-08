@@ -535,6 +535,15 @@ tibble  | `tibble`クラスを用いた簡易なテキスト表形式
 
 # おわりに
 
+## 「データは真実」はほんとうか
+[Exploratory CEOのnote <i class="fa fa-external-link"></i>](https://note.mu/datascience/n/nd8346b10cf0a){target="_blank" title="note.mu"}から
+
+<center><img src="https://d2l930y2yx77uc.cloudfront.net/production/uploads/images/9317980/rectangle_large_type_2_d204b61fa345bc1af38db333e8792251.jpeg" height="250"></center>
+
+* 統計の知識を持ってない人がデータを振りかざしてあたかも事実のようにふれ回るのは害悪でしかない（部分意訳）
+* 英語なんかよりも、もっと重要なスキルであるという認識で、統計、機械学習といった知識とスキルを2019年こそは習得していっていただければと（抜粋）
+
+
 ## 復習のためのリソース
 身につけるにはアウトプットが大切です。間違っていても構わないので**アウトプットし続ける癖**をつけましょう。  
 
