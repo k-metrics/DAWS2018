@@ -1,0 +1,139 @@
+---
+title: "Selenium"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+wdman::selenium(retcommand = TRUE)
+```
+
+## Demo 2
+
+* [connpass](https://connpass.com/)に自分のアカウントでログインして情報を収集する
+* アカウントとパスワードを適宜ご自身のもので更新して下さい
+* 自身のアカウントでログインし、自身が所属するグループを収集して表示
+* 更にそれら所属グループのバナーアイコン画像を全てダウンロードする
+
+```{r}
+library(RSelenium)
+
+# Chromeオプションを追加
+eCaps <- list(
+  chromeOptions = 
+    list(prefs = list(
+      # ポップアップを表示しない
+      "profile.default_content_settings.popups" = 0L,
+      # ダウンロードプロンプトを表示しない
+      "download.prompt_for_download" = FALSE,
+      # ダウンロードディレクトリを設定
+      # 自分のディレクトリに書き換える必要がある
+      "download.default_directory" = "/Users/takumi/R/worldcup"
+    )
+  )
+)
+
+rD <- rsDriver(extraCapabilities = eCaps, check = FALSE)#, port = 4568L)
+remDr <- rD[["client"]]
+
+remDr$navigate("https://connpass.com/")
+Sys.sleep(3)
+
+webElem <- remDr$findElement(using = "class", "login")
+webElem$clickElement()
+Sys.sleep(3)
+
+webElem <- remDr$findElement(using = "name", "username")
+webElem$sendKeysToElement(list("abc@hogehoge.mail"))
+Sys.sleep(3)
+
+webElem <- remDr$findElement("css selector", "input[name='password']")
+webElem$sendKeysToElement(list("xxxxxxxx"))
+Sys.sleep(3)
+
+webElem <- remDr$findElement("css selector", "#login_form > p:nth-child(6) > button")
+webElem$clickElement()
+Sys.sleep(3)
+
+require(rvest)
+require(magrittr)
+webElem$getPageSource() %>%
+  magrittr::extract2(1) %>% 
+  read_html() %>% 
+  html_nodes(xpath = '//*[@id="wrapper"]/div[2]/div/div[1]/div[2]/div/div/div[1]/ul/li/a/p') %>% 
+  html_text()
+
+# //*[@id="wrapper"]/div[2]/div/div[1]/div[2]/div/div/div[1]/ul/li[1]/a/p
+# //*[@id="wrapper"]/div[2]/div/div[1]/div[2]/div/div/div[1]/ul/li[2]/a/p
+
+Sys.sleep(3)
+
+png_url <- webElem$getPageSource() %>%
+  magrittr::extract2(1) %>% 
+  read_html() %>% 
+  html_nodes(xpath = '//*[@id="wrapper"]/div[2]/div/div[1]/div[2]/div/div/div[1]/ul/li/a/div') %>% 
+  html_attr(name = "style") %>% 
+  stringr::str_extract(pattern = "https.*png")
+
+# //*[@id="wrapper"]/div[2]/div/div[1]/div[2]/div/div/div[1]/ul/li[1]/a/div
+# //*[@id="wrapper"]/div[2]/div/div[1]/div[2]/div/div/div[1]/ul/li[2]/a/div
+
+library(pathological)
+create_dirs("./png")
+for (url in png_url) {
+  filename <- str_extract(url, pattern = "[^/]*$")
+  filename <- file.path("./png", filename)
+  download.file(url, destfile = filename)
+  Sys.sleep(1)
+}
+
+
+
+Sys.sleep(3)
+
+# //*[@id="wrapper"]/div[2]/div/div[1]/div[2]/div/div/div[1]/ul/li[1]/a/div
+
+
+# ブラウザを閉じる
+remDr$close()
+# Seleniumサーバを閉じる
+rD[["server"]]$stop()
+
+
+
+```
+
+## 画像ダウンロードその２
+
+* RSeleniumらしく、UI操作による画像ダウンロードも試してみた
+* 所属グループの画像はリンク用の背景画像的な属性のため、右クリックで画像保存できない
+* そこでターゲットを変えて、ページトップのconnpassアイコン画像とした
+* アプローチは下記の通りだが、手順4が動かない・・・
+    1. アイコン画像の要素を指定する
+    1. マウスをそこへ（画像中心）持っていく
+    1. 右クリックする
+    1. メニュー内で下カーソルキーを7回叩いて降りてEnter
+    1. 「名前を付けて画像を保存」される
+
+```{r eval=FALSE}
+webElem <- remDr$findElement(using = "xpath", '//*[@id="header"]/div/h1/a/img')
+remDr$mouseMoveToLocation(webElement = webElem)
+remDr$click(buttonId = 2)
+Sys.sleep(1)
+remDr$sendKeysToActiveElement(list(key = 'down_arrow',
+                                   key = 'down_arrow',
+                                   key = 'down_arrow',
+                                   key = 'down_arrow',
+                                   key = 'down_arrow',
+                                   key = 'down_arrow',
+                                   key = 'down_arrow',
+                                   key = 'enter'))
+```
+
+
+```{r}
+sessionInfo()
+```
+

@@ -193,7 +193,7 @@
 
 <pre class = 'prettyprint lang-r'>java -jar /hoge/hoge/selenium-server-standalone-x.xx.x.jar</pre>
 
-</article></slide><slide class=""><hgroup><h2>ブラウザの起動1-1 rsDriver()</h2></hgroup><article  id="1-1-rsdriver">
+</article></slide><slide class=""><hgroup><h2>ブラウザの起動1 rsDriver()編</h2></hgroup><article  id="1-rsdriver">
 
 <ul>
 <li>RSeleniumパッケージをロードする</li>
@@ -209,7 +209,7 @@ rD &lt;- rsDriver(check = FALSE)#, port = 4568L)
 # remoteDriverクラスの作成
 remDr &lt;- rD[[&quot;client&quot;]]</pre>
 
-</article></slide><slide class=""><hgroup><h2>ブラウザの起動1-2 rsDriver()</h2></hgroup><article  id="1-2-rsdriver">
+</article></slide><slide class=""><hgroup><h2>ブラウザの起動1 rsDriver()編つづき</h2></hgroup><article  id="1-rsdriver">
 
 <ul>
 <li>extraCapabilities引数でchrome起動時のオプションを指定する</li>
@@ -251,7 +251,7 @@ rD &lt;- rsDriver(extraCapabilities = eCaps, check = FALSE)#, port = 4568L)</pre
 ## [1] &quot;72.0.3626.7 (efcef9a3ecda02b2132af215116a03852d08b9cb)&quot;
 ## 
 ## $chrome$userDataDir
-## [1] &quot;/var/folders/nh/1jgb2_49313cly6twrpjskx00000gn/T/.com.google.Chrome.UdWEGF&quot;
+## [1] &quot;/var/folders/nh/1jgb2_49313cly6twrpjskx00000gn/T/.com.google.Chrome.lEwxef&quot;
 ## 
 ## 
 ## $cssSelectorsEnabled
@@ -262,7 +262,7 @@ rD &lt;- rsDriver(extraCapabilities = eCaps, check = FALSE)#, port = 4568L)</pre
 ## 
 ## $`goog:chromeOptions`
 ## $`goog:chromeOptions`$debuggerAddress
-## [1] &quot;localhost:53545&quot;
+## [1] &quot;localhost:62852&quot;
 ## 
 ## 
 ## $handlesAlerts
@@ -328,14 +328,14 @@ rD &lt;- rsDriver(extraCapabilities = eCaps, check = FALSE)#, port = 4568L)</pre
 ## [1] TRUE
 ## 
 ## $webdriver.remote.sessionid
-## [1] &quot;bd7c9c0047d79231f64be9e7c47f5fcf&quot;
+## [1] &quot;20ea8a0ae552ee305d8d08d4e116a52a&quot;
 ## 
 ## $id
-## [1] &quot;bd7c9c0047d79231f64be9e7c47f5fcf&quot;</pre>
+## [1] &quot;20ea8a0ae552ee305d8d08d4e116a52a&quot;</pre>
 
 <pre class = 'prettyprint lang-r'>remDr &lt;- rD[[&quot;client&quot;]]</pre>
 
-</article></slide><slide class=""><hgroup><h2>ブラウザの起動2 remoteDriver()</h2></hgroup><article  id="2-remotedriver">
+</article></slide><slide class=""><hgroup><h2>ブラウザの起動2 remoteDriver()編</h2></hgroup><article  id="2-remotedriver">
 
 <ul>
 <li>remoteDriver()を用いて、remoteDriverクラスのインスタンスを作成する</li>
@@ -435,9 +435,9 @@ read_html(txt[[1]]) %&gt;%
 ##  [5] &quot;2018年度 第1回 データ分析勉強会 2018年5月12日（東京都） - こくちーず ...&quot;       
 ##  [6] &quot;東京都の「データ分析」セミナー・勉強会・イベント - こくちーずプロ（告知&#39;sプロ）&quot;
 ##  [7] &quot;データ分析勉強会 - SlideShare&quot;                                                  
-##  [8] &quot;【サポーターズCoLab勉強会】データ分析コンペkaggleではじめる機械学習 ...&quot;        
-##  [9] &quot;和からの法人向け統計研修 - 和から株式会社&quot;                                      
-## [10] &quot;AITC女子会 データ分析勉強会第16回「データ分析手法ワークショップ(7)」&quot;</pre>
+##  [8] &quot;2018年に参加したデータ分析系の勉強会で得た知識の詰め合わせ | かも ...&quot;          
+##  [9] &quot;Pythonデータ分析勉強会 第1回資料 - Qiita&quot;                                       
+## [10] &quot;社団法人丸の内アナリティクス&quot;</pre>
 
 </article></slide><slide class=""><hgroup><h2>終了</h2></hgroup><article >
 
@@ -460,11 +460,17 @@ read_html(txt[[1]]) %&gt;%
 
 </article></slide><slide class=""><hgroup><h2>デモ（前回の）</h2></hgroup><article >
 
-<ul>
+<ol>
 <li><a href='http://e-stat.go.jp/' title=''>e-stat</a>のサイトから、神奈川県の緯度経度データをダウンロードする</li>
-</ul>
+</ol>
 
 <p><a href='./07_guidance_appendixB.Rmd' title=''>第7回 Appendix.B: RSeleniumデモ.Rmd</a></p>
+
+<ol>
+<li><a href='https://connpass.com/' title=''>connpass</a>に自分のアカウントでログインして情報を収集する</li>
+</ol>
+
+<p><a href='./08_guidance_RSelenium_Demo2.Rmd' title=''>第8回 Appendix: 08_guidance_RSelenium_Demo2.Rmd</a></p>
 
 </article></slide><slide class=""><hgroup><h2>まとめ</h2></hgroup><article >
 

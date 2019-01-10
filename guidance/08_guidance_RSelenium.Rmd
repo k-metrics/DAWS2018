@@ -100,7 +100,7 @@ wdman::selenium(retcommand = TRUE, verbose = FALSE, check = FALSE)
 java -jar /hoge/hoge/selenium-server-standalone-x.xx.x.jar
 ```
 
-## ブラウザの起動1-1 rsDriver()
+## ブラウザの起動1 rsDriver()編
 
 * RSeleniumパッケージをロードする
 * rsDriver()を用いて、Seleniumサーバとブラウザを起動する
@@ -116,7 +116,7 @@ rD <- rsDriver(check = FALSE)#, port = 4568L)
 remDr <- rD[["client"]]
 ```
 
-## ブラウザの起動1-2 rsDriver()
+## ブラウザの起動1 rsDriver()編つづき
 
 * extraCapabilities引数でchrome起動時のオプションを指定する
 
@@ -138,7 +138,7 @@ rD <- rsDriver(extraCapabilities = eCaps, check = FALSE)#, port = 4568L)
 remDr <- rD[["client"]]
 ```
 
-## ブラウザの起動2 remoteDriver()
+## ブラウザの起動2 remoteDriver()編
 
 * remoteDriver()を用いて、remoteDriverクラスのインスタンスを作成する
 * remoteDriverクラスは参照クラスのため、メソッドは$でアクセスする
@@ -265,9 +265,9 @@ rsDriver()で開始した場合、
 rD[["server"]]$stop()
 ```
 
-## デモ（前回の）
+## デモ
 
-* [e-stat](http://e-stat.go.jp/)のサイトから、神奈川県の緯度経度データをダウンロードする
+1. [e-stat](http://e-stat.go.jp/)のサイトから、神奈川県の緯度経度データをダウンロードする
 
 [第7回 Appendix.B: RSeleniumデモ.Rmd](./07_guidance_appendixB.Rmd)
 
@@ -368,6 +368,11 @@ remDr$close()
 rD[["server"]]$stop()
 
 ```
+
+2. [connpass](https://connpass.com/)に自分のアカウントでログインして情報を収集する
+
+[第8回 Appendix: 08_guidance_RSelenium_Demo2.Rmd](./08_guidance_RSelenium_Demo2.Rmd)
+
 
 ## まとめ
 
