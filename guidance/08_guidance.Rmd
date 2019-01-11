@@ -57,7 +57,7 @@ require(tidyverse)
 
 
 ## なぜPythonでなくRを使うのか？（その２）
-[統計言語 「R」のﾈ申はなぜ無償で貢献したのか <i class="fa fa-external-link"></i>](https://business.nikkeibp.co.jp/atcl/report/16/122700258/010900004/){target="_blank" title="日経ビジネス"}（日経ビジネス 「会社とは何か」 Hadly Wickhamへのインタビュー記事）より抜粋
+[統計言語 「R」のﾈ申はなぜ無償で貢献したのか <i class="fa fa-external-link"></i>](https://business.nikkeibp.co.jp/atcl/report/16/122700258/010900004/){target="_blank" title="日経ビジネス"}（日経ビジネス 「会社とは何か」 Hadley Wickhamへのインタビュー記事）より抜粋
 
 　  
 <div style="background-color:#f4f4ff; padding:10px 15px 15px 15px;">両者^1^に共通しているのは**データを扱うために言語や文法を定義**しているところです。目標はできるだけはっきり、簡単にコードで表現すること。どちらも**プロブラマー^2^でない人でもコードを書くことができます**。それを理解するために専門家になる必要もない。文章のようにコードを読み、もっと改善できるところを指摘し、そのコードを考えてシェアしていくことができるように設計しました。他の人が**何を理解しにくいと思うか、という心理的なことも考えて書いています**。</div>  
@@ -68,7 +68,7 @@ require(tidyverse)
 
 
 ## なぜPythonでなくRを使うのか？（その３）
-[統計言語 「R」のﾈ申はなぜ無償で貢献したのか <i class="fa fa-external-link"></i>](https://business.nikkeibp.co.jp/atcl/report/16/122700258/010900004/){target="_blank" title="日経ビジネス"}（日経ビジネス 「会社とは何か」 Hadly Wickhamへのインタビュー記事）より抜粋
+[統計言語 「R」のﾈ申はなぜ無償で貢献したのか <i class="fa fa-external-link"></i>](https://business.nikkeibp.co.jp/atcl/report/16/122700258/010900004/){target="_blank" title="日経ビジネス"}（日経ビジネス 「会社とは何か」 Hadley Wickhamへのインタビュー記事）より抜粋
 
 　  
 <div style="background-color:#f4f4ff; padding:10px 15px 15px 15px;">Rコミュニティでのやりとりの中で努力してきたことの一つは、できるだけ入ってきた人たちを**歓迎し、心地よい場所にする**^3^ということでした。Rを利用している人々はプログラマーではない人も多いですから、最初はとっつきにくい場合もあるでしょうし。（中略）世界中でフレンドリーなコミュニティが生まれてとてもうれしく思います。</div>  
@@ -497,7 +497,7 @@ mtcars %>% DT::datatable(options = list(pageLength = 5))
 ```
 
 
-## Packages dygraphs
+## Package dygraphs
 ```{r}
 xts::as.xts(nhtemp) %>% dygraphs::dygraph(main = "New Haven Temperatures") %>% 
   dygraphs::dyRangeSelector()
