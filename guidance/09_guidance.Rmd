@@ -21,10 +21,11 @@ require(tidyverse)
 ## 本日の内容
 1. 多変量解析入門
     * 多変量解析とは？
-    * 重回帰分析
-    * 主成分分析
-    * 因子分析
-    * クラスター分析
+    * 予測や制御を行う
+        * 重回帰分析
+    * 集約や探索を行う
+        * 主成分分析
+        * 因子分析
 1. 演習
     * 演習I ＆ 演習II
     * レポート作成＆発表
@@ -73,9 +74,28 @@ require(tidyverse)
 * **回帰**関係（Regression）
     * 因果関係と同様な一方的な関係（必ずしも因果関係ではない）
     * 予測に用いることができる
+        * 回帰関係と因果関係の違いがよく分からない...
 * **因果**関係（Causality）
     * 原因から結果へ一方的な関係（回帰関係を因果関係としているものもある）
     * 予測や制御に用いることができる
+
+
+## 単回帰分析（復習）
+（線形）単回帰分析はひとつの説明変数と目的変数の関係を最小二乗法を用いて下記のような回帰式を求める分析です。最小二乗法を用いるため、ほとんどのデータで回帰分析ができてしまいますので、単回帰分析では精度（決定係数）が重要になります。  
+
+$$y = a + bx$$
+
+### 外挿
+説明変数がない範囲（実際にデータが観察されていない範囲）は外挿と呼ばれ、回帰式が成り立つ関係があるのか分からないので注意が必要です。  
+
+### 切片はどう考える？
+例えば説明変数が規模の場合、切片（$説明変数 = 0$の時の目的変数の値）をどう考えるのが良いでしょうか？
+
+
+## （線形）単回帰分析の結果を説明してください
+```{r, echo=FALSE}
+lm(mpg ~ hp, data = mtcars) %>% summary()
+```
 
 
 ## 重回帰分析
@@ -132,7 +152,7 @@ lm(mpg ~ cyl + disp + hp + drat + wt, data = mtcars) %>% broom::tidy() %>%
 
 
 ## 偏回帰係数の解釈
-偏回帰係数の解釈は有意水準$5\%$と単に比較して決まる訳ではありませんので、どの偏回帰係数を選ぶかは前述の目的（下記に再掲）により異なってきます。  
+偏回帰係数の解釈は意外と難しくどの偏回帰係数を選ぶかは前述の目的（下記に再掲）により異なってきます。  
 
 ### 予測で使う場合（回帰関係）
 * 個々の偏回帰係数の解釈はあまり重要でない
@@ -210,7 +230,7 @@ par(mfrow=c(1, 1))
 ## 主成分分析の分析手順
 主成分分析は以下の手順で行います。  
 
-* ｎ次元空間の中で**最も分散の大きく**なる第一主成分軸を探す
+* ｎ次元空間の中で**最も分散が大きく**なる第一主成分軸を探す
 * 第一主成分軸に**直行し最も分散が大きく**なる第二主成分軸を探す
 * 第一、第二主成分軸に**直行し最も分散が大きく**なる第三主成分軸を探す
     * 以降、同様に第ｎ主成分軸までを探す
@@ -231,7 +251,8 @@ mtcars %>% dplyr::select(wt, qsec, am) %>%
   dplyr::summarize_all(.funs = var, na.rm = TRUE) %>% 
   tidyr::gather(key, value) %>% 
   dplyr::mutate(sum = sum(value)) %>% 
-  tidyr::spread(key, value)
+  tidyr::spread(key, value) %>% 
+  dplyr::select(sum, wt, qsec, am)
 ```
 
 ### 主成分得点の分散総和と主成分得点の分散
@@ -327,7 +348,7 @@ mtcars %>% dplyr::select(wt, qsec, am) %>% prcomp(scale. = FALSE) %>%
 ```
 
 
-## 単純構造化
+## 単純構造化（より理解しやすくする）
 以下の条件をすべて満たせば主成分負荷量を任意に変換（回転と呼ばれることが多い）することができます。
 
 * 全ての主成分得点の**分散総和が「1」**
@@ -342,31 +363,51 @@ mtcars %>% dplyr::select(wt, qsec, am) %>% prcomp(scale. = FALSE) %>%
 ## Rで解くには
 Rを利用して主成分分析を行うには`prcomp`関数を用います。数値データ以外は受け付けませんので注意してください。なお、`prcomp`関数の出力は**主成分得点**である点に注意してください（主成分負荷量ではありません）。  
 
-```{r}
-mtcars %>% dplyr::select(am, qsec, wt) %>% 
+```{r, eval=FALSE, include=FALSE}
+mtcars %>% dplyr::select(wt, qsec, am) %>% 
   prcomp(scale. = TRUE)
 ```
+```{r}
+mtcars %>% dplyr::select(wt, qsec, am) %>% 
+  prcomp(scale. = FALSE)
+```
+
 
 
 ## 分散説明率（寄与率）を求める
 分散説明率（寄与率）は`prcomp`関数の結果をサマライズするだけで求めることができます。  
-```{r}
-mtcars %>% dplyr::select(am, qsec, wt) %>% 
+```{r, eval=FALSE, include=FALSE}
+mtcars %>% dplyr::select(wt, qsec, am) %>% 
   prcomp(scale. = TRUE) %>% summary()
+```
+```{r}
+mtcars %>% dplyr::select(wt, qsec, am) %>% 
+  prcomp(scale. = FALSE) %>% summary()
 ```
 
 `Proportion of Variance`が分散説明率で、`Cumulative Proportion`が累積分散説明率になります。
 
+
 ## prcomp関数の返り値詳細
 `prcomp`関数の返り値は下記のようなリスト型になっています。属性（`attr`）を見ると分かりますが与えたデータフレームの順に結果が返されます。
-```{r}
-mtcars %>% dplyr::select(am, qsec, wt) %>% 
+```{r, eval=FALSE, include=FALSE}
+mtcars %>% dplyr::select(wt, qsec, am) %>% 
   prcomp(scale. = TRUE, retx = FALSE) %>% str()
+```
+```{r}
+mtcars %>% dplyr::select(wt, qsec, am) %>% 
+  prcomp(scale. = FALSE, retx = FALSE) %>% str()
 ```
 
 
 ## 固有値を求める
-固有値は前述の通り主成分得点の標準偏差（`$sdev`）の二乗に等しいので二乗することで求めることができます。
+固有値は前述の通り主成分得点の標準偏差（`$sdev`）の二乗（=分散）に等しいので二乗することで求めることができます。
+```{r}
+result <- mtcars %>% dplyr::select(wt, qsec, am) %>% 
+  # prcomp(scale. = TRUE)
+  prcomp(scale. = FALSE)
+```
+
 ```{r}
 t(result$sdev ^ 2) %>% as.data.frame() %>% 
   dplyr::rename(PC1 = V1, PC2 = V2, PC3 = V3)
@@ -377,15 +418,46 @@ t(result$sdev ^ 2) %>% as.data.frame() %>%
 
 ## 主成分負荷量を求める
 主成分負荷量は因子分析との関連から出てくることが多い**主成分得点と変量（変数）との相関係数**です。主成分得点（`$rotation`）と固有値の平方根（`$sdev`）の積で求めることができます。転置処理（`t`関数）が必要な点に注意してください。  
-```{r}
-result <- mtcars %>% dplyr::select(am, qsec, wt) %>% 
+```{r, eval=FALSE, include=FALSE}
+result <- mtcars %>% dplyr::select(wt, qsec, am) %>% 
   prcomp(scale. = TRUE)
+t(t(result$rotation) * result$sdev) %>% as.data.frame()
+```
+```{r}
+result <- mtcars %>% dplyr::select(wt, qsec, am) %>% 
+  prcomp(scale. = FALSE)
 t(t(result$rotation) * result$sdev) %>% as.data.frame()
 ```
 
 
+## `prcomp`関数の`scale.`オプション
+今回の説明では手動で計算した各変量の分散と主成分得点の分散が一致するように`prcomp`関数の`scale.`オプションは常に`FALSE`（デフォルト値）に設定していますが、一般的には`scale. = TRUE`を設定し各変量が単位分散を持つようにスケーリング^1^されることが推奨されています。
+
+<div style="background-color:#f4f4ff; padding:10px 15px 15px 15px;">`scale.`  
+a logical value indicating whether the variables should be scaled to have unit variance before the analysis takes place. **The default is FALSE** for consistency with S, **but in general scaling is advisable**. Alternatively, a vector of length
+equal the number of columns of x can be supplied. The value is passed to base::scale function.</div>
+
+　  
+^1^ 各変量が異なる単位を持つ場合、標準化により無単位化（無次元化）すること
+
+
+## 主成分分析のまとめ
+* 多数の変量を**少数の主成分に縮約**する（まとめる）のが主成分分析
+    * 今回の例では3変量が2変量に縮約された
+    * 各変量の分散の総和と主成分の分散の総和は同じであることが条件
+    * 分散の総和に占める割合（分散説明率）により主成分数が決まる
+* 主成分の**解釈は分析者が行う**
+    * 主成分が何を意味しているかは分析結果には示されない
+    * 分析結果を可視化することで解釈しやすくなる
+
+このような特徴から変量の多いアンケート分析などに使われることが多い主成分分析ですが、プロダクトメトリクスやチケットデータの分析にも使えるのではないかと考えています。ただし、チケットデータはカテゴリカルデータが多いので適用には工夫が必要だと思われます。
+
+
+
+# 因子分析
+
 ## 因子分析とは
-因子分析とは主成分分析と同様に変量を次元縮約することで共通要員を探索し独自要因を推定するための分析方法です。主成分分析と異なるのは、誤差は各変量に固有のもの（各変量に独自の要因）として考える点です。なお、因子分析における共通因子とは主成分分析における成分に同じです。  
+因子分析とは主成分分析と同様に変量を次元縮約することで共通要因を探索し**独自要因を推定する**ための分析方法です。主成分分析と異なるのは、誤差は各変量に固有のもの（各変量に独自の要因）として考える点です。なお、因子分析における共通因子とは主成分分析における主成分に同じです。  
 
 <center>![因子分析モデルのイメージ（同志社大学データサイエンス研究室のサイトより）](https://www1.doshisha.ac.jp/~mjin/R/Chap_25/image1.jpg)</center>
 
@@ -394,6 +466,9 @@ t(t(result$rotation) * result$sdev) %>% as.data.frame()
 
 ![gacco 統計学III 第5回テキストより](./fig/difference.png)
 
+
+## Rで解くには
+Rで因子分析を行うには最尤法を用いた`factanal`関数がありますが、今回は説明を省略します。「復習のためのリソース」などを参考にしてください。
 
 
 
