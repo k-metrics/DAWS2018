@@ -1,12 +1,13 @@
 ---
 title: "第８回データ分析勉強会"
-author: "【午前の部/午後の部】Rではじめる多変量解析 [鈴木さんぽう, CC BY-NC-SA 4.0]"
+subtitle: "Rではじめる多変量解析"
+author: "[鈴木さんぽう, CC BY-NC-SA 4.0]"
 date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
 output:
   ioslides_presentation:
-    css: style.css
+    # css: style.css
     df_print: paged
-    logo: fig/hex-rmarkdown.png
+    logo: fig/rlogo.png
     smaller: false
     widescreen: true
 ---
@@ -15,6 +16,41 @@ output:
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 require(tidyverse)
+```
+
+```{css, echo=FALSE}
+/*見出しにアンダーラインを付加する。見出しごとにアンダーラインの太さを変える*/
+h1 {
+  border-bottom: solid 2.5px;
+}
+
+h2 {
+  border-bottom: solid 2.0px;
+}
+
+h3 {
+  /* border-bottom: solid 1.5px; */
+  font-weight: bold;
+}
+
+h4 {
+  border-bottom: solid 1.0px;     
+}
+
+/*太字をブルーのラインマーカー風にする*/
+strong {
+  background: linear-gradient(transparent 70%, #a7d6ff 60%)
+}
+
+/*太字をグリーンのラインマーカー風にする
+strong {
+  background: linear-gradient(transparent 70%, #66FFCC 60%);
+}
+*/
+
+.caption {
+  font-size: 75%;
+}
 ```
 
 
@@ -27,7 +63,7 @@ require(tidyverse)
         * 主成分分析
         * 因子分析
 1. 演習
-    * 演習I ＆ 演習II
+    * 演習I ＆ 演習II, 演習III
     * レポート作成＆発表
 
 
@@ -242,8 +278,8 @@ par(mfrow=c(1, 1))
         * 上記の値が一致しない場合は分析者の判断による
 
 
-## 主成分
-主成分分析は各変量の分散を分散の総和を変えずに再分配する分析です。再分配する先を主成分（軸）と呼びます。以下のように総和に変化はありません。  
+## 分散総和
+主成分分析は各変量の分散を**分散の総和を変えず**に再分配する分析です。再分配する先を主成分（軸）と呼びます。以下のように総和に変化はありません。  
 
 ### 変量の分散総和と各変量の分散
 ```{r, echo=FALSE}
@@ -269,7 +305,7 @@ mtcars %>% dplyr::select(wt, qsec, am) %>%
 ```
 
 
-## 主成分数を決める（分散説明率（寄与率））
+## 分散説明率（寄与率）
 主成分数を決めるためにまず分散説明率を確認します。分散説明率とは分散の総和に対する各主成分得点の分散の比のことです。先程の例では下表の通りになります。
 
 ### 主成分得点の分散総和と主成分得点の分散
@@ -302,7 +338,7 @@ mtcars %>% dplyr::select(wt, qsec, am) %>%
 この場合、第一、第二主成分得点で全体の$98\%$が説明できることが分かります。  
 
 
-## 主成分数を決める（（共分散行列の）固有値）
+## （共分散行列の）固有値
 分散共分散行列(相関係数行列)の固有値は主成分得点の標準偏差の二乗（主成分得点の分散）に等しく、固有値が1を超えているものを主成分として採用します。
 ```{r, echo=FALSE}
 result <- mtcars %>% 
@@ -316,7 +352,7 @@ t(result$sdev ^ 2) %>%
 ```
 
 
-## 主成分数を決める（固有値の屈曲点）
+## 固有値の屈曲点
 固有値を降順に並べて折れ線グラフを描き、屈曲点（変曲点）から1を引いたものが主成分数です。下記の場合は、3番目が屈曲点とみなせますので、主成分数は2となります。
 
 ```{r, echo=FALSE}
@@ -469,6 +505,20 @@ equal the number of columns of x can be supplied. The value is passed to base::s
 
 ## Rで解くには
 Rで因子分析を行うには最尤法を用いた`factanal`関数がありますが、今回は説明を省略します。「復習のためのリソース」などを参考にしてください。
+
+
+
+# 演習
+
+## 演習問題について
+演習問題は以下の三問ですが、全てを解く必要はありません。また、今回の演習問題は計算をする問題ではなく各分析手法の結果を見て何が言えるかを話し合ってまとめてください。最後に発表していただきます。  
+
+
+演習    | 概要                                                 | 分析手法
+--------|------------------------------------------------------|------------
+演習I   | 成績上位の投手はどのような傾向があるかを考える       | 主成分分析
+演習II  | バグの多いモジュールはどのような傾向があるかを考える | 主成分分析
+演習III | （独立）因子がなにを表しているかを考える             | 因子分析
 
 
 
@@ -696,47 +746,6 @@ df %>%
 
 # 演習II
 
-## 因子分析
-[厚生労働省編一般職業適性検査 <i class="fa fa-external-link"></i>](https://www.jil.go.jp/institute/seika/tools/GATB.html){target="_blank" title="General Aptitude Test Battery: GATB"} の筆記試験結果を因子分析したグラフが次ページにあります。各独自因子がどのような適性（能力）なのか分析してください。
-
-　  | 内容 | 　 | 内容
-------|------|------|------
-A | 円打点（円の中に点を打つ）　| G | 計算（加減乗除の計算を行う）
-B | 記号記入（記号 を記入する） | H | 語意（同意語かまたは反意語を見つけだす）
-C | 形態照合（形と大きさの同じ図形をさがしだす） | I | 立体図判断（展開図で表された立体形をさがしだす）
-D | 名詞比較（文字・数字の違いを見つける） | J | 文章完成（文章を完成する）
-E | 図柄照合（同じ図形を見つけだす） | K | 算数応用（応用問題を解く）
-F | 平面図判断（置き方をかえた図形を見つけだす） | 
-
-
-## 因子分析結果
-```{r, echo=FALSE, fig.width=10}
-GATB50_fa <- "./data/CATB50.csv" %>% 
-  readr::read_csv(locale = readr::locale(encoding = "CP932")) %>% 
-  dplyr::select(-X1) %>% 
-  factanal(factors = 4, scores = "Bartlett")
-  
-GATB50_fa$loadings %>% as.data.frame.array() %>% 
-  tibble::rownames_to_column("factor") %>% 
-  tidyr::gather(key = "key", value = "value", -factor) %>% 
-  ggplot2::ggplot(ggplot2::aes(x = factor, y = value, fill = factor)) + 
-    ggplot2::facet_grid(. ~ key) + 
-    ggplot2::geom_bar(stat = "identity") +
-    ggplot2::labs(title = "GATB",
-                  x = "変量（独立因子）", y = "因子負荷量") + 
-    ggplot2::scale_fill_discrete(name = "",
-      labels = c(A = "A 円打点検査", B = "B 記号記入", C = "C 形態照合",
-                 D = "D 名詞比較", E = "E 図柄照合", F = "F 平面図判断",
-                 G = "G 計算", H = "H 語意", I = "I 立体図判断",
-                 J = "J 文章完成", K = "K 算数応用"))
-```
-
-[データなど出典 <i class="fa fa-external-link"></i>](https://www1.doshisha.ac.jp/~mjin/R/Chap_25/25.html){target="_blank" title="フリーソフトによるデータ解析・マイニング　第25回"}
-
-
-
-# 演習III
-
 ## プロダクト・メトリクス
 あるオブジェクト指向プログラムのプロダクト・メトリクス（ソースコード・メトリクス）を用いてバグが発見されたメソッド（モジュール）の特徴、バグが発見されていないメソッド（モジュール）の特徴を整理してみてください。なお、各メトリクスの意味は以下の通りです。  
 
@@ -781,6 +790,47 @@ header <- "./data/code_metrics.csv" %>%
     ggplot2::geom_point() + 
     ggplot2::scale_color_brewer(palette = "Accent")
 ```
+
+
+
+# 演習III
+
+## 因子分析
+[厚生労働省編一般職業適性検査 <i class="fa fa-external-link"></i>](https://www.jil.go.jp/institute/seika/tools/GATB.html){target="_blank" title="General Aptitude Test Battery: GATB"} の筆記試験結果を因子分析したグラフが次ページにあります。各独自因子がどのような適性（能力）なのか分析してください。
+
+　  | 内容 | 　 | 内容
+------|------|------|------
+A | 円打点（円の中に点を打つ）　| G | 計算（加減乗除の計算を行う）
+B | 記号記入（記号 を記入する） | H | 語意（同意語かまたは反意語を見つけだす）
+C | 形態照合（形と大きさの同じ図形をさがしだす） | I | 立体図判断（展開図で表された立体形をさがしだす）
+D | 名詞比較（文字・数字の違いを見つける） | J | 文章完成（文章を完成する）
+E | 図柄照合（同じ図形を見つけだす） | K | 算数応用（応用問題を解く）
+F | 平面図判断（置き方をかえた図形を見つけだす） | 
+
+
+## 因子分析結果
+```{r, echo=FALSE, fig.width=10}
+GATB50_fa <- "./data/CATB50.csv" %>% 
+  readr::read_csv(locale = readr::locale(encoding = "CP932")) %>% 
+  dplyr::select(-X1) %>% 
+  factanal(factors = 4, scores = "Bartlett")
+  
+GATB50_fa$loadings %>% as.data.frame.array() %>% 
+  tibble::rownames_to_column("factor") %>% 
+  tidyr::gather(key = "key", value = "value", -factor) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = factor, y = value, fill = factor)) + 
+    ggplot2::facet_grid(. ~ key) + 
+    ggplot2::geom_bar(stat = "identity") +
+    ggplot2::labs(title = "GATB",
+                  x = "変量（独立因子）", y = "因子負荷量") + 
+    ggplot2::scale_fill_discrete(name = "",
+      labels = c(A = "A 円打点検査", B = "B 記号記入", C = "C 形態照合",
+                 D = "D 名詞比較", E = "E 図柄照合", F = "F 平面図判断",
+                 G = "G 計算", H = "H 語意", I = "I 立体図判断",
+                 J = "J 文章完成", K = "K 算数応用"))
+```
+
+[データなど出典 <i class="fa fa-external-link"></i>](https://www1.doshisha.ac.jp/~mjin/R/Chap_25/25.html){target="_blank" title="フリーソフトによるデータ解析・マイニング　第25回"}
 
 
 
