@@ -1,0 +1,79 @@
+---
+title: "第７回データ分析勉強会 演習"
+author: "平均気温推移"
+date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
+output:
+  html_document:
+    code_folding: show
+#    css: style.css
+    df_print: paged
+    highlight: pygments
+    toc: yes
+    toc_float:
+      collapsed: yes
+      smooth_scroll: no
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+
+require(tidyverse)
+require(rvest)
+```
+  
+# データ収集  
+```{r}
+#エラー発生！後で調べる
+#Sys.setlocale("LC_ALL", "ja_JP.UTF-8")
+
+(df <- "http://www.data.jma.go.jp/obd/stats/etrn/view/monthly_s3.php?prec_no=63&block_no=47770&year=&month=&day=&elm=monthly&view=a1" %>% 
+  read_html() %>% 
+  html_node(xpath = '//*[@id="tablefix1"]') %>%
+  html_table())  
+
+```
+  
+# データ分析結果  
+```{r}
+
+  # 前処理
+df <- rename(df,year="年",Jan="1月",Feb="2月",Mar="3月",Apr="4月",May="5月",Jun="6月",Jul="7月",Aug="8月",Sep="9月",Oct="10月",nov="11月",Dec="12月") %>%
+  # 欠損値（NA）があれば無条件に削除
+  tidyr::drop_na()  
+
+  # 気温データに、)を含むデータがあるため、置換しようとしたけど、断念。
+  # そもそも欠損値を含んでいるようなので、除外する。
+  # しかし、解決策を知っておきたいかな・・・。
+#df <- str_replace_all(df, pattern="\)", replacement="") %>% 
+#  print()
+
+df %>%
+  # 気温データは、月によって数値型と文字型が混在しているため、
+  # 必要な気温データを全て数値型に変換します
+  dplyr::select(year, Feb, Aug) %>% 
+  tidyr::gather(key = "month", value = "temperature", -year) %>% 
+  # 月を因子型に変換して2月, 8月の順になるようにします
+  dplyr::mutate(month = forcats::fct_relevel(month, c("Feb", "Aug"))) %>%  
+  # データ内に、空白と")"があるので、削除した後数値型に変換します
+  dplyr::mutate(temperature = stringr::str_remove_all(temperature, "[[:space:])]"),
+                temperature = readr::parse_number(temperature)) %>% 
+
+  # グラフの軸を指定します
+  ggplot2::ggplot(ggplot2::aes(x = year, y = temperature, colour = month)) + 
+    # 折れ線グラフを描く
+    ggplot2::geom_line() +
+    # グラフタイトルとラベルを付ける
+    ggplot2::labs(x = "年", y =  "気温", title = "平均気温推移") +
+    # グループでグラフを分ける
+    ggplot2::facet_wrap(~ month, nrow = 1)
+
+```
+  
+# 簡単な考察  
+* 以上より言えること  
+    * ２月と８月の気温に、明らかな差がある。  
+    * ２月と８月共に、1900年頃と比較して、気温が上昇している。  
+
+
+
+
