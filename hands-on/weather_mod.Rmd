@@ -1,0 +1,94 @@
+---
+title: "第７回データ分析勉強会 演習"
+author: "気温データ分布"
+date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
+output:
+  html_document:
+    code_folding: show
+    # css: style.css
+    df_print: paged
+    highlight: pygments
+    self_contained: true
+    toc: yes
+    toc_float:
+      collapsed: yes
+      smooth_scroll: no
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+
+require(tidyverse)
+require(rvest)
+```
+
+
+```{r}
+Sys.setlocale("LC_ALL", "ja_JP.UTF-8")
+
+
+# データ形式を確認するためにサマライズするかPaged printで表示しておいた方が
+# いいです。YAMLでPaged printが指定されているのでprint関数を使わずに単に
+# テーブル表示します。代入後にオブジェクトを実行するか全体を括弧で囲めば
+# 表示されます
+
+(df <- "http://www.data.jma.go.jp/obd/stats/etrn/view/monthly_s3.php?prec_no=63&block_no=47770&year=&month=&day=&elm=monthly&view=a1" %>% 
+  read_html() %>% 
+  html_node(xpath = '//*[@id="tablefix1"]') %>%
+  html_table())
+
+
+# こちらも同様でprint関数での処理結果がdfに入るのでprint関数を除きます
+(df <- rename(df,year="年",Jan="1月",Feb="2月",Mar="3月",Apr="4月",May="5月",Jun="6月",Jul="7月",Aug="8月",Sep="9月",Oct="10月",nov="11月",Dec="12月") %>%
+  # 欠損値（NA）があれば無条件に削除
+  tidyr::drop_na())
+
+# すると気温のデータは月によって数値型と文字型が混在していることが分かります
+# なので、必要な気温気温データは全て数値型に変換します
+df %>% 
+  dplyr::select(year, Feb, Aug) %>% 
+  dplyr::mutate(Feb = readr::parse_double(Feb),
+                Aug = readr::parse_double(Aug)) %>% 
+# その結果を用いて処理していきます
+  tibble::rowid_to_column("id") %>% 
+  tidyr::gather(key = "key", value = "value", -id, -year) %>% 
+  dplyr::mutate(key = forcats::fct_relevel(key, c("Feb", "Aug"))) %>% 
+# 欠損している年があるようなのでワーニングメッセージが出てます
+  ggplot2::ggplot(ggplot2::aes(x = year, y = value, colour = key)) + 
+    ggplot2::geom_line() +
+    ggplot2::labs(xlab = "年", ylab =  "気温", title = "平均気温変化") +
+    ggplot2::facet_wrap(~ key, nrow = 1)
+
+# df %>%
+#   dplyr::select(year,Feb,Aug) %>%
+#   # 行を識別できるようにIDを付与する
+#   tibble::rownames_to_column("id") %>%
+# 
+#   # id,年以外の変数（列）をkeyとvalueに渡す
+#   tidyr::gather(key = key,value = value, -id,-year) %>%
+#   print() %>%
+# 
+#   # グラフの軸を指定します
+#   ggplot2::ggplot(ggplot2::aes(x = year, y = value,color=key)) +
+#     # 折れ線グラフを描く
+#     ggplot2::geom_line() +
+#     # グラフタイトルとラベルを付ける
+#     xlab("年") + ylab("気温") + ggtitle("平均気温変化") +
+#     # グループでグラフを分ける
+#     ggplot2::facet_wrap(~ key, nrow = 1)
+```
+
+```{r}
+df %>% 
+  dplyr::select(year, Feb, Aug) %>% 
+  tidyr::gather(key = "month", value = "tempture", -year) %>% 
+  dplyr::mutate(month = forcats::fct_relevel(month, c("Feb", "Aug"))) %>% 
+  dplyr::mutate(tempture = stringr::str_remove_all(tempture, "[[:space:])]"),
+                tempture = readr::parse_number(tempture)) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = year, y = tempture, colour = month)) + 
+    ggplot2::geom_line() +
+    ggplot2::labs(x = "年", y =  "気温", title = "平均気温変化") +
+    ggplot2::facet_wrap(~ month, nrow = 1)
+```
+
+
