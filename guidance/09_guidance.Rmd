@@ -8,6 +8,7 @@ output:
     # css: style.css
     df_print: paged
     logo: fig/rlogo.png
+    self_contain: true
     smaller: false
     widescreen: true
 ---
@@ -516,13 +517,62 @@ Rで因子分析を行うには最尤法を用いた`factanal`関数がありま
 
 演習    | 概要                                                 | 分析手法
 --------|------------------------------------------------------|------------
-演習I   | 成績上位の投手はどのような傾向があるかを考える       | 主成分分析
-演習II  | バグの多いモジュールはどのような傾向があるかを考える | 主成分分析
+演習I   | バグの多いモジュールはどのような傾向があるかを考える | 主成分分析
+演習II  | 成績上位の投手はどのような傾向があるかを考える       | 主成分分析
 演習III | （独立）因子がなにを表しているかを考える             | 因子分析
 
 
 
-# 演習 I
+# 演習I
+
+## プロダクト・メトリクス
+あるオブジェクト指向プログラムのプロダクト・メトリクス（ソースコード・メトリクス）を用いてバグが発見されたメソッド（モジュール）の特徴、バグが発見されていないメソッド（モジュール）の特徴を整理してみてください。なお、各メトリクスの意味は以下の通りです。  
+
+　TMLOC: 総行数（総メソッド行数）  
+　WMC: 重み付きメソッド数 - サイクロマチック複雑度の合計  
+　CBO: クラス間の結合度 - 値が小さいほど結合度が弱い（作りがシンプル）  
+　LCOM: クラスの凝集度の欠如 - 値が小さいほど凝集度が高い  
+　RFC: 応答処理の多さ - 値が大きいほどメソッド呼び出しの種類が多い  
+　  
+データなど出典：デート本
+
+
+## 主成分プロット
+```{r, echo=FALSE}
+"./data/code_metrics.csv" %>% 
+  readr::read_csv(locale = readr::locale(encoding = "CP932")) %>% 
+  dplyr::select(-Modify, -ModifyCount) %>% 
+  prcomp(., scale. = TRUE) %>% 
+  ggbiplot::ggbiplot(ellipse = TRUE, circle = TRUE)
+```
+
+
+## 主成分プロット（色分け）
+```{r, echo=FALSE}
+header <- "./data/code_metrics.csv" %>% 
+  readr::read_csv(locale = readr::locale(encoding = "CP932")) %>% 
+  dplyr::select(ModifyCount) %>% 
+  tibble::rowid_to_column("row")
+
+"./data/code_metrics.csv" %>% 
+  readr::read_csv(locale = readr::locale(encoding = "CP932")) %>% 
+  dplyr::select(-Modify, -ModifyCount) %>% 
+  prcomp(., scale. = TRUE) %>% 
+  broom::tidy() %>% 
+  tidyr::spread(key = PC, value = value) %>% 
+  dplyr::right_join(header, by = "row") %>% 
+  dplyr::select(row, ModifyCount, PC1 = `1`, PC2 = `2`) %>% 
+  dplyr::mutate(ModifyCount = as.factor(ModifyCount)) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = PC1, y = PC2, colour = ModifyCount)) + 
+    ggplot2::geom_hline(ggplot2::aes(yintercept = 0)) +
+    ggplot2::geom_vline(ggplot2::aes(xintercept = 0)) + 
+    ggplot2::geom_point() + 
+    ggplot2::scale_color_brewer(palette = "Accent")
+```
+
+
+
+# 演習 II
 
 ## 対象データ
 対象となるデータは[セリーグの投手成績（最終結果）](http://npb.jp/bis/2018/stats/pit_c.html)です。成績には、総合、セーブ、ホールドポイントの三種類があります。次ページ以降の主成分分析結果を見て各投手がどのような特徴を持っているか分析してください。    
@@ -740,55 +790,6 @@ df %>%
   # ggbiplot::ggbiplot(obs.scale = 1, var.scale = 1, ellipse = TRUE,
   #                    circle = TRUE) # +
   #   ggrepel::geom_text_repel(ggplot2::aes(label = header$`投手名`))
-```
-
-
-
-# 演習II
-
-## プロダクト・メトリクス
-あるオブジェクト指向プログラムのプロダクト・メトリクス（ソースコード・メトリクス）を用いてバグが発見されたメソッド（モジュール）の特徴、バグが発見されていないメソッド（モジュール）の特徴を整理してみてください。なお、各メトリクスの意味は以下の通りです。  
-
-　TMLOC: 総行数（総メソッド行数）  
-　WMC: 重み付きメソッド数 - サイクロマチック複雑度の合計  
-　CBO: クラス間の結合度 - 値が小さいほど結合度が弱い（作りがシンプル）  
-　LCOM: クラスの凝集度の欠如 - 値が小さいほど凝集度が高い  
-　RFC: 応答処理の多さ - 値が大きいほどメソッド呼び出しの種類が多い  
-　  
-データなど出典：デート本
-
-
-## 主成分プロット
-```{r, echo=FALSE}
-"./data/code_metrics.csv" %>% 
-  readr::read_csv(locale = readr::locale(encoding = "CP932")) %>% 
-  dplyr::select(-Modify, -ModifyCount) %>% 
-  prcomp(., scale. = TRUE) %>% 
-  ggbiplot::ggbiplot(ellipse = TRUE, circle = TRUE)
-```
-
-
-## 主成分プロット（色分け）
-```{r, echo=FALSE}
-header <- "./data/code_metrics.csv" %>% 
-  readr::read_csv(locale = readr::locale(encoding = "CP932")) %>% 
-  dplyr::select(ModifyCount) %>% 
-  tibble::rowid_to_column("row")
-
-"./data/code_metrics.csv" %>% 
-  readr::read_csv(locale = readr::locale(encoding = "CP932")) %>% 
-  dplyr::select(-Modify, -ModifyCount) %>% 
-  prcomp(., scale. = TRUE) %>% 
-  broom::tidy() %>% 
-  tidyr::spread(key = PC, value = value) %>% 
-  dplyr::right_join(header, by = "row") %>% 
-  dplyr::select(row, ModifyCount, PC1 = `1`, PC2 = `2`) %>% 
-  dplyr::mutate(ModifyCount = as.factor(ModifyCount)) %>% 
-  ggplot2::ggplot(ggplot2::aes(x = PC1, y = PC2, colour = ModifyCount)) + 
-    ggplot2::geom_hline(ggplot2::aes(yintercept = 0)) +
-    ggplot2::geom_vline(ggplot2::aes(xintercept = 0)) + 
-    ggplot2::geom_point() + 
-    ggplot2::scale_color_brewer(palette = "Accent")
 ```
 
 
