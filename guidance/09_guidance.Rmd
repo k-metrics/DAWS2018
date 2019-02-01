@@ -1,5 +1,5 @@
 ---
-title: "第８回データ分析勉強会"
+title: "第９回データ分析勉強会"
 subtitle: "Rではじめる多変量解析"
 author: "[鈴木さんぽう, CC BY-NC-SA 4.0]"
 date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
