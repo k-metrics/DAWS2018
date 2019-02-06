@@ -310,7 +310,7 @@ Redmineのチケットデータを用いてダッシュボードを作る。
 zipファイルには以下のファイルが入っています。
 
 * 09_guidance.html - ネット接続環境がない場合は$\TeX$数式が表示できません
-* 09_guidance.pdf  - PDF形式（Leagal Size）
+* 09_guidance.pdf  - PDF形式（Letter Size）
 
 
 ---
