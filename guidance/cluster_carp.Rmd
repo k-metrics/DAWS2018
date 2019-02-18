@@ -1,0 +1,189 @@
+---
+title: "Clustering Carp"
+subtitle: "第9回データ分析勉強会 補足資料"
+author: "かとうたくみ"
+date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
+output: 
+  html_document:
+    code_folding: show
+    df_print: "paged"
+    highlight: default
+    md_extensions: -ascii_identifiers
+    number_sections: yes
+    theme: cerulean
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: yes
+      smooth_scroll: no
+  ioslides_presentation:
+    df_print: paged
+    smaller: false
+    widescreen: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(rvest)
+library(tidyverse)
+
+# [RStudio で日本語が使えなくなっていた](https://blog.goo.ne.jp/r-de-r/e/084639aec24beb8a6d08b8241545ef1a)
+Sys.setlocale("LC_ALL", "ja_JP.UTF-8")
+```
+
+教科書「[Rによるデータマイニング入門](https://shop.ohmsha.co.jp/shopdetail/000000004424/)」でクラスター分析を勉強したので、これを実践してみる。
+
+# テーマ選定
+
+* 前提として、連続量の多変数なデータである必要がある
+* ほんとはサッカーでやりたかったが、データ量では野球に敵わなかった
+* 少なくともK野さんは盛り上がってくれることでしょう
+
+ということで、取り上げたのは広島カープの2017年登録選手（野手）データ
+
+（出典：[Baseball LAB](http://www.baseball-lab.jp/)）
+
+# 分析１
+
+## データの取得
+
+* rvestスクレイピングによるデータ取得（参考：[第7回データ分析勉強会 データインポート演習](https://sites.google.com/site/kantometrics/2018/2018-12-15)）
+* 出場機会のなかった選手？はデータがなく扱いづらいので除外
+
+```{r }
+url <- "http://www.baseball-lab.jp/player/batter/6/2017/page:1/sort:PlayerAnnualBattingRecord.hit/direction:DESC"
+
+carp <- url %>% 
+  read_html() %>% 
+  html_node(xpath = '//*[@id="wrapper_content"]/div/div/article/div[1]/div/div/div[2]/table') %>% 
+  html_table() %>% 
+  filter(試合 != "---") %>% 
+  mutate_at(vars(-選手名), as.numeric)
+
+carp
+```
+
+## 行名をつける
+
+* この後の工程では連続量のみを扱うため、選手名列が邪魔
+* 一方、単純に削除してしまうと、分析結果を解釈できず
+* そこで**データのキーとなっている選手名を行名に設定する（ここがポイント）**
+
+```{r}
+row.names(carp) <- carp$選手名
+
+carp.p <- carp %>% select(試合:OPS)
+
+carp.p
+```
+
+## 非類似度の計算
+
+* 教科書に倣って非類似度を計算していく
+* ただし、都道府県ごとに消費支出合計額で各品目を割るに相当する部分は割愛
+    - それが悪いのかどうかはわからない
+    - 例えば試合数で割らないと不利と考える？
+    - 中には打率のように、もともと正規化された指標も混在している
+    - えーい、面倒なので、試合数含めてそれも実力だろうと割り切ってみる
+* scale()関数で各列ごとに平均が0、標準偏差が1となるように標準化
+* dist()関数で非類似度を計算する
+
+```{r}
+carp.std <- scale(carp.p)
+carp.dist <- dist(carp.std)
+as.matrix(carp.dist)[1:5, 1:5]
+```
+
+## クラスター分析
+
+* hclust()関数で階層型クラスター分析を実行
+
+```{r}
+carp.hclust <- hclust(carp.dist, method = "ward.D2")
+#str(carp.hclust)
+#head(carp.hclust$merge, n = 10)
+
+par(family = "HiraKakuProN-W3")
+plot(carp.hclust)
+rect.hclust(carp.hclust, k = 6)
+```
+
+## 考察
+
+* K野さん、お願いします！
+
+# 分析２
+
+* ところで、上の結果を解釈するには、各指標の意味を考える事になりますよね
+* そもそも似たような指標もあって、このセットがどれだけ選手の特徴を表現できているのか？
+* 例えば本塁打が多ければ打点も多いでしょ的な、重回帰で言う所の多重共線性の問題をたぶんに孕んでいるんでないの？
+* あ、この指標自体をクラスタリングしてみるのも面白いかも！
+
+## 行列を入れ替える
+
+* 単純に行と列を入れ替えてみる
+* t()関数でいとも簡単に入れ替え成功（転置と言うらしい）
+* 整数と小数点で型を律儀に分けなかったこと（ずさんな性格）も功を奏した
+
+参考：[Qiita Rでデータフレームを転置すると行列になる](https://qiita.com/emihat/items/1130b15152621a5e37f5)
+
+```{r}
+carp_t <- t(carp.p) %>% 
+  as.data.frame()
+
+carp_t
+```
+
+## クラスター分析
+
+* あとは一緒なので、一気にクラスター分析まで
+
+```{r}
+carp_t.std <- scale(carp_t)
+carp_t.dist <- dist(carp_t.std)
+#as.matrix(carp_t.dist)[1:5, 1:5]
+
+carp_t.hclust <- hclust(carp_t.dist, method = "ward.D2")
+
+par(family = "HiraKakuProN-W3")
+plot(carp_t.hclust)
+rect.hclust(carp_t.hclust, k = 6)
+```
+
+
+## 考察
+
+* 試合数は一番特殊で、打席数・打数と近いのは直感的（打数って何？）
+* 得点・打点もうなづける（得点って何？）
+* 打率・出塁率・長打率の辺りはお見事
+* 一方、安打と三振が似ている？というのは意外
+* 更に二塁打と盗塁、三塁打と敬遠、本塁打と併殺打については、思ってたんと違う
+
+やっぱりK野さん、お願いします！
+
+# まとめ
+
+* クラスター分析では、連続量かつ多変数のデータを扱う
+* クラスタリングのキーとなる変数を行名に設定する（**ポイント**）
+* 時には行列の入れ替え（転置）も有効かも
+* 分析２の結果をチーム間で比較すると、チームの特色を探れる？
+
+Enjoy!
+
+
+## License
+
+CC BY-NC-SA 4.0, Takumi Kato  
+
+* 本資料中で引用してる画像などの著作権は原著作権者にあります。
+
+## SessionInfo
+
+```{r}
+sessionInfo()
+```
+
+
+
+
