@@ -304,6 +304,7 @@ Redmineのチケットデータを用いてダッシュボードを作る。
     * クラスタ分析
         * [クラスター分析実践紹介 <i class="fa fa-file-pdf-o"></i> <i class="fa fa-external-link-square"></i>](./guidance/クラスター分析実践紹介.pdf){target="_blank" title="PDF"}
         * [補足資料 <i class="fa fa-external-link-square"></i>](./guidance/cluster_carp.html){target="_blank" title="Clustering Carp"}
+        * [Appendix <i class="fa fa-external-link-square"></i>](./guidance/09_guidance_appendix.html){target="_blank" title="HTML"}
     * 演習＆発表
 * [来年度に向けて <i class="fa fa-external-link-square"></i>](./guidance/GoogleSites.html){target="_blank" title="ioslides"}
 

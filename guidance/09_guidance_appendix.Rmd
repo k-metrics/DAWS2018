@@ -1,0 +1,112 @@
+---
+title: "主成分分析とクラスタ分析の比較"
+subtitle: "第9回データ分析勉強会 Appendix"
+author: "鈴木さんぽう"
+date: "`r format(Sys.Date(), format = '%Y年%m月%d日')`"
+output: 
+  html_document:
+    code_folding: show
+    df_print: "paged"
+    highlight: default
+    md_extensions: -ascii_identifiers
+    number_sections: no
+    theme: cerulean
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: yes
+      smooth_scroll: no
+  ioslides_presentation:
+    df_print: paged
+    smaller: false
+    widescreen: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+
+library(rvest)
+library(tidyverse)
+
+# [RStudio で日本語が使えなくなっていた](https://blog.goo.ne.jp/r-de-r/e/084639aec24beb8a6d08b8241545ef1a)
+# Sys.setlocale("LC_ALL", "ja_JP.UTF-8")
+```
+
+
+クラスタ分析の補足資料のデータが面白そうだったので、同じデータを用いて主成分分析とクラスタ分析の分析結果がどのようになるか比較してみました。
+
+```{r, echo=FALSE}
+url <- "http://www.baseball-lab.jp/player/batter/6/2017/page:1/sort:PlayerAnnualBattingRecord.hit/direction:DESC"
+
+carp <- url %>% 
+  read_html() %>% 
+  html_node(xpath = '//*[@id="wrapper_content"]/div/div/article/div[1]/div/div/div[2]/table') %>% 
+  html_table() %>% 
+  filter(試合 != "---") %>% 
+  mutate_at(vars(-選手名), as.numeric)
+
+carp
+```
+
+```{r, include=FALSE}
+row.names(carp) <- carp$選手名
+
+carp.p <- carp %>% select(試合:OPS)
+
+carp.p
+```
+
+## 主成分分析
+```{r, echo=FALSE}
+carp.p %>% 
+  prcomp(., scale. = TRUE)
+```
+
+念の為に分散説明率を確認しておきます。
+```{r, echo=FALSE}
+carp.p %>% 
+  prcomp(scale. = TRUE) %>% broom::tidy() %>% 
+  tidyr::spread(key = PC, value = value) %>% 
+  dplyr::select(-row) %>% 
+  dplyr::summarize_all(.funs = var, na.rm = TRUE) %>% 
+  tidyr::gather(key, value) %>% 
+  dplyr::mutate(sum = sum(value)) %>% 
+  tidyr::spread(key, value) %>% 
+  dplyr::mutate(PC1 = `1`/sum, PC2 = `2`/sum, PC3 = `3`/sum) %>% 
+  dplyr::select(sum, PC1, PC2, PC3)
+```
+`PC1`と`PC2`で77%を超えていますので、主成分数は`2`とします。
+
+## 可視化
+```{r, echo=FALSE}
+carp.p %>% 
+  prcomp(., scale. = TRUE) %>% 
+  ggbiplot::ggbiplot(ellipse = TRUE, circle = TRUE)
+```
+
+## 比較
+クラスタ分析の結果と比較してみましょう。
+```{r, echo=FALSE}
+carp.p %>% 
+  prcomp(., scale. = TRUE) %>% 
+  broom::tidy() %>% 
+  tidyr::spread(key = PC, value = value) %>% 
+  dplyr::rename(PC1 = `1`, PC2 = `2`) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = PC1, y = PC2, colour = row)) + 
+    ggplot2::geom_hline(ggplot2::aes(yintercept = 0)) +
+    ggplot2::geom_vline(ggplot2::aes(xintercept = 0)) + 
+    ggplot2::geom_point() + 
+    ggrepel::geom_text_repel(ggplot2::aes(label = row)) + 
+    scale_colour_discrete(guide=FALSE)
+```
+
+
+```{r, echo=FALSE}
+carp.std <- scale(carp.p)
+carp.dist <- dist(carp.std)
+# as.matrix(carp.dist)[1:5, 1:5]
+carp.hclust <- hclust(carp.dist, method = "ward.D2")
+plot(carp.hclust)
+rect.hclust(carp.hclust, k = 6)
+```
+
