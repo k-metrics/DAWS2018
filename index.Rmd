@@ -313,12 +313,13 @@ Redmineのチケットデータを用いてダッシュボードを作る。
 ### ダウンロード
 当日、モバイル通信環境を利用できない方は**事前に**以下より資料をダウンロードしておいてください。
 
-[Rではじめる多変量解析 - 右クリックで保存（zip形式） <i class="fa fa-file-archive-o"></i>](./guidance/09_guidance.zip){target="_blank" title="zip形式"}
+[Rではじめる多変量解析（2019/2/19更新） - 右クリックで保存（zip形式） <i class="fa fa-file-archive-o"></i>](./guidance/09_guidance.zip){target="_blank" title="zip形式"}
 
 上記のzipファイルには以下のファイルが入っています（ファイル名順）。
 
 * 09_guidance.html - ネット接続環境がない場合は$\TeX$数式が表示できません
 * 09_guidance.pdf  - PDF形式（Letter Size）なので$\TeX$数式が表示できます
+* 09_guidance_appendix.html - 主成分分析とクラスター分析の比較
 * cluster_carp.html - クラスター分析補足資料
 * クラスター分析実践紹介.pdf - クラスター分析
 
