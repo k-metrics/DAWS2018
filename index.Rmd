@@ -330,18 +330,9 @@ Redmineのチケットデータを用いてダッシュボードを作る。
 * GoogleSites.html
 * GoogleSites.pdf
 
-　  
+[ggbiplotパッケージ <i class="fa fa-external-link"></i>](https://github.com/k-metrics/ggbiplot){target="_blank" title="GitHub"} 
 
-### 補足情報
-主成分分析結果を可視化できる`ggbiplot`パッケージはmacOS環境において日本語が正しく表示されないとのことです。そこで、biplotが可能なパッケージをいくつか紹介しておきます。ただし、日本語表示に関しては確認していませんので、試した場合にはフィードバックを頂けると助かります。  
-　  
-
-* stats::biplot - Base Rのplotベースのbiplot関数
-* FactoMineR - CRAN
-* factoextra - CRAN
-    * factoextra::fviz_pca_biplot
-* ggord - GitHub
-* ggfortify - GitHub
+主成分分析結果を可視化する`ggbiplot`パッケージはmacOS環境で日本語が表示されないため開発の中断しているオリジナルのリポジトリからフォークして日本語フォントを指定できるように改修しました。また、ラベル表示の改善なども行っています。
 
 
 ---

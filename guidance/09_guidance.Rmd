@@ -16,6 +16,9 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
+# font-aswomeを使えるようにする
+htmltools::tagList(rmarkdown::html_dependency_font_awesome())
+
 require(tidyverse)
 ```
 
